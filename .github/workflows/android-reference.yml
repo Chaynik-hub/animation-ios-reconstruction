@@ -2,7 +2,7 @@ name: Observe original Android reference
 on:
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   reference:
     runs-on: ubuntu-latest
