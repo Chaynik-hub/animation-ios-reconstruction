@@ -39,7 +39,7 @@ final class Workspace {
     func notify() { index=min(max(0,index),document.frames.count-1);onChange?();if let data=try? JSONEncoder().encode(document){try? data.write(to:directory.appendingPathComponent("Autosave.animation.json"),options:.atomic)} }
     func undo() { guard let old=history.popLast() else{return};future.append(document);document=old;notify() }
     func redo() { guard let next=future.popLast() else{return};history.append(document);document=next;notify() }
-    func add(_ asset:ArtworkDefinition) { checkpoint();var unit=asset.unit(at:CGPoint(x:document.width/2,y:document.height/2));unit.name += "#"+UUID().uuidString;document.frames[index].units.append(unit);selected=frame.units.count-1;notify() }
+    func add(_ asset:ArtworkDefinition) { checkpoint();var unit=asset.unit(at:CGPoint(x:document.width/2,y:document.height/2));unit.name = UnitIdentity.inserting(unit.name,in:frame);document.frames[index].units.append(unit);selected=frame.units.count-1;notify() }
     func addFrame() throws {
         var next=frame
         if index+1<document.frames.count {
