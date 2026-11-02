@@ -82,7 +82,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func perform(_ work:()throws->Void){do{try work()}catch{message("Не удалось выполнить",String(describing:error))}}
     func message(_ title:String,_ text:String){let alert=UIAlertController(title:title,message:text,preferredStyle:.alert);alert.addAction(UIAlertAction(title:"OK",style:.default));present(alert,animated:true)}
     var toolPanel:UIView?
-    func dismissTools(){toolPanel?.removeFromSuperview();toolPanel=nil;shift.isHidden=false}
+    func dismissTools(){toolPanel?.removeFromSuperview();toolPanel=nil;shift.isHidden=false;highlightFrameTools(false)}
     func choices(_ title:String,_ actions:[(String,()->Void)]){
         stop();dismissTools()
         let cover=UIView(frame:view.bounds);cover.autoresizingMask=[.flexibleWidth,.flexibleHeight]
@@ -99,6 +99,13 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func objectTools(){choices("Объект",[("Выбрать объект",{[weak self] in self?.selectObject()}),("Отразить",{[weak self] in self?.workspace.flip()}),("Дублировать",{[weak self] in guard let self,let i=self.workspace.selected,self.workspace.frame.units.indices.contains(i) else{return};self.workspace.checkpoint();var u=self.workspace.frame.units[i];u.name = UnitIdentity.inserting(u.name,in:self.workspace.frame);self.workspace.document.frames[self.workspace.index].units.append(u);self.workspace.selected=self.workspace.frame.units.count-1;self.workspace.notify()}),("Удалить",{[weak self] in self?.workspace.removeObject()}),("Показать/скрыть суставы",{[weak self] in self?.canvas.handles.toggle();self?.canvas.setNeedsDisplay()})])}
     func selectObject(){choices("Выбрать",workspace.frame.units.enumerated().map{i,u in (u.name.components(separatedBy:"#")[0],{[weak self] in self?.workspace.selected=i;self?.update()})})}
     var frameClipboard: [SceneFrame] = []
+    func highlightFrameTools(_ active: Bool) {
+        guard sidebar.arrangedSubviews.indices.contains(4), let button = sidebar.arrangedSubviews[4] as? UIButton else { return }
+        var configuration = button.configuration
+        configuration?.background.backgroundColor = active ? .original(0x449ec9) : .clear
+        configuration?.baseForegroundColor = active ? .white : .original(0x449ec9)
+        button.configuration = configuration
+    }
     func refreshFrameTools() {
         guard let panel = toolPanel as? FrameToolsPanel else { return }
         panel.setEnabled(!frameClipboard.isEmpty, for: "frame_ops_paste")
@@ -124,7 +131,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
             panel.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             panel.widthAnchor.constraint(equalToConstant: 86)
         ])
-        toolPanel = panel; shift.isHidden = true
+        toolPanel = panel; shift.isHidden = true; highlightFrameTools(true)
     }
     func pasteFrames() {
         guard !frameClipboard.isEmpty else { return }
