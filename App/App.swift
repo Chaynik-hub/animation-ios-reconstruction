@@ -115,7 +115,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func objects() {
         if catalogController != nil { dismissTools(); return }
         stop(); dismissTools()
-        let picker = CatalogController(workspace.catalog, resolve: workspace.artworkURL, close: { [weak self] in self?.dismissTools() }) { [weak self] asset in self?.workspace.add(asset) }
+        let picker = CatalogController(workspace.catalog, resolve: workspace.artworkURL, close: { [weak self] in self?.dismissTools() }, importATI: { [weak self] in self?.importUserATI() }) { [weak self] asset in self?.workspace.add(asset) }
         addChild(picker); picker.view.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(picker.view)
         NSLayoutConstraint.activate([picker.view.leadingAnchor.constraint(equalTo: sidebarScroll.trailingAnchor), picker.view.topAnchor.constraint(equalTo: view.topAnchor), picker.view.bottomAnchor.constraint(equalTo: view.bottomAnchor), picker.view.widthAnchor.constraint(equalToConstant: 180)])
         picker.didMove(toParent: self); catalogController = picker; toolPanel = picker.view; shift.isHidden = true; highlightCatalog(true)
@@ -196,10 +196,13 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     }
     @objc func tick(_ link:CADisplayLink){canvas.displayed=frameAt(link.timestamp-playbackStart);canvas.setNeedsDisplay()}
     func save(){let alert=UIAlertController(title:"Сохранить сцену",message:nil,preferredStyle:.alert);alert.addTextField{$0.text=self.titleOfScene};alert.addAction(UIAlertAction(title:"Сохранить",style:.default){[weak self] _ in guard let self else{return};self.titleOfScene=alert.textFields?.first?.text ?? "Animation";self.perform{_ = try self.workspace.save(name:self.titleOfScene)}});alert.addAction(UIAlertAction(title:"Отмена",style:.cancel));present(alert,animated:true)}
+    var importingUserATI=false
+    func importUserATI(){importingUserATI=true;pickingAudio=false;let picker=UIDocumentPickerViewController(forOpeningContentTypes:[.data],asCopy:true);picker.delegate=self;present(picker,animated:true)}
+    func documentPickerWasCancelled(_ controller:UIDocumentPickerViewController){importingUserATI=false}
     var pickingAudio=false
     func openFiles(){pickingAudio=false;let picker=UIDocumentPickerViewController(forOpeningContentTypes:[.data],asCopy:true);picker.delegate=self;present(picker,animated:true)}
     func savedScenes(){let files=(try? FileManager.default.contentsOfDirectory(at:workspace.directory,includingPropertiesForKeys:nil)) ?? [];choices("Мои сцены",files.filter{$0.lastPathComponent.hasSuffix(".animation.json")}.map{url in (url.deletingPathExtension().lastPathComponent,{[weak self] in self?.perform{try self?.workspace.load(url);self?.restoreAudio()}})})}
-    func documentPicker(_ controller:UIDocumentPickerViewController,didPickDocumentsAt urls:[URL]){guard let url=urls.first else{return};perform{if pickingAudio {let scoped=url.startAccessingSecurityScopedResource();defer{if scoped{url.stopAccessingSecurityScopedResource()}};let target=workspace.directory.appendingPathComponent(UUID().uuidString+"."+url.pathExtension);try FileManager.default.copyItem(at:url,to:target);workspace.document.attributes["nativeAudio"]=target.lastPathComponent;audio=try AVAudioPlayer(contentsOf:target);audio?.prepareToPlay();workspace.notify()}else{try workspace.load(url);restoreAudio()}}}
+    func documentPicker(_ controller:UIDocumentPickerViewController,didPickDocumentsAt urls:[URL]){guard let url=urls.first else{return};perform{if importingUserATI {importingUserATI=false;_ = try UserSpriteLibrary.importATI(url,directory:workspace.directory);workspace.restoreArtwork();catalogController?.updateAssets(workspace.catalog);workspace.notify()}else if pickingAudio {let scoped=url.startAccessingSecurityScopedResource();defer{if scoped{url.stopAccessingSecurityScopedResource()}};let target=workspace.directory.appendingPathComponent(UUID().uuidString+"."+url.pathExtension);try FileManager.default.copyItem(at:url,to:target);workspace.document.attributes["nativeAudio"]=target.lastPathComponent;audio=try AVAudioPlayer(contentsOf:target);audio?.prepareToPlay();workspace.notify()}else{try workspace.load(url);restoreAudio()}}}
     var audio:AVAudioPlayer?
     func restoreAudio(){audio=nil;if let name=workspace.document.attributes["nativeAudio"],!name.contains("/"),let player=try? AVAudioPlayer(contentsOf:workspace.directory.appendingPathComponent(name)){audio=player;audio?.prepareToPlay()}}
 

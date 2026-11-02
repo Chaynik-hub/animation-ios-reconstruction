@@ -2,6 +2,18 @@ import XCTest
 
 final class EditorUITests:XCTestCase {
     override func setUpWithError()throws {XCUIDevice.shared.orientation = .landscapeLeft}
+    func testSharedMySpritesFolderPinnedInEveryPack() throws {
+        let app=XCUIApplication();app.launchArguments=["--reference-practice"];app.launch()
+        XCTAssertTrue(app.buttons["ДОБАВИТЬ"].waitForExistence(timeout:10));app.buttons["ДОБАВИТЬ"].tap()
+        app.collectionViews.cells["catalog-pack-jungle"].tap()
+        XCTAssertEqual(app.collectionViews.cells.element(boundBy:0).identifier,"catalog-my-sprites")
+        app.collectionViews.cells["catalog-my-sprites"].tap();XCTAssertTrue(app.buttons["ATIImport"].waitForExistence(timeout:5));XCTAssertTrue(app.buttons["ATIImport"].isHittable)
+        app.buttons["Назад по каталогу"].tap();app.buttons["Назад по каталогу"].tap()
+        app.collectionViews.cells["catalog-pack-newstickman"].tap();XCTAssertEqual(app.collectionViews.cells.element(boundBy:0).identifier,"catalog-my-sprites")
+        app.collectionViews.cells["catalog-my-sprites"].tap();XCTAssertTrue(app.buttons["ATIImport"].isHittable)
+        let image=XCTAttachment(screenshot:XCUIScreen.main.screenshot());image.name="Pinned shared My sprites folder and ATI import button";image.lifetime = .keepAlways;add(image)
+        app.buttons["Закрыть каталог"].tap()
+    }
     func testDetachThroughOriginalPropertiesAndUndo() throws {
         let app=XCUIApplication();app.launchArguments=["--reference-attached"];app.launch()
         XCTAssertTrue(app.buttons["РЕДАКТ."].waitForExistence(timeout:10));app.buttons["РЕДАКТ."].tap()

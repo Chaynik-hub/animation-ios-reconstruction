@@ -42,7 +42,10 @@ enum EmbeddedArtworkImporter {
                 try data(item,"thumb.png").write(to:partFolder.appendingPathComponent("thumb.png"),options:.atomic)
                 thumbnail="@local/"+relative+"/item-\(index)/thumb.png"
             }
-            definitions.append(ArtworkDefinition(name:model.name,points:model.points,parts:parts,thumbnail:thumbnail,defaultScale:1,titles:nil))
+            var metadata:[String:String]=[:]
+            if item["native-item.json"] != nil {metadata=(try? JSONDecoder().decode([String:String].self,from:data(item,"native-item.json",limit:1024*1024))) ?? [:]}
+            let title=metadata["title"]
+            definitions.append(ArtworkDefinition(name:model.name,points:model.points,parts:parts,thumbnail:thumbnail,defaultScale:1,titles:title.map{["ru":$0,"en":$0]},packID:model.name.hasPrefix("@:imported_") ? "@user":nil,folderPath:[],catalogOrder:nil))
         }
         try JSONEncoder().encode(definitions).write(to:folder.appendingPathComponent("catalog.json"),options:.atomic)
         return id

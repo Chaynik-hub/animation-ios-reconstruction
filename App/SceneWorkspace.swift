@@ -36,7 +36,7 @@ final class Workspace {
     var onChange: (() -> Void)?
     let directory = FileManager.default.urls(for:.documentDirectory,in:.userDomainMask)[0]
     init() {
-        catalog=bundledCatalog
+        catalog=bundledCatalog+UserSpriteLibrary.definitions(in:directory)
         let url=directory.appendingPathComponent("Autosave.animation.json")
         if let bytes=try? Data(contentsOf:url),let saved=try? JSONDecoder().decode(SceneDocument.self,from:bytes),!saved.frames.isEmpty,saved.width>0,saved.height>0 {document=saved;restoreArtwork()}
     }
@@ -46,10 +46,10 @@ final class Workspace {
         return Bundle.main.resourceURL?.appendingPathComponent("Content/"+path)
     }
     func restoreArtwork() {
-        catalog=bundledCatalog
+        catalog=bundledCatalog+UserSpriteLibrary.definitions(in:directory)
         guard let id=document.attributes["nativeArtworkDirectory"],UUID(uuidString:id) != nil,
               let data=try? Data(contentsOf:directory.appendingPathComponent("ImportedArtwork/"+id+"/catalog.json")),let custom=try? JSONDecoder().decode([ArtworkDefinition].self,from:data) else{return}
-        let names=Set(custom.map(\.name));catalog=custom+bundledCatalog.filter{!names.contains($0.name)}
+        let names=Set(custom.map(\.name));catalog=custom+catalog.filter{!names.contains($0.name)}
     }
     var frame: SceneFrame { document.frames[index] }
     func checkpoint() { history.append(document); if history.count>60 { history.removeFirst() }; future=[] }
@@ -90,6 +90,13 @@ final class Workspace {
             archive=try Archive(url:output,accessMode:.update)
             if let old=archive["model.xml"]{try archive.remove(old)}
         }else{archive=try Archive(url:output,accessMode:.create)}
+        let used=Set(document.frames.flatMap{$0.units}.map{UnitIdentity.baseName($0.name)})
+        for record in UserSpriteLibrary.records(in:directory) where used.contains(record.definition.name) {
+            guard let url=artworkURL("@local/"+record.archive) else{continue}
+            let bytes=try Data(contentsOf:url),path="user-items/"+record.definition.name.replacingOccurrences(of:"@:",with:"")+".ati"
+            if let old=archive[path]{try archive.remove(old)}
+            try archive.addEntry(with:path,type:.file,uncompressedSize:Int64(bytes.count),compressionMethod:.deflate,provider:{position,size in bytes.subdata(in:Int(position)..<Int(position)+size)})
+        }
         let data=SceneXMLWriter.write(document)
         try archive.addEntry(with:"model.xml",type:.file,uncompressedSize:Int64(data.count),compressionMethod:.deflate,provider:{position,size in data.subdata(in:Int(position)..<Int(position)+size)})
         return output
