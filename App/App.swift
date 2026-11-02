@@ -35,7 +35,8 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         for (icon,title,color,action) in entries {
             let button=UIButton(type:.custom);var config=UIButton.Configuration.plain();config.image=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Resources/Icons/"+icon+".png").path)?.resizedIcon();config.title=title;config.imagePlacement = .top;config.imagePadding=2;config.baseForegroundColor=color;config.titleTextAttributesTransformer=UIConfigurationTextAttributesTransformer{v in var x=v;x.font=UIFont(name:"Roboto-Regular",size:12) ?? .systemFont(ofSize:12);return x};button.configuration=config;button.addAction(UIAction{_ in action()},for:.touchUpInside);sidebar.addArrangedSubview(button)
         }
-        for (title,action) in [("+",{[weak self] in self?.perform{try self?.workspace.addFrame()}}),("▲",{[weak self] in self?.step(-1)}),("▼",{[weak self] in self?.step(1)})] {let b=button(title,action);navigation.addArrangedSubview(b)}
+        let navEntries: [(String,()->Void)] = [("+",{[weak self] in self?.perform{try self?.workspace.addFrame()}}),("▲",{[weak self] in self?.step(-1)}),("▼",{[weak self] in self?.step(1)})]
+        for (title,action) in navEntries {let b=button(title,action);navigation.addArrangedSubview(b)}
         frameLabel.textColor = .white;frameLabel.textAlignment = .center;frameLabel.numberOfLines=2;frameLabel.font = .monospacedDigitSystemFont(ofSize:14,weight:.regular);navigation.addArrangedSubview(frameLabel)
         NSLayoutConstraint.activate([
             sidebar.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor),sidebar.topAnchor.constraint(equalTo:view.topAnchor),sidebar.bottomAnchor.constraint(equalTo:view.bottomAnchor),sidebar.widthAnchor.constraint(equalToConstant:80),
@@ -46,7 +47,6 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     }
     func button(_ title:String,_ action:@escaping()->Void)->UIButton{let b=UIButton(type:.system);b.setTitle(title,for:.normal);b.tintColor = .white;b.addAction(UIAction{_ in action()},for:.touchUpInside);return b}
     func update(){frameLabel.text="\(workspace.index+1) /\n\(workspace.document.frames.count)";canvas.setNeedsDisplay()}
-    func perform(_ work:()->VoidThrows){ }
     func perform(_ work:()throws->Void){do{try work()}catch{message("Не удалось выполнить",String(describing:error))}}
     func message(_ title:String,_ text:String){let alert=UIAlertController(title:title,message:text,preferredStyle:.alert);alert.addAction(UIAlertAction(title:"OK",style:.default));present(alert,animated:true)}
     func choices(_ title:String,_ actions:[(String,()->Void)]){stop();let alert=UIAlertController(title:title,message:nil,preferredStyle:.actionSheet);for (label,action) in actions{alert.addAction(UIAlertAction(title:label,style:.default){_ in action()})};alert.addAction(UIAlertAction(title:"Отмена",style:.cancel));alert.popoverPresentationController?.sourceView=sidebar;alert.popoverPresentationController?.sourceRect=sidebar.bounds;present(alert,animated:true)}
