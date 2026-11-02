@@ -66,7 +66,14 @@ final class Workspace {
         document.frames.insert(next,at:index+1);index+=1;notify()
     }
     func deleteFrame() { guard document.frames.count>1 else{return};checkpoint();document.frames.remove(at:index);notify() }
-    func removeObject() { guard let i=selected,frame.units.indices.contains(i) else{return};checkpoint();document.frames[index].units.remove(at:i);selected=nil;notify() }
+    func removeObject() { guard let i=selected,frame.units.indices.contains(i) else{return};checkpoint();UnitEditing.remove(i,from:&document.frames[index]);selected=nil;notify() }
+    func duplicateObject() {
+        guard let i=selected,frame.units.indices.contains(i) else{return}
+        let snapshot=UnitEditing.snapshot(in:frame,selected:i)
+        var next=frame;let inserted=UnitEditing.paste(snapshot,into:&next)
+        guard let first=inserted.first else{return}
+        checkpoint();document.frames[index]=next;selected=first;notify()
+    }
     func flip() { guard let i=selected,frame.units.indices.contains(i) else{return};checkpoint();try? UnitTransform.flip(&document.frames[index],unitIndex:i);notify()
     }
     func save(name:String) throws -> URL {
@@ -135,7 +142,8 @@ final class SceneCanvas: UIView {
         paint(displayed ?? workspace.frame,in:c,showHandles:handles && displayed==nil);c.restoreGState()
     }
     func paint(_ frame:SceneFrame,in c:CGContext,showHandles:Bool,opacity:CGFloat=1) {
-        for (i,unit) in frame.units.enumerated() {
+        for i in UnitEditing.orderedIndices(in:frame) {
+            let unit=frame.units[i]
             let baseName=unit.name.components(separatedBy:"#")[0]
             let joints=Dictionary(unit.joints.map{($0.id,$0)},uniquingKeysWith:{$1})
             let definition=workspace.catalog.first(where:{$0.name==baseName})
