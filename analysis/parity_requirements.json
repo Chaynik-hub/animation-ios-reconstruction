@@ -1,0 +1,30 @@
+{
+  "original_apk_sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4",
+  "function_inventory_coverage": "incomplete",
+  "android_screen_inventory_coverage": "incomplete",
+  "requirements": [
+    {"id":"onboarding", "status":"pending", "source":"LandingActivity / boarding layouts"},
+    {"id":"landing_make_saved_watch", "status":"pending", "source":"LandingActivity / landing.xml"},
+    {"id":"editor_toolbar_drawer_panels", "status":"pending", "source":"MainEditor / main.xml / controls_main.xml"},
+    {"id":"joint_dragging_rigid_descendants", "status":"partial", "source":"PointManipulator.simpleMove/moveUnit", "evidence":"analysis/evidence/PointManipulator-simpleMove.json"},
+    {"id":"ik_constraints_stretch", "status":"pending", "source":"Fabrik / PointManipulator"},
+    {"id":"unit_attachments", "status":"pending", "source":"SlavesRegistry / Unit.doAttachTo"},
+    {"id":"bitmap_vector_artwork_states_faces", "status":"partial", "source":"UnitDrawer / UnitAssets"},
+    {"id":"constructor_vector_freehand_skeleton", "status":"pending", "source":"editor2 namespace"},
+    {"id":"frame_ranges_chunks_copy_paste", "status":"partial", "source":"Scene / FramesSelectionRange / ChunksStructure"},
+    {"id":"interpolation_easing_tweens", "status":"partial", "source":"NlerpInterpolator / Easing / TweenManager"},
+    {"id":"separate_preview_all_controls", "status":"partial", "source":"FullPreviewActivity / SimplePreviewPresenter"},
+    {"id":"camera_keyframes", "status":"pending", "source":"CameraAnimatorActivity / CameraMoveInterpolator"},
+    {"id":"background_gallery_animation", "status":"pending", "source":"features.background namespace"},
+    {"id":"audio_timeline_record_edit", "status":"partial", "source":"MainEditor.addSound / audio use cases"},
+    {"id":"variable_speed", "status":"pending", "source":"SpeedModifier / VarSpeedPresenter"},
+    {"id":"effects_visemes_dialogues", "status":"pending", "source":"features.effects / features.dialogues"},
+    {"id":"ats_ati_atp_full_round_trip", "status":"pending", "source":"original project and pack archives / SceneLoader"},
+    {"id":"undo_redo_transaction_parity", "status":"partial", "source":"UndoRedoManager"},
+    {"id":"export_all_formats_options", "status":"partial", "source":"MainEditor.export / export subsystems"},
+    {"id":"settings_localizations_help", "status":"pending", "source":"Settings / locale resources / Tutorials"},
+    {"id":"all_screen_states_visual_comparison", "status":"pending", "source":"runtime Android/iOS captures"},
+    {"id":"all_interaction_gesture_animation_parity", "status":"pending", "source":"runtime Android/iOS observation"},
+    {"id":"network_dependent_features", "status":"uninvestigated", "source":"original network call graph"}
+  ]
+}
