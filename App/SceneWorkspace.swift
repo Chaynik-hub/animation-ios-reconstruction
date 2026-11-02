@@ -129,6 +129,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
     private var captureOffset = CGPoint.zero
     private var transformButtons: [UIButton] = []
     private var transformStart: SceneDocument?
+    private var transformFrameIndex = 0
     private var transformUnit = 0
     private var transformCenter = CGPoint.zero
     private var transformTouchOffset = CGPoint.zero
@@ -149,6 +150,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             addSubview(button); transformButtons.append(button)
         }
     }
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool { transformStart == nil }
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         var target = touch.view
         while let view = target { if view is UIControl { return false }; target = view.superview }
@@ -188,11 +190,15 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         guard let button = gesture.view as? UIButton else { return }
         if gesture.state == .began {
             guard let selected = workspace.selected, workspace.frame.units.indices.contains(selected) else { return }
-            transformStart = workspace.document; transformUnit = selected; transformCenter = button.center; transformChanged = false
+            transformStart = workspace.document; transformFrameIndex = workspace.index; transformUnit = selected; transformCenter = button.center; transformChanged = false
             let down = gesture.location(in: self), translation = gesture.translation(in: self)
             transformTouchOffset = CGPoint(x: down.x - translation.x - button.center.x, y: down.y - translation.y - button.center.y)
         }
         guard let snapshot = transformStart else { return }
+        guard workspace.index == transformFrameIndex else {
+            workspace.document.frames[transformFrameIndex] = snapshot.frames[transformFrameIndex]
+            transformStart = nil; updateTransformControls(); workspace.notify(); return
+        }
         if gesture.state == .began || gesture.state == .changed {
             guard let base = snapshot.frames[workspace.index].units[transformUnit].joints.first(where: { $0.attributes["base"] == "true" }) else { return }
             let location = gesture.location(in: self)
