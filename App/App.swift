@@ -13,7 +13,7 @@ import AVFoundation
 final class EditorController:UIViewController,UIDocumentPickerDelegate {
     let workspace=Workspace()
     lazy var canvas=SceneCanvas(workspace)
-    let sidebar=UIStackView(),navigation=UIStackView(),frameLabel=UILabel(),shift=UIButton(type:.custom)
+    let sidebar=UIStackView(),sidebarScroll=UIScrollView(),navigation=UIStackView(),frameLabel=UILabel(),shift=UIButton(type:.custom)
     var displayLink:CADisplayLink?
     var playbackStart:CFTimeInterval=0
     var startFrame=0
@@ -23,23 +23,29 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     override func viewDidLoad(){
         super.viewDidLoad();view.backgroundColor=UIColor(red:36/255,green:37/255,blue:48/255,alpha:1)
         canvas.translatesAutoresizingMaskIntoConstraints=false;view.addSubview(canvas)
-        for stack in [sidebar,navigation]{stack.axis = .vertical;stack.distribution = .fillEqually;stack.translatesAutoresizingMaskIntoConstraints=false;view.addSubview(stack)}
+        for stack in [sidebar,navigation]{stack.axis = .vertical;stack.distribution = .fillEqually;stack.translatesAutoresizingMaskIntoConstraints=false}
+        sidebarScroll.translatesAutoresizingMaskIntoConstraints=false;sidebarScroll.showsVerticalScrollIndicator=false;view.addSubview(sidebarScroll);sidebarScroll.addSubview(sidebar);view.addSubview(navigation)
+        sidebar.distribution = .fill
         sidebar.backgroundColor=view.backgroundColor;navigation.backgroundColor=view.backgroundColor
         let entries:[(String,String,UIColor,()->Void)]=[
             ("main_btn_nav","",.white,{[weak self] in self?.menu()}),
-            ("main_btn_play","ПУСК",.orange,{[weak self] in self?.togglePlayback()}),
-            ("main_btn_insert","ДОБАВИТЬ",.systemGreen,{[weak self] in self?.objects()}),
-            ("main_btn_props","РЕДАКТ.",.systemTeal,{[weak self] in self?.objectTools()}),
-            ("main_btn_frames","РЕД. КАДР",.systemBlue,{[weak self] in self?.frameTools()}),
-            ("main_btn_undo_normal","ОТМЕНА",.cyan,{[weak self] in self?.workspace.undo()})]
-        for (icon,title,color,action) in entries {
-            let button=UIButton(type:.custom);var config=UIButton.Configuration.plain();config.image=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/"+icon+".png").path)?.resizedIcon();config.title=title;config.imagePlacement = .top;config.imagePadding=2;config.baseForegroundColor=color;config.titleTextAttributesTransformer=UIConfigurationTextAttributesTransformer{v in var x=v;x.font=UIFont(name:"Roboto-Regular",size:12) ?? .systemFont(ofSize:12);return x};button.configuration=config;button.addAction(UIAction{_ in action()},for:.touchUpInside);sidebar.addArrangedSubview(button)
+            ("main_btn_play","ПУСК",.original(0xff9000),{[weak self] in self?.togglePlayback()}),
+            ("main_btn_insert","ДОБАВИТЬ",.original(0x72bd00),{[weak self] in self?.objects()}),
+            ("main_btn_props","РЕДАКТ.",.original(0x00bd78),{[weak self] in self?.objectTools()}),
+            ("main_btn_frames","РЕД. КАДР",.original(0x449ec9),{[weak self] in self?.frameTools()}),
+            ("main_btn_undo_normal","ОТМЕНА",.original(0x009ac4),{[weak self] in self?.workspace.undo()})]
+        for (row,entry) in entries.enumerated() {
+            let (icon,title,color,action)=entry
+            let button=UIButton(type:.custom);var config=UIButton.Configuration.plain();config.image=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/"+icon+".png").path)?.resizedIcon();config.title=title;config.imagePlacement = .top;config.imagePadding=0;config.contentInsets=NSDirectionalEdgeInsets(top:2,leading:2,bottom:2,trailing:2);config.baseForegroundColor=color;config.titleTextAttributesTransformer=UIConfigurationTextAttributesTransformer{v in var x=v;x.font=UIFont(name:"Roboto-Regular",size:12) ?? .systemFont(ofSize:12);return x};button.configuration=config;button.addAction(UIAction{_ in action()},for:.touchUpInside);sidebar.addArrangedSubview(button)
+            button.heightAnchor.constraint(equalToConstant:[47.0,68,61,62,60,61][row]).isActive=true
         }
+        sidebar.addArrangedSubview(UIView())
         let navEntries: [(String,()->Void)] = [("+",{[weak self] in self?.perform{try self?.workspace.addFrame()}}),("▲",{[weak self] in self?.step(-1)}),("▼",{[weak self] in self?.step(1)})]
         for (title,action) in navEntries {let b=button(title,action);navigation.addArrangedSubview(b)}
         frameLabel.textColor = .white;frameLabel.textAlignment = .center;frameLabel.numberOfLines=2;frameLabel.font = .monospacedDigitSystemFont(ofSize:14,weight:.regular);navigation.addArrangedSubview(frameLabel)
         NSLayoutConstraint.activate([
-            sidebar.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor),sidebar.topAnchor.constraint(equalTo:view.topAnchor),sidebar.bottomAnchor.constraint(equalTo:view.bottomAnchor),sidebar.widthAnchor.constraint(equalToConstant:80),
+            sidebarScroll.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor),sidebarScroll.topAnchor.constraint(equalTo:view.topAnchor),sidebarScroll.bottomAnchor.constraint(equalTo:view.bottomAnchor),sidebarScroll.widthAnchor.constraint(equalToConstant:80),
+            sidebar.leadingAnchor.constraint(equalTo:sidebarScroll.contentLayoutGuide.leadingAnchor),sidebar.trailingAnchor.constraint(equalTo:sidebarScroll.contentLayoutGuide.trailingAnchor),sidebar.topAnchor.constraint(equalTo:sidebarScroll.contentLayoutGuide.topAnchor),sidebar.bottomAnchor.constraint(equalTo:sidebarScroll.contentLayoutGuide.bottomAnchor),sidebar.widthAnchor.constraint(equalTo:sidebarScroll.frameLayoutGuide.widthAnchor),sidebar.heightAnchor.constraint(greaterThanOrEqualTo:sidebarScroll.frameLayoutGuide.heightAnchor),
             navigation.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor),navigation.topAnchor.constraint(equalTo:view.topAnchor),navigation.bottomAnchor.constraint(equalTo:view.bottomAnchor),navigation.widthAnchor.constraint(equalToConstant:60),
             canvas.leadingAnchor.constraint(equalTo:sidebar.trailingAnchor),canvas.trailingAnchor.constraint(equalTo:navigation.leadingAnchor),canvas.topAnchor.constraint(equalTo:view.topAnchor),canvas.bottomAnchor.constraint(equalTo:view.bottomAnchor)])
         shift.translatesAutoresizingMaskIntoConstraints=false;shift.accessibilityLabel="Shift";shift.accessibilityHint="Удерживайте для растяжения разрешённых костей"
@@ -100,6 +106,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
 }
 
 extension UIImage {func resizedIcon()->UIImage {let size=CGSize(width:size.width/3,height:size.height/3);return UIGraphicsImageRenderer(size:size).image{_ in draw(in:CGRect(origin:.zero,size:size))}.withRenderingMode(.alwaysOriginal)}}
+extension UIColor {static func original(_ rgb:UInt32)->UIColor{UIColor(red:CGFloat((rgb>>16)&255)/255,green:CGFloat((rgb>>8)&255)/255,blue:CGFloat(rgb&255)/255,alpha:1)}}
 final class CatalogController:UIViewController,UICollectionViewDataSource,UICollectionViewDelegate {
     let assets:[ArtworkDefinition],pick:(ArtworkDefinition)->Void,resolve:(String)->URL?
     var collection:UICollectionView!
