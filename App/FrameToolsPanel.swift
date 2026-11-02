@@ -70,6 +70,12 @@ final class FrameToolsPanel: UIView {
         buttons[id]?.isEnabled = enabled
         buttons[id]?.alpha = enabled ? 1 : 0.2
     }
+    func selectCommand(_ id: String) {
+        for (name, button) in buttons {
+            button.isSelected = name == id
+            button.backgroundColor = name == id ? .original(0x00bd78) : .clear
+        }
+    }
     required init?(coder: NSCoder) { fatalError() }
 }
 

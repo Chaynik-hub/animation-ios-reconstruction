@@ -81,7 +81,7 @@ extension EditorController {
         commands.insert(.init(id: "props_apply", title: "Готово", height: 60, enabled: true, action: { [weak self] in self?.showUnitTools() }), at: 0)
         let panel=FrameToolsPanel(commands:commands,accent:.original(0x00bd78),identifier:"UnitStatesPanel")
         panel.accessibilityValue=workspace.frame.units[selected].attributes["state"] ?? "0"
-        mountContext(panel,width:86);highlightUnitTools(true)
+        mountContext(panel,width:86);panel.selectCommand("asset-state-"+(workspace.frame.units[selected].attributes["state"] ?? "0"));highlightUnitTools(true)
     }
     func showAssetAnimation() {
         guard let index = workspace.selected else { return }

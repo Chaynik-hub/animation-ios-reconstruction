@@ -14,7 +14,7 @@ final class EditorUITests:XCTestCase {
     func testManualAssetStateAndAnimationSettings() throws {
         let app=XCUIApplication();app.launchArguments=["--reference-animation"];app.launch()
         XCTAssertTrue(app.buttons["РЕДАКТ."].waitForExistence(timeout:10));app.buttons["РЕДАКТ."].tap();app.buttons["prop_set_states"].tap()
-        app.buttons["asset-state-1"].tap();XCTAssertEqual(app.otherElements["UnitStatesPanel"].value as? String,"1")
+        app.buttons["asset-state-1"].tap();XCTAssertTrue(app.buttons["asset-state-1"].isSelected)
         app.buttons["animation_cogs"].tap();let enabled=app.switches["AssetAnimationEnabled"];XCTAssertTrue(enabled.waitForExistence(timeout:5));enabled.tap();app.switches["AssetAnimationReverse"].tap();app.buttons["AssetAnimationApply"].tap()
         let image=XCTAttachment(screenshot:XCUIScreen.main.screenshot());image.name="Manual sprite states and automatic animation entry";image.lifetime = .keepAlways;add(image)
     }
