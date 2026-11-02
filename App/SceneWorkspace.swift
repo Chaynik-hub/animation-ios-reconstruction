@@ -167,8 +167,8 @@ final class SceneCanvas: UIView {
                         let rest=hypot(bx-ax,by-ay)*scale
                         if rest>0 {longitudinal=hypot(b.x-a.x,b.y-a.y)/rest}
                     }
-                    c.saveGState();c.setAlpha(CGFloat(Double(unit.attributes["alpha"] ?? "1") ?? 1)*opacity);c.translateBy(x:a.x,y:a.y);c.rotate(by:atan2(b.y-a.y,b.x-a.x));c.scaleBy(x:scale*longitudinal,y:flipped && part["flipped"] != "true" ? -scale:scale)
-                    bitmap.draw(in:CGRect(x:Double(part["x_offset"] ?? "0") ?? 0,y:Double(part["y_offset"] ?? "0") ?? 0,width:bitmap.size.width,height:bitmap.size.height));c.restoreGState()
+                    c.saveGState();c.translateBy(x:a.x,y:a.y);c.rotate(by:atan2(b.y-a.y,b.x-a.x));c.scaleBy(x:scale*longitudinal,y:flipped && part["flipped"] != "true" ? -scale:scale)
+                    bitmap.draw(in:CGRect(x:Double(part["x_offset"] ?? "0") ?? 0,y:Double(part["y_offset"] ?? "0") ?? 0,width:bitmap.size.width,height:bitmap.size.height),blendMode:.normal,alpha:CGFloat(Double(unit.attributes["alpha"] ?? "1") ?? 1)*opacity);c.restoreGState()
                 }
             } else {
                 // Unsupported artwork is visibly marked; never pretend it rendered correctly.
