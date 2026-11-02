@@ -15,7 +15,7 @@ for step in range(24):
     tree=ET.fromstring(xml)
     nodes=list(tree.iter('node'))
     records.append({'step':step,'text':[n.get('text') for n in nodes if n.get('text')]})
-    next_node=next((n for n in nodes if n.get('resource-id','').endswith((':id/boarding_next',':id/boarding4_next')) and n.get('enabled')=='true'),None)
+    next_node=next((n for n in nodes if ':id/boarding' in n.get('resource-id','') and n.get('text','').upper() in ['NEXT','DONE','SKIP'] and n.get('clickable')=='true' and n.get('enabled')=='true'),None)
     if next_node is None:
         next_node=next((n for n in nodes if n.get('resource-id','').endswith(':id/boarding4_play') and n.get('enabled')=='true'),None)
     if next_node is None:break
