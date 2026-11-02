@@ -41,6 +41,23 @@ public enum FrameManipulation {
         let base=oldPoint.attributes["base"]=="true"
         if base,let link=attachment(before),frame.units.contains(where:{$0.name==link.0 && $0.joints.contains(where:{$0.id==link.1})}){return}
         try JointManipulation.move(&frame.units[unitIndex],jointID:jointID,x:x,y:y)
+        if !base,oldPoint.attributes["kinstart"]=="true" {
+            // PointManipulator.kinematicMove calls moveToMaster for every slave:
+            // unlike a rigid branch rotation, this translates each attachment to
+            // its own newly solved anchor without rotating the held object.
+            var visited=Set([unitIndex]),pending=[unitIndex]
+            while let master=pending.popLast() {
+                for i in frame.units.indices where !visited.contains(i) {
+                    guard let link=attachment(frame.units[i]),link.0==frame.units[master].name,
+                          let anchor=frame.units[master].joints.first(where:{$0.id==link.1}),
+                          let base=frame.units[i].joints.first(where:{$0.attributes["base"]=="true"}) else{continue}
+                    let dx=anchor.x-base.x,dy=anchor.y-base.y
+                    for j in frame.units[i].joints.indices {frame.units[i].joints[j].x+=dx;frame.units[i].joints[j].y+=dy}
+                    visited.insert(i);pending.append(i)
+                }
+            }
+            return
+        }
         guard let after=frame.units[unitIndex].joints.first(where:{$0.id==jointID}) else{return}
         let deltaX=after.x-oldPoint.x,deltaY=after.y-oldPoint.y
         var affected=Set(before.joints.filter { old in

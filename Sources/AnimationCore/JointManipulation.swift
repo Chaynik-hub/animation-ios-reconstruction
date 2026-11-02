@@ -1,7 +1,7 @@
 import Foundation
 
 /// PointManipulator.simpleMove/moveUnit, from retained APK evidence.
-/// IK, constrained/stretchable and cross-unit attachments are separate operations.
+/// Kinematic effectors use the original FABRIK route; stretch mode remains separate.
 public enum JointManipulation {
     public static func move(_ unit: inout SceneUnit, jointID: Int, x: Double, y: Double) throws {
         guard let index=unit.joints.firstIndex(where:{$0.id==jointID}) else {throw PoseError.incompatibleTopology}
@@ -13,6 +13,10 @@ public enum JointManipulation {
         }
         guard point.attributes["fixed"] != "true", let parentID=point.parent,
               let parent=unit.joints.first(where:{$0.id==parentID}) else{return}
+        if point.attributes["kinstart"]=="true" {
+            try InverseKinematics.solve(&unit,jointID:jointID,x:x,y:y)
+            return
+        }
         if abs(parent.x-x)<1 || abs(parent.y-y)<1{return}
         let rotation=atan2(y-parent.y,x-parent.x)-atan2(point.y-parent.y,point.x-parent.x)
         let cosine=cos(rotation),sine=sin(rotation)
