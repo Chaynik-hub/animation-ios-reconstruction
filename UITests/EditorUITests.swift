@@ -10,8 +10,9 @@ final class EditorUITests:XCTestCase {
         let item=app.collectionViews.cells.firstMatch
         XCTAssertTrue(item.waitForExistence(timeout:5))
         item.tap()
-        app.buttons["+"].tap()
-        XCTAssertTrue(app.staticTexts["2 /\n2"].waitForExistence(timeout:5))
+        app.buttons["Следующий кадр"].tap()
+        let navigator=app.otherElements["FrameNavigator"]
+        XCTAssertEqual(navigator.value as? String,"2 / 2")
         app.buttons["ПУСК"].tap()
         XCTAssertTrue(app.otherElements["PreviewCanvas"].waitForExistence(timeout:5))
         XCTAssertFalse(app.buttons["ДОБАВИТЬ"].isHittable)

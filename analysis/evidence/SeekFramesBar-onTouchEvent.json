@@ -1,0 +1,130 @@
+{
+  "evidence_id": "ev_0cb1caa27c99e79203f3978ecaf1a63232b2a54a740376b786328c3902eeba1f",
+  "subject": {
+    "name": "com.zalivka.animation2_397.apk",
+    "digest": {
+      "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+    },
+    "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "jadx",
+    "name": "JADX headless",
+    "version": "0.7.1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_android_method",
+  "parameters": {
+    "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "class_name": "ru.jecklandin.stickman.widgets.SeekFramesBar",
+    "method_name": "onTouchEvent"
+  },
+  "raw_result": {
+    "server": {
+      "name": "rea-jadx-bridge",
+      "version": "7"
+    },
+    "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+    "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "loaded": {
+      "state": "LOADED",
+      "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-569b40e51902089fc7a3d5a9e7ce9475\\target.apk",
+      "class_count": 47382,
+      "resource_count": 4573,
+      "threads": 1,
+      "resources": "full"
+    },
+    "calls": [
+      {
+        "operation": "rea_jvm_status",
+        "input": {},
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"metadata_scope\":\"parsed_members\",\"engine_reported_version\":\"0.7.1\",\"available_processors\":8,\"java_version\":\"21.0.13\",\"max_heap_bytes\":4286578688}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_class_summary",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.widgets.SeekFramesBar"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"field_count\":19,\"name\":\"SeekFramesBar\",\"inner_class_count\":7,\"inner_classes\":[\"ru.jecklandin.stickman.widgets.SeekFramesBar.AnonymousClass1\",\"ru.jecklandin.stickman.widgets.SeekFramesBar.AnonymousClass2\",\"ru.jecklandin.stickman.widgets.SeekFramesBar.AnonymousClass3\",\"ru.jecklandin.stickman.widgets.SeekFramesBar.CamTweenSegmentMarkerDrawer\",\"ru.jecklandin.stickman.widgets.SeekFramesBar.FrameColorProvider\",\"ru.jecklandin.stickman.widgets.SeekFramesBar.OnSeekBarChangeListener\",\"ru.jecklandin.stickman.widgets.SeekFramesBar.SeekBarGestureListener\"],\"methods\":[{\"signature\":\"$r8$lambda$WkruL7YcXwCn4anIzlSEJlqA168(ru.jecklandin.stickman.widgets.SeekFramesBar, java.util.List): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/widgets/SeekFramesBar;Ljava/util/List;)Z\",\"is_constructor\":false,\"name\":\"$r8$lambda$WkruL7YcXwCn4anIzlSEJlqA168\",\"def_pos\":0},{\"signature\":\"$r8$lambda$dInyoCRuWG0jJXEDIgRgINWfY58(): java.util.LinkedList\",\"dex_descriptor\":\"()Ljava/util/LinkedList;\",\"is_constructor\":false,\"name\":\"$r8$lambda$dInyoCRuWG0jJXEDIgRgINWfY58\",\"def_pos\":0},{\"signature\":\"\\u003cclinit\\u003e(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"\\u003cclinit\\u003e\",\"def_pos\":0},{\"signature\":\"\\u003cinit\\u003e(android.content.Context): void\",\"dex_descriptor\":\"(Landroid/content/Context;)V\",\"is_constructor\":true,\"name\":\"\\u003cinit\\u003e\",\"def_pos\":0},{\"signature\":\"\\u003cinit\\u003e(android.content.Context, android.util.AttributeSet): void\",\"dex_descriptor\":\"(Landroid/content/Context;Landroid/util/AttributeSet;)V\",\"is_constructor\":true,\"name\":\"\\u003cinit\\u003e\",\"def_pos\":0},{\"signature\":\"activePointPosition(): int[]\",\"dex_descriptor\":\"()[I\",\"is_constructor\":false,\"name\":\"activePointPosition\",\"def_pos\":0},{\"signature\":\"cameraSpanColor(android.content.Context, ru.jecklandin.stickman.units.Scene, int): java.lang.Integer\",\"dex_descriptor\":\"(Landroid/content/Context;Lru/jecklandin/stickman/units/Scene;I)Ljava/lang/Integer;\",\"is_constructor\":false,\"name\":\"cameraSpanColor\",\"def_pos\":0},{\"signature\":\"cameraSpanTint(int): java.lang.Integer\",\"dex_descriptor\":\"(I)Ljava/lang/Integer;\",\"is_constructor\":false,\"name\":\"cameraSpanTint\",\"def_pos\":0},{\"signature\":\"cameraTweenRangeStyle(android.content.Context, ru.jecklandin.stickman.units.Scene, int): verticalrangebar.Bar$IBgStyle\",\"dex_descriptor\":\"(Landroid/content/Context;Lru/jecklandin/stickman/units/Scene;I)Lverticalrangebar/Bar$IBgStyle;\",\"is_constructor\":false,\"name\":\"cameraTweenRangeStyle\",\"def_pos\":0},{\"signature\":\"drawBitmapWithOptionalTint(android.graphics.Canvas, android.graphics.Bitmap, float, float, java.lang.Integer, float): void\",\"dex_descriptor\":\"(Landroid/graphics/Canvas;Landroid/graphics/Bitmap;FFLjava/lang/Integer;F)V\",\"is_constructor\":false,\"name\":\"drawBitmapWithOptionalTint\",\"def_pos\":0},{\"signature\":\"drawFrames(android.graphics.Canvas): void\",\"dex_descriptor\":\"(Landroid/graphics/Canvas;)V\",\"is_constructor\":false,\"name\":\"drawFrames\",\"def_pos\":0},{\"signature\":\"drawText(android.graphics.Canvas): void\",\"dex_descriptor\":\"(Landroid/graphics/Canvas;)V\",\"is_constructor\":false,\"name\":\"drawText\",\"def_pos\":0},{\"signature\":\"findNearestIndexByY(float): int\",\"dex_descriptor\":\"(F)I\",\"is_constructor\":false,\"name\":\"findNearestIndexByY\",\"def_pos\":0},{\"signature\":\"frameScale(int): float\",\"dex_descriptor\":\"(I)F\",\"is_constructor\":false,\"name\":\"frameScale\",\"def_pos\":0},{\"signature\":\"frameStripeColors(int): int[]\",\"dex_descriptor\":\"(I)[I\",\"is_constructor\":false,\"name\":\"frameStripeColors\",\"def_pos\":0},{\"signature\":\"frameTint(int): java.lang.Integer\",\"dex_descriptor\":\"(I)Ljava/lang/Integer;\",\"is_constructor\":false,\"name\":\"frameTint\",\"def_pos\":0},{\"signature\":\"init(android.content.Context): void\",\"dex_descriptor\":\"(Landroid/content/Context;)V\",\"is_constructor\":false,\"name\":\"init\",\"def_pos\":0},{\"signature\":\"lambda$refresh$0(java.lang.Integer): java.lang.Float\",\"dex_descriptor\":\"(Ljava/lang/Integer;)Ljava/lang/Float;\",\"is_constructor\":false,\"name\":\"lambda$refresh$0\",\"def_pos\":0},{\"signature\":\"lambda$refresh$1(java.util.List): boolean\",\"dex_descriptor\":\"(Ljava/util/List;)Z\",\"is_constructor\":false,\"name\":\"lambda$refresh$1\",\"def_pos\":0},{\"signature\":\"m14614$r8$lambda$2Anx83QexyCwycF52WpH_pbY0(ru.jecklandin.stickman.widgets.SeekFramesBar, java.lang.Integer): java.lang.Float\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/widgets/SeekFramesBar;Ljava/lang/Integer;)Ljava/lang/Float;\",\"is_constructor\":false,\"name\":\"m14614$r8$lambda$2Anx83QexyCwycF52WpH_pbY0\",\"def_pos\":0},{\"signature\":\"m14615$$Nest$mfindNearestIndexByY(ru.jecklandin.stickman.widgets.SeekFramesBar, float): int\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/widgets/SeekFramesBar;F)I\",\"is_constructor\":false,\"name\":\"m14615$$Nest$mfindNearestIndexByY\",\"def_pos\":0},{\"signature\":\"m14616$$Nest$mframeStripeColors(ru.jecklandin.stickman.widgets.SeekFramesBar, int): int[]\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/widgets/SeekFramesBar;I)[I\",\"is_constructor\":false,\"name\":\"m14616$$Nest$mframeStripeColors\",\"def_pos\":0},{\"signature\":\"nextPage(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"nextPage\",\"def_pos\":0},{\"signature\":\"onActiveFrameUpdated(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"onActiveFrameUpdated\",\"def_pos\":0},{\"signature\":\"onDraw(android.graphics.Canvas): void\",\"dex_descriptor\":\"(Landroid/graphics/Canvas;)V\",\"is_constructor\":false,\"name\":\"onDraw\",\"def_pos\":0},{\"signature\":\"onLayout(boolean, int, int, int, int): void\",\"dex_descriptor\":\"(ZIIII)V\",\"is_constructor\":false,\"name\":\"onLayout\",\"def_pos\":0},{\"signature\":\"onTouchEvent(android.view.MotionEvent): boolean\",\"dex_descriptor\":\"(Landroid/view/MotionEvent;)Z\",\"is_constructor\":false,\"name\":\"onTouchEvent\",\"def_pos\":0},{\"signature\":\"prevPage(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"prevPage\",\"def_pos\":0},{\"signature\":\"refresh(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"refresh\",\"def_pos\":0},{\"signature\":\"setActiveFrameIndex(int, boolean): void\",\"dex_descriptor\":\"(IZ)V\",\"is_constructor\":false,\"name\":\"setActiveFrameIndex\",\"def_pos\":0},{\"signature\":\"setFrameColorProvider(ru.jecklandin.stickman.widgets.SeekFramesBar$FrameColorProvider): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/widgets/SeekFramesBar$FrameColorProvider;)V\",\"is_constructor\":false,\"name\":\"setFrameColorProvider\",\"def_pos\":0},{\"signature\":\"setOnSeekListener(ru.jecklandin.stickman.widgets.SeekFramesBar$OnSeekBarChangeListener): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/widgets/SeekFramesBar$OnSeekBarChangeListener;)V\",\"is_constructor\":false,\"name\":\"setOnSeekListener\",\"def_pos\":0},{\"signature\":\"setScene(ru.jecklandin.stickman.units.Scene): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;)V\",\"is_constructor\":false,\"name\":\"setScene\",\"def_pos\":0},{\"signature\":\"unitTweenDialogRangeStyle(android.content.Context, ru.jecklandin.stickman.units.Scene, java.util.function.Supplier\\u003cjava.lang.String\\u003e, java.util.function.IntSupplier, java.util.function.IntSupplier, int): verticalrangebar.Bar$IBgStyle\",\"dex_descriptor\":\"(Landroid/content/Context;Lru/jecklandin/stickman/units/Scene;Ljava/util/function/Supplier;Ljava/util/function/IntSupplier;Ljava/util/function/IntSupplier;I)Lverticalrangebar/Bar$IBgStyle;\",\"is_constructor\":false,\"name\":\"unitTweenDialogRangeStyle\",\"def_pos\":0},{\"signature\":\"unitTweenRangeStyle(android.content.Context, ru.jecklandin.stickman.units.Scene, java.util.function.Supplier\\u003cjava.lang.String\\u003e, int): verticalrangebar.Bar$IBgStyle\",\"dex_descriptor\":\"(Landroid/content/Context;Lru/jecklandin/stickman/units/Scene;Ljava/util/function/Supplier;I)Lverticalrangebar/Bar$IBgStyle;\",\"is_constructor\":false,\"name\":\"unitTweenRangeStyle\",\"def_pos\":0},{\"signature\":\"updateFrames(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"updateFrames\",\"def_pos\":0},{\"signature\":\"windowIndexByFrame(int): int\",\"dex_descriptor\":\"(I)I\",\"is_constructor\":false,\"name\":\"windowIndexByFrame\",\"def_pos\":0}],\"fields\":[{\"name\":\"FIXED_VERTICAL_PAD\",\"def_pos\":0,\"type\":\"float\"},{\"name\":\"FRAMES_DISTANCE\",\"def_pos\":0,\"type\":\"float\"},{\"name\":\"HORIZONTAL_PAD\",\"def_pos\":0,\"type\":\"float\"},{\"name\":\"TOUCH_THRESHOLD\",\"def_pos\":0,\"type\":\"int\"},{\"name\":\"WINDOW_SIZE\",\"def_pos\":0,\"type\":\"int\"},{\"name\":\"mCallback\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.widgets.SeekFramesBar$OnSeekBarChangeListener\"},{\"name\":\"mCamTweenSegmentMarkerDrawer\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.widgets.SeekFramesBar$CamTweenSegmentMarkerDrawer\"},{\"name\":\"mCurWindow\",\"def_pos\":0,\"type\":\"java.util.List\\u003cjava.lang.Integer\\u003e\"},{\"name\":\"mCurrFrameBitmap\",\"def_pos\":0,\"type\":\"android.graphics.Bitmap\"},{\"name\":\"mFrameBitmap\",\"def_pos\":0,\"type\":\"android.graphics.Bitmap\"},{\"name\":\"mFrameColorProvider\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.widgets.SeekFramesBar$FrameColorProvider\"},{\"name\":\"mGestureDetector\",\"def_pos\":0,\"type\":\"android.view.GestureDetector\"},{\"name\":\"mOnDoubleTapCallback\",\"def_pos\":0,\"type\":\"java.lang.Runnable\"},{\"name\":\"mPaint\",\"def_pos\":0,\"type\":\"android.graphics.Paint\"},{\"name\":\"mScene\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.Scene\"},{\"name\":\"mSelFrameBitmap\",\"def_pos\":0,\"type\":\"android.graphics.Bitmap\"},{\"name\":\"mVerticalPositions\",\"def_pos\":0,\"type\":\"java.util.Map\\u003cjava.lang.Integer, java.lang.Float\\u003e\"},{\"name\":\"mWindows\",\"def_pos\":0,\"type\":\"java.util.List\\u003cjava.util.List\\u003cjava.lang.Integer\\u003e\\u003e\"},{\"name\":\"updateOnLayout\",\"def_pos\":0,\"type\":\"boolean\"}],\"raw_name\":\"ru.jecklandin.stickman.widgets.SeekFramesBar\",\"method_count\":37,\"full_name\":\"ru.jecklandin.stickman.widgets.SeekFramesBar\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_method_body",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.widgets.SeekFramesBar",
+          "method_name": "onTouchEvent",
+          "overload_index": 0,
+          "smali_fallback": true
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"markers\":[],\"body\":\"    @Override // android.view.View\\r\\n    public boolean onTouchEvent(MotionEvent event) {\\r\\n        if (!isEnabled()) {\\r\\n            return false;\\r\\n        }\\r\\n        GestureDetector gestureDetector \\u003d this.mGestureDetector;\\r\\n        if (gestureDetector !\\u003d null \\u0026\\u0026 gestureDetector.onTouchEvent(event)) {\\r\\n            return true;\\r\\n        }\\r\\n        int action \\u003d event.getAction();\\r\\n        if (action \\u003d\\u003d 0) {\\r\\n            int iFindNearestIndexByY \\u003d findNearestIndexByY(event.getY());\\r\\n            if (iFindNearestIndexByY \\u003d\\u003d -1) {\\r\\n                return false;\\r\\n            }\\r\\n            setActiveFrameIndex(iFindNearestIndexByY, true);\\r\\n        } else if (action \\u003d\\u003d 2) {\\r\\n            invalidate();\\r\\n        }\\r\\n        return true;\\r\\n    }\",\"mode\":\"java\",\"class_name\":\"ru.jecklandin.stickman.widgets.SeekFramesBar\",\"dex_descriptor\":\"(Landroid/view/MotionEvent;)Z\",\"overload_count\":1,\"method_name\":\"onTouchEvent\",\"overload_index\":0,\"full_name\":\"ru.jecklandin.stickman.widgets.SeekFramesBar.onTouchEvent\",\"fell_back\":false}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    ]
+  },
+  "normalized_result": {
+    "engine": {
+      "name": "jadx-headless-mcp",
+      "version": "0.7.1",
+      "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+      "worker_count": 1,
+      "heap_limit_mib": 4088
+    },
+    "class_name": "ru.jecklandin.stickman.widgets.SeekFramesBar",
+    "method": {
+      "name": "onTouchEvent",
+      "reported_signature": "onTouchEvent(android.view.MotionEvent): boolean",
+      "overload_index": 0,
+      "is_constructor": false,
+      "dex_descriptor": "(Landroid/view/MotionEvent;)Z"
+    },
+    "overload_count": 1,
+    "representation": "java",
+    "body_status": "available",
+    "fell_back": false,
+    "markers": [],
+    "source": {
+      "status": "complete",
+      "text": "    @Override // android.view.View\r\n    public boolean onTouchEvent(MotionEvent event) {\r\n        if (!isEnabled()) {\r\n            return false;\r\n        }\r\n        GestureDetector gestureDetector = this.mGestureDetector;\r\n        if (gestureDetector != null && gestureDetector.onTouchEvent(event)) {\r\n            return true;\r\n        }\r\n        int action = event.getAction();\r\n        if (action == 0) {\r\n            int iFindNearestIndexByY = findNearestIndexByY(event.getY());\r\n            if (iFindNearestIndexByY == -1) {\r\n                return false;\r\n            }\r\n            setActiveFrameIndex(iFindNearestIndexByY, true);\r\n        } else if (action == 2) {\r\n            invalidate();\r\n        }\r\n        return true;\r\n    }",
+      "reported_total_bytes": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

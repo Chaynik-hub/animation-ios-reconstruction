@@ -14,6 +14,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     let workspace=Workspace()
     lazy var canvas=SceneCanvas(workspace)
     let sidebar=UIStackView(),sidebarScroll=UIScrollView(),navigation=UIStackView(),frameLabel=UILabel(),shift=UIButton(type:.custom)
+    let frameNavigator=FrameNavigator()
     var displayLink:CADisplayLink?
     var playbackStart:CFTimeInterval=0
     var startFrame=0
@@ -40,9 +41,17 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
             button.heightAnchor.constraint(equalToConstant:[47.0,68,61,62,60,61][row]).isActive=true
         }
         sidebar.addArrangedSubview(UIView())
-        let navEntries: [(String,()->Void)] = [("+",{[weak self] in self?.perform{try self?.workspace.addFrame()}}),("▲",{[weak self] in self?.step(-1)}),("▼",{[weak self] in self?.step(1)})]
-        for (title,action) in navEntries {let b=button(title,action);navigation.addArrangedSubview(b)}
-        frameLabel.textColor = .white;frameLabel.textAlignment = .center;frameLabel.numberOfLines=2;frameLabel.font = .monospacedDigitSystemFont(ofSize:14,weight:.regular);navigation.addArrangedSubview(frameLabel)
+        navigation.distribution = .fill;navigation.backgroundColor = .clear
+        let previous=UIButton(type:.custom),next=UIButton(type:.custom)
+        for (control,name,label,offset) in [(previous,"main_prev_frame","Предыдущий кадр",-1),(next,"main_next_frame","Следующий кадр",1)] {
+            for (suffix,state) in [("_np",UIControl.State.normal),("_pr",UIControl.State.highlighted)] {
+                if let image=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/"+name+suffix+".png").path){control.setImage(image.resizedIcon(density:4),for:state)}
+            }
+            control.accessibilityLabel=label;control.heightAnchor.constraint(equalToConstant:60).isActive=true
+            control.addAction(UIAction{[weak self] _ in self?.step(offset)},for:.touchUpInside)
+        }
+        navigation.addArrangedSubview(previous);navigation.addArrangedSubview(frameNavigator);navigation.addArrangedSubview(next)
+        frameNavigator.seek = {[weak self] index in guard let self else{return};self.stop();self.workspace.index=index;self.workspace.notify()}
         NSLayoutConstraint.activate([
             sidebarScroll.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor),sidebarScroll.topAnchor.constraint(equalTo:view.topAnchor),sidebarScroll.bottomAnchor.constraint(equalTo:view.bottomAnchor),sidebarScroll.widthAnchor.constraint(equalToConstant:80),
             sidebar.leadingAnchor.constraint(equalTo:sidebarScroll.contentLayoutGuide.leadingAnchor),sidebar.trailingAnchor.constraint(equalTo:sidebarScroll.contentLayoutGuide.trailingAnchor),sidebar.topAnchor.constraint(equalTo:sidebarScroll.contentLayoutGuide.topAnchor),sidebar.bottomAnchor.constraint(equalTo:sidebarScroll.contentLayoutGuide.bottomAnchor),sidebar.widthAnchor.constraint(equalTo:sidebarScroll.frameLayoutGuide.widthAnchor),sidebar.heightAnchor.constraint(greaterThanOrEqualTo:sidebarScroll.frameLayoutGuide.heightAnchor),
@@ -58,7 +67,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         if ProcessInfo.processInfo.arguments.contains("--ui-capture"),let first=workspace.catalog.first(where:{$0.name.contains("boy")}){workspace.add(first)}
     }
     func button(_ title:String,_ action:@escaping()->Void)->UIButton{let b=UIButton(type:.system);b.setTitle(title,for:.normal);b.tintColor = .white;b.addAction(UIAction{_ in action()},for:.touchUpInside);return b}
-    func update(){frameLabel.text="\(workspace.index+1) /\n\(workspace.document.frames.count)";canvas.setNeedsDisplay()}
+    func update(){frameLabel.text="\(workspace.index+1) /\n\(workspace.document.frames.count)";frameNavigator.count=workspace.document.frames.count;frameNavigator.current=workspace.index;canvas.setNeedsDisplay()}
     func perform(_ work:()throws->Void){do{try work()}catch{message("Не удалось выполнить",String(describing:error))}}
     func message(_ title:String,_ text:String){let alert=UIAlertController(title:title,message:text,preferredStyle:.alert);alert.addAction(UIAlertAction(title:"OK",style:.default));present(alert,animated:true)}
     var toolPanel:UIView?
@@ -80,7 +89,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func selectObject(){choices("Выбрать",workspace.frame.units.enumerated().map{i,u in (u.name.components(separatedBy:"#")[0],{[weak self] in self?.workspace.selected=i;self?.update()})})}
     func frameTools(){choices("Кадры",[("Добавить промежуточный / копию",{[weak self] in self?.perform{try self?.workspace.addFrame()}}),("Удалить кадр",{[weak self] in self?.workspace.deleteFrame()}),("Копировать кадр",{[weak self] in self?.clipboard=self?.workspace.frame}),("Вставить кадр",{[weak self] in guard let self,var f=self.clipboard else{return};self.workspace.checkpoint();f.id=(self.workspace.document.frames.map(\.id).max() ?? 0)+1;self.workspace.document.frames.insert(f,at:self.workspace.index+1);self.workspace.index+=1;self.workspace.notify()}),("Предыдущий кадр полупрозрачно",{[weak self] in self?.canvas.onion.toggle();self?.update()}),("Повторить действие",{[weak self] in self?.workspace.redo()})])}
     var clipboard:SceneFrame?
-    func step(_ offset:Int){stop();workspace.index=min(max(0,workspace.index+offset),workspace.document.frames.count-1);workspace.notify()}
+    func step(_ offset:Int){stop();if offset>0 && workspace.index==workspace.document.frames.count-1 {perform{try workspace.addFrame()}}else{workspace.index=min(max(0,workspace.index+offset),workspace.document.frames.count-1);workspace.notify()}}
     func stop(){displayLink?.invalidate();displayLink=nil;canvas.displayed=nil;audio?.pause();update()}
     func togglePlayback(){stop();present(PreviewController(workspace:workspace,audio:audio),animated:false)}
     func frameAt(_ elapsed:Double)->SceneFrame {
@@ -105,7 +114,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func exportGIF(){stop();let n=workspace.document.frames.count*max(1,workspace.document.interframes+1);guard n<=1800 else{message("Слишком длинная анимация","GIF ограничен 1800 кадрами. Проект сохранён без сокращения.");return};let url=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString+".gif");guard let destination=CGImageDestinationCreateWithURL(url as CFURL,UTType.gif.identifier as CFString,n,nil) else{return};CGImageDestinationSetProperties(destination,[kCGImagePropertyGIFDictionary:[kCGImagePropertyGIFLoopCount:0]] as CFDictionary);let oldStart=startFrame;startFrame=0;for i in 0..<n{autoreleasepool{canvas.displayed=frameAt(Double(i)/60);if let image=canvas.snapshot(size:CGSize(width:workspace.document.width,height:workspace.document.height)).cgImage{CGImageDestinationAddImage(destination,image,[kCGImagePropertyGIFDictionary:[kCGImagePropertyGIFUnclampedDelayTime:1.0/60]] as CFDictionary)}}};canvas.displayed=nil;startFrame=oldStart;if CGImageDestinationFinalize(destination){share(url)}else{message("Ошибка экспорта","Не удалось записать GIF")};update()}
 }
 
-extension UIImage {func resizedIcon()->UIImage {let size=CGSize(width:size.width/3,height:size.height/3);return UIGraphicsImageRenderer(size:size).image{_ in draw(in:CGRect(origin:.zero,size:size))}.withRenderingMode(.alwaysOriginal)}}
+extension UIImage {func resizedIcon(density:CGFloat=3)->UIImage {let size=CGSize(width:size.width/density,height:size.height/density);return UIGraphicsImageRenderer(size:size).image{_ in draw(in:CGRect(origin:.zero,size:size))}.withRenderingMode(.alwaysOriginal)}}
 extension UIColor {static func original(_ rgb:UInt32)->UIColor{UIColor(red:CGFloat((rgb>>16)&255)/255,green:CGFloat((rgb>>8)&255)/255,blue:CGFloat(rgb&255)/255,alpha:1)}}
 final class CatalogController:UIViewController,UICollectionViewDataSource,UICollectionViewDelegate {
     let assets:[ArtworkDefinition],pick:(ArtworkDefinition)->Void,resolve:(String)->URL?

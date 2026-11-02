@@ -126,7 +126,7 @@ final class SceneCanvas: UIView {
     var images:[String:UIImage]=[:]
     func image(_ path:String)->UIImage? {if let i=images[path]{return i};guard let url=workspace.artworkURL(path) else{return nil};let i=UIImage(contentsOfFile:url.path);images[path]=i;return i}
     override func draw(_ rect:CGRect) {
-        guard let c=UIGraphicsGetCurrentContext() else{return};UIColor(white:0.17,alpha:1).setFill();c.fill(bounds)
+        guard let c=UIGraphicsGetCurrentContext() else{return};UIColor.original(0x3d3e4c).setFill();c.fill(bounds)
         c.saveGState();c.translateBy(x:origin.x,y:origin.y);c.scaleBy(x:ratio,y:ratio)
         backgroundColorValue.setFill();c.fill(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height));c.clip(to:CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))
         if onion && displayed==nil && workspace.index>0 {c.saveGState();c.setAlpha(0.18);paint(workspace.document.frames[workspace.index-1],in:c,showHandles:false);c.restoreGState()}
