@@ -160,7 +160,10 @@ final class SceneCanvas: UIView {
                 try? FrameManipulation.move(&workspace.document.frames[workspace.index],unitIndex:i,jointID:id,x:p.x-captureOffset.x,y:p.y-captureOffset.y)
             } else {let d=gesture.translation(in:self);cameraOffset.x+=d.x;cameraOffset.y+=d.y;gesture.setTranslation(.zero,in:self)}
             before=p;setNeedsDisplay()
-        } else {dragged=nil;workspace.notify()}
+        } else {
+            if gesture.state == .ended,let (unitIndex,_)=dragged,FrameManipulation.attachNearby(&workspace.document.frames[workspace.index],unitIndex:unitIndex,radius:25/ratio){workspace.selected=nil}
+            dragged=nil;workspace.notify()
+        }
     }
     func snapshot(size:CGSize)->UIImage {let format=UIGraphicsImageRendererFormat();format.scale=1;return UIGraphicsImageRenderer(size:size,format:format).image{context in
         context.cgContext.scaleBy(x:size.width/workspace.document.width,y:size.height/workspace.document.height);backgroundColorValue.setFill();context.fill(CGRect(origin:.zero,size:CGSize(width:workspace.document.width,height:workspace.document.height)));paint(displayed ?? workspace.frame,in:context.cgContext,showHandles:false)

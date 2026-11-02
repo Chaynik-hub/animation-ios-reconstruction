@@ -8,6 +8,33 @@ public enum FrameManipulation {
         guard pieces.count==2,pieces[0] != "null",let id=Int(pieces[1]),id>=0 else{return nil}
         return (pieces[0],id)
     }
+    @discardableResult public static func attachNearby(_ frame:inout SceneFrame,unitIndex:Int,radius:Double)->Bool {
+        guard frame.units.indices.contains(unitIndex),attachment(frame.units[unitIndex])==nil,
+              let baseIndex=frame.units[unitIndex].joints.firstIndex(where:{$0.attributes["base"]=="true" && $0.attributes["attachable"]=="slave"}) else{return false}
+        let base=frame.units[unitIndex].joints[baseIndex]
+        var connected=Set([unitIndex]),changed=true
+        while changed {
+            changed=false
+            for i in frame.units.indices {
+                guard let link=attachment(frame.units[i]),let parent=frame.units.firstIndex(where:{$0.name==link.0}) else{continue}
+                if connected.contains(i) || connected.contains(parent) {if connected.insert(i).inserted{changed=true};if connected.insert(parent).inserted{changed=true}}
+            }
+        }
+        var candidate:(Int,Joint)?;var distance=radius
+        for i in frame.units.indices where !connected.contains(i) {
+            for point in frame.units[i].joints where point.attributes["attachable"]=="master" {
+                let name=frame.units[i].name
+                let occupied=frame.units.contains{unit in guard let link=attachment(unit) else{return false};return link.0==name && link.1==point.id}
+                let d=hypot(point.x-base.x,point.y-base.y)
+                if !occupied && d<=distance {distance=d;candidate=(i,point)}
+            }
+        }
+        guard let (masterIndex,point)=candidate else{return false}
+        let dx=point.x-base.x,dy=point.y-base.y
+        for i in connected {for j in frame.units[i].joints.indices {frame.units[i].joints[j].x+=dx;frame.units[i].joints[j].y+=dy}}
+        frame.units[unitIndex].joints[baseIndex].attributes["attached"]=frame.units[masterIndex].name+"&"+String(point.id)
+        return true
+    }
     public static func move(_ frame:inout SceneFrame,unitIndex:Int,jointID:Int,x:Double,y:Double)throws {
         guard frame.units.indices.contains(unitIndex),let oldPoint=frame.units[unitIndex].joints.first(where:{$0.id==jointID}) else{throw PoseError.incompatibleTopology}
         let before=frame.units[unitIndex]
