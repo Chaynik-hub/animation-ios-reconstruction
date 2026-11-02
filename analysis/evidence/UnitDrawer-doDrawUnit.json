@@ -1,0 +1,130 @@
+{
+  "evidence_id": "ev_a54aad0f35a284ee3c404cf2f3527855e9970151b612a60589b773372aa5ad1c",
+  "subject": {
+    "name": "com.zalivka.animation2_397.apk",
+    "digest": {
+      "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+    },
+    "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "jadx",
+    "name": "JADX headless",
+    "version": "0.7.1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_android_method",
+  "parameters": {
+    "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "class_name": "ru.jecklandin.stickman.units.drawers.UnitDrawer",
+    "method_name": "doDrawUnit"
+  },
+  "raw_result": {
+    "server": {
+      "name": "rea-jadx-bridge",
+      "version": "7"
+    },
+    "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+    "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "loaded": {
+      "state": "LOADED",
+      "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-454ce3d9fa421d8775b963c83458d574\\target.apk",
+      "class_count": 47382,
+      "resource_count": 4573,
+      "threads": 1,
+      "resources": "full"
+    },
+    "calls": [
+      {
+        "operation": "rea_jvm_status",
+        "input": {},
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"metadata_scope\":\"parsed_members\",\"engine_reported_version\":\"0.7.1\",\"available_processors\":8,\"java_version\":\"21.0.13\",\"max_heap_bytes\":4286578688}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_class_summary",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.units.drawers.UnitDrawer"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"inner_class_count\":0,\"inner_classes\":[],\"methods\":[{\"signature\":\"\\u003cclinit\\u003e(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"\\u003cclinit\\u003e\",\"def_pos\":0},{\"signature\":\"\\u003cinit\\u003e(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":true,\"name\":\"\\u003cinit\\u003e\",\"def_pos\":0},{\"signature\":\"doDrawUnit(ru.jecklandin.stickman.units.Unit, android.graphics.Canvas, ru.jecklandin.stickman.units.drawers.UnitDrawerConfig, boolean): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Unit;Landroid/graphics/Canvas;Lru/jecklandin/stickman/units/drawers/UnitDrawerConfig;Z)V\",\"is_constructor\":false,\"name\":\"doDrawUnit\",\"def_pos\":0},{\"signature\":\"draw(ru.jecklandin.stickman.features.editor.widgets.presenters.SVPresenter, ru.jecklandin.stickman.units.Unit, android.graphics.Canvas, ru.jecklandin.stickman.units.drawers.UnitDrawerConfig): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/presenters/SVPresenter;Lru/jecklandin/stickman/units/Unit;Landroid/graphics/Canvas;Lru/jecklandin/stickman/units/drawers/UnitDrawerConfig;)V\",\"is_constructor\":false,\"name\":\"draw\",\"def_pos\":0},{\"signature\":\"update(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"update\",\"def_pos\":0}],\"fields\":[{\"name\":\"EXPOSE_OPACITY\",\"def_pos\":0,\"type\":\"int\"},{\"name\":\"OPAQUE\",\"def_pos\":0,\"type\":\"int\"},{\"name\":\"STRETCHABLE_POINT_COLOR\",\"def_pos\":0,\"type\":\"int\"},{\"name\":\"TAG\",\"def_pos\":0,\"type\":\"java.lang.String\"}],\"raw_name\":\"ru.jecklandin.stickman.units.drawers.UnitDrawer\",\"method_count\":5,\"full_name\":\"ru.jecklandin.stickman.units.drawers.UnitDrawer\",\"field_count\":4,\"name\":\"UnitDrawer\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_method_body",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.units.drawers.UnitDrawer",
+          "method_name": "doDrawUnit",
+          "overload_index": 0,
+          "smali_fallback": true
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"markers\":[],\"body\":\"    void doDrawUnit(@Nonnull Unit unit, @Nonnull Canvas canvas, @Nonnull UnitDrawerConfig config, boolean srcOut) {\\r\\n        Matrix matrix \\u003d config.mSceneMatrix;\\r\\n        canvas.save();\\r\\n        UnitAssets.EdgeKey edgeKey \\u003d new UnitAssets.EdgeKey();\\r\\n        for (UEdge uEdge : unit.getEdges()) {\\r\\n            if (\\\"head\\\".equals(uEdge.mEnd.mSemanticName) \\u0026\\u0026 unit.getFaceId() !\\u003d -1) {\\r\\n                edgeKey.reset();\\r\\n                edgeKey.faceId \\u003d unit.getFaceId();\\r\\n            } else {\\r\\n                edgeKey.unitName \\u003d SceneHelper.removeNumber(unit.getName());\\r\\n                edgeKey.start \\u003d uEdge.mStart.getId();\\r\\n                edgeKey.end \\u003d uEdge.mEnd.getId();\\r\\n                edgeKey.flipped \\u003d unit.isFlipped();\\r\\n                edgeKey.faceId \\u003d -1;\\r\\n            }\\r\\n            UnitAssets.EdgeAsset drawable \\u003d unit.getScene().getDrawable(edgeKey, unit.getAssetsState());\\r\\n            if (drawable !\\u003d null) {\\r\\n                float scale \\u003d drawable.x_offset * unit.getScale();\\r\\n                float scale2 \\u003d drawable.y_offset * unit.getScale();\\r\\n                Matrix matrixOps \\u003d UIMatrices.ops();\\r\\n                matrixOps.reset();\\r\\n                float angle \\u003d uEdge.getAngle();\\r\\n                if (unit.isFlipped() \\u0026\\u0026 !drawable.nativeFlipped) {\\r\\n                    matrixOps.setScale(unit.getScale(), -unit.getScale());\\r\\n                    matrixOps.postTranslate(uEdge.mStart.x + scale, uEdge.mStart.y - scale2);\\r\\n                } else {\\r\\n                    matrixOps.setScale(unit.getScale(), unit.getScale());\\r\\n                    matrixOps.postTranslate(uEdge.mStart.x + scale, uEdge.mStart.y + scale2);\\r\\n                }\\r\\n                matrixOps.postRotate(angle, uEdge.mStart.x, uEdge.mStart.y);\\r\\n                BonePictureStretch.apply(matrixOps, unit, uEdge);\\r\\n                if (config.mDrawEffect !\\u003d null) {\\r\\n                    config.mDrawEffect.applyPartDrawOffset(matrixOps, unit, uEdge);\\r\\n                }\\r\\n                matrixOps.postConcat(matrix);\\r\\n                canvas.setMatrix(matrixOps);\\r\\n                int alpha \\u003d this.mOpsPaint.getAlpha();\\r\\n                if (config.mDrawEffect !\\u003d null) {\\r\\n                    this.mOpsPaint.setAlpha(Math.round(config.mDrawEffect.getPartAlpha(unit) * alpha));\\r\\n                }\\r\\n                if (srcOut) {\\r\\n                    this.mOpsPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OUT));\\r\\n                    this.mOpsPaint.setStyle(Paint.Style.FILL);\\r\\n                    this.mOpsPaint.setColor(0);\\r\\n                    canvas.drawBitmap(drawable.bitmap, 0.0f, 0.0f, this.mOpsPaint);\\r\\n                    this.mOpsPaint.setXfermode(null);\\r\\n                    this.mOpsPaint.setColor(-65536);\\r\\n                } else {\\r\\n                    canvas.drawBitmap(drawable.bitmap, 0.0f, 0.0f, this.mOpsPaint);\\r\\n                }\\r\\n                this.mOpsPaint.setAlpha(alpha);\\r\\n            }\\r\\n        }\\r\\n        canvas.restore();\\r\\n    }\",\"mode\":\"java\",\"class_name\":\"ru.jecklandin.stickman.units.drawers.UnitDrawer\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Unit;Landroid/graphics/Canvas;Lru/jecklandin/stickman/units/drawers/UnitDrawerConfig;Z)V\",\"overload_count\":1,\"method_name\":\"doDrawUnit\",\"overload_index\":0,\"full_name\":\"ru.jecklandin.stickman.units.drawers.UnitDrawer.doDrawUnit\",\"fell_back\":false}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    ]
+  },
+  "normalized_result": {
+    "engine": {
+      "name": "jadx-headless-mcp",
+      "version": "0.7.1",
+      "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+      "worker_count": 1,
+      "heap_limit_mib": 4088
+    },
+    "class_name": "ru.jecklandin.stickman.units.drawers.UnitDrawer",
+    "method": {
+      "name": "doDrawUnit",
+      "reported_signature": "doDrawUnit(ru.jecklandin.stickman.units.Unit, android.graphics.Canvas, ru.jecklandin.stickman.units.drawers.UnitDrawerConfig, boolean): void",
+      "overload_index": 0,
+      "is_constructor": false,
+      "dex_descriptor": "(Lru/jecklandin/stickman/units/Unit;Landroid/graphics/Canvas;Lru/jecklandin/stickman/units/drawers/UnitDrawerConfig;Z)V"
+    },
+    "overload_count": 1,
+    "representation": "java",
+    "body_status": "available",
+    "fell_back": false,
+    "markers": [],
+    "source": {
+      "status": "complete",
+      "text": "    void doDrawUnit(@Nonnull Unit unit, @Nonnull Canvas canvas, @Nonnull UnitDrawerConfig config, boolean srcOut) {\r\n        Matrix matrix = config.mSceneMatrix;\r\n        canvas.save();\r\n        UnitAssets.EdgeKey edgeKey = new UnitAssets.EdgeKey();\r\n        for (UEdge uEdge : unit.getEdges()) {\r\n            if (\"head\".equals(uEdge.mEnd.mSemanticName) && unit.getFaceId() != -1) {\r\n                edgeKey.reset();\r\n                edgeKey.faceId = unit.getFaceId();\r\n            } else {\r\n                edgeKey.unitName = SceneHelper.removeNumber(unit.getName());\r\n                edgeKey.start = uEdge.mStart.getId();\r\n                edgeKey.end = uEdge.mEnd.getId();\r\n                edgeKey.flipped = unit.isFlipped();\r\n                edgeKey.faceId = -1;\r\n            }\r\n            UnitAssets.EdgeAsset drawable = unit.getScene().getDrawable(edgeKey, unit.getAssetsState());\r\n            if (drawable != null) {\r\n                float scale = drawable.x_offset * unit.getScale();\r\n                float scale2 = drawable.y_offset * unit.getScale();\r\n                Matrix matrixOps = UIMatrices.ops();\r\n                matrixOps.reset();\r\n                float angle = uEdge.getAngle();\r\n                if (unit.isFlipped() && !drawable.nativeFlipped) {\r\n                    matrixOps.setScale(unit.getScale(), -unit.getScale());\r\n                    matrixOps.postTranslate(uEdge.mStart.x + scale, uEdge.mStart.y - scale2);\r\n                } else {\r\n                    matrixOps.setScale(unit.getScale(), unit.getScale());\r\n                    matrixOps.postTranslate(uEdge.mStart.x + scale, uEdge.mStart.y + scale2);\r\n                }\r\n                matrixOps.postRotate(angle, uEdge.mStart.x, uEdge.mStart.y);\r\n                BonePictureStretch.apply(matrixOps, unit, uEdge);\r\n                if (config.mDrawEffect != null) {\r\n                    config.mDrawEffect.applyPartDrawOffset(matrixOps, unit, uEdge);\r\n                }\r\n                matrixOps.postConcat(matrix);\r\n                canvas.setMatrix(matrixOps);\r\n                int alpha = this.mOpsPaint.getAlpha();\r\n                if (config.mDrawEffect != null) {\r\n                    this.mOpsPaint.setAlpha(Math.round(config.mDrawEffect.getPartAlpha(unit) * alpha));\r\n                }\r\n                if (srcOut) {\r\n                    this.mOpsPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OUT));\r\n                    this.mOpsPaint.setStyle(Paint.Style.FILL);\r\n                    this.mOpsPaint.setColor(0);\r\n                    canvas.drawBitmap(drawable.bitmap, 0.0f, 0.0f, this.mOpsPaint);\r\n                    this.mOpsPaint.setXfermode(null);\r\n                    this.mOpsPaint.setColor(-65536);\r\n                } else {\r\n                    canvas.drawBitmap(drawable.bitmap, 0.0f, 0.0f, this.mOpsPaint);\r\n                }\r\n                this.mOpsPaint.setAlpha(alpha);\r\n            }\r\n        }\r\n        canvas.restore();\r\n    }",
+      "reported_total_bytes": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}
