@@ -5,7 +5,9 @@ final class EditorUITests:XCTestCase {
         let app=XCUIApplication();app.launchArguments=["--reference-practice"];app.launch()
         let navigator=app.otherElements["FrameNavigator"]
         XCTAssertTrue(navigator.waitForExistence(timeout:10))
-        XCTAssertEqual(navigator.value as? String,"1 / 6")
+        // The archived source has two keyframes; onboarding adds practice frames
+        // at runtime. This import test must match the archive, not the lesson's UI.
+        XCTAssertEqual(navigator.value as? String,"1 / 2")
         XCTAssertFalse(app.alerts.firstMatch.exists,"Original ATS and its nested ATI must load without an import error")
         let image=XCTAttachment(screenshot:app.screenshot());image.name="Original practice ATS with embedded ATI artwork";image.lifetime = .keepAlways;add(image)
     }

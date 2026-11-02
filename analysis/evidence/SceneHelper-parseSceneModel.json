@@ -1,0 +1,147 @@
+{
+  "evidence_id": "ev_d80b505c48377bbe765b51a45839f5aba0428fe0d6e3348311fe2d3afcbb5744",
+  "subject": {
+    "name": "com.zalivka.animation2_397.apk",
+    "digest": {
+      "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+    },
+    "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "jadx",
+    "name": "JADX headless",
+    "version": "0.7.1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_android_method",
+  "parameters": {
+    "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "class_name": "ru.jecklandin.stickman.units.SceneHelper",
+    "method_name": "parseSceneModel"
+  },
+  "raw_result": {
+    "server": {
+      "name": "rea-jadx-bridge",
+      "version": "7"
+    },
+    "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+    "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "loaded": {
+      "state": "LOADED",
+      "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-c4709b033ce93d0911a5dc7da82af14e\\target.apk",
+      "class_count": 47382,
+      "resource_count": 4573,
+      "threads": 1,
+      "resources": "full"
+    },
+    "calls": [
+      {
+        "operation": "rea_jvm_status",
+        "input": {},
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"engine_reported_version\":\"0.7.1\",\"available_processors\":8,\"java_version\":\"21.0.13\",\"max_heap_bytes\":4286578688,\"metadata_scope\":\"parsed_members\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "load_apk",
+        "input": {
+          "path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-c4709b033ce93d0911a5dc7da82af14e\\target.apk",
+          "threads": 1,
+          "resources": "full"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"state\":\"LOADED\",\"apk_path\":\"C:\\\\Users\\\\mamir\\\\AppData\\\\Local\\\\Temp\\\\rea-android-c4709b033ce93d0911a5dc7da82af14e\\\\target.apk\",\"class_count\":47382,\"raw_class_count\":47382,\"resource_count\":4573,\"load_duration_ms\":32845,\"decompile_timeout_ms\":90000,\"threads\":1,\"code_cache_size\":64,\"resources\":\"full\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_class_summary",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.units.SceneHelper"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"fields\":[{\"def_pos\":0,\"type\":\"java.lang.String\",\"name\":\"AUTOSAVED_BEFORE_PLAY\"},{\"def_pos\":0,\"type\":\"java.lang.String\",\"name\":\"AUTOSAVED_CRITICAL\"},{\"def_pos\":0,\"type\":\"java.lang.String\",\"name\":\"BACKGROUND_TWEENS_V1_FILE\"},{\"def_pos\":0,\"type\":\"java.lang.String\",\"name\":\"CAMERA_TWEENS_V1_FILE\"},{\"def_pos\":0,\"type\":\"com.google.common.base.Predicate\\u003cjava.lang.String\\u003e\",\"name\":\"PREDICATE_CUSTOM\"},{\"def_pos\":0,\"type\":\"com.google.common.base.Predicate\\u003cjava.lang.String\\u003e\",\"name\":\"PREDICATE_EXTERNAL\"},{\"def_pos\":0,\"type\":\"java.lang.String\",\"name\":\"TAG\"},{\"def_pos\":0,\"type\":\"java.lang.String\",\"name\":\"UNIT_TWEENS_V1_FILE\"}],\"raw_name\":\"ru.jecklandin.stickman.units.SceneHelper\",\"method_count\":36,\"full_name\":\"ru.jecklandin.stickman.units.SceneHelper\",\"field_count\":8,\"name\":\"SceneHelper\",\"inner_class_count\":5,\"inner_classes\":[\"ru.jecklandin.stickman.units.SceneHelper.BackgroundTweensArchiveV1\",\"ru.jecklandin.stickman.units.SceneHelper.CameraTweensArchiveV1\",\"ru.jecklandin.stickman.units.SceneHelper.IWriteAction\",\"ru.jecklandin.stickman.units.SceneHelper.SaveConfig\",\"ru.jecklandin.stickman.units.SceneHelper.UnitTweensArchiveV1\"],\"methods\":[{\"is_constructor\":false,\"name\":\"$r8$lambda$IN6FPjF7LcIJT6UvGELM161rtQg\",\"def_pos\":0,\"signature\":\"$r8$lambda$IN6FPjF7LcIJT6UvGELM161rtQg(java.lang.String): boolean\",\"dex_descriptor\":\"(Ljava/lang/String;)Z\"},{\"is_constructor\":false,\"name\":\"\\u003cclinit\\u003e\",\"def_pos\":0,\"signature\":\"\\u003cclinit\\u003e(): void\",\"dex_descriptor\":\"()V\"},{\"is_constructor\":true,\"name\":\"\\u003cinit\\u003e\",\"def_pos\":0,\"signature\":\"\\u003cinit\\u003e(): void\",\"dex_descriptor\":\"()V\"},{\"is_constructor\":false,\"name\":\"findUnitNames\",\"def_pos\":0,\"signature\":\"findUnitNames(ru.jecklandin.stickman.units.Scene, com.google.common.base.Predicate\\u003cjava.lang.String\\u003e): com.google.common.collect.FluentIterable\\u003cjava.lang.String\\u003e\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;Lcom/google/common/base/Predicate;)Lcom/google/common/collect/FluentIterable;\"},{\"is_constructor\":false,\"name\":\"getNumber\",\"def_pos\":0,\"signature\":\"getNumber(java.lang.String): int\",\"dex_descriptor\":\"(Ljava/lang/String;)I\"},{\"is_constructor\":false,\"name\":\"getSceneAnimations\",\"def_pos\":0,\"signature\":\"getSceneAnimations(ru.jecklandin.stickman.units.Scene): ru.jecklandin.stickman.units.FBFAnimation[]\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;)[Lru/jecklandin/stickman/units/FBFAnimation;\"},{\"is_constructor\":false,\"name\":\"getUsedCustomFonts\",\"def_pos\":0,\"signature\":\"getUsedCustomFonts(ru.jecklandin.stickman.units.Scene): java.util.Set\\u003cjava.lang.String\\u003e\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;)Ljava/util/Set;\"},{\"is_constructor\":false,\"name\":\"getUsedCustomItems\",\"def_pos\":0,\"signature\":\"getUsedCustomItems(ru.jecklandin.stickman.units.Scene): java.util.Set\\u003cru.jecklandin.stickman.units.manifest.Item\\u003e\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;)Ljava/util/Set;\"},{\"is_constructor\":false,\"name\":\"getUsedExternalItems\",\"def_pos\":0,\"signature\":\"getUsedExternalItems(ru.jecklandin.stickman.units.Scene): java.util.Set\\u003cru.jecklandin.stickman.units.manifest.Item\\u003e\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;)Ljava/util/Set;\"},{\"is_constructor\":false,\"name\":\"lambda$getUsedCustomFonts$4\",\"def_pos\":0,\"signature\":\"lambda$getUsedCustomFonts$4(ru.jecklandin.stickman.units.SpeechBubble): java.lang.String\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/SpeechBubble;)Ljava/lang/String;\"},{\"is_constructor\":false,\"name\":\"lambda$getUsedCustomItems$3\",\"def_pos\":0,\"signature\":\"lambda$getUsedCustomItems$3(java.lang.String): ru.jecklandin.stickman.units.manifest.Item\",\"dex_descriptor\":\"(Ljava/lang/String;)Lru/jecklandin/stickman/units/manifest/Item;\"},{\"is_constructor\":false,\"name\":\"lambda$getUsedExternalItems$2\",\"def_pos\":0,\"signature\":\"lambda$getUsedExternalItems$2(java.lang.String): ru.jecklandin.stickman.units.manifest.Item\",\"dex_descriptor\":\"(Ljava/lang/String;)Lru/jecklandin/stickman/units/manifest/Item;\"},{\"is_constructor\":false,\"name\":\"lambda$static$0\",\"def_pos\":0,\"signature\":\"lambda$static$0(java.lang.String): boolean\",\"dex_descriptor\":\"(Ljava/lang/String;)Z\"},{\"is_constructor\":false,\"name\":\"lambda$static$1\",\"def_pos\":0,\"signature\":\"lambda$static$1(java.lang.String): boolean\",\"dex_descriptor\":\"(Ljava/lang/String;)Z\"},{\"is_constructor\":false,\"name\":\"load\",\"def_pos\":0,\"signature\":\"load(ru.jecklandin.stickman.CartoonStage, java.io.InputStream): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/CartoonStage;Ljava/io/InputStream;)V\"},{\"is_constructor\":false,\"name\":\"loadModel\",\"def_pos\":0,\"signature\":\"loadModel(ru.jecklandin.stickman.units.Scene, java.io.InputStream): java.util.Set\\u003cjava.lang.String\\u003e\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;Ljava/io/InputStream;)Ljava/util/Set;\"},{\"is_constructor\":false,\"name\":\"loadModelOnly\",\"def_pos\":0,\"signature\":\"loadModelOnly(ru.jecklandin.stickman.units.manifest.Item, ru.jecklandin.stickman.units.Frame): ru.jecklandin.stickman.units.Unit\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/manifest/Item;Lru/jecklandin/stickman/units/Frame;)Lru/jecklandin/stickman/units/Unit;\"},{\"is_constructor\":false,\"name\":\"loadResources\",\"def_pos\":0,\"signature\":\"loadResources(java.util.Set\\u003cjava.lang.String\\u003e, ru.jecklandin.stickman.units.UnitAssets): void\",\"dex_descriptor\":\"(Ljava/util/Set;Lru/jecklandin/stickman/units/UnitAssets;)V\"},{\"is_constructor\":false,\"name\":\"parseItemModel\",\"def_pos\":0,\"signature\":\"parseItemModel(java.io.InputStream, ru.jecklandin.stickman.units.Frame): ru.jecklandin.stickman.units.Unit\",\"dex_descriptor\":\"(Ljava/io/InputStream;Lru/jecklandin/stickman/units/Frame;)Lru/jecklandin/stickman/units/Unit;\"},{\"is_constructor\":false,\"name\":\"parsePointData\",\"def_pos\":0,\"signature\":\"parsePointData(org.xmlpull.v1.XmlPullParser): ru.jecklandin.stickman.units.UPoint\",\"dex_descriptor\":\"(Lorg/xmlpull/v1/XmlPullParser;)Lru/jecklandin/stickman/units/UPoint;\"},{\"is_constructor\":false,\"name\":\"parseSceneModel\",\"def_pos\":0,\"signature\":\"parseSceneModel(ru.jecklandin.stickman.units.Scene, java.io.InputStream): java.util.Set\\u003cjava.lang.String\\u003e\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;Ljava/io/InputStream;)Ljava/util/Set;\"},{\"is_constructor\":false,\"name\":\"parseUnitStateAttributes\",\"def_pos\":0,\"signature\":\"parseUnitStateAttributes(org.xmlpull.v1.XmlPullParser, ru.jecklandin.stickman.units.UnitState): void\",\"dex_descriptor\":\"(Lorg/xmlpull/v1/XmlPullParser;Lru/jecklandin/stickman/units/UnitState;)V\"},{\"is_constructor\":false,\"name\":\"performLoadingFromPath\",\"def_pos\":0,\"signature\":\"performLoadingFromPath(ru.jecklandin.stickman.CartoonStage, java.lang.String, boolean): ru.jecklandin.stickman.units.Scene\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/CartoonStage;Ljava/lang/String;Z)Lru/jecklandin/stickman/units/Scene;\"},{\"is_constructor\":false,\"name\":\"performSave\",\"def_pos\":0,\"signature\":\"performSave(ru.jecklandin.stickman.CartoonStage, java.lang.String, ru.jecklandin.stickman.units.SceneHelper$SaveConfig): java.lang.String\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/CartoonStage;Ljava/lang/String;Lru/jecklandin/stickman/units/SceneHelper$SaveConfig;)Ljava/lang/String;\"},{\"is_constructor\":false,\"name\":\"performSave\",\"def_pos\":0,\"signature\":\"performSave(ru.jecklandin.stickman.CartoonStage, ru.jecklandin.stickman.units.SceneHelper$SaveConfig, java.io.File): java.lang.String\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/CartoonStage;Lru/jecklandin/stickman/units/SceneHelper$SaveConfig;Ljava/io/File;)Ljava/lang/String;\"},{\"is_constructor\":false,\"name\":\"performSaveToPath\",\"def_pos\":0,\"signature\":\"performSaveToPath(ru.jecklandin.stickman.CartoonStage, java.lang.String, ru.jecklandin.stickman.units.SceneHelper$SaveConfig): java.lang.String\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/CartoonStage;Ljava/lang/String;Lru/jecklandin/stickman/units/SceneHelper$SaveConfig;)Ljava/lang/String;\"},{\"is_constructor\":false,\"name\":\"putEntry\",\"def_pos\":0,\"signature\":\"putEntry(java.lang.String, java.util.zip.ZipOutputStream, ru.jecklandin.stickman.units.SceneHelper$IWriteAction): void\",\"dex_descriptor\":\"(Ljava/lang/String;Ljava/util/zip/ZipOutputStream;Lru/jecklandin/stickman/units/SceneHelper$IWriteAction;)V\"},{\"is_constructor\":false,\"name\":\"putFileEntry\",\"def_pos\":0,\"signature\":\"putFileEntry(java.io.File, java.lang.String, java.util.zip.ZipOutputStream): void\",\"dex_descriptor\":\"(Ljava/io/File;Ljava/lang/String;Ljava/util/zip/ZipOutputStream;)V\"},{\"is_constructor\":false,\"name\":\"putStringEntry\",\"def_pos\":0,\"signature\":\"putStringEntry(java.lang.String, java.lang.String, java.util.zip.ZipOutputStream): void\",\"dex_descriptor\":\"(Ljava/lang/String;Ljava/lang/String;Ljava/util/zip/ZipOutputStream;)V\"},{\"is_constructor\":false,\"name\":\"readMetadata\",\"def_pos\":0,\"signature\":\"readMetadata(java.lang.String): ru.jecklandin.stickman.units.SceneMetadata\",\"dex_descriptor\":\"(Ljava/lang/String;)Lru/jecklandin/stickman/units/SceneMetadata;\"},{\"is_constructor\":false,\"name\":\"removeNumber\",\"def_pos\":0,\"signature\":\"removeNumber(java.lang.String): java.lang.String\",\"dex_descriptor\":\"(Ljava/lang/String;)Ljava/lang/String;\"},{\"is_constructor\":false,\"name\":\"serialize\",\"def_pos\":0,\"signature\":\"serialize(ru.jecklandin.stickman.units.Scene, int, int): java.io.StringWriter\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;II)Ljava/io/StringWriter;\"},{\"is_constructor\":false,\"name\":\"serialize\",\"def_pos\":0,\"signature\":\"serialize(org.xmlpull.v1.XmlSerializer, ru.jecklandin.stickman.units.UPoint): void\",\"dex_descriptor\":\"(Lorg/xmlpull/v1/XmlSerializer;Lru/jecklandin/stickman/units/UPoint;)V\"},{\"is_constructor\":false,\"name\":\"serializeState\",\"def_pos\":0,\"signature\":\"serializeState(org.xmlpull.v1.XmlSerializer, ru.jecklandin.stickman.units.UnitState): void\",\"dex_descriptor\":\"(Lorg/xmlpull/v1/XmlSerializer;Lru/jecklandin/stickman/units/UnitState;)V\"},{\"is_constructor\":false,\"name\":\"setSceneAnimations\",\"def_pos\":0,\"signature\":\"setSceneAnimations(ru.jecklandin.stickman.units.Scene, ru.jecklandin.stickman.units.FBFAnimation[]): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;[Lru/jecklandin/stickman/units/FBFAnimation;)V\"},{\"is_constructor\":false,\"name\":\"writeSceneToXml\",\"def_pos\":0,\"signature\":\"writeSceneToXml(ru.jecklandin.stickman.units.Scene, java.io.OutputStream, int, int): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;Ljava/io/OutputStream;II)V\"}]}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_method_body",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.units.SceneHelper",
+          "method_name": "parseSceneModel",
+          "overload_index": 0,
+          "smali_fallback": true
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"class_name\":\"ru.jecklandin.stickman.units.SceneHelper\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;Ljava/io/InputStream;)Ljava/util/Set;\",\"overload_count\":1,\"method_name\":\"parseSceneModel\",\"overload_index\":0,\"full_name\":\"ru.jecklandin.stickman.units.SceneHelper.parseSceneModel\",\"fell_back\":false,\"markers\":[],\"body\":\"    static Set\\u003cString\\u003e parseSceneModel(Scene hostScene, InputStream is) throws Exception {\\r\\n        HashSet hashSet \\u003d new HashSet();\\r\\n        hostScene.mFrames \\u003d new ArrayList();\\r\\n        XmlPullParser xmlPullParserNewPullParser \\u003d Xml.newPullParser();\\r\\n        xmlPullParserNewPullParser.setInput(is, null);\\r\\n        Frame frame \\u003d null;\\r\\n        Unit unitCreateInstance \\u003d null;\\r\\n        for (int eventType \\u003d xmlPullParserNewPullParser.getEventType(); eventType !\\u003d 1; eventType \\u003d xmlPullParserNewPullParser.next()) {\\r\\n            if (eventType \\u003d\\u003d 2) {\\r\\n                String name \\u003d xmlPullParserNewPullParser.getName();\\r\\n                if (\\\"unit\\\".equalsIgnoreCase(name)) {\\r\\n                    unitCreateInstance \\u003d UnitsFactory.createInstance(xmlPullParserNewPullParser.getAttributeValue(\\\"\\\", \\\"type\\\"), frame);\\r\\n                    String attributeValue \\u003d xmlPullParserNewPullParser.getAttributeValue(\\\"\\\", \\\"name\\\");\\r\\n                    if (TextUtils.isEmpty(Scene.extractSceneName(attributeValue))) {\\r\\n                        attributeValue \\u003d \\\"common:\\\" + attributeValue;\\r\\n                    }\\r\\n                    unitCreateInstance.setName(attributeValue);\\r\\n                    hashSet.add(removeNumber(attributeValue));\\r\\n                    String attributeValue2 \\u003d xmlPullParserNewPullParser.getAttributeValue(\\\"\\\", \\\"meta\\\");\\r\\n                    if (!TextUtils.isEmpty(attributeValue2)) {\\r\\n                        unitCreateInstance.setMetadata(URLDecoder.decode(attributeValue2, \\\"UTF-8\\\"));\\r\\n                    }\\r\\n                    parseUnitStateAttributes(xmlPullParserNewPullParser, unitCreateInstance.mState);\\r\\n                } else if (\\\"point\\\".equalsIgnoreCase(name)) {\\r\\n                    unitCreateInstance.addPoint(parsePointData(xmlPullParserNewPullParser));\\r\\n                } else if (TypedValues.AttributesType.S_FRAME.equalsIgnoreCase(name)) {\\r\\n                    frame \\u003d new Frame(hostScene, Integer.parseInt(xmlPullParserNewPullParser.getAttributeValue(\\\"\\\", \\\"id\\\")));\\r\\n                    String attributeValue3 \\u003d xmlPullParserNewPullParser.getAttributeValue(\\\"\\\", \\\"bg\\\");\\r\\n                    if (!TextUtils.isEmpty(attributeValue3)) {\\r\\n                        frame.mBgMove.deserialize(attributeValue3);\\r\\n                    }\\r\\n                    String attributeValue4 \\u003d xmlPullParserNewPullParser.getAttributeValue(\\\"\\\", Scene.CAMERA_TWEEN_OWNER_TYPE);\\r\\n                    if (!TextUtils.isEmpty(attributeValue4)) {\\r\\n                        frame.mCameraMove.deserialize(attributeValue4);\\r\\n                    }\\r\\n                    String attributeValue5 \\u003d xmlPullParserNewPullParser.getAttributeValue(\\\"\\\", \\\"bg_name\\\");\\r\\n                    if (!TextUtils.isEmpty(attributeValue5)) {\\r\\n                        frame.setBg(attributeValue5);\\r\\n                    }\\r\\n                } else if (\\\"scene\\\".equalsIgnoreCase(name)) {\\r\\n                    String attributeValue6 \\u003d xmlPullParserNewPullParser.getAttributeValue(\\\"\\\", \\\"w\\\");\\r\\n                    String attributeValue7 \\u003d xmlPullParserNewPullParser.getAttributeValue(\\\"\\\", \\\"h\\\");\\r\\n                    if (!TextUtils.isEmpty(attributeValue6) \\u0026\\u0026 !TextUtils.isEmpty(attributeValue7)) {\\r\\n                        hostScene.mSize \\u003d SceneSizes.getBySize(Integer.parseInt(attributeValue6), Integer.parseInt(attributeValue7));\\r\\n                    }\\r\\n                    String attributeValue8 \\u003d xmlPullParserNewPullParser.getAttributeValue(\\\"\\\", \\\"interframes\\\");\\r\\n                    if (!Strings.isNullOrEmpty(attributeValue8)) {\\r\\n                        hostScene.mConfig.mInterframesNumber \\u003d Integer.parseInt(attributeValue8);\\r\\n                    }\\r\\n                    String attributeValue9 \\u003d xmlPullParserNewPullParser.getAttributeValue(\\\"\\\", \\\"no_interpolation\\\");\\r\\n                    if (!TextUtils.isEmpty(attributeValue9)) {\\r\\n                        hostScene.mConfig.mNoInterpolation \\u003d Boolean.parseBoolean(attributeValue9);\\r\\n                    }\\r\\n                    String attributeValue10 \\u003d xmlPullParserNewPullParser.getAttributeValue(\\\"\\\", \\\"no_interpolation_frames\\\");\\r\\n                    if (!TextUtils.isEmpty(attributeValue10)) {\\r\\n                        hostScene.mConfig.mNoInterpolationFramesNumber \\u003d Integer.parseInt(attributeValue10);\\r\\n                    }\\r\\n                    String attributeValue11 \\u003d xmlPullParserNewPullParser.getAttributeValue(\\\"\\\", \\\"pivot_points\\\");\\r\\n                    if (!TextUtils.isEmpty(attributeValue11)) {\\r\\n                        hostScene.mSpeedModifier.setPoints((SpeedPoint[]) StickmanApp.sGson.fromJson(attributeValue11, SpeedPoint[].class));\\r\\n                    }\\r\\n                    String attributeValue12 \\u003d xmlPullParserNewPullParser.getAttributeValue(\\\"\\\", \\\"masks\\\");\\r\\n                    if (!TextUtils.isEmpty(attributeValue12)) {\\r\\n                        hostScene.mMasks.readFromJson(attributeValue12);\\r\\n                    }\\r\\n                }\\r\\n            } else if (eventType \\u003d\\u003d 3) {\\r\\n                String name2 \\u003d xmlPullParserNewPullParser.getName();\\r\\n                if (name2.equalsIgnoreCase(\\\"unit\\\")) {\\r\\n                    frame.addUnit(unitCreateInstance);\\r\\n                    unitCreateInstance \\u003d null;\\r\\n                } else if (name2.equalsIgnoreCase(TypedValues.AttributesType.S_FRAME)) {\\r\\n                    hostScene.mFrames.add(frame);\\r\\n                    frame \\u003d null;\\r\\n                }\\r\\n            }\\r\\n        }\\r\\n        return hashSet;\\r\\n    }\",\"mode\":\"java\"}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    ]
+  },
+  "normalized_result": {
+    "engine": {
+      "name": "jadx-headless-mcp",
+      "version": "0.7.1",
+      "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+      "worker_count": 1,
+      "heap_limit_mib": 4088
+    },
+    "class_name": "ru.jecklandin.stickman.units.SceneHelper",
+    "method": {
+      "name": "parseSceneModel",
+      "reported_signature": "parseSceneModel(ru.jecklandin.stickman.units.Scene, java.io.InputStream): java.util.Set<java.lang.String>",
+      "overload_index": 0,
+      "is_constructor": false,
+      "dex_descriptor": "(Lru/jecklandin/stickman/units/Scene;Ljava/io/InputStream;)Ljava/util/Set;"
+    },
+    "overload_count": 1,
+    "representation": "java",
+    "body_status": "available",
+    "fell_back": false,
+    "markers": [],
+    "source": {
+      "status": "complete",
+      "text": "    static Set<String> parseSceneModel(Scene hostScene, InputStream is) throws Exception {\r\n        HashSet hashSet = new HashSet();\r\n        hostScene.mFrames = new ArrayList();\r\n        XmlPullParser xmlPullParserNewPullParser = Xml.newPullParser();\r\n        xmlPullParserNewPullParser.setInput(is, null);\r\n        Frame frame = null;\r\n        Unit unitCreateInstance = null;\r\n        for (int eventType = xmlPullParserNewPullParser.getEventType(); eventType != 1; eventType = xmlPullParserNewPullParser.next()) {\r\n            if (eventType == 2) {\r\n                String name = xmlPullParserNewPullParser.getName();\r\n                if (\"unit\".equalsIgnoreCase(name)) {\r\n                    unitCreateInstance = UnitsFactory.createInstance(xmlPullParserNewPullParser.getAttributeValue(\"\", \"type\"), frame);\r\n                    String attributeValue = xmlPullParserNewPullParser.getAttributeValue(\"\", \"name\");\r\n                    if (TextUtils.isEmpty(Scene.extractSceneName(attributeValue))) {\r\n                        attributeValue = \"common:\" + attributeValue;\r\n                    }\r\n                    unitCreateInstance.setName(attributeValue);\r\n                    hashSet.add(removeNumber(attributeValue));\r\n                    String attributeValue2 = xmlPullParserNewPullParser.getAttributeValue(\"\", \"meta\");\r\n                    if (!TextUtils.isEmpty(attributeValue2)) {\r\n                        unitCreateInstance.setMetadata(URLDecoder.decode(attributeValue2, \"UTF-8\"));\r\n                    }\r\n                    parseUnitStateAttributes(xmlPullParserNewPullParser, unitCreateInstance.mState);\r\n                } else if (\"point\".equalsIgnoreCase(name)) {\r\n                    unitCreateInstance.addPoint(parsePointData(xmlPullParserNewPullParser));\r\n                } else if (TypedValues.AttributesType.S_FRAME.equalsIgnoreCase(name)) {\r\n                    frame = new Frame(hostScene, Integer.parseInt(xmlPullParserNewPullParser.getAttributeValue(\"\", \"id\")));\r\n                    String attributeValue3 = xmlPullParserNewPullParser.getAttributeValue(\"\", \"bg\");\r\n                    if (!TextUtils.isEmpty(attributeValue3)) {\r\n                        frame.mBgMove.deserialize(attributeValue3);\r\n                    }\r\n                    String attributeValue4 = xmlPullParserNewPullParser.getAttributeValue(\"\", Scene.CAMERA_TWEEN_OWNER_TYPE);\r\n                    if (!TextUtils.isEmpty(attributeValue4)) {\r\n                        frame.mCameraMove.deserialize(attributeValue4);\r\n                    }\r\n                    String attributeValue5 = xmlPullParserNewPullParser.getAttributeValue(\"\", \"bg_name\");\r\n                    if (!TextUtils.isEmpty(attributeValue5)) {\r\n                        frame.setBg(attributeValue5);\r\n                    }\r\n                } else if (\"scene\".equalsIgnoreCase(name)) {\r\n                    String attributeValue6 = xmlPullParserNewPullParser.getAttributeValue(\"\", \"w\");\r\n                    String attributeValue7 = xmlPullParserNewPullParser.getAttributeValue(\"\", \"h\");\r\n                    if (!TextUtils.isEmpty(attributeValue6) && !TextUtils.isEmpty(attributeValue7)) {\r\n                        hostScene.mSize = SceneSizes.getBySize(Integer.parseInt(attributeValue6), Integer.parseInt(attributeValue7));\r\n                    }\r\n                    String attributeValue8 = xmlPullParserNewPullParser.getAttributeValue(\"\", \"interframes\");\r\n                    if (!Strings.isNullOrEmpty(attributeValue8)) {\r\n                        hostScene.mConfig.mInterframesNumber = Integer.parseInt(attributeValue8);\r\n                    }\r\n                    String attributeValue9 = xmlPullParserNewPullParser.getAttributeValue(\"\", \"no_interpolation\");\r\n                    if (!TextUtils.isEmpty(attributeValue9)) {\r\n                        hostScene.mConfig.mNoInterpolation = Boolean.parseBoolean(attributeValue9);\r\n                    }\r\n                    String attributeValue10 = xmlPullParserNewPullParser.getAttributeValue(\"\", \"no_interpolation_frames\");\r\n                    if (!TextUtils.isEmpty(attributeValue10)) {\r\n                        hostScene.mConfig.mNoInterpolationFramesNumber = Integer.parseInt(attributeValue10);\r\n                    }\r\n                    String attributeValue11 = xmlPullParserNewPullParser.getAttributeValue(\"\", \"pivot_points\");\r\n                    if (!TextUtils.isEmpty(attributeValue11)) {\r\n                        hostScene.mSpeedModifier.setPoints((SpeedPoint[]) StickmanApp.sGson.fromJson(attributeValue11, SpeedPoint[].class));\r\n                    }\r\n                    String attributeValue12 = xmlPullParserNewPullParser.getAttributeValue(\"\", \"masks\");\r\n                    if (!TextUtils.isEmpty(attributeValue12)) {\r\n                        hostScene.mMasks.readFromJson(attributeValue12);\r\n                    }\r\n                }\r\n            } else if (eventType == 3) {\r\n                String name2 = xmlPullParserNewPullParser.getName();\r\n                if (name2.equalsIgnoreCase(\"unit\")) {\r\n                    frame.addUnit(unitCreateInstance);\r\n                    unitCreateInstance = null;\r\n                } else if (name2.equalsIgnoreCase(TypedValues.AttributesType.S_FRAME)) {\r\n                    hostScene.mFrames.add(frame);\r\n                    frame = null;\r\n                }\r\n            }\r\n        }\r\n        return hashSet;\r\n    }",
+      "reported_total_bytes": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

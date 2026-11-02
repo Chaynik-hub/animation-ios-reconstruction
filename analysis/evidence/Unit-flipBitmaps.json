@@ -1,0 +1,130 @@
+{
+  "evidence_id": "ev_99c34c793701526424a249cf352e1a74c88b200835d97f84ed8a41f45b1f9bff",
+  "subject": {
+    "name": "com.zalivka.animation2_397.apk",
+    "digest": {
+      "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+    },
+    "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "jadx",
+    "name": "JADX headless",
+    "version": "0.7.1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_android_method",
+  "parameters": {
+    "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "class_name": "ru.jecklandin.stickman.units.Unit",
+    "method_name": "flipBitmaps"
+  },
+  "raw_result": {
+    "server": {
+      "name": "rea-jadx-bridge",
+      "version": "7"
+    },
+    "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+    "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "loaded": {
+      "state": "LOADED",
+      "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-fe928989313d1de43775b98a8828f23a\\target.apk",
+      "class_count": 47382,
+      "resource_count": 4573,
+      "threads": 1,
+      "resources": "full"
+    },
+    "calls": [
+      {
+        "operation": "rea_jvm_status",
+        "input": {},
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"engine_reported_version\":\"0.7.1\",\"available_processors\":8,\"java_version\":\"21.0.13\",\"max_heap_bytes\":4286578688,\"metadata_scope\":\"parsed_members\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_class_summary",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.units.Unit"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"inner_classes\":[\"ru.jecklandin.stickman.units.Unit.ArrangeComparator\"],\"methods\":[{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;)V\",\"is_constructor\":true,\"name\":\"\\u003cinit\\u003e\",\"def_pos\":0,\"signature\":\"\\u003cinit\\u003e(ru.jecklandin.stickman.units.Frame): void\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)V\",\"is_constructor\":false,\"name\":\"addPoint\",\"def_pos\":0,\"signature\":\"addPoint(ru.jecklandin.stickman.units.UPoint): void\"},{\"dex_descriptor\":\"()Z\",\"is_constructor\":false,\"name\":\"attemptAttach\",\"def_pos\":0,\"signature\":\"attemptAttach(): boolean\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"cacheDescendants\",\"def_pos\":0,\"signature\":\"cacheDescendants(): void\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)Z\",\"is_constructor\":false,\"name\":\"canAttachTo\",\"def_pos\":0,\"signature\":\"canAttachTo(ru.jecklandin.stickman.units.UPoint): boolean\"},{\"dex_descriptor\":\"(Ljava/lang/Object;)I\",\"is_constructor\":false,\"name\":\"compareTo\",\"def_pos\":0,\"signature\":\"compareTo(ru.jecklandin.stickman.units.Unit): int\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Unit;)I\",\"is_constructor\":false,\"name\":\"compareTo2\",\"def_pos\":0,\"signature\":\"compareTo2(ru.jecklandin.stickman.units.Unit): int\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/Unit;\",\"is_constructor\":false,\"name\":\"copy\",\"def_pos\":0,\"signature\":\"copy(): ru.jecklandin.stickman.units.Unit\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;)Lru/jecklandin/stickman/units/Unit;\",\"is_constructor\":false,\"name\":\"copy\",\"def_pos\":0,\"signature\":\"copy(ru.jecklandin.stickman.units.Frame): ru.jecklandin.stickman.units.Unit\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Unit;Z)Lru/jecklandin/stickman/units/UnitState;\",\"is_constructor\":false,\"name\":\"copyState\",\"def_pos\":0,\"signature\":\"copyState(ru.jecklandin.stickman.units.Unit, boolean): ru.jecklandin.stickman.units.UnitState\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"detachAndShift\",\"def_pos\":0,\"signature\":\"detachAndShift(): void\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)V\",\"is_constructor\":false,\"name\":\"doAttachTo\",\"def_pos\":0,\"signature\":\"doAttachTo(ru.jecklandin.stickman.units.UPoint): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"doDetach\",\"def_pos\":0,\"signature\":\"doDetach(): void\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)Z\",\"is_constructor\":false,\"name\":\"doesBelongToStructure\",\"def_pos\":0,\"signature\":\"doesBelongToStructure(ru.jecklandin.stickman.units.UPoint): boolean\"},{\"dex_descriptor\":\"(I)Lru/jecklandin/stickman/units/UPoint;\",\"is_constructor\":false,\"name\":\"findPointById\",\"def_pos\":0,\"signature\":\"findPointById(int): ru.jecklandin.stickman.units.UPoint\"},{\"dex_descriptor\":\"(Lcom/google/common/base/Predicate;)Ljava/util/List;\",\"is_constructor\":false,\"name\":\"findPoints\",\"def_pos\":0,\"signature\":\"findPoints(com.google.common.base.Predicate\\u003cru.jecklandin.stickman.units.UPoint\\u003e): java.util.List\\u003cru.jecklandin.stickman.units.UPoint\\u003e\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"flip\",\"def_pos\":0,\"signature\":\"flip(): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"flipBitmaps\",\"def_pos\":0,\"signature\":\"flipBitmaps(): void\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)V\",\"is_constructor\":false,\"name\":\"flipBones\",\"def_pos\":0,\"signature\":\"flipBones(ru.jecklandin.stickman.units.UPoint): void\"},{\"dex_descriptor\":\"()Ljava/util/List;\",\"is_constructor\":false,\"name\":\"getAllConnected\",\"def_pos\":0,\"signature\":\"getAllConnected(): java.util.List\\u003cru.jecklandin.stickman.units.Unit\\u003e\"},{\"dex_descriptor\":\"()Ljava/util/List;\",\"is_constructor\":false,\"name\":\"getAllSlaves\",\"def_pos\":0,\"signature\":\"getAllSlaves(): java.util.List\\u003cru.jecklandin.stickman.units.Unit\\u003e\"},{\"dex_descriptor\":\"()F\",\"is_constructor\":false,\"name\":\"getAlpha\",\"def_pos\":0,\"signature\":\"getAlpha(): float\"},{\"dex_descriptor\":\"()I\",\"is_constructor\":false,\"name\":\"getArrange\",\"def_pos\":0,\"signature\":\"getArrange(): int\"},{\"dex_descriptor\":\"()I\",\"is_constructor\":false,\"name\":\"getAssetsState\",\"def_pos\":0,\"signature\":\"getAssetsState(): int\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/UPoint;\",\"is_constructor\":false,\"name\":\"getBasePoint\",\"def_pos\":0,\"signature\":\"getBasePoint(): ru.jecklandin.stickman.units.UPoint\"},{\"dex_descriptor\":\"()[Lru/jecklandin/stickman/units/UPoint;\",\"is_constructor\":false,\"name\":\"getBoundingBox\",\"def_pos\":0,\"signature\":\"getBoundingBox(): ru.jecklandin.stickman.units.UPoint[]\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/UPoint;\",\"is_constructor\":false,\"name\":\"getCenter\",\"def_pos\":0,\"signature\":\"getCenter(): ru.jecklandin.stickman.units.UPoint\"},{\"dex_descriptor\":\"()Ljava/util/List;\",\"is_constructor\":false,\"name\":\"getEdges\",\"def_pos\":0,\"signature\":\"getEdges(): java.util.List\\u003cru.jecklandin.stickman.units.UEdge\\u003e\"},{\"dex_descriptor\":\"()I\",\"is_constructor\":false,\"name\":\"getFaceId\",\"def_pos\":0,\"signature\":\"getFaceId(): int\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/Unit;\",\"is_constructor\":false,\"name\":\"getMaster\",\"def_pos\":0,\"signature\":\"getMaster(): ru.jecklandin.stickman.units.Unit\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/SlavesRegistry;)Lru/jecklandin/stickman/units/Unit;\",\"is_constructor\":false,\"name\":\"getMaster\",\"def_pos\":0,\"signature\":\"getMaster(ru.jecklandin.stickman.units.SlavesRegistry): ru.jecklandin.stickman.units.Unit\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/UPoint;\",\"is_constructor\":false,\"name\":\"getMasterPoint\",\"def_pos\":0,\"signature\":\"getMasterPoint(): ru.jecklandin.stickman.units.UPoint\"},{\"dex_descriptor\":\"()Ljava/util/List;\",\"is_constructor\":false,\"name\":\"getMasterPoints\",\"def_pos\":0,\"signature\":\"getMasterPoints(): java.util.List\\u003cru.jecklandin.stickman.units.UPoint\\u003e\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/AbstractMeta;\",\"is_constructor\":false,\"name\":\"getMeta\",\"def_pos\":0,\"signature\":\"getMeta(): ru.jecklandin.stickman.units.AbstractMeta\"},{\"dex_descriptor\":\"()Ljava/lang/String;\",\"is_constructor\":false,\"name\":\"getName\",\"def_pos\":0,\"signature\":\"getName(): java.lang.String\"},{\"dex_descriptor\":\"()I\",\"is_constructor\":false,\"name\":\"getNumber\",\"def_pos\":0,\"signature\":\"getNumber(): int\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/Frame;\",\"is_constructor\":false,\"name\":\"getOwnFrame\",\"def_pos\":0,\"signature\":\"getOwnFrame(): ru.jecklandin.stickman.units.Frame\"},{\"dex_descriptor\":\"()Ljava/util/List;\",\"is_constructor\":false,\"name\":\"getPoints\",\"def_pos\":0,\"signature\":\"getPoints(): java.util.List\\u003cru.jecklandin.stickman.units.UPoint\\u003e\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/Unit;\",\"is_constructor\":false,\"name\":\"getRootMaster\",\"def_pos\":0,\"signature\":\"getRootMaster(): ru.jecklandin.stickman.units.Unit\"},{\"dex_descriptor\":\"()F\",\"is_constructor\":false,\"name\":\"getScale\",\"def_pos\":0,\"signature\":\"getScale(): float\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/Scene;\",\"is_constructor\":false,\"name\":\"getScene\",\"def_pos\":0,\"signature\":\"getScene(): ru.jecklandin.stickman.units.Scene\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/UnitsFactory$TYPE;\",\"is_constructor\":false,\"name\":\"getType\",\"def_pos\":0,\"signature\":\"getType(): ru.jecklandin.stickman.units.UnitsFactory$TYPE\"},{\"dex_descriptor\":\"()Z\",\"is_constructor\":false,\"name\":\"hasKinematicsOnAllBones\",\"def_pos\":0,\"signature\":\"hasKinematicsOnAllBones(): boolean\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;)Lru/jecklandin/stickman/units/Unit;\",\"is_constructor\":false,\"name\":\"instance\",\"def_pos\":0,\"signature\":\"instance(ru.jecklandin.stickman.units.Frame): ru.jecklandin.stickman.units.Unit\"},{\"dex_descriptor\":\"(Ljava/lang/String;)Z\",\"is_constructor\":false,\"name\":\"is\",\"def_pos\":0,\"signature\":\"is(java.lang.String): boolean\"},{\"dex_descriptor\":\"()Z\",\"is_constructor\":false,\"name\":\"isEnslaved\",\"def_pos\":0,\"signature\":\"isEnslaved(): boolean\"},{\"dex_descriptor\":\"()Z\",\"is_constructor\":false,\"name\":\"isFlipped\",\"def_pos\":0,\"signature\":\"isFlipped(): boolean\"},{\"dex_descriptor\":\"()Z\",\"is_constructor\":false,\"name\":\"isMaster\",\"def_pos\":0,\"signature\":\"isMaster(): boolean\"},{\"dex_descriptor\":\"(Landroid/graphics/RectF;)Z\",\"is_constructor\":false,\"name\":\"isOutOfSight\",\"def_pos\":0,\"signature\":\"isOutOfSight(android.graphics.RectF): boolean\"},{\"dex_descriptor\":\"(FF)Z\",\"is_constructor\":false,\"name\":\"isPointInside\",\"def_pos\":0,\"signature\":\"isPointInside(float, float): boolean\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)Z\",\"is_constructor\":false,\"name\":\"isPointInside\",\"def_pos\":0,\"signature\":\"isPointInside(ru.jecklandin.stickman.units.UPoint): boolean\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;Lru/jecklandin/stickman/units/Unit;)Z\",\"is_constructor\":false,\"name\":\"lambda$doesBelongToStructure$1\",\"def_pos\":0,\"signature\":\"lambda$doesBelongToStructure$1(ru.jecklandin.stickman.units.UPoint, ru.jecklandin.stickman.units.Unit): boolean\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)Z\",\"is_constructor\":false,\"name\":\"lambda$getMasterPoints$0\",\"def_pos\":0,\"signature\":\"lambda$getMasterPoints$0(ru.jecklandin.stickman.units.UPoint): boolean\"},{\"dex_descriptor\":\"(FF)V\",\"is_constructor\":false,\"name\":\"moveTo\",\"def_pos\":0,\"signature\":\"moveTo(float, float): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"moveToMaster\",\"def_pos\":0,\"signature\":\"moveToMaster(): void\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UnitAssets;Landroid/util/Pair;Z)Landroid/util/Pair;\",\"is_constructor\":false,\"name\":\"nextState\",\"def_pos\":0,\"signature\":\"nextState(ru.jecklandin.stickman.units.UnitAssets, android.util.Pair\\u003cjava.lang.Integer, java.lang.Boolean\\u003e, boolean): android.util.Pair\\u003cjava.lang.Integer, java.lang.Boolean\\u003e\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"onFinishMove\",\"def_pos\":0,\"signature\":\"onFinishMove(): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"readMetadataFromState\",\"def_pos\":0,\"signature\":\"readMetadataFromState(): void\"},{\"dex_descriptor\":\"(FZ)V\",\"is_constructor\":false,\"name\":\"scaleBy\",\"def_pos\":0,\"signature\":\"scaleBy(float, boolean): void\"},{\"dex_descriptor\":\"(FZ)V\",\"is_constructor\":false,\"name\":\"setAlpha\",\"def_pos\":0,\"signature\":\"setAlpha(float, boolean): void\"},{\"dex_descriptor\":\"(I)Lru/jecklandin/stickman/units/Unit;\",\"is_constructor\":false,\"name\":\"setArrange\",\"def_pos\":0,\"signature\":\"setArrange(int): ru.jecklandin.stickman.units.Unit\"},{\"dex_descriptor\":\"(I)V\",\"is_constructor\":false,\"name\":\"setAssetsState\",\"def_pos\":0,\"signature\":\"setAssetsState(int): void\"},{\"dex_descriptor\":\"(I)V\",\"is_constructor\":false,\"name\":\"setFaceId\",\"def_pos\":0,\"signature\":\"setFaceId(int): void\"},{\"dex_descriptor\":\"(Z)V\",\"is_constructor\":false,\"name\":\"setFlipped\",\"def_pos\":0,\"signature\":\"setFlipped(boolean): void\"},{\"dex_descriptor\":\"(Z)V\",\"is_constructor\":false,\"name\":\"setKinematicsOnAllBones\",\"def_pos\":0,\"signature\":\"setKinematicsOnAllBones(boolean): void\"},{\"dex_descriptor\":\"(Ljava/lang/String;)V\",\"is_constructor\":false,\"name\":\"setMetadata\",\"def_pos\":0,\"signature\":\"setMetadata(java.lang.String): void\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/AbstractMeta;)V\",\"is_constructor\":false,\"name\":\"setMetadata\",\"def_pos\":0,\"signature\":\"setMetadata(ru.jecklandin.stickman.units.AbstractMeta): void\"},{\"dex_descriptor\":\"(Ljava/lang/String;)V\",\"is_constructor\":false,\"name\":\"setName\",\"def_pos\":0,\"signature\":\"setName(java.lang.String): void\"},{\"dex_descriptor\":\"(I)Ljava/lang/String;\",\"is_constructor\":false,\"name\":\"setNumber\",\"def_pos\":0,\"signature\":\"setNumber(int): java.lang.String\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;)Lru/jecklandin/stickman/units/Unit;\",\"is_constructor\":false,\"name\":\"setOwnFrame\",\"def_pos\":0,\"signature\":\"setOwnFrame(ru.jecklandin.stickman.units.Frame): ru.jecklandin.stickman.units.Unit\"},{\"dex_descriptor\":\"()Ljava/lang/String;\",\"is_constructor\":false,\"name\":\"toString\",\"def_pos\":0,\"signature\":\"toString(): java.lang.String\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"updateBoundingBox\",\"def_pos\":0,\"signature\":\"updateBoundingBox(): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"updateInternalState\",\"def_pos\":0,\"signature\":\"updateInternalState(): void\"}],\"fields\":[{\"name\":\"ATTACH_RADIUS\",\"def_pos\":0,\"type\":\"int\"},{\"name\":\"mBoundingBox\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.UPoint[]\"},{\"name\":\"mDescendants\",\"def_pos\":0,\"type\":\"com.google.common.collect.ListMultimap\\u003cjava.lang.Integer, ru.jecklandin.stickman.units.UPoint\\u003e\"},{\"name\":\"mHostFrame\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.Frame\"},{\"name\":\"mName\",\"def_pos\":0,\"type\":\"java.lang.String\"},{\"name\":\"mState\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.UnitState\"},{\"name\":\"mType\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.UnitsFactory$TYPE\"}],\"raw_name\":\"ru.jecklandin.stickman.units.Unit\",\"method_count\":73,\"full_name\":\"ru.jecklandin.stickman.units.Unit\",\"field_count\":7,\"name\":\"Unit\",\"inner_class_count\":1}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_method_body",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.units.Unit",
+          "method_name": "flipBitmaps",
+          "overload_index": 0,
+          "smali_fallback": true
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"markers\":[],\"body\":\"    private void flipBitmaps() {\\r\\n        setFlipped(!isFlipped());\\r\\n        getScene().mAssetsOp.updateBoundingBoxFor(this);\\r\\n    }\",\"mode\":\"java\",\"class_name\":\"ru.jecklandin.stickman.units.Unit\",\"dex_descriptor\":\"()V\",\"overload_count\":1,\"method_name\":\"flipBitmaps\",\"overload_index\":0,\"full_name\":\"ru.jecklandin.stickman.units.Unit.flipBitmaps\",\"fell_back\":false}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    ]
+  },
+  "normalized_result": {
+    "engine": {
+      "name": "jadx-headless-mcp",
+      "version": "0.7.1",
+      "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+      "worker_count": 1,
+      "heap_limit_mib": 4088
+    },
+    "class_name": "ru.jecklandin.stickman.units.Unit",
+    "method": {
+      "name": "flipBitmaps",
+      "reported_signature": "flipBitmaps(): void",
+      "overload_index": 0,
+      "is_constructor": false,
+      "dex_descriptor": "()V"
+    },
+    "overload_count": 1,
+    "representation": "java",
+    "body_status": "available",
+    "fell_back": false,
+    "markers": [],
+    "source": {
+      "status": "complete",
+      "text": "    private void flipBitmaps() {\r\n        setFlipped(!isFlipped());\r\n        getScene().mAssetsOp.updateBoundingBoxFor(this);\r\n    }",
+      "reported_total_bytes": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

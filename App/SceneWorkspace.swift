@@ -64,8 +64,7 @@ final class Workspace {
     }
     func deleteFrame() { guard document.frames.count>1 else{return};checkpoint();document.frames.remove(at:index);notify() }
     func removeObject() { guard let i=selected,frame.units.indices.contains(i) else{return};checkpoint();document.frames[index].units.remove(at:i);selected=nil;notify() }
-    func flip() { guard let i=selected,frame.units.indices.contains(i) else{return};checkpoint();let base=frame.units[i].joints.first(where:{$0.attributes["base"]=="true"})?.x ?? frame.units[i].joints.first?.x ?? 0
-        for j in document.frames[index].units[i].joints.indices {document.frames[index].units[i].joints[j].x=2*base-document.frames[index].units[i].joints[j].x};document.frames[index].units[i].attributes["flipped"] = frame.units[i].attributes["flipped"]=="true" ? "false":"true";notify()
+    func flip() { guard let i=selected,frame.units.indices.contains(i) else{return};checkpoint();try? UnitTransform.flip(&document.frames[index],unitIndex:i);notify()
     }
     func save(name:String) throws -> URL {
         let safe=name.replacingOccurrences(of:"/",with:"_").replacingOccurrences(of:":",with:"_")
