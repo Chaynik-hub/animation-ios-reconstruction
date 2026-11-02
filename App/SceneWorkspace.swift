@@ -1,7 +1,7 @@
 import UIKit
 import ZIPFoundation
 
-struct ArtworkDefinition: Decodable {
+struct ArtworkDefinition: Codable {
     var name: String
     var points: [[String:String]]
     var parts: [[String:String]]
@@ -27,18 +27,31 @@ final class Workspace {
     var selected: Int?
     var history: [SceneDocument] = []
     var future: [SceneDocument] = []
-    var catalog = (try? JSONDecoder().decode([ArtworkDefinition].self,from:Data(contentsOf:Bundle.main.resourceURL!.appendingPathComponent("Content/catalog.json")))) ?? []
+    let bundledCatalog = (try? JSONDecoder().decode([ArtworkDefinition].self,from:Data(contentsOf:Bundle.main.resourceURL!.appendingPathComponent("Content/catalog.json")))) ?? []
+    var catalog:[ArtworkDefinition]=[]
     var onChange: (() -> Void)?
     let directory = FileManager.default.urls(for:.documentDirectory,in:.userDomainMask)[0]
     init() {
+        catalog=bundledCatalog
         let url=directory.appendingPathComponent("Autosave.animation.json")
-        if let bytes=try? Data(contentsOf:url),let saved=try? JSONDecoder().decode(SceneDocument.self,from:bytes),!saved.frames.isEmpty,saved.width>0,saved.height>0 {document=saved}
+        if let bytes=try? Data(contentsOf:url),let saved=try? JSONDecoder().decode(SceneDocument.self,from:bytes),!saved.frames.isEmpty,saved.width>0,saved.height>0 {document=saved;restoreArtwork()}
+    }
+    func artworkURL(_ path:String)->URL? {
+        guard !path.hasPrefix("/"),!path.contains("\\"),!path.components(separatedBy:"/").contains("..") else{return nil}
+        if path.hasPrefix("@local/"){return directory.appendingPathComponent(String(path.dropFirst(7)))}
+        return Bundle.main.resourceURL?.appendingPathComponent("Content/"+path)
+    }
+    func restoreArtwork() {
+        catalog=bundledCatalog
+        guard let id=document.attributes["nativeArtworkDirectory"],UUID(uuidString:id) != nil,
+              let data=try? Data(contentsOf:directory.appendingPathComponent("ImportedArtwork/"+id+"/catalog.json")),let custom=try? JSONDecoder().decode([ArtworkDefinition].self,from:data) else{return}
+        let names=Set(custom.map(\.name));catalog=custom+bundledCatalog.filter{!names.contains($0.name)}
     }
     var frame: SceneFrame { document.frames[index] }
     func checkpoint() { history.append(document); if history.count>60 { history.removeFirst() }; future=[] }
     func notify() { index=min(max(0,index),document.frames.count-1);onChange?();if let data=try? JSONEncoder().encode(document){try? data.write(to:directory.appendingPathComponent("Autosave.animation.json"),options:.atomic)} }
-    func undo() { guard let old=history.popLast() else{return};future.append(document);document=old;notify() }
-    func redo() { guard let next=future.popLast() else{return};history.append(document);document=next;notify() }
+    func undo() { guard let old=history.popLast() else{return};future.append(document);document=old;restoreArtwork();selected=nil;notify() }
+    func redo() { guard let next=future.popLast() else{return};history.append(document);document=next;restoreArtwork();selected=nil;notify() }
     func add(_ asset:ArtworkDefinition) { checkpoint();var unit=asset.unit(at:CGPoint(x:document.width/2,y:document.height/2));unit.name = UnitIdentity.inserting(unit.name,in:frame);document.frames[index].units.append(unit);selected=frame.units.count-1;notify() }
     func addFrame() throws {
         var next=frame
@@ -82,10 +95,11 @@ final class Workspace {
             let preserved=directory.appendingPathComponent(UUID().uuidString+".ats")
             try FileManager.default.copyItem(at:url,to:preserved)
             value.attributes["nativeSourceArchive"]=preserved.lastPathComponent
+            if let id=try EmbeddedArtworkImporter.importFrom(archive:archive,directory:directory){value.attributes["nativeArtworkDirectory"]=id}
         } else if url.pathExtension.lowercased()=="xml" { value=try SceneXMLReader.read(Data(contentsOf:url)) }
         else {value=try JSONDecoder().decode(SceneDocument.self,from:Data(contentsOf:url))}
         guard !value.frames.isEmpty,value.width>0,value.height>0 else {throw SceneReadError.invalidScene}
-        checkpoint();document=value;index=0;selected=nil;notify()
+        checkpoint();document=value;restoreArtwork();index=0;selected=nil;notify()
     }
 }
 
@@ -110,7 +124,7 @@ final class SceneCanvas: UIView {
     var ratio: CGFloat {min(viewport.width/workspace.document.width,viewport.height/workspace.document.height)*cameraScale}
     var origin: CGPoint {CGPoint(x:bounds.midX-workspace.document.width*ratio/2+cameraOffset.x,y:bounds.midY-workspace.document.height*ratio/2+cameraOffset.y)}
     var images:[String:UIImage]=[:]
-    func image(_ path:String)->UIImage? {if let i=images[path]{return i};let i=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/"+path).path);images[path]=i;return i}
+    func image(_ path:String)->UIImage? {if let i=images[path]{return i};guard let url=workspace.artworkURL(path) else{return nil};let i=UIImage(contentsOfFile:url.path);images[path]=i;return i}
     override func draw(_ rect:CGRect) {
         guard let c=UIGraphicsGetCurrentContext() else{return};UIColor(white:0.17,alpha:1).setFill();c.fill(bounds)
         c.saveGState();c.translateBy(x:origin.x,y:origin.y);c.scaleBy(x:ratio,y:ratio)
