@@ -4,3 +4,4 @@ original-assets/
 .build/
 .swiftpm/
 out/
+analysis/android-reference/**/*.log
