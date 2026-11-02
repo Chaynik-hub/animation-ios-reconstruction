@@ -1,6 +1,7 @@
 import XCTest
 
 final class EditorUITests:XCTestCase {
+    override func setUpWithError()throws {XCUIDevice.shared.orientation = .landscapeLeft}
     func testOriginalATSWithEmbeddedArtwork()throws {
         let app=XCUIApplication();app.launchArguments=["--reference-practice"];app.launch()
         let navigator=app.otherElements["FrameNavigator"]
