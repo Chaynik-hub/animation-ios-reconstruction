@@ -1,0 +1,229 @@
+{
+  "scope": "Declared application activities only; fragments, dialogs, menus and states still require expansion",
+  "screens": [
+    {
+      "class": "ru.jecklandin.stickman.features.landing.LandingActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.editor.MainEditor",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.editor.debug.DebugIntActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.preview.FullPreviewActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.landing.onboarding.OBIntro",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.landing.onboarding.OBPickItem",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.landing.onboarding.OBGoals",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.landing.onboarding.OBInterpolation",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.background.BgAnimatorActivity2",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.camera.CameraAnimatorActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.settings.Adminka2",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.settings.Settings",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.ItemPreview",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.settings.About",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.utils.ErrorReport",
+      "orientation": null,
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.audio.SoundMakerActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.audio.AudioActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.help.HtmlTutorial",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.EntryActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.assetslibrary.AssetsLibraryActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.billing_v3.subs.TrialSubsActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.packcreator.PackWizard",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.features.backup.ShareBackupActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.editor2.test.VideoPlayerTest",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.editor2.skeleton.SkeletonActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.editor2.crop.CropActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.editor2.vector.kurwa.KurwaImageImportActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.editor2.vector.kurwa.KurwaActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.editor2.skeleton.landing.EditorLandingActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "ru.jecklandin.stickman.editor2.bonepaper.BonePaperActivity",
+      "orientation": "landscape",
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    },
+    {
+      "class": "com.zalivka.commons.utils.DevToolsActivity",
+      "orientation": null,
+      "status": "unverified",
+      "android_reference": null,
+      "ios_implementation": null
+    }
+  ]
+}
