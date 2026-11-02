@@ -142,7 +142,7 @@ final class SceneCanvas: UIView {
         } else if gesture.state == .changed {
             if let (i,j)=dragged {
                 let id=workspace.frame.units[i].joints[j].id
-                try? JointManipulation.move(&workspace.document.frames[workspace.index].units[i],jointID:id,x:p.x-captureOffset.x,y:p.y-captureOffset.y)
+                try? FrameManipulation.move(&workspace.document.frames[workspace.index],unitIndex:i,jointID:id,x:p.x-captureOffset.x,y:p.y-captureOffset.y)
             } else {let d=gesture.translation(in:self);cameraOffset.x+=d.x;cameraOffset.y+=d.y;gesture.setTranslation(.zero,in:self)}
             before=p;setNeedsDisplay()
         } else {dragged=nil;workspace.notify()}
