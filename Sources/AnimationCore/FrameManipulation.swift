@@ -35,12 +35,12 @@ public enum FrameManipulation {
         frame.units[unitIndex].joints[baseIndex].attributes["attached"]=frame.units[masterIndex].name+"&"+String(point.id)
         return true
     }
-    public static func move(_ frame:inout SceneFrame,unitIndex:Int,jointID:Int,x:Double,y:Double)throws {
+    public static func move(_ frame:inout SceneFrame,unitIndex:Int,jointID:Int,x:Double,y:Double,stretch:Bool=false)throws {
         guard frame.units.indices.contains(unitIndex),let oldPoint=frame.units[unitIndex].joints.first(where:{$0.id==jointID}) else{throw PoseError.incompatibleTopology}
         let before=frame.units[unitIndex]
         let base=oldPoint.attributes["base"]=="true"
         if base,let link=attachment(before),frame.units.contains(where:{$0.name==link.0 && $0.joints.contains(where:{$0.id==link.1})}){return}
-        try JointManipulation.move(&frame.units[unitIndex],jointID:jointID,x:x,y:y)
+        try JointManipulation.move(&frame.units[unitIndex],jointID:jointID,x:x,y:y,stretch:stretch)
         if !base,oldPoint.attributes["kinstart"]=="true" {
             // PointManipulator.kinematicMove calls moveToMaster for every slave:
             // unlike a rigid branch rotation, this translates each attachment to
@@ -66,7 +66,8 @@ public enum FrameManipulation {
         }.map(\.id))
         affected.insert(jointID)
         let pivot=before.joints.first(where:{$0.id==oldPoint.parent}) ?? oldPoint
-        let angle=base ? 0:atan2(after.y-pivot.y,after.x-pivot.x)-atan2(oldPoint.y-pivot.y,oldPoint.x-pivot.x)
+        let translates=base || (stretch && oldPoint.attributes["stretchable"]=="true")
+        let angle=translates ? 0:atan2(after.y-pivot.y,after.x-pivot.x)-atan2(oldPoint.y-pivot.y,oldPoint.x-pivot.x)
         let cosine=cos(angle),sine=sin(angle)
         var visited=Set([unitIndex])
         var pending:[(String,Set<Int>)]=[(before.name,affected)]
@@ -76,7 +77,7 @@ public enum FrameManipulation {
                 guard let link=attachment(frame.units[i]),link.0==master,ids.contains(link.1) else{continue}
                 visited.insert(i)
                 for j in frame.units[i].joints.indices {
-                    if base {frame.units[i].joints[j].x+=deltaX;frame.units[i].joints[j].y+=deltaY}
+                    if translates {frame.units[i].joints[j].x+=deltaX;frame.units[i].joints[j].y+=deltaY}
                     else {
                         let dx=frame.units[i].joints[j].x-pivot.x,dy=frame.units[i].joints[j].y-pivot.y
                         frame.units[i].joints[j].x=pivot.x+dx*cosine-dy*sine

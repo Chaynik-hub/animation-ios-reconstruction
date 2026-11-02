@@ -13,7 +13,7 @@ import AVFoundation
 final class EditorController:UIViewController,UIDocumentPickerDelegate {
     let workspace=Workspace()
     lazy var canvas=SceneCanvas(workspace)
-    let sidebar=UIStackView(),navigation=UIStackView(),frameLabel=UILabel()
+    let sidebar=UIStackView(),navigation=UIStackView(),frameLabel=UILabel(),shift=UIButton(type:.custom)
     var displayLink:CADisplayLink?
     var playbackStart:CFTimeInterval=0
     var startFrame=0
@@ -42,6 +42,12 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
             sidebar.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor),sidebar.topAnchor.constraint(equalTo:view.topAnchor),sidebar.bottomAnchor.constraint(equalTo:view.bottomAnchor),sidebar.widthAnchor.constraint(equalToConstant:80),
             navigation.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor),navigation.topAnchor.constraint(equalTo:view.topAnchor),navigation.bottomAnchor.constraint(equalTo:view.bottomAnchor),navigation.widthAnchor.constraint(equalToConstant:60),
             canvas.leadingAnchor.constraint(equalTo:sidebar.trailingAnchor),canvas.trailingAnchor.constraint(equalTo:navigation.leadingAnchor),canvas.topAnchor.constraint(equalTo:view.topAnchor),canvas.bottomAnchor.constraint(equalTo:view.bottomAnchor)])
+        shift.translatesAutoresizingMaskIntoConstraints=false;shift.accessibilityLabel="Shift";shift.accessibilityHint="Удерживайте для растяжения разрешённых костей"
+        shift.setImage(UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/shift_main.png").path),for:.normal)
+        shift.imageView?.contentMode = .scaleAspectFit;shift.imageEdgeInsets=UIEdgeInsets(top:10,left:10,bottom:10,right:10)
+        shift.addAction(UIAction{[weak self] _ in self?.canvas.stretch=true;self?.shift.alpha=0.6},for:.touchDown)
+        shift.addAction(UIAction{[weak self] _ in self?.canvas.stretch=false;self?.shift.alpha=1},for:[.touchUpInside,.touchUpOutside,.touchCancel])
+        view.addSubview(shift);NSLayoutConstraint.activate([shift.leadingAnchor.constraint(equalTo:sidebar.trailingAnchor),shift.topAnchor.constraint(equalTo:view.topAnchor),shift.widthAnchor.constraint(equalToConstant:48),shift.heightAnchor.constraint(equalToConstant:48)])
         workspace.onChange = {[weak self] in self?.update()};restoreAudio();update()
         if ProcessInfo.processInfo.arguments.contains("--ui-capture"),let first=workspace.catalog.first(where:{$0.name.contains("boy")}){workspace.add(first)}
     }

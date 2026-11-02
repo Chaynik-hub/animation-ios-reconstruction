@@ -1,0 +1,147 @@
+{
+  "evidence_id": "ev_7c80f6717ba5c92672f9038aa69c092ef173415d5d5fae1e84ead801f846c76f",
+  "subject": {
+    "name": "com.zalivka.animation2_397.apk",
+    "digest": {
+      "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+    },
+    "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "jadx",
+    "name": "JADX headless",
+    "version": "0.7.1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_android_method",
+  "parameters": {
+    "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "class_name": "ru.jecklandin.stickman.units.handlers.manipulators.PointManipulator",
+    "method_name": "stretchMove"
+  },
+  "raw_result": {
+    "server": {
+      "name": "rea-jadx-bridge",
+      "version": "7"
+    },
+    "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+    "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "loaded": {
+      "state": "LOADED",
+      "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-7dfe459d0619a4f38fa251acc026b62b\\target.apk",
+      "class_count": 47382,
+      "resource_count": 4573,
+      "threads": 1,
+      "resources": "full"
+    },
+    "calls": [
+      {
+        "operation": "rea_jvm_status",
+        "input": {},
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"java_version\":\"21.0.13\",\"max_heap_bytes\":4286578688,\"metadata_scope\":\"parsed_members\",\"engine_reported_version\":\"0.7.1\",\"available_processors\":8}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "load_apk",
+        "input": {
+          "path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-7dfe459d0619a4f38fa251acc026b62b\\target.apk",
+          "threads": 1,
+          "resources": "full"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"state\":\"LOADED\",\"apk_path\":\"C:\\\\Users\\\\mamir\\\\AppData\\\\Local\\\\Temp\\\\rea-android-7dfe459d0619a4f38fa251acc026b62b\\\\target.apk\",\"class_count\":47382,\"raw_class_count\":47382,\"resource_count\":4573,\"load_duration_ms\":46360,\"decompile_timeout_ms\":90000,\"threads\":1,\"code_cache_size\":64,\"resources\":\"full\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_class_summary",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.units.handlers.manipulators.PointManipulator"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"raw_name\":\"ru.jecklandin.stickman.units.handlers.manipulators.PointManipulator\",\"method_count\":8,\"full_name\":\"ru.jecklandin.stickman.units.handlers.manipulators.PointManipulator\",\"field_count\":0,\"name\":\"PointManipulator\",\"inner_class_count\":0,\"inner_classes\":[],\"methods\":[{\"def_pos\":0,\"signature\":\"\\u003cinit\\u003e(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":true,\"name\":\"\\u003cinit\\u003e\"},{\"def_pos\":0,\"signature\":\"kinematicMove(ru.jecklandin.stickman.units.Unit, ru.jecklandin.stickman.units.UPoint, float, float): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Unit;Lru/jecklandin/stickman/units/UPoint;FF)V\",\"is_constructor\":false,\"name\":\"kinematicMove\"},{\"def_pos\":0,\"signature\":\"move(ru.jecklandin.stickman.units.Unit, ru.jecklandin.stickman.units.UPoint, float, float): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Unit;Lru/jecklandin/stickman/units/UPoint;FF)V\",\"is_constructor\":false,\"name\":\"move\"},{\"def_pos\":0,\"signature\":\"move(ru.jecklandin.stickman.units.handlers.AbstractHandler, float, float): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/handlers/AbstractHandler;FF)V\",\"is_constructor\":false,\"name\":\"move\"},{\"def_pos\":0,\"signature\":\"moveUnit(ru.jecklandin.stickman.units.Unit, float, float): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Unit;FF)V\",\"is_constructor\":false,\"name\":\"moveUnit\"},{\"def_pos\":0,\"signature\":\"restoreRestLength(ru.jecklandin.stickman.units.Unit, ru.jecklandin.stickman.units.UPoint): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Unit;Lru/jecklandin/stickman/units/UPoint;)Z\",\"is_constructor\":false,\"name\":\"restoreRestLength\"},{\"def_pos\":0,\"signature\":\"simpleMove(ru.jecklandin.stickman.units.Unit, ru.jecklandin.stickman.units.UPoint, float, float): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Unit;Lru/jecklandin/stickman/units/UPoint;FF)V\",\"is_constructor\":false,\"name\":\"simpleMove\"},{\"def_pos\":0,\"signature\":\"stretchMove(ru.jecklandin.stickman.units.Unit, ru.jecklandin.stickman.units.UPoint, float, float): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Unit;Lru/jecklandin/stickman/units/UPoint;FF)V\",\"is_constructor\":false,\"name\":\"stretchMove\"}],\"fields\":[]}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_method_body",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.units.handlers.manipulators.PointManipulator",
+          "method_name": "stretchMove",
+          "overload_index": 0,
+          "smali_fallback": true
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"overload_index\":0,\"full_name\":\"ru.jecklandin.stickman.units.handlers.manipulators.PointManipulator.stretchMove\",\"fell_back\":false,\"markers\":[],\"body\":\"    private static void stretchMove(Unit unit, UPoint capturedPoint, float destX, float destY) {\\r\\n        Preconditions.checkState(!capturedPoint.isBase());\\r\\n        float f \\u003d destX - capturedPoint.x;\\r\\n        float f2 \\u003d destY - capturedPoint.y;\\r\\n        capturedPoint.x \\u003d destX;\\r\\n        capturedPoint.y \\u003d destY;\\r\\n        SlavesRegistry slavesRegistry \\u003d unit.getOwnFrame().mSlavesStr;\\r\\n        Unit slave \\u003d slavesRegistry.getSlave(capturedPoint);\\r\\n        if (slave !\\u003d null) {\\r\\n            slave.mState.shiftBy(f, f2, true);\\r\\n        }\\r\\n        for (UPoint uPoint : unit.mDescendants.get(Integer.valueOf(capturedPoint.getId()))) {\\r\\n            uPoint.x +\\u003d f;\\r\\n            uPoint.y +\\u003d f2;\\r\\n            Unit slave2 \\u003d slavesRegistry.getSlave(uPoint);\\r\\n            if (slave2 !\\u003d null) {\\r\\n                slave2.mState.shiftBy(f, f2, true);\\r\\n            }\\r\\n        }\\r\\n    }\",\"mode\":\"java\",\"class_name\":\"ru.jecklandin.stickman.units.handlers.manipulators.PointManipulator\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Unit;Lru/jecklandin/stickman/units/UPoint;FF)V\",\"overload_count\":1,\"method_name\":\"stretchMove\"}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    ]
+  },
+  "normalized_result": {
+    "engine": {
+      "name": "jadx-headless-mcp",
+      "version": "0.7.1",
+      "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+      "worker_count": 1,
+      "heap_limit_mib": 4088
+    },
+    "class_name": "ru.jecklandin.stickman.units.handlers.manipulators.PointManipulator",
+    "method": {
+      "name": "stretchMove",
+      "reported_signature": "stretchMove(ru.jecklandin.stickman.units.Unit, ru.jecklandin.stickman.units.UPoint, float, float): void",
+      "overload_index": 0,
+      "is_constructor": false,
+      "dex_descriptor": "(Lru/jecklandin/stickman/units/Unit;Lru/jecklandin/stickman/units/UPoint;FF)V"
+    },
+    "overload_count": 1,
+    "representation": "java",
+    "body_status": "available",
+    "fell_back": false,
+    "markers": [],
+    "source": {
+      "status": "complete",
+      "text": "    private static void stretchMove(Unit unit, UPoint capturedPoint, float destX, float destY) {\r\n        Preconditions.checkState(!capturedPoint.isBase());\r\n        float f = destX - capturedPoint.x;\r\n        float f2 = destY - capturedPoint.y;\r\n        capturedPoint.x = destX;\r\n        capturedPoint.y = destY;\r\n        SlavesRegistry slavesRegistry = unit.getOwnFrame().mSlavesStr;\r\n        Unit slave = slavesRegistry.getSlave(capturedPoint);\r\n        if (slave != null) {\r\n            slave.mState.shiftBy(f, f2, true);\r\n        }\r\n        for (UPoint uPoint : unit.mDescendants.get(Integer.valueOf(capturedPoint.getId()))) {\r\n            uPoint.x += f;\r\n            uPoint.y += f2;\r\n            Unit slave2 = slavesRegistry.getSlave(uPoint);\r\n            if (slave2 != null) {\r\n                slave2.mState.shiftBy(f, f2, true);\r\n            }\r\n        }\r\n    }",
+      "reported_total_bytes": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

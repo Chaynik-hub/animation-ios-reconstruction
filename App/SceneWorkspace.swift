@@ -96,6 +96,7 @@ final class SceneCanvas: UIView {
     var displayed: SceneFrame?
     var handles = true
     var onion = true
+    var stretch = false
     var backgroundColorValue:UIColor {
         get {switch workspace.document.attributes["nativeBackground"] {case "black":return .black;case "green":return .green;default:return .white}}
         set {workspace.document.attributes["nativeBackground"] = newValue == .black ? "black" : newValue == .green ? "green" : "white"}
@@ -136,7 +137,15 @@ final class SceneCanvas: UIView {
                 }
                 for part in selectedParts.sorted(by:{(Int($0["weight"] ?? "0") ?? 0)<(Int($1["weight"] ?? "0") ?? 0)}) {
                     guard let start=Int(part["start"] ?? ""),let end=Int(part["end"] ?? ""),let a=joints[start],let b=joints[end],let imagePath=part["image"],let bitmap=image(imagePath) else{continue}
-                    c.saveGState();c.setAlpha(Double(unit.attributes["alpha"] ?? "1") ?? 1);c.translateBy(x:a.x,y:a.y);c.rotate(by:atan2(b.y-a.y,b.x-a.x));c.scaleBy(x:scale,y:flipped && part["flipped"] != "true" ? -scale:scale)
+                    var longitudinal=1.0
+                    if b.attributes["stretchable"]=="true",scale>0,
+                       let restStart=definition.points.first(where:{$0["id"]==String(start)}),
+                       let restEnd=definition.points.first(where:{$0["id"]==String(end)}),
+                       let ax=Double(restStart["x"] ?? ""),let ay=Double(restStart["y"] ?? ""),let bx=Double(restEnd["x"] ?? ""),let by=Double(restEnd["y"] ?? "") {
+                        let rest=hypot(bx-ax,by-ay)*scale
+                        if rest>0 {longitudinal=hypot(b.x-a.x,b.y-a.y)/rest}
+                    }
+                    c.saveGState();c.setAlpha(Double(unit.attributes["alpha"] ?? "1") ?? 1);c.translateBy(x:a.x,y:a.y);c.rotate(by:atan2(b.y-a.y,b.x-a.x));c.scaleBy(x:scale*longitudinal,y:flipped && part["flipped"] != "true" ? -scale:scale)
                     bitmap.draw(in:CGRect(x:Double(part["x_offset"] ?? "0") ?? 0,y:Double(part["y_offset"] ?? "0") ?? 0,width:bitmap.size.width,height:bitmap.size.height));c.restoreGState()
                 }
             } else {
@@ -157,7 +166,7 @@ final class SceneCanvas: UIView {
         } else if gesture.state == .changed {
             if let (i,j)=dragged {
                 let id=workspace.frame.units[i].joints[j].id
-                try? FrameManipulation.move(&workspace.document.frames[workspace.index],unitIndex:i,jointID:id,x:p.x-captureOffset.x,y:p.y-captureOffset.y)
+                try? FrameManipulation.move(&workspace.document.frames[workspace.index],unitIndex:i,jointID:id,x:p.x-captureOffset.x,y:p.y-captureOffset.y,stretch:stretch)
             } else {let d=gesture.translation(in:self);cameraOffset.x+=d.x;cameraOffset.y+=d.y;gesture.setTranslation(.zero,in:self)}
             before=p;setNeedsDisplay()
         } else {

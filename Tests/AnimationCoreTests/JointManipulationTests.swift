@@ -13,4 +13,11 @@ final class JointManipulationTests:XCTestCase {
         try JointManipulation.move(&unit,jointID:0,x:5,y:9)
         XCTAssertEqual(unit.joints[1].x,105);XCTAssertEqual(unit.joints[1].y,9)
     }
+    func testStretchModeMovesBranchButLeavesParentStationary()throws {
+        var unit=SceneUnit(name:"arm",joints:[Joint(id:0,x:0,y:0,parent:nil,attributes:["base":"true"]),Joint(id:1,x:100,y:0,parent:0,attributes:["stretchable":"true"]),Joint(id:2,x:150,y:0,parent:1,attributes:[:])],attributes:[:])
+        try JointManipulation.move(&unit,jointID:1,x:200,y:50,stretch:true)
+        XCTAssertEqual(unit.joints[0].x,0);XCTAssertEqual(unit.joints[0].y,0)
+        XCTAssertEqual(unit.joints[1].x,200);XCTAssertEqual(unit.joints[1].y,50)
+        XCTAssertEqual(unit.joints[2].x,250);XCTAssertEqual(unit.joints[2].y,50)
+    }
 }
