@@ -22,3 +22,10 @@ extension Workspace {
         return output
     }
 }
+
+extension Workspace {
+    func canInteract(with index:Int)->Bool {
+        guard let name=latchedUnitName,let selected=frame.units.firstIndex(where:{$0.name==name}) else{return true}
+        return UnitEditing.connected(in:frame,to:selected).contains(index)
+    }
+}

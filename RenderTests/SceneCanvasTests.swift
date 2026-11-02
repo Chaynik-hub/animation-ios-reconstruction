@@ -48,6 +48,24 @@ final class SceneCanvasTests: XCTestCase {
         XCTAssertTrue(handles.allSatisfy { $0.frame.width == 65 && canvas.bounds.contains($0.frame) })
         canvas.handles = false; canvas.updateTransformControls(); XCTAssertTrue(handles.allSatisfy(\.isHidden))
     }
+    func testBundledBackgroundsAndAssetAnimationReachRenderer() throws {
+        let workspace=Workspace()
+        XCTAssertEqual(workspace.backgroundCatalog.count,83)
+        for definition in workspace.backgroundCatalog {
+            XCTAssertTrue(FileManager.default.fileExists(atPath:Bundle.main.resourceURL!.appendingPathComponent("Content/"+definition.image).path))
+            XCTAssertTrue(FileManager.default.fileExists(atPath:Bundle.main.resourceURL!.appendingPathComponent("Content/"+definition.thumbnail).path))
+        }
+        workspace.document=SceneDocument(width:320,height:240,interframes:4,frames:[SceneFrame(id:0,units:[],attributes:[:])],attributes:[:]);workspace.index=0;workspace.selected=nil
+        let canvas=SceneCanvas(workspace)
+        let white=canvas.snapshot(size:CGSize(width:320,height:240)).pngData()
+        workspace.document.frames[0].attributes["nativeBackgroundID"]="common:bank"
+        XCTAssertNotEqual(canvas.snapshot(size:CGSize(width:320,height:240)).pngData(),white)
+        let item=try XCTUnwrap(workspace.catalog.first(where:{$0.name=="farid.things:semaphor"}))
+        let unit=item.unit(at:CGPoint(x:160,y:120));workspace.document.frames=(0..<4).map{SceneFrame(id:$0,units:[unit],attributes:[:])}
+        workspace.assetAnimations=[unit.name:AssetAnimation.Configuration(period:3,pingPong:true)]
+        XCTAssertEqual(workspace.applyAssetAnimations(to:workspace.frame,tick:2).units[0].attributes["state"],"1")
+        XCTAssertEqual(workspace.applyAssetAnimations(to:workspace.frame,tick:11).units[0].attributes["state"],"2")
+    }
     private func rgba(_ image: UIImage, x: Int, y: Int) throws -> [Int] {
         let cg = try XCTUnwrap(image.cgImage)
         let px = Int(CGFloat(x) * image.scale), py = Int(CGFloat(y) * image.scale)

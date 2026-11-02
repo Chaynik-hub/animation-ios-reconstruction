@@ -2,9 +2,12 @@ import UIKit
 
 extension EditorController {
     func mountContext(_ panel: UIView, width: CGFloat, unitMode: Bool = false) {
+        let oldID=toolPanel?.accessibilityIdentifier
+        let offset=(toolPanel?.subviews.first(where:{$0 is UIScrollView}) as? UIScrollView)?.contentOffset
         dismissTools(); panel.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(panel)
         NSLayoutConstraint.activate([panel.leadingAnchor.constraint(equalTo: sidebarScroll.trailingAnchor), panel.topAnchor.constraint(equalTo: view.topAnchor), panel.bottomAnchor.constraint(equalTo: view.bottomAnchor), panel.widthAnchor.constraint(equalToConstant: width)])
         toolPanel = panel; unitToolsActive = unitMode; shift.isHidden = true; if unitMode { highlightUnitTools(true) }
+        if oldID==panel.accessibilityIdentifier,let offset,let scroll=panel.subviews.first(where:{$0 is UIScrollView}) as? UIScrollView {view.layoutIfNeeded();scroll.setContentOffset(CGPoint(x:0,y:min(offset.y,max(0,scroll.contentSize.height-scroll.bounds.height))),animated:false)}
     }
     func highlightUnitTools(_ active: Bool) {
         guard let button=sidebar.arrangedSubviews[3] as? UIButton else{return};var config=button.configuration
@@ -34,6 +37,12 @@ extension EditorController {
         add("prop_rearrange_down", "Ниже", "props_up", enabled: rank > 0, action: { [weak self] in self?.rearrangeUnit(forward: false) })
         add("prop_copy", "Копировать", "props_copy", action: { [weak self] in
             guard let self, let selected = self.workspace.selected else { return }; self.unitClipboard = UnitEditing.snapshot(in: self.workspace.frame, selected: selected); self.workspace.selected = nil; self.update()
+        })
+        add("prop_lock",workspace.latchedUnitName == nil ? "Закрепить":"Отпустить",workspace.latchedUnitName == nil ? "props_lock_others":"props_unlock_others",action:{[weak self] in
+            guard let self,let selected=self.workspace.selected else{return}
+            if self.workspace.latchedUnitName != nil {self.workspace.latchedUnitName=nil;self.workspace.selected=nil}
+            else {var root=selected;var visited=Set<Int>();while visited.insert(root).inserted,let parent=FrameManipulation.attachment(self.workspace.frame.units[root])?.0,let index=self.workspace.frame.units.firstIndex(where:{$0.name==parent}) {root=index};self.workspace.latchedUnitName=self.workspace.frame.units[root].name;self.workspace.selected=root}
+            self.update()
         })
         add("unit_select_list", "Объекты", "props_close", action: { [weak self] in self?.workspace.selected = nil; self?.update() })
         let panel = FrameToolsPanel(commands: commands, accent: .original(0x00bd78), caption: title, identifier: "UnitPropertiesPanel", icons: icons)

@@ -35,12 +35,23 @@ final class BackgroundChooserController: UIViewController, UITableViewDataSource
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) { select(visible[indexPath.item]) }
 }
 
-extension Workspace {
-    var backgroundCatalog: [BackgroundDefinition] { guard let url = Bundle.main.resourceURL?.appendingPathComponent("Content/backgrounds.json"), let data = try? Data(contentsOf: url) else { return [] }; return (try? JSONDecoder().decode([BackgroundDefinition].self, from: data)) ?? [] }
+private enum BackgroundAssets {
+    static let definitions: [BackgroundDefinition] = {
+        guard let url=Bundle.main.resourceURL?.appendingPathComponent("Content/backgrounds.json"),let data=try? Data(contentsOf:url) else{return []}
+        return (try? JSONDecoder().decode([BackgroundDefinition].self,from:data)) ?? []
+    }()
+    static let cache: NSCache<NSString,UIImage> = {let cache=NSCache<NSString,UIImage>();cache.countLimit=3;cache.totalCostLimit=64*1024*1024;return cache}()
+    static func image(_ definition: BackgroundDefinition) -> UIImage? {
+        if let image=cache.object(forKey:definition.id as NSString){return image}
+        guard let url=Bundle.main.resourceURL?.appendingPathComponent("Content/"+definition.image),let image=UIImage(contentsOfFile:url.path) else{return nil}
+        let cost=(image.cgImage?.bytesPerRow ?? 0)*(image.cgImage?.height ?? 0)
+        cache.setObject(image,forKey:definition.id as NSString,cost:cost);return image
+    }
 }
+extension Workspace {var backgroundCatalog: [BackgroundDefinition] {BackgroundAssets.definitions}}
 extension SceneCanvas {
     func paintBackground(_ frame: SceneFrame, in context: CGContext) {
-        guard let id = frame.attributes["nativeBackgroundID"], let definition = workspace.backgroundCatalog.first(where: { $0.id == id }), let image = image(definition.image) else { return }
+        guard let id = frame.attributes["nativeBackgroundID"], let definition = workspace.backgroundCatalog.first(where: { $0.id == id }), let image = BackgroundAssets.image(definition) else { return }
         let area = CGSize(width: workspace.document.width, height: workspace.document.height)
         let scale = max(area.width / image.size.width, area.height / image.size.height)
         image.draw(in: CGRect(x: (area.width - image.size.width * scale) / 2, y: (area.height - image.size.height * scale) / 2, width: image.size.width * scale, height: image.size.height * scale))

@@ -28,6 +28,7 @@ final class Workspace {
     var document = SceneDocument(width:960,height:540,interframes:4,frames:[SceneFrame(id:0,units:[],attributes:[:])],attributes:[:])
     var index = 0
     var selected: Int?
+    var latchedUnitName: String?
     var history: [SceneDocument] = []
     var future: [SceneDocument] = []
     let bundledCatalog = (try? JSONDecoder().decode([ArtworkDefinition].self,from:Data(contentsOf:Bundle.main.resourceURL!.appendingPathComponent("Content/catalog.json")))) ?? []
@@ -178,7 +179,8 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         let point = CGPoint(x: (screen.x - origin.x) / ratio, y: (screen.y - origin.y) / ratio)
         var distance = 22 / ratio
         var selected: Int?
-        for i in UnitEditing.orderedIndices(in: workspace.frame).reversed() {
+    var latchedUnitName: String?
+        for i in UnitEditing.orderedIndices(in: workspace.frame).reversed() where workspace.canInteract(with:i) {
             guard let base = workspace.frame.units[i].joints.first(where: { $0.attributes["base"] == "true" }) else { continue }
             let value = hypot(base.x - point.x, base.y - point.y)
             if value < distance { distance = value; selected = i }
@@ -287,7 +289,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         let screen=gesture.location(in:self);let p=CGPoint(x:(screen.x-origin.x)/ratio,y:(screen.y-origin.y)/ratio)
         if gesture.state == .began {
             var distance=30/ratio
-            for (i,unit) in workspace.frame.units.enumerated(){for (j,joint) in unit.joints.enumerated(){let d=hypot(joint.x-p.x,joint.y-p.y);if d<distance && (joint.attributes["fixed"] != "true" || joint.attributes["base"]=="true"){distance=d;dragged=(i,j)}}}
+            for (i,unit) in workspace.frame.units.enumerated() where workspace.canInteract(with:i) {for (j,joint) in unit.joints.enumerated(){let d=hypot(joint.x-p.x,joint.y-p.y);if d<distance && (joint.attributes["fixed"] != "true" || joint.attributes["base"]=="true"){distance=d;dragged=(i,j)}}}
             before=p;if let target=dragged{let captured=workspace.frame.units[target.0].joints[target.1];captureOffset=CGPoint(x:p.x-captured.x,y:p.y-captured.y);workspace.checkpoint();workspace.selected=target.0}
         } else if gesture.state == .changed {
             if let (i,j)=dragged {
