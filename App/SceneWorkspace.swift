@@ -83,6 +83,7 @@ final class SceneCanvas: UIView {
     var cameraOffset = CGPoint.zero
     private var dragged: (Int,Int)?
     private var before = CGPoint.zero
+    private var captureOffset = CGPoint.zero
     init(_ workspace:Workspace) {self.workspace=workspace;super.init(frame:.zero);isOpaque=true;addGestureRecognizer(UIPanGestureRecognizer(target:self,action:#selector(pan(_:))));addGestureRecognizer(UIPinchGestureRecognizer(target:self,action:#selector(pinch(_:))))}
     required init?(coder:NSCoder){fatalError()}
     var viewport: CGRect {bounds.insetBy(dx:12,dy:12)}
@@ -124,11 +125,11 @@ final class SceneCanvas: UIView {
         if gesture.state == .began {
             var distance=30/ratio
             for (i,unit) in workspace.frame.units.enumerated(){for (j,joint) in unit.joints.enumerated(){let d=hypot(joint.x-p.x,joint.y-p.y);if d<distance && (joint.attributes["fixed"] != "true" || joint.attributes["base"]=="true"){distance=d;dragged=(i,j)}}}
-            before=p;if let target=dragged{workspace.checkpoint();workspace.selected=target.0}
+            before=p;if let target=dragged{let captured=workspace.frame.units[target.0].joints[target.1];captureOffset=CGPoint(x:p.x-captured.x,y:p.y-captured.y);workspace.checkpoint();workspace.selected=target.0}
         } else if gesture.state == .changed {
             if let (i,j)=dragged {
                 let id=workspace.frame.units[i].joints[j].id
-                try? JointManipulation.move(&workspace.document.frames[workspace.index].units[i],jointID:id,x:p.x,y:p.y)
+                try? JointManipulation.move(&workspace.document.frames[workspace.index].units[i],jointID:id,x:p.x-captureOffset.x,y:p.y-captureOffset.y)
             } else {let d=gesture.translation(in:self);cameraOffset.x+=d.x;cameraOffset.y+=d.y;gesture.setTranslation(.zero,in:self)}
             before=p;setNeedsDisplay()
         } else {dragged=nil;workspace.notify()}

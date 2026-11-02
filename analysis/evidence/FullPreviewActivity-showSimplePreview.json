@@ -1,0 +1,130 @@
+{
+  "evidence_id": "ev_aa0067835c2e5612cde219fbfd40bbf621ba11f4924dccc9fbcfd0b6c49f1d0e",
+  "subject": {
+    "name": "com.zalivka.animation2_397.apk",
+    "digest": {
+      "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+    },
+    "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "jadx",
+    "name": "JADX headless",
+    "version": "0.7.1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_android_method",
+  "parameters": {
+    "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "class_name": "ru.jecklandin.stickman.features.preview.FullPreviewActivity",
+    "method_name": "showSimplePreview"
+  },
+  "raw_result": {
+    "server": {
+      "name": "rea-jadx-bridge",
+      "version": "7"
+    },
+    "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+    "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "loaded": {
+      "state": "LOADED",
+      "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-79e315e49f006312818d99136c933019\\target.apk",
+      "class_count": 47382,
+      "resource_count": 4573,
+      "threads": 1,
+      "resources": "full"
+    },
+    "calls": [
+      {
+        "operation": "rea_jvm_status",
+        "input": {},
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"java_version\":\"21.0.13\",\"available_processors\":8,\"engine_reported_version\":\"0.7.1\",\"metadata_scope\":\"parsed_members\",\"max_heap_bytes\":4286578688}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_class_summary",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.features.preview.FullPreviewActivity"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"full_name\":\"ru.jecklandin.stickman.features.preview.FullPreviewActivity\",\"method_count\":23,\"raw_name\":\"ru.jecklandin.stickman.features.preview.FullPreviewActivity\",\"fields\":[{\"def_pos\":0,\"name\":\"DEBUG_FORCE_INTERSTITIAL\",\"type\":\"boolean\"},{\"def_pos\":0,\"name\":\"EXTRA_AUTOEXIT\",\"type\":\"java.lang.String\"},{\"def_pos\":0,\"name\":\"EXTRA_END\",\"type\":\"java.lang.String\"},{\"def_pos\":0,\"name\":\"EXTRA_MOTION_GRAPH_SOURCE\",\"type\":\"java.lang.String\"},{\"def_pos\":0,\"name\":\"EXTRA_NOADS\",\"type\":\"java.lang.String\"},{\"def_pos\":0,\"name\":\"EXTRA_START\",\"type\":\"java.lang.String\"},{\"def_pos\":0,\"name\":\"EXTRA_VARSPEEDS\",\"type\":\"java.lang.String\"},{\"def_pos\":0,\"name\":\"GRAPH_SOURCE_BACKGROUND_MOVE\",\"type\":\"java.lang.String\"},{\"def_pos\":0,\"name\":\"GRAPH_SOURCE_CAMERA_MOVE\",\"type\":\"java.lang.String\"},{\"def_pos\":0,\"name\":\"GRAPH_SOURCE_CAMERA_SCALE\",\"type\":\"java.lang.String\"},{\"def_pos\":0,\"name\":\"GRAPH_SOURCE_UNIT\",\"type\":\"java.lang.String\"},{\"def_pos\":0,\"name\":\"TAG\",\"type\":\"java.lang.String\"},{\"def_pos\":0,\"name\":\"mAutoExit\",\"type\":\"boolean\"},{\"def_pos\":0,\"name\":\"mBoneToggle\",\"type\":\"android.widget.Button\"},{\"def_pos\":0,\"name\":\"mCartoonStage\",\"type\":\"ru.jecklandin.stickman.CartoonStage\"},{\"def_pos\":0,\"name\":\"mMotionGraph\",\"type\":\"com.zalivka.commons.utils.ui.FullscreenHint\"},{\"def_pos\":0,\"name\":\"mShowBones\",\"type\":\"boolean\"},{\"def_pos\":0,\"name\":\"mSimplePreviewFragment\",\"type\":\"ru.jecklandin.stickman.features.preview.SimplePreviewFragment\"},{\"def_pos\":0,\"name\":\"mSimplePreviewPresenter\",\"type\":\"ru.jecklandin.stickman.features.preview.SimplePreviewPresenter\"},{\"def_pos\":0,\"name\":\"mTryInterstitial\",\"type\":\"boolean\"},{\"def_pos\":0,\"name\":\"mVarSpeedFragment\",\"type\":\"ru.jecklandin.stickman.features.preview.VarSpeedFragment\"},{\"def_pos\":0,\"name\":\"mVarSpeedPresenter\",\"type\":\"ru.jecklandin.stickman.features.preview.VarSpeedPresenter\"}],\"methods\":[{\"def_pos\":0,\"name\":\"$r8$lambda$kmZ5N4Ecu6JKKtwsRAp_zCUEquM\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/preview/FullPreviewActivity;Lru/jecklandin/stickman/units/Scene;II)V\",\"signature\":\"$r8$lambda$kmZ5N4Ecu6JKKtwsRAp_zCUEquM(ru.jecklandin.stickman.features.preview.FullPreviewActivity, ru.jecklandin.stickman.units.Scene, int, int): void\"},{\"def_pos\":0,\"name\":\"\\u003cinit\\u003e\",\"is_constructor\":true,\"dex_descriptor\":\"()V\",\"signature\":\"\\u003cinit\\u003e(): void\"},{\"def_pos\":0,\"name\":\"applyBoneVisibility\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"applyBoneVisibility(): void\"},{\"def_pos\":0,\"name\":\"hideBoneToggleUi\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"hideBoneToggleUi(): void\"},{\"def_pos\":0,\"name\":\"hideMotionGraphUi\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"hideMotionGraphUi(): void\"},{\"def_pos\":0,\"name\":\"isMotionGraphUiVisible\",\"is_constructor\":false,\"dex_descriptor\":\"()Z\",\"signature\":\"isMotionGraphUiVisible(): boolean\"},{\"def_pos\":0,\"name\":\"isPreviewGraphEnabled\",\"is_constructor\":false,\"dex_descriptor\":\"()Z\",\"signature\":\"isPreviewGraphEnabled(): boolean\"},{\"def_pos\":0,\"name\":\"lambda$scheduleMotionGraphIfEnabled$0\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;II)V\",\"signature\":\"lambda$scheduleMotionGraphIfEnabled$0(ru.jecklandin.stickman.units.Scene, int, int): void\"},{\"def_pos\":0,\"name\":\"m14545$$Nest$fgetmCartoonStage\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/preview/FullPreviewActivity;)Lru/jecklandin/stickman/CartoonStage;\",\"signature\":\"m14545$$Nest$fgetmCartoonStage(ru.jecklandin.stickman.features.preview.FullPreviewActivity): ru.jecklandin.stickman.CartoonStage\"},{\"def_pos\":0,\"name\":\"onBackPressed\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"onBackPressed(): void\"},{\"def_pos\":0,\"name\":\"onCreate\",\"is_constructor\":false,\"dex_descriptor\":\"(Landroid/os/Bundle;)V\",\"signature\":\"onCreate(android.os.Bundle): void\"},{\"def_pos\":0,\"name\":\"onDestroy\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"onDestroy(): void\"},{\"def_pos\":0,\"name\":\"onMessageEvent\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/preview/events/OnPlaybackFinishedNaturallyEvent;)V\",\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.preview.events.OnPlaybackFinishedNaturallyEvent): void\"},{\"def_pos\":0,\"name\":\"onPause\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"onPause(): void\"},{\"def_pos\":0,\"name\":\"onResume\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"onResume(): void\"},{\"def_pos\":0,\"name\":\"onSaveInstanceState\",\"is_constructor\":false,\"dex_descriptor\":\"(Landroid/os/Bundle;)V\",\"signature\":\"onSaveInstanceState(android.os.Bundle): void\"},{\"def_pos\":0,\"name\":\"onStart\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"onStart(): void\"},{\"def_pos\":0,\"name\":\"scheduleMotionGraphIfEnabled\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;II)V\",\"signature\":\"scheduleMotionGraphIfEnabled(ru.jecklandin.stickman.units.Scene, int, int): void\"},{\"def_pos\":0,\"name\":\"setupBoneToggle\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"setupBoneToggle(): void\"},{\"def_pos\":0,\"name\":\"showMotionGraphIfEnabled\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;II)V\",\"signature\":\"showMotionGraphIfEnabled(ru.jecklandin.stickman.units.Scene, int, int): void\"},{\"def_pos\":0,\"name\":\"showSimplePreview\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/CartoonStage;Z)V\",\"signature\":\"showSimplePreview(ru.jecklandin.stickman.CartoonStage, boolean): void\"},{\"def_pos\":0,\"name\":\"showVarSpeed\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/CartoonStage;)V\",\"signature\":\"showVarSpeed(ru.jecklandin.stickman.CartoonStage): void\"},{\"def_pos\":0,\"name\":\"updateBoneToggleUi\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"updateBoneToggleUi(): void\"}],\"inner_classes\":[\"ru.jecklandin.stickman.features.preview.FullPreviewActivity.AnonymousClass1\"],\"inner_class_count\":1,\"name\":\"FullPreviewActivity\",\"field_count\":22}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_method_body",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.features.preview.FullPreviewActivity",
+          "method_name": "showSimplePreview",
+          "overload_index": 0,
+          "smali_fallback": true
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"fell_back\":false,\"full_name\":\"ru.jecklandin.stickman.features.preview.FullPreviewActivity.showSimplePreview\",\"overload_index\":0,\"method_name\":\"showSimplePreview\",\"overload_count\":1,\"dex_descriptor\":\"(Lru/jecklandin/stickman/CartoonStage;Z)V\",\"class_name\":\"ru.jecklandin.stickman.features.preview.FullPreviewActivity\",\"mode\":\"java\",\"body\":\"    private void showSimplePreview(CartoonStage stage, boolean noBanner) {\\r\\n        SimplePreviewFragment simplePreviewAdsFragment;\\r\\n        this.mAutoExit \\u003d getIntent().getBooleanExtra(EXTRA_AUTOEXIT, false);\\r\\n        Scene currentScene \\u003d SceneManager.getInstance().getCurrentScene();\\r\\n        int intExtra \\u003d getIntent().getIntExtra(EXTRA_START, 0);\\r\\n        int intExtra2 \\u003d getIntent().getIntExtra(EXTRA_END, currentScene.getFramesNumber() - 1);\\r\\n        SimplePreviewPresenter simplePreviewPresenter \\u003d new SimplePreviewPresenter(stage, intExtra, intExtra2, new AbstractPreviewPresenter.IPlaybackCallback() { // from class: ru.jecklandin.stickman.features.preview.FullPreviewActivity.1\\r\\n            final AudioPlaybackUseCase mPlayback;\\r\\n\\r\\n            {\\r\\n                this.mPlayback \\u003d new AudioPlaybackUseCase(FullPreviewActivity.this.mCartoonStage.audio());\\r\\n            }\\r\\n\\r\\n            @Override // ru.jecklandin.stickman.features.preview.AbstractPreviewPresenter.IPlaybackCallback\\r\\n            public void onStopped() {\\r\\n                this.mPlayback.stop();\\r\\n            }\\r\\n\\r\\n            @Override // ru.jecklandin.stickman.features.preview.AbstractPreviewPresenter.IPlaybackCallback\\r\\n            public void onStarted(@Nonnull Scene movie, int startIndex) {\\r\\n                this.mPlayback.startAt((long) (Math.max(0, startIndex) * 16.666666f));\\r\\n            }\\r\\n        });\\r\\n        this.mSimplePreviewPresenter \\u003d simplePreviewPresenter;\\r\\n        if (noBanner) {\\r\\n            simplePreviewAdsFragment \\u003d SimplePreviewFragment.getInstance(simplePreviewPresenter);\\r\\n        } else {\\r\\n            simplePreviewAdsFragment \\u003d SimplePreviewAdsFragment.getInstance(simplePreviewPresenter);\\r\\n        }\\r\\n        this.mSimplePreviewFragment \\u003d simplePreviewAdsFragment;\\r\\n        getSupportFragmentManager().beginTransaction().add(R.id.container, this.mSimplePreviewFragment).commit();\\r\\n        setupBoneToggle();\\r\\n        scheduleMotionGraphIfEnabled(currentScene, intExtra, intExtra2);\\r\\n        this.mSimplePreviewPresenter.onGenerateRequested();\\r\\n    }\",\"markers\":[]}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    ]
+  },
+  "normalized_result": {
+    "engine": {
+      "name": "jadx-headless-mcp",
+      "version": "0.7.1",
+      "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+      "worker_count": 1,
+      "heap_limit_mib": 4088
+    },
+    "class_name": "ru.jecklandin.stickman.features.preview.FullPreviewActivity",
+    "method": {
+      "name": "showSimplePreview",
+      "reported_signature": "showSimplePreview(ru.jecklandin.stickman.CartoonStage, boolean): void",
+      "overload_index": 0,
+      "is_constructor": false,
+      "dex_descriptor": "(Lru/jecklandin/stickman/CartoonStage;Z)V"
+    },
+    "overload_count": 1,
+    "representation": "java",
+    "body_status": "available",
+    "fell_back": false,
+    "markers": [],
+    "source": {
+      "status": "complete",
+      "text": "    private void showSimplePreview(CartoonStage stage, boolean noBanner) {\r\n        SimplePreviewFragment simplePreviewAdsFragment;\r\n        this.mAutoExit = getIntent().getBooleanExtra(EXTRA_AUTOEXIT, false);\r\n        Scene currentScene = SceneManager.getInstance().getCurrentScene();\r\n        int intExtra = getIntent().getIntExtra(EXTRA_START, 0);\r\n        int intExtra2 = getIntent().getIntExtra(EXTRA_END, currentScene.getFramesNumber() - 1);\r\n        SimplePreviewPresenter simplePreviewPresenter = new SimplePreviewPresenter(stage, intExtra, intExtra2, new AbstractPreviewPresenter.IPlaybackCallback() { // from class: ru.jecklandin.stickman.features.preview.FullPreviewActivity.1\r\n            final AudioPlaybackUseCase mPlayback;\r\n\r\n            {\r\n                this.mPlayback = new AudioPlaybackUseCase(FullPreviewActivity.this.mCartoonStage.audio());\r\n            }\r\n\r\n            @Override // ru.jecklandin.stickman.features.preview.AbstractPreviewPresenter.IPlaybackCallback\r\n            public void onStopped() {\r\n                this.mPlayback.stop();\r\n            }\r\n\r\n            @Override // ru.jecklandin.stickman.features.preview.AbstractPreviewPresenter.IPlaybackCallback\r\n            public void onStarted(@Nonnull Scene movie, int startIndex) {\r\n                this.mPlayback.startAt((long) (Math.max(0, startIndex) * 16.666666f));\r\n            }\r\n        });\r\n        this.mSimplePreviewPresenter = simplePreviewPresenter;\r\n        if (noBanner) {\r\n            simplePreviewAdsFragment = SimplePreviewFragment.getInstance(simplePreviewPresenter);\r\n        } else {\r\n            simplePreviewAdsFragment = SimplePreviewAdsFragment.getInstance(simplePreviewPresenter);\r\n        }\r\n        this.mSimplePreviewFragment = simplePreviewAdsFragment;\r\n        getSupportFragmentManager().beginTransaction().add(R.id.container, this.mSimplePreviewFragment).commit();\r\n        setupBoneToggle();\r\n        scheduleMotionGraphIfEnabled(currentScene, intExtra, intExtra2);\r\n        this.mSimplePreviewPresenter.onGenerateRequested();\r\n    }",
+      "reported_total_bytes": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

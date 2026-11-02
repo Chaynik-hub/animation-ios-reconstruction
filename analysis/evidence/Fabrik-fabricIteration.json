@@ -1,0 +1,130 @@
+{
+  "evidence_id": "ev_f0657cdfe8e1493332e6a8a53b105e8198456bcee68bc9201617b6d7cfed4053",
+  "subject": {
+    "name": "com.zalivka.animation2_397.apk",
+    "digest": {
+      "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+    },
+    "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "jadx",
+    "name": "JADX headless",
+    "version": "0.7.1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_android_method",
+  "parameters": {
+    "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "class_name": "ru.jecklandin.stickman.units.kinematics.Fabrik",
+    "method_name": "fabricIteration"
+  },
+  "raw_result": {
+    "server": {
+      "name": "rea-jadx-bridge",
+      "version": "7"
+    },
+    "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+    "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "loaded": {
+      "state": "LOADED",
+      "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-a6352b5e3ebe1f31df112dae6848ccdc\\target.apk",
+      "class_count": 47382,
+      "resource_count": 4573,
+      "threads": 1,
+      "resources": "full"
+    },
+    "calls": [
+      {
+        "operation": "rea_jvm_status",
+        "input": {},
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"max_heap_bytes\":4286578688,\"metadata_scope\":\"parsed_members\",\"engine_reported_version\":\"0.7.1\",\"available_processors\":8,\"java_version\":\"21.0.13\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_class_summary",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.units.kinematics.Fabrik"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"full_name\":\"ru.jecklandin.stickman.units.kinematics.Fabrik\",\"field_count\":3,\"name\":\"Fabrik\",\"inner_class_count\":1,\"inner_classes\":[\"ru.jecklandin.stickman.units.kinematics.Fabrik.Bone\"],\"methods\":[{\"def_pos\":0,\"signature\":\"\\u003cclinit\\u003e(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"\\u003cclinit\\u003e\"},{\"def_pos\":0,\"signature\":\"\\u003cinit\\u003e(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":true,\"name\":\"\\u003cinit\\u003e\"},{\"def_pos\":0,\"signature\":\"close(ru.jecklandin.stickman.units.UPoint, android.graphics.PointF): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;Landroid/graphics/PointF;)Z\",\"is_constructor\":false,\"name\":\"close\"},{\"def_pos\":0,\"signature\":\"constraintHit(ru.jecklandin.stickman.units.UPoint): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)Z\",\"is_constructor\":false,\"name\":\"constraintHit\"},{\"def_pos\":0,\"signature\":\"constraintsMet(ru.jecklandin.stickman.units.UPoint): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)Z\",\"is_constructor\":false,\"name\":\"constraintsMet\"},{\"def_pos\":0,\"signature\":\"fabricIteration(java.util.List\\u003cru.jecklandin.stickman.units.kinematics.Fabrik$Bone\\u003e, android.graphics.PointF, android.graphics.PointF): void\",\"dex_descriptor\":\"(Ljava/util/List;Landroid/graphics/PointF;Landroid/graphics/PointF;)V\",\"is_constructor\":false,\"name\":\"fabricIteration\"},{\"def_pos\":0,\"signature\":\"kinStop(ru.jecklandin.stickman.units.UPoint): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)Z\",\"is_constructor\":false,\"name\":\"kinStop\"},{\"def_pos\":0,\"signature\":\"pathToRoot(ru.jecklandin.stickman.units.UPoint): java.util.List\\u003cru.jecklandin.stickman.units.kinematics.Fabrik$Bone\\u003e\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)Ljava/util/List;\",\"is_constructor\":false,\"name\":\"pathToRoot\"},{\"def_pos\":0,\"signature\":\"root(ru.jecklandin.stickman.units.UPoint): ru.jecklandin.stickman.units.UPoint\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)Lru/jecklandin/stickman/units/UPoint;\",\"is_constructor\":false,\"name\":\"root\"},{\"def_pos\":0,\"signature\":\"solve(ru.jecklandin.stickman.units.UPoint, float, float): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;FF)Z\",\"is_constructor\":false,\"name\":\"solve\"},{\"def_pos\":0,\"signature\":\"updateStaticDescendants(java.util.List\\u003cru.jecklandin.stickman.units.kinematics.Fabrik$Bone\\u003e): void\",\"dex_descriptor\":\"(Ljava/util/List;)V\",\"is_constructor\":false,\"name\":\"updateStaticDescendants\"}],\"fields\":[{\"type\":\"float\",\"name\":\"EPSILON\",\"def_pos\":0},{\"type\":\"float\",\"name\":\"ITERATION_IMPROVE_LIMIT\",\"def_pos\":0},{\"type\":\"android.graphics.Matrix\",\"name\":\"OPS\",\"def_pos\":0}],\"raw_name\":\"ru.jecklandin.stickman.units.kinematics.Fabrik\",\"method_count\":11}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_method_body",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.units.kinematics.Fabrik",
+          "method_name": "fabricIteration",
+          "overload_index": 0,
+          "smali_fallback": true
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"fell_back\":false,\"markers\":[],\"body\":\"    private static void fabricIteration(List\\u003cBone\\u003e bones, PointF b, PointF target) {\\r\\n        PointF pointF;\\r\\n        PointF pointF2;\\r\\n        UPoint uPoint \\u003d bones.get(0).end;\\r\\n        UPoint uPoint2 \\u003d bones.get(bones.size() - 1).start;\\r\\n        uPoint.x \\u003d target.x;\\r\\n        uPoint.y \\u003d target.y;\\r\\n        uPoint.orientation \\u003d bones.get(0).orientation();\\r\\n        for (Bone bone : bones) {\\r\\n            bone.start.orientation \\u003d bone.orientation();\\r\\n            if (bone.end.minConstraintMet() \\u0026\\u0026 bone.end.maxConstraintMet()) {\\r\\n                float fDistance \\u003d bone.originalLength / bone.start.distance(bone.end);\\r\\n                float f \\u003d 1.0f - fDistance;\\r\\n                bone.start.x \\u003d (bone.end.x * f) + (bone.start.x * fDistance);\\r\\n                bone.start.y \\u003d (f * bone.end.y) + (fDistance * bone.start.y);\\r\\n            } else {\\r\\n                if (!bone.end.maxConstraintMet()) {\\r\\n                    double dNormalizeAngle \\u003d MathUtils.normalizeAngle(bone.end.orientation - bone.end.getMaxRotation(), 0.0f);\\r\\n                    pointF2 \\u003d new PointF(-((float) Math.cos(dNormalizeAngle)), -((float) Math.sin(dNormalizeAngle)));\\r\\n                } else if (!bone.end.minConstraintMet()) {\\r\\n                    double dNormalizeAngle2 \\u003d MathUtils.normalizeAngle(bone.end.orientation - bone.end.getMinRotation(), 0.0f);\\r\\n                    pointF2 \\u003d new PointF(-((float) Math.cos(dNormalizeAngle2)), -((float) Math.sin(dNormalizeAngle2)));\\r\\n                } else {\\r\\n                    throw new AssertionError(\\\"Unexpected rotation state: \\\" + bone.end);\\r\\n                }\\r\\n                bone.start.x \\u003d bone.end.x + (pointF2.x * bone.originalLength);\\r\\n                bone.start.y \\u003d bone.end.y + (pointF2.y * bone.originalLength);\\r\\n                bone.start.orientation \\u003d bone.orientation();\\r\\n                if (!bone.end.maxConstraintMet() || !bone.end.minConstraintMet()) {\\r\\n                    throw new AssertionError(\\\"Constraint still violated after forward adjustment rotation\\u003d\\\" + bone.end.rotation() + \\\", updated bone\\u003d\\\" + bone);\\r\\n                }\\r\\n            }\\r\\n            bone.start.orientation \\u003d bone.orientation();\\r\\n            if (!bone.end.maxConstraintMet() || !bone.end.minConstraintMet()) {\\r\\n                throw new AssertionError(\\\"Constraint still violated after forward adjustment rotation\\u003d\\\" + bone.end.rotation() + \\\", updated bone\\u003d\\\" + bone);\\r\\n            }\\r\\n        }\\r\\n        uPoint2.x \\u003d b.x;\\r\\n        uPoint2.y \\u003d b.y;\\r\\n        ListIterator\\u003cBone\\u003e listIterator \\u003d bones.listIterator(bones.size());\\r\\n        while (listIterator.hasPrevious()) {\\r\\n            Bone bonePrevious \\u003d listIterator.previous();\\r\\n            bonePrevious.start.orientation \\u003d bonePrevious.orientation();\\r\\n            if (bonePrevious.start.minConstraintMet() \\u0026\\u0026 bonePrevious.start.maxConstraintMet()) {\\r\\n                float fDistance2 \\u003d bonePrevious.originalLength / bonePrevious.start.distance(bonePrevious.end);\\r\\n                float f2 \\u003d 1.0f - fDistance2;\\r\\n                bonePrevious.end.x \\u003d (bonePrevious.start.x * f2) + (bonePrevious.end.x * fDistance2);\\r\\n                bonePrevious.end.y \\u003d (f2 * bonePrevious.start.y) + (fDistance2 * bonePrevious.end.y);\\r\\n            } else {\\r\\n                if (bonePrevious.start \\u003d\\u003d uPoint2) {\\r\\n                    throw new AssertionError(\\\"Orientation constraint triggered on the root node\\\");\\r\\n                }\\r\\n                if (!bonePrevious.start.maxConstraintMet()) {\\r\\n                    double dNormalizeAngle3 \\u003d MathUtils.normalizeAngle(bonePrevious.start.getParent().orientation + bonePrevious.start.getMaxRotation(), 0.0f);\\r\\n                    pointF \\u003d new PointF((float) Math.cos(dNormalizeAngle3), (float) Math.sin(dNormalizeAngle3));\\r\\n                } else if (!bonePrevious.start.minConstraintMet()) {\\r\\n                    double dNormalizeAngle4 \\u003d MathUtils.normalizeAngle(bonePrevious.start.getParent().orientation + bonePrevious.start.getMinRotation(), 0.0f);\\r\\n                    pointF \\u003d new PointF((float) Math.cos(dNormalizeAngle4), (float) Math.sin(dNormalizeAngle4));\\r\\n                } else {\\r\\n                    throw new AssertionError(\\\"Unexpected rotation state: \\\" + bonePrevious.end);\\r\\n                }\\r\\n                bonePrevious.end.x \\u003d bonePrevious.start.x + (pointF.x * bonePrevious.originalLength);\\r\\n                bonePrevious.end.y \\u003d bonePrevious.start.y + (pointF.y * bonePrevious.originalLength);\\r\\n            }\\r\\n            bonePrevious.start.orientation \\u003d bonePrevious.orientation();\\r\\n            if (!bonePrevious.start.maxConstraintMet() || !bonePrevious.start.minConstraintMet()) {\\r\\n                throw new AssertionError(\\\"Constraint still violated after backward adjustment rotation\\u003d\\\" + bonePrevious.start.rotation() + \\\", updated bone\\u003d\\\" + bonePrevious);\\r\\n            }\\r\\n        }\\r\\n    }\",\"mode\":\"java\",\"class_name\":\"ru.jecklandin.stickman.units.kinematics.Fabrik\",\"dex_descriptor\":\"(Ljava/util/List;Landroid/graphics/PointF;Landroid/graphics/PointF;)V\",\"overload_count\":1,\"method_name\":\"fabricIteration\",\"overload_index\":0,\"full_name\":\"ru.jecklandin.stickman.units.kinematics.Fabrik.fabricIteration\"}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    ]
+  },
+  "normalized_result": {
+    "engine": {
+      "name": "jadx-headless-mcp",
+      "version": "0.7.1",
+      "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+      "worker_count": 1,
+      "heap_limit_mib": 4088
+    },
+    "class_name": "ru.jecklandin.stickman.units.kinematics.Fabrik",
+    "method": {
+      "name": "fabricIteration",
+      "reported_signature": "fabricIteration(java.util.List<ru.jecklandin.stickman.units.kinematics.Fabrik$Bone>, android.graphics.PointF, android.graphics.PointF): void",
+      "overload_index": 0,
+      "is_constructor": false,
+      "dex_descriptor": "(Ljava/util/List;Landroid/graphics/PointF;Landroid/graphics/PointF;)V"
+    },
+    "overload_count": 1,
+    "representation": "java",
+    "body_status": "available",
+    "fell_back": false,
+    "markers": [],
+    "source": {
+      "status": "complete",
+      "text": "    private static void fabricIteration(List<Bone> bones, PointF b, PointF target) {\r\n        PointF pointF;\r\n        PointF pointF2;\r\n        UPoint uPoint = bones.get(0).end;\r\n        UPoint uPoint2 = bones.get(bones.size() - 1).start;\r\n        uPoint.x = target.x;\r\n        uPoint.y = target.y;\r\n        uPoint.orientation = bones.get(0).orientation();\r\n        for (Bone bone : bones) {\r\n            bone.start.orientation = bone.orientation();\r\n            if (bone.end.minConstraintMet() && bone.end.maxConstraintMet()) {\r\n                float fDistance = bone.originalLength / bone.start.distance(bone.end);\r\n                float f = 1.0f - fDistance;\r\n                bone.start.x = (bone.end.x * f) + (bone.start.x * fDistance);\r\n                bone.start.y = (f * bone.end.y) + (fDistance * bone.start.y);\r\n            } else {\r\n                if (!bone.end.maxConstraintMet()) {\r\n                    double dNormalizeAngle = MathUtils.normalizeAngle(bone.end.orientation - bone.end.getMaxRotation(), 0.0f);\r\n                    pointF2 = new PointF(-((float) Math.cos(dNormalizeAngle)), -((float) Math.sin(dNormalizeAngle)));\r\n                } else if (!bone.end.minConstraintMet()) {\r\n                    double dNormalizeAngle2 = MathUtils.normalizeAngle(bone.end.orientation - bone.end.getMinRotation(), 0.0f);\r\n                    pointF2 = new PointF(-((float) Math.cos(dNormalizeAngle2)), -((float) Math.sin(dNormalizeAngle2)));\r\n                } else {\r\n                    throw new AssertionError(\"Unexpected rotation state: \" + bone.end);\r\n                }\r\n                bone.start.x = bone.end.x + (pointF2.x * bone.originalLength);\r\n                bone.start.y = bone.end.y + (pointF2.y * bone.originalLength);\r\n                bone.start.orientation = bone.orientation();\r\n                if (!bone.end.maxConstraintMet() || !bone.end.minConstraintMet()) {\r\n                    throw new AssertionError(\"Constraint still violated after forward adjustment rotation=\" + bone.end.rotation() + \", updated bone=\" + bone);\r\n                }\r\n            }\r\n            bone.start.orientation = bone.orientation();\r\n            if (!bone.end.maxConstraintMet() || !bone.end.minConstraintMet()) {\r\n                throw new AssertionError(\"Constraint still violated after forward adjustment rotation=\" + bone.end.rotation() + \", updated bone=\" + bone);\r\n            }\r\n        }\r\n        uPoint2.x = b.x;\r\n        uPoint2.y = b.y;\r\n        ListIterator<Bone> listIterator = bones.listIterator(bones.size());\r\n        while (listIterator.hasPrevious()) {\r\n            Bone bonePrevious = listIterator.previous();\r\n            bonePrevious.start.orientation = bonePrevious.orientation();\r\n            if (bonePrevious.start.minConstraintMet() && bonePrevious.start.maxConstraintMet()) {\r\n                float fDistance2 = bonePrevious.originalLength / bonePrevious.start.distance(bonePrevious.end);\r\n                float f2 = 1.0f - fDistance2;\r\n                bonePrevious.end.x = (bonePrevious.start.x * f2) + (bonePrevious.end.x * fDistance2);\r\n                bonePrevious.end.y = (f2 * bonePrevious.start.y) + (fDistance2 * bonePrevious.end.y);\r\n            } else {\r\n                if (bonePrevious.start == uPoint2) {\r\n                    throw new AssertionError(\"Orientation constraint triggered on the root node\");\r\n                }\r\n                if (!bonePrevious.start.maxConstraintMet()) {\r\n                    double dNormalizeAngle3 = MathUtils.normalizeAngle(bonePrevious.start.getParent().orientation + bonePrevious.start.getMaxRotation(), 0.0f);\r\n                    pointF = new PointF((float) Math.cos(dNormalizeAngle3), (float) Math.sin(dNormalizeAngle3));\r\n                } else if (!bonePrevious.start.minConstraintMet()) {\r\n                    double dNormalizeAngle4 = MathUtils.normalizeAngle(bonePrevious.start.getParent().orientation + bonePrevious.start.getMinRotation(), 0.0f);\r\n                    pointF = new PointF((float) Math.cos(dNormalizeAngle4), (float) Math.sin(dNormalizeAngle4));\r\n                } else {\r\n                    throw new AssertionError(\"Unexpected rotation state: \" + bonePrevious.end);\r\n                }\r\n                bonePrevious.end.x = bonePrevious.start.x + (pointF.x * bonePrevious.originalLength);\r\n                bonePrevious.end.y = bonePrevious.start.y + (pointF.y * bonePrevious.originalLength);\r\n            }\r\n            bonePrevious.start.orientation = bonePrevious.orientation();\r\n            if (!bonePrevious.start.maxConstraintMet() || !bonePrevious.start.minConstraintMet()) {\r\n                throw new AssertionError(\"Constraint still violated after backward adjustment rotation=\" + bonePrevious.start.rotation() + \", updated bone=\" + bonePrevious);\r\n            }\r\n        }\r\n    }",
+      "reported_total_bytes": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

@@ -1,0 +1,130 @@
+{
+  "evidence_id": "ev_ec9d908b96d214934032857ddbfbc26a99066558834d57be4f8b32dbe0ccaf42",
+  "subject": {
+    "name": "com.zalivka.animation2_397.apk",
+    "digest": {
+      "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+    },
+    "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "jadx",
+    "name": "JADX headless",
+    "version": "0.7.1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_android_method",
+  "parameters": {
+    "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "class_name": "ru.jecklandin.stickman.units.kinematics.Fabrik",
+    "method_name": "updateStaticDescendants"
+  },
+  "raw_result": {
+    "server": {
+      "name": "rea-jadx-bridge",
+      "version": "7"
+    },
+    "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+    "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "loaded": {
+      "state": "LOADED",
+      "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-a6352b5e3ebe1f31df112dae6848ccdc\\target.apk",
+      "class_count": 47382,
+      "resource_count": 4573,
+      "threads": 1,
+      "resources": "full"
+    },
+    "calls": [
+      {
+        "operation": "rea_jvm_status",
+        "input": {},
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"max_heap_bytes\":4286578688,\"metadata_scope\":\"parsed_members\",\"engine_reported_version\":\"0.7.1\",\"available_processors\":8,\"java_version\":\"21.0.13\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_class_summary",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.units.kinematics.Fabrik"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"full_name\":\"ru.jecklandin.stickman.units.kinematics.Fabrik\",\"field_count\":3,\"name\":\"Fabrik\",\"inner_class_count\":1,\"inner_classes\":[\"ru.jecklandin.stickman.units.kinematics.Fabrik.Bone\"],\"methods\":[{\"def_pos\":0,\"signature\":\"\\u003cclinit\\u003e(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"\\u003cclinit\\u003e\"},{\"def_pos\":0,\"signature\":\"\\u003cinit\\u003e(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":true,\"name\":\"\\u003cinit\\u003e\"},{\"def_pos\":0,\"signature\":\"close(ru.jecklandin.stickman.units.UPoint, android.graphics.PointF): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;Landroid/graphics/PointF;)Z\",\"is_constructor\":false,\"name\":\"close\"},{\"def_pos\":0,\"signature\":\"constraintHit(ru.jecklandin.stickman.units.UPoint): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)Z\",\"is_constructor\":false,\"name\":\"constraintHit\"},{\"def_pos\":0,\"signature\":\"constraintsMet(ru.jecklandin.stickman.units.UPoint): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)Z\",\"is_constructor\":false,\"name\":\"constraintsMet\"},{\"def_pos\":0,\"signature\":\"fabricIteration(java.util.List\\u003cru.jecklandin.stickman.units.kinematics.Fabrik$Bone\\u003e, android.graphics.PointF, android.graphics.PointF): void\",\"dex_descriptor\":\"(Ljava/util/List;Landroid/graphics/PointF;Landroid/graphics/PointF;)V\",\"is_constructor\":false,\"name\":\"fabricIteration\"},{\"def_pos\":0,\"signature\":\"kinStop(ru.jecklandin.stickman.units.UPoint): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)Z\",\"is_constructor\":false,\"name\":\"kinStop\"},{\"def_pos\":0,\"signature\":\"pathToRoot(ru.jecklandin.stickman.units.UPoint): java.util.List\\u003cru.jecklandin.stickman.units.kinematics.Fabrik$Bone\\u003e\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)Ljava/util/List;\",\"is_constructor\":false,\"name\":\"pathToRoot\"},{\"def_pos\":0,\"signature\":\"root(ru.jecklandin.stickman.units.UPoint): ru.jecklandin.stickman.units.UPoint\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;)Lru/jecklandin/stickman/units/UPoint;\",\"is_constructor\":false,\"name\":\"root\"},{\"def_pos\":0,\"signature\":\"solve(ru.jecklandin.stickman.units.UPoint, float, float): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;FF)Z\",\"is_constructor\":false,\"name\":\"solve\"},{\"def_pos\":0,\"signature\":\"updateStaticDescendants(java.util.List\\u003cru.jecklandin.stickman.units.kinematics.Fabrik$Bone\\u003e): void\",\"dex_descriptor\":\"(Ljava/util/List;)V\",\"is_constructor\":false,\"name\":\"updateStaticDescendants\"}],\"fields\":[{\"type\":\"float\",\"name\":\"EPSILON\",\"def_pos\":0},{\"type\":\"float\",\"name\":\"ITERATION_IMPROVE_LIMIT\",\"def_pos\":0},{\"type\":\"android.graphics.Matrix\",\"name\":\"OPS\",\"def_pos\":0}],\"raw_name\":\"ru.jecklandin.stickman.units.kinematics.Fabrik\",\"method_count\":11}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_method_body",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.units.kinematics.Fabrik",
+          "method_name": "updateStaticDescendants",
+          "overload_index": 0,
+          "smali_fallback": true
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"fell_back\":false,\"markers\":[],\"body\":\"    private static void updateStaticDescendants(List\\u003cBone\\u003e bones) {\\r\\n        for (Bone bone : bones) {\\r\\n            if (!bone.staticDescendants.isEmpty()) {\\r\\n                OPS.reset();\\r\\n                OPS.postRotate((float) Math.toDegrees(bone.orientation() - bone.originalOrientation), bone.originalEnd.x, bone.originalEnd.y);\\r\\n                OPS.postTranslate(bone.end.x - bone.originalEnd.x, bone.end.y - bone.originalEnd.y);\\r\\n                float[] fArr \\u003d new float[bone.staticDescendants.size() * 2];\\r\\n                for (int i \\u003d 0; i \\u003c bone.staticDescendants.size(); i++) {\\r\\n                    UPoint uPoint \\u003d bone.staticDescendants.get(i);\\r\\n                    int i2 \\u003d i * 2;\\r\\n                    fArr[i2] \\u003d uPoint.x;\\r\\n                    fArr[i2 + 1] \\u003d uPoint.y;\\r\\n                }\\r\\n                OPS.mapPoints(fArr);\\r\\n                for (int i3 \\u003d 0; i3 \\u003c bone.staticDescendants.size(); i3++) {\\r\\n                    UPoint uPoint2 \\u003d bone.staticDescendants.get(i3);\\r\\n                    int i4 \\u003d i3 * 2;\\r\\n                    uPoint2.x \\u003d fArr[i4];\\r\\n                    uPoint2.y \\u003d fArr[i4 + 1];\\r\\n                }\\r\\n            }\\r\\n        }\\r\\n    }\",\"mode\":\"java\",\"class_name\":\"ru.jecklandin.stickman.units.kinematics.Fabrik\",\"dex_descriptor\":\"(Ljava/util/List;)V\",\"overload_count\":1,\"method_name\":\"updateStaticDescendants\",\"overload_index\":0,\"full_name\":\"ru.jecklandin.stickman.units.kinematics.Fabrik.updateStaticDescendants\"}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    ]
+  },
+  "normalized_result": {
+    "engine": {
+      "name": "jadx-headless-mcp",
+      "version": "0.7.1",
+      "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+      "worker_count": 1,
+      "heap_limit_mib": 4088
+    },
+    "class_name": "ru.jecklandin.stickman.units.kinematics.Fabrik",
+    "method": {
+      "name": "updateStaticDescendants",
+      "reported_signature": "updateStaticDescendants(java.util.List<ru.jecklandin.stickman.units.kinematics.Fabrik$Bone>): void",
+      "overload_index": 0,
+      "is_constructor": false,
+      "dex_descriptor": "(Ljava/util/List;)V"
+    },
+    "overload_count": 1,
+    "representation": "java",
+    "body_status": "available",
+    "fell_back": false,
+    "markers": [],
+    "source": {
+      "status": "complete",
+      "text": "    private static void updateStaticDescendants(List<Bone> bones) {\r\n        for (Bone bone : bones) {\r\n            if (!bone.staticDescendants.isEmpty()) {\r\n                OPS.reset();\r\n                OPS.postRotate((float) Math.toDegrees(bone.orientation() - bone.originalOrientation), bone.originalEnd.x, bone.originalEnd.y);\r\n                OPS.postTranslate(bone.end.x - bone.originalEnd.x, bone.end.y - bone.originalEnd.y);\r\n                float[] fArr = new float[bone.staticDescendants.size() * 2];\r\n                for (int i = 0; i < bone.staticDescendants.size(); i++) {\r\n                    UPoint uPoint = bone.staticDescendants.get(i);\r\n                    int i2 = i * 2;\r\n                    fArr[i2] = uPoint.x;\r\n                    fArr[i2 + 1] = uPoint.y;\r\n                }\r\n                OPS.mapPoints(fArr);\r\n                for (int i3 = 0; i3 < bone.staticDescendants.size(); i3++) {\r\n                    UPoint uPoint2 = bone.staticDescendants.get(i3);\r\n                    int i4 = i3 * 2;\r\n                    uPoint2.x = fArr[i4];\r\n                    uPoint2.y = fArr[i4 + 1];\r\n                }\r\n            }\r\n        }\r\n    }",
+      "reported_total_bytes": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

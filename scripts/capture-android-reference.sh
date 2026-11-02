@@ -13,3 +13,5 @@ adb shell uiautomator dump /sdcard/ui.xml
 adb pull /sdcard/ui.xml reference-output/launch.xml
 adb logcat -d > reference-output/launch.log
 adb shell dumpsys activity activities > reference-output/activities.txt
+
+python3 scripts/walk-android-reference.py

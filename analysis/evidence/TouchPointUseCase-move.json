@@ -1,0 +1,130 @@
+{
+  "evidence_id": "ev_c1a942fcb0469905a60d2b1a750eb0eb94549b1f76cb3665031f4c01e261a903",
+  "subject": {
+    "name": "com.zalivka.animation2_397.apk",
+    "digest": {
+      "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+    },
+    "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "jadx",
+    "name": "JADX headless",
+    "version": "0.7.1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_android_method",
+  "parameters": {
+    "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "class_name": "ru.jecklandin.stickman.features.editor.widgets.usecases.TouchPointUseCase",
+    "method_name": "move"
+  },
+  "raw_result": {
+    "server": {
+      "name": "rea-jadx-bridge",
+      "version": "7"
+    },
+    "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+    "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "loaded": {
+      "state": "LOADED",
+      "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-79e315e49f006312818d99136c933019\\target.apk",
+      "class_count": 47382,
+      "resource_count": 4573,
+      "threads": 1,
+      "resources": "full"
+    },
+    "calls": [
+      {
+        "operation": "rea_jvm_status",
+        "input": {},
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"java_version\":\"21.0.13\",\"available_processors\":8,\"engine_reported_version\":\"0.7.1\",\"metadata_scope\":\"parsed_members\",\"max_heap_bytes\":4286578688}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_class_summary",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.features.editor.widgets.usecases.TouchPointUseCase"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"full_name\":\"ru.jecklandin.stickman.features.editor.widgets.usecases.TouchPointUseCase\",\"method_count\":19,\"raw_name\":\"ru.jecklandin.stickman.features.editor.widgets.usecases.TouchPointUseCase\",\"fields\":[{\"def_pos\":0,\"name\":\"CAPTURE_RAD\",\"type\":\"int\"},{\"def_pos\":0,\"name\":\"TAG\",\"type\":\"java.lang.String\"},{\"def_pos\":0,\"name\":\"mAttachRadius\",\"type\":\"float\"},{\"def_pos\":0,\"name\":\"mIgnoreMoveUntilUp\",\"type\":\"boolean\"},{\"def_pos\":0,\"name\":\"mLastStretchTapAt\",\"type\":\"long\"},{\"def_pos\":0,\"name\":\"mLastStretchTapPointId\",\"type\":\"int\"},{\"def_pos\":0,\"name\":\"mLastStretchTapUnit\",\"type\":\"java.lang.String\"}],\"methods\":[{\"def_pos\":0,\"name\":\"\\u003cinit\\u003e\",\"is_constructor\":true,\"dex_descriptor\":\"()V\",\"signature\":\"\\u003cinit\\u003e(): void\"},{\"def_pos\":0,\"name\":\"applyRestoreRestLength\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;Ljava/lang/String;I)V\",\"signature\":\"applyRestoreRestLength(ru.jecklandin.stickman.units.Frame, java.lang.String, int): void\"},{\"def_pos\":0,\"name\":\"assertRangeEditable\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;Lru/jecklandin/stickman/units/Unit;)V\",\"signature\":\"assertRangeEditable(ru.jecklandin.stickman.units.Scene, ru.jecklandin.stickman.units.Unit): void\"},{\"def_pos\":0,\"name\":\"assertStructureAttachAllowed\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;Lru/jecklandin/stickman/units/Unit;Lru/jecklandin/stickman/units/Unit;)V\",\"signature\":\"assertStructureAttachAllowed(ru.jecklandin.stickman.units.Scene, ru.jecklandin.stickman.units.Unit, ru.jecklandin.stickman.units.Unit): void\"},{\"def_pos\":0,\"name\":\"clearStretchTap\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"clearStretchTap(): void\"},{\"def_pos\":0,\"name\":\"doTouchDown\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;Lru/jecklandin/stickman/features/editor/widgets/presenters/SelectionPresenter;[FF)Lru/jecklandin/stickman/features/editor/widgets/state/TouchDownResult;\",\"signature\":\"doTouchDown(ru.jecklandin.stickman.units.Frame, ru.jecklandin.stickman.features.editor.widgets.presenters.SelectionPresenter, float[], float): ru.jecklandin.stickman.features.editor.widgets.state.TouchDownResult\"},{\"def_pos\":0,\"name\":\"down\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;Lru/jecklandin/stickman/features/editor/widgets/presenters/SelectionPresenter;[FF)V\",\"signature\":\"down(ru.jecklandin.stickman.units.Frame, ru.jecklandin.stickman.features.editor.widgets.presenters.SelectionPresenter, float[], float): void\"},{\"def_pos\":0,\"name\":\"isUnitLockedInSelection\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;Ljava/lang/String;)Z\",\"signature\":\"isUnitLockedInSelection(ru.jecklandin.stickman.units.Scene, java.lang.String): boolean\"},{\"def_pos\":0,\"name\":\"lambda$applyRestoreRestLength$0\",\"is_constructor\":false,\"dex_descriptor\":\"(I[ZLru/jecklandin/stickman/units/Unit;)V\",\"signature\":\"lambda$applyRestoreRestLength$0(int, boolean[], ru.jecklandin.stickman.units.Unit): void\"},{\"def_pos\":0,\"name\":\"lambda$move$1\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UPoint;FFLru/jecklandin/stickman/units/Unit;)V\",\"signature\":\"lambda$move$1(ru.jecklandin.stickman.units.UPoint, float, float, ru.jecklandin.stickman.units.Unit): void\"},{\"def_pos\":0,\"name\":\"lambda$tryAttach$2\",\"is_constructor\":false,\"dex_descriptor\":\"(Ljava/lang/String;ILjava/util/Collection;Lru/jecklandin/stickman/units/Unit;)V\",\"signature\":\"lambda$tryAttach$2(java.lang.String, int, java.util.Collection, ru.jecklandin.stickman.units.Unit): void\"},{\"def_pos\":0,\"name\":\"move\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;Lru/jecklandin/stickman/features/editor/widgets/presenters/SelectionPresenter;[F)Z\",\"signature\":\"move(ru.jecklandin.stickman.units.Frame, ru.jecklandin.stickman.features.editor.widgets.presenters.SelectionPresenter, float[]): boolean\"},{\"def_pos\":0,\"name\":\"noteOrRestoreStretchTap\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;Lru/jecklandin/stickman/units/UPoint;)V\",\"signature\":\"noteOrRestoreStretchTap(ru.jecklandin.stickman.units.Frame, ru.jecklandin.stickman.units.UPoint): void\"},{\"def_pos\":0,\"name\":\"notifyAutoTweenLocked\",\"is_constructor\":false,\"dex_descriptor\":\"(Ljava/lang/IllegalStateException;)V\",\"signature\":\"notifyAutoTweenLocked(java.lang.IllegalStateException): void\"},{\"def_pos\":0,\"name\":\"onStartMoveHandler\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;Lru/jecklandin/stickman/units/handlers/AbstractHandler;)V\",\"signature\":\"onStartMoveHandler(ru.jecklandin.stickman.units.Frame, ru.jecklandin.stickman.units.handlers.AbstractHandler): void\"},{\"def_pos\":0,\"name\":\"onStartMoveUnit\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;Lru/jecklandin/stickman/units/Unit;)V\",\"signature\":\"onStartMoveUnit(ru.jecklandin.stickman.units.Frame, ru.jecklandin.stickman.units.Unit): void\"},{\"def_pos\":0,\"name\":\"setAttachRadius\",\"is_constructor\":false,\"dex_descriptor\":\"(F)V\",\"signature\":\"setAttachRadius(float): void\"},{\"def_pos\":0,\"name\":\"tryAttach\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;Lru/jecklandin/stickman/units/Unit;F)Lru/jecklandin/stickman/units/Unit;\",\"signature\":\"tryAttach(ru.jecklandin.stickman.units.Frame, ru.jecklandin.stickman.units.Unit, float): ru.jecklandin.stickman.units.Unit\"},{\"def_pos\":0,\"name\":\"up\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;Lru/jecklandin/stickman/features/editor/widgets/presenters/SelectionPresenter;F)Lru/jecklandin/stickman/features/editor/widgets/state/TouchUpResult;\",\"signature\":\"up(ru.jecklandin.stickman.units.Frame, ru.jecklandin.stickman.features.editor.widgets.presenters.SelectionPresenter, float): ru.jecklandin.stickman.features.editor.widgets.state.TouchUpResult\"}],\"inner_classes\":[],\"inner_class_count\":0,\"name\":\"TouchPointUseCase\",\"field_count\":7}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_method_body",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.features.editor.widgets.usecases.TouchPointUseCase",
+          "method_name": "move",
+          "overload_index": 0,
+          "smali_fallback": true
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"fell_back\":false,\"full_name\":\"ru.jecklandin.stickman.features.editor.widgets.usecases.TouchPointUseCase.move\",\"overload_index\":0,\"method_name\":\"move\",\"overload_count\":1,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;Lru/jecklandin/stickman/features/editor/widgets/presenters/SelectionPresenter;[F)Z\",\"class_name\":\"ru.jecklandin.stickman.features.editor.widgets.usecases.TouchPointUseCase\",\"mode\":\"java\",\"body\":\"    public boolean move(@Nonnull Frame frame, @Nonnull SelectionPresenter opsState, @Nonnull float[] sceneTouch) {\\r\\n        if (this.mIgnoreMoveUntilUp) {\\r\\n            return true;\\r\\n        }\\r\\n        float f \\u003d sceneTouch[0];\\r\\n        float f2 \\u003d sceneTouch[1];\\r\\n        if (opsState.mPointer !\\u003d null) {\\r\\n            opsState.mPointer.set(f, f2);\\r\\n        }\\r\\n        TouchDownResult touchDownResult \\u003d opsState.mTouchDownResult;\\r\\n        if (touchDownResult.isFruitless()) {\\r\\n            return false;\\r\\n        }\\r\\n        final UPoint uPoint \\u003d opsState.capturedPoint(frame).get();\\r\\n        Unit unitOrNull \\u003d opsState.getActiveUnit(frame).orNull();\\r\\n        if (unitOrNull !\\u003d null \\u0026\\u0026 isUnitLockedInSelection(frame.getScene(), unitOrNull.getName())) {\\r\\n            return false;\\r\\n        }\\r\\n        try {\\r\\n            if (TransformingHandlersPresenter.isHandlerPoint(uPoint.getId())) {\\r\\n                opsState.handlersPresenter().getHandlerById(uPoint.getId()).move(uPoint, f, f2);\\r\\n            } else {\\r\\n                final float f3 \\u003d f - touchDownResult.mTouchOffset[0];\\r\\n                final float f4 \\u003d f2 - touchDownResult.mTouchOffset[1];\\r\\n                frame.getScene().selectedRange().apply(opsState.getActiveUnit(frame).get().getName(), new IUnitOp() { // from class: ru.jecklandin.stickman.features.editor.widgets.usecases.TouchPointUseCase$$ExternalSyntheticLambda2\\r\\n                    @Override // ru.jecklandin.stickman.units.IUnitOp\\r\\n                    public final void apply(Unit unit) {\\r\\n                        PointManipulator.move(unit, unit.findPointById(uPoint.getId()), f3, f4);\\r\\n                    }\\r\\n                });\\r\\n            }\\r\\n            return true;\\r\\n        } catch (IllegalStateException e) {\\r\\n            notifyAutoTweenLocked(e);\\r\\n            return false;\\r\\n        }\\r\\n    }\",\"markers\":[]}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    ]
+  },
+  "normalized_result": {
+    "engine": {
+      "name": "jadx-headless-mcp",
+      "version": "0.7.1",
+      "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+      "worker_count": 1,
+      "heap_limit_mib": 4088
+    },
+    "class_name": "ru.jecklandin.stickman.features.editor.widgets.usecases.TouchPointUseCase",
+    "method": {
+      "name": "move",
+      "reported_signature": "move(ru.jecklandin.stickman.units.Frame, ru.jecklandin.stickman.features.editor.widgets.presenters.SelectionPresenter, float[]): boolean",
+      "overload_index": 0,
+      "is_constructor": false,
+      "dex_descriptor": "(Lru/jecklandin/stickman/units/Frame;Lru/jecklandin/stickman/features/editor/widgets/presenters/SelectionPresenter;[F)Z"
+    },
+    "overload_count": 1,
+    "representation": "java",
+    "body_status": "available",
+    "fell_back": false,
+    "markers": [],
+    "source": {
+      "status": "complete",
+      "text": "    public boolean move(@Nonnull Frame frame, @Nonnull SelectionPresenter opsState, @Nonnull float[] sceneTouch) {\r\n        if (this.mIgnoreMoveUntilUp) {\r\n            return true;\r\n        }\r\n        float f = sceneTouch[0];\r\n        float f2 = sceneTouch[1];\r\n        if (opsState.mPointer != null) {\r\n            opsState.mPointer.set(f, f2);\r\n        }\r\n        TouchDownResult touchDownResult = opsState.mTouchDownResult;\r\n        if (touchDownResult.isFruitless()) {\r\n            return false;\r\n        }\r\n        final UPoint uPoint = opsState.capturedPoint(frame).get();\r\n        Unit unitOrNull = opsState.getActiveUnit(frame).orNull();\r\n        if (unitOrNull != null && isUnitLockedInSelection(frame.getScene(), unitOrNull.getName())) {\r\n            return false;\r\n        }\r\n        try {\r\n            if (TransformingHandlersPresenter.isHandlerPoint(uPoint.getId())) {\r\n                opsState.handlersPresenter().getHandlerById(uPoint.getId()).move(uPoint, f, f2);\r\n            } else {\r\n                final float f3 = f - touchDownResult.mTouchOffset[0];\r\n                final float f4 = f2 - touchDownResult.mTouchOffset[1];\r\n                frame.getScene().selectedRange().apply(opsState.getActiveUnit(frame).get().getName(), new IUnitOp() { // from class: ru.jecklandin.stickman.features.editor.widgets.usecases.TouchPointUseCase$$ExternalSyntheticLambda2\r\n                    @Override // ru.jecklandin.stickman.units.IUnitOp\r\n                    public final void apply(Unit unit) {\r\n                        PointManipulator.move(unit, unit.findPointById(uPoint.getId()), f3, f4);\r\n                    }\r\n                });\r\n            }\r\n            return true;\r\n        } catch (IllegalStateException e) {\r\n            notifyAutoTweenLocked(e);\r\n            return false;\r\n        }\r\n    }",
+      "reported_total_bytes": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}
