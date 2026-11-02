@@ -1,0 +1,1720 @@
+{
+  "evidence_id": "ev_c7456c1cd8bbb352c212d1a3a969655972b9789cf11ed6a1b063560b546ce39e",
+  "subject": {
+    "name": "com.zalivka.animation2_397.apk",
+    "digest": {
+      "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+    },
+    "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "jadx",
+    "name": "JADX headless",
+    "version": "0.7.1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_android_class",
+  "parameters": {
+    "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "class_name": "ru.jecklandin.stickman.features.editor.MainEditor"
+  },
+  "raw_result": {
+    "server": {
+      "name": "rea-jadx-bridge",
+      "version": "7"
+    },
+    "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+    "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "loaded": {
+      "state": "LOADED",
+      "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-b6e6c470c3c2a807de23c57055bd91fa\\target.apk",
+      "class_count": 47382,
+      "resource_count": 4573,
+      "threads": 1,
+      "resources": "full"
+    },
+    "calls": [
+      {
+        "operation": "rea_jvm_status",
+        "input": {},
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"engine_reported_version\":\"0.7.1\",\"available_processors\":8,\"java_version\":\"21.0.13\",\"max_heap_bytes\":4286578688,\"metadata_scope\":\"parsed_members\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_class_summary",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.features.editor.MainEditor",
+          "dex_static_values": true
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"fields\":[{\"def_pos\":0,\"type\":\"java.lang.String\",\"name\":\"EXTRA_FIRST_LAUNCH\",\"dex_static_value\":{\"value\":\"first_launch\",\"type\":\"string\"}},{\"def_pos\":0,\"type\":\"java.lang.String\",\"name\":\"EXTRA_LAUNCH_DEMO\",\"dex_static_value\":{\"value\":\"demo\",\"type\":\"string\"}},{\"def_pos\":0,\"type\":\"java.lang.String\",\"name\":\"EXTRA_LOAD_BG\",\"dex_static_value\":{\"value\":\"load_bg\",\"type\":\"string\"}},{\"def_pos\":0,\"type\":\"java.lang.String\",\"name\":\"EXTRA_OB_PRACTICE_MOVE\",\"dex_static_value\":{\"value\":\"ob_practice_move\",\"type\":\"string\"}},{\"def_pos\":0,\"type\":\"int\",\"name\":\"SHIFT_HOLD_TIP_MAX_SHOWS\",\"dex_static_value\":{\"value\":3,\"type\":\"int\"}},{\"def_pos\":0,\"type\":\"java.lang.String\",\"name\":\"SIMPLE_TUTORIAL\",\"dex_static_value\":{\"value\":\"simple_tutorial\",\"type\":\"string\"}},{\"def_pos\":0,\"type\":\"java.lang.String\",\"name\":\"TAG\",\"dex_static_value\":{\"value\":\"MainActivity\",\"type\":\"string\"}},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mAddAudio\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mAnimate\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mBackground\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mBuy\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mCamera\"},{\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.CartoonStage\",\"name\":\"mCartoonStage\"},{\"def_pos\":0,\"type\":\"android.widget.LinearLayout\",\"name\":\"mControls\"},{\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.Scene\",\"name\":\"mCurrentScene\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mDebug\"},{\"def_pos\":0,\"type\":\"io.reactivex.disposables.CompositeDisposable\",\"name\":\"mDisposables\"},{\"def_pos\":0,\"type\":\"androidx.drawerlayout.widget.DrawerLayout\",\"name\":\"mDrawerLayout\"},{\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.widgets.DualNavigation\",\"name\":\"mDualNav\"},{\"def_pos\":0,\"type\":\"android.widget.TextView\",\"name\":\"mEasingDebug\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mEdit\"},{\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.widgets.ScreenFlash\",\"name\":\"mFlash\"},{\"def_pos\":0,\"type\":\"android.widget.FrameLayout\",\"name\":\"mFragmentCont\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mFrames\"},{\"def_pos\":0,\"type\":\"android.view.View\",\"name\":\"mFramesContainer\"},{\"def_pos\":0,\"type\":\"com.zalivka.commons.utils.ui.FullscreenHint\",\"name\":\"mFullscreenHint\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mHelp\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mInsert\"},{\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.features.editor.MainEditor$GlobalLayoutListener\",\"name\":\"mListener\"},{\"def_pos\":0,\"type\":\"java.lang.Runnable\",\"name\":\"mLockedChipReset\"},{\"def_pos\":0,\"type\":\"long\",\"name\":\"mLockedChipUntilMs\"},{\"def_pos\":0,\"type\":\"android.widget.ImageButton\",\"name\":\"mNavBtn\"},{\"def_pos\":0,\"type\":\"boolean\",\"name\":\"mOnboardingMode\"},{\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.features.editor.Panels\",\"name\":\"mPanels\"},{\"def_pos\":0,\"type\":\"android.content.SharedPreferences\",\"name\":\"mPrefs\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mRequestDiscount\"},{\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.features.editor.widgets.presenters.SVPresenter\",\"name\":\"mSVPresenter\"},{\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.billing_v3.subs.CountDownSaleView\",\"name\":\"mSalesBanner\"},{\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.SceneManager\",\"name\":\"mSceneManager\"},{\"def_pos\":0,\"type\":\"android.widget.ImageButton\",\"name\":\"mShift\"},{\"def_pos\":0,\"type\":\"android.widget.TextView\",\"name\":\"mShiftHoldTip\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mSidebarConstr\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mSidebarSave\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mSidebarSceneProps\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mSidebarSettings\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mSidebarStepShare\"},{\"def_pos\":0,\"type\":\"android.view.View\",\"name\":\"mSpanChipDelete\"},{\"def_pos\":0,\"type\":\"android.widget.TextView\",\"name\":\"mSpanChipLabel\"},{\"def_pos\":0,\"type\":\"android.view.View\",\"name\":\"mSpanChipRow\"},{\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.features.editor.widgets.StickmanView\",\"name\":\"mStickmanView\"},{\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove$InEditor\",\"name\":\"mTutorial\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mUndoBtn\"},{\"def_pos\":0,\"type\":\"boolean\",\"name\":\"mUnlocked\"},{\"def_pos\":0,\"type\":\"android.widget.Button\",\"name\":\"mVarSpeeds\"}],\"raw_name\":\"ru.jecklandin.stickman.features.editor.MainEditor\",\"method_count\":188,\"full_name\":\"ru.jecklandin.stickman.features.editor.MainEditor\",\"field_count\":54,\"name\":\"MainEditor\",\"inner_class_count\":12,\"inner_classes\":[\"ru.jecklandin.stickman.features.editor.MainEditor.AnonymousClass1\",\"ru.jecklandin.stickman.features.editor.MainEditor.AnonymousClass2\",\"ru.jecklandin.stickman.features.editor.MainEditor.AnonymousClass3\",\"ru.jecklandin.stickman.features.editor.MainEditor.DoSelectUnitEvent\",\"ru.jecklandin.stickman.features.editor.MainEditor.EasingStatus\",\"ru.jecklandin.stickman.features.editor.MainEditor.GeneralErrorEvent\",\"ru.jecklandin.stickman.features.editor.MainEditor.GlobalLayoutListener\",\"ru.jecklandin.stickman.features.editor.MainEditor.NotImplementedException\",\"ru.jecklandin.stickman.features.editor.MainEditor.OnChunkSelectedEvent\",\"ru.jecklandin.stickman.features.editor.MainEditor.OnSelectUnitEvent\",\"ru.jecklandin.stickman.features.editor.MainEditor.OnUndoCommittedEvent\",\"ru.jecklandin.stickman.features.editor.MainEditor.RedrawRequestedEvent\"],\"methods\":[{\"name\":\"$r8$lambda$28I8xMgmwBOuzgxBfR16Y0joFgI\",\"def_pos\":0,\"signature\":\"$r8$lambda$28I8xMgmwBOuzgxBfR16Y0joFgI(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$2GZnrDjFNUBW2d7VoDyp_BCkrvE\",\"def_pos\":0,\"signature\":\"$r8$lambda$2GZnrDjFNUBW2d7VoDyp_BCkrvE(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$4_qrG_gbOQEVZITppIi6J5o219o\",\"def_pos\":0,\"signature\":\"$r8$lambda$4_qrG_gbOQEVZITppIi6J5o219o(ru.jecklandin.stickman.features.editor.MainEditor, boolean, int): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;ZI)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$8pByq9NW18gpi2mnz9AZXfiXdOI\",\"def_pos\":0,\"signature\":\"$r8$lambda$8pByq9NW18gpi2mnz9AZXfiXdOI(ru.jecklandin.stickman.features.editor.MainEditor, int, int): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;II)Z\",\"is_constructor\":false},{\"name\":\"$r8$lambda$BmfKAnSY32pWVE0TNQdzK9OmP0U\",\"def_pos\":0,\"signature\":\"$r8$lambda$BmfKAnSY32pWVE0TNQdzK9OmP0U(ru.jecklandin.stickman.features.editor.MainEditor, java.lang.String): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Ljava/lang/String;)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$E2IUlU78Qz9KY_mMm4ETTLEm0PU\",\"def_pos\":0,\"signature\":\"$r8$lambda$E2IUlU78Qz9KY_mMm4ETTLEm0PU(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$Fpdx0MMfA1plRdnLPqTFpfT3amo\",\"def_pos\":0,\"signature\":\"$r8$lambda$Fpdx0MMfA1plRdnLPqTFpfT3amo(ru.jecklandin.stickman.features.editor.MainEditor, java.lang.Throwable): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Ljava/lang/Throwable;)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$Gj3JgwU20XRSlPuYScbbXYdWJtA\",\"def_pos\":0,\"signature\":\"$r8$lambda$Gj3JgwU20XRSlPuYScbbXYdWJtA(ru.jecklandin.stickman.features.editor.MainEditor, boolean, boolean, boolean): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;ZZZ)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$HBVCrjli3HyNk1FsLco4R4eXKhY\",\"def_pos\":0,\"signature\":\"$r8$lambda$HBVCrjli3HyNk1FsLco4R4eXKhY(ru.jecklandin.stickman.features.editor.MainEditor, boolean, int): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;ZI)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$HO_YM2gLlfZTEkjuiiV4f6yJmRM\",\"def_pos\":0,\"signature\":\"$r8$lambda$HO_YM2gLlfZTEkjuiiV4f6yJmRM(ru.jecklandin.stickman.features.editor.MainEditor): ru.jecklandin.stickman.units.Frame\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)Lru/jecklandin/stickman/units/Frame;\",\"is_constructor\":false},{\"name\":\"$r8$lambda$HhhO72cgA5ZTvtxhRE4BNZaVJXA\",\"def_pos\":0,\"signature\":\"$r8$lambda$HhhO72cgA5ZTvtxhRE4BNZaVJXA(ru.jecklandin.stickman.features.editor.MainEditor, int, int): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;II)Z\",\"is_constructor\":false},{\"name\":\"$r8$lambda$NAPBWcBQWDSN_Mp7NNtLjczL3no\",\"def_pos\":0,\"signature\":\"$r8$lambda$NAPBWcBQWDSN_Mp7NNtLjczL3no(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$NS_xTPtK8haR5X3sYRo_58Tg2CA\",\"def_pos\":0,\"signature\":\"$r8$lambda$NS_xTPtK8haR5X3sYRo_58Tg2CA(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View, android.view.MotionEvent): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;Landroid/view/MotionEvent;)Z\",\"is_constructor\":false},{\"name\":\"$r8$lambda$ODCAApzl8bXw7srYRK4UFwwrqJ8\",\"def_pos\":0,\"signature\":\"$r8$lambda$ODCAApzl8bXw7srYRK4UFwwrqJ8(ru.jecklandin.stickman.features.editor.MainEditor, java.lang.String, android.graphics.Bitmap[], int, int): java.lang.String\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Ljava/lang/String;[Landroid/graphics/Bitmap;II)Ljava/lang/String;\",\"is_constructor\":false},{\"name\":\"$r8$lambda$OLI4HUK4gZkMdXZMHD5xIJiYk7o\",\"def_pos\":0,\"signature\":\"$r8$lambda$OLI4HUK4gZkMdXZMHD5xIJiYk7o(ru.jecklandin.stickman.features.editor.MainEditor, boolean, boolean): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;ZZ)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$OxHFD4j2xJpqrAgG6P7O2lF76qc\",\"def_pos\":0,\"signature\":\"$r8$lambda$OxHFD4j2xJpqrAgG6P7O2lF76qc(ru.jecklandin.stickman.features.editor.MainEditor, java.lang.String): java.lang.String\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Ljava/lang/String;)Ljava/lang/String;\",\"is_constructor\":false},{\"name\":\"$r8$lambda$Qrvzgx4ZtRmtZEPAazCmYfOGZeA\",\"def_pos\":0,\"signature\":\"$r8$lambda$Qrvzgx4ZtRmtZEPAazCmYfOGZeA(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$RFoOVrzhwTXgRBMVkEoYRvn6hHM\",\"def_pos\":0,\"signature\":\"$r8$lambda$RFoOVrzhwTXgRBMVkEoYRvn6hHM(ru.jecklandin.stickman.features.editor.MainEditor): java.lang.String\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)Ljava/lang/String;\",\"is_constructor\":false},{\"name\":\"$r8$lambda$TKjH1JbieWI90mhMxqXBuIu15V8\",\"def_pos\":0,\"signature\":\"$r8$lambda$TKjH1JbieWI90mhMxqXBuIu15V8(ru.jecklandin.stickman.features.editor.MainEditor, ru.jecklandin.stickman.units.Scene, int, int, ru.jecklandin.stickman.widgets.rangeops.VisualRangeOpsFragment, int, int): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Lru/jecklandin/stickman/units/Scene;IILru/jecklandin/stickman/widgets/rangeops/VisualRangeOpsFragment;II)Z\",\"is_constructor\":false},{\"name\":\"$r8$lambda$VCIO0PN67UF7Mgd20priZT07rdw\",\"def_pos\":0,\"signature\":\"$r8$lambda$VCIO0PN67UF7Mgd20priZT07rdw(ru.jecklandin.stickman.features.editor.MainEditor, int, int): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;II)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$aA3w9Y95nKjSPzfzclr9sAuGebk\",\"def_pos\":0,\"signature\":\"$r8$lambda$aA3w9Y95nKjSPzfzclr9sAuGebk(java.lang.Throwable): void\",\"dex_descriptor\":\"(Ljava/lang/Throwable;)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$cjUMysbCU0rxwc_Xhg0Q3W_c9Jw\",\"def_pos\":0,\"signature\":\"$r8$lambda$cjUMysbCU0rxwc_Xhg0Q3W_c9Jw(ru.jecklandin.stickman.features.editor.MainEditor, ru.jecklandin.stickman.widgets.rangeops.VisualRangeOpsFragment, int, int): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Lru/jecklandin/stickman/widgets/rangeops/VisualRangeOpsFragment;II)Z\",\"is_constructor\":false},{\"name\":\"$r8$lambda$dqCejZy6Q7JYh9t6le3MC24QqyI\",\"def_pos\":0,\"signature\":\"$r8$lambda$dqCejZy6Q7JYh9t6le3MC24QqyI(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$jJM6xrkX1cKO0x5CrIsnohMixNc\",\"def_pos\":0,\"signature\":\"$r8$lambda$jJM6xrkX1cKO0x5CrIsnohMixNc(ru.jecklandin.stickman.features.editor.MainEditor, boolean): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Z)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$jKY2E0dbee36MeW9j4ExXoTOtSc\",\"def_pos\":0,\"signature\":\"$r8$lambda$jKY2E0dbee36MeW9j4ExXoTOtSc(ru.jecklandin.stickman.features.editor.MainEditor): java.lang.Integer\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)Ljava/lang/Integer;\",\"is_constructor\":false},{\"name\":\"$r8$lambda$lOWb5Eygfogd8kT3Io7hE64JWzc\",\"def_pos\":0,\"signature\":\"$r8$lambda$lOWb5Eygfogd8kT3Io7hE64JWzc(): float\",\"dex_descriptor\":\"()F\",\"is_constructor\":false},{\"name\":\"$r8$lambda$npeZaJcCEddwaZzSjWkXTpEtsCg\",\"def_pos\":0,\"signature\":\"$r8$lambda$npeZaJcCEddwaZzSjWkXTpEtsCg(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;)Z\",\"is_constructor\":false},{\"name\":\"$r8$lambda$rfhba_1lcpkMDuhLNMj9WSfAjjk\",\"def_pos\":0,\"signature\":\"$r8$lambda$rfhba_1lcpkMDuhLNMj9WSfAjjk(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$sDzkTN7yrrOcPHM3q95e5peZfvg\",\"def_pos\":0,\"signature\":\"$r8$lambda$sDzkTN7yrrOcPHM3q95e5peZfvg(ru.jecklandin.stickman.features.editor.MainEditor, int, int, java.lang.String): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;IILjava/lang/String;)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$tdcnuwtKKYLdl61Rh5AzG_49MO8\",\"def_pos\":0,\"signature\":\"$r8$lambda$tdcnuwtKKYLdl61Rh5AzG_49MO8(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$uYbCEfypZoP2E1_xIES95EgIqJQ\",\"def_pos\":0,\"signature\":\"$r8$lambda$uYbCEfypZoP2E1_xIES95EgIqJQ(ru.jecklandin.stickman.features.editor.MainEditor, java.lang.Boolean): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Ljava/lang/Boolean;)V\",\"is_constructor\":false},{\"name\":\"$r8$lambda$wnML8rzAHhhIRJRKzgDLaVivFks\",\"def_pos\":0,\"signature\":\"$r8$lambda$wnML8rzAHhhIRJRKzgDLaVivFks(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"\\u003cinit\\u003e\",\"def_pos\":0,\"signature\":\"\\u003cinit\\u003e(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":true},{\"name\":\"addFrame\",\"def_pos\":0,\"signature\":\"addFrame(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"addSound\",\"def_pos\":0,\"signature\":\"addSound(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"addSoundLegacy\",\"def_pos\":0,\"signature\":\"addSoundLegacy(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"applyNoLabelsToMainToolButtons\",\"def_pos\":0,\"signature\":\"applyNoLabelsToMainToolButtons(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"autosaveMaybe\",\"def_pos\":0,\"signature\":\"autosaveMaybe(java.lang.Runnable[]): void\",\"dex_descriptor\":\"([Ljava/lang/Runnable;)V\",\"is_constructor\":false},{\"name\":\"bindViews\",\"def_pos\":0,\"signature\":\"bindViews(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"copyTouchHeldStructureToFrameIfNoConflicts\",\"def_pos\":0,\"signature\":\"copyTouchHeldStructureToFrameIfNoConflicts(ru.jecklandin.stickman.units.Frame, int): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;I)V\",\"is_constructor\":false},{\"name\":\"delayedTransition\",\"def_pos\":0,\"signature\":\"delayedTransition(java.lang.Runnable): void\",\"dex_descriptor\":\"(Ljava/lang/Runnable;)V\",\"is_constructor\":false},{\"name\":\"deleteSelectedFrames\",\"def_pos\":0,\"signature\":\"deleteSelectedFrames(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"doSave\",\"def_pos\":0,\"signature\":\"doSave(java.lang.String, int, int): void\",\"dex_descriptor\":\"(Ljava/lang/String;II)V\",\"is_constructor\":false},{\"name\":\"ensureFramesNumber\",\"def_pos\":0,\"signature\":\"ensureFramesNumber(int, java.lang.Runnable): void\",\"dex_descriptor\":\"(ILjava/lang/Runnable;)V\",\"is_constructor\":false},{\"name\":\"export\",\"def_pos\":0,\"signature\":\"export(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"export\",\"def_pos\":0,\"signature\":\"export(boolean): void\",\"dex_descriptor\":\"(Z)V\",\"is_constructor\":false},{\"name\":\"flashActiveFrame\",\"def_pos\":0,\"signature\":\"flashActiveFrame(boolean): void\",\"dex_descriptor\":\"(Z)V\",\"is_constructor\":false},{\"name\":\"flashView\",\"def_pos\":0,\"signature\":\"flashView(android.view.View): void\",\"dex_descriptor\":\"(Landroid/view/View;)V\",\"is_constructor\":false},{\"name\":\"frame\",\"def_pos\":0,\"signature\":\"frame(): ru.jecklandin.stickman.units.Frame\",\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/Frame;\",\"is_constructor\":false},{\"name\":\"hasSelectedUnitWithStretchableBone\",\"def_pos\":0,\"signature\":\"hasSelectedUnitWithStretchableBone(): boolean\",\"dex_descriptor\":\"()Z\",\"is_constructor\":false},{\"name\":\"hideShiftHoldTip\",\"def_pos\":0,\"signature\":\"hideShiftHoldTip(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"insertSaleBanner\",\"def_pos\":0,\"signature\":\"insertSaleBanner(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"isTutorial\",\"def_pos\":0,\"signature\":\"isTutorial(): boolean\",\"dex_descriptor\":\"()Z\",\"is_constructor\":false},{\"name\":\"lambda$addFrame$20\",\"def_pos\":0,\"signature\":\"lambda$addFrame$20(): ru.jecklandin.stickman.units.Frame\",\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/Frame;\",\"is_constructor\":false},{\"name\":\"lambda$addFrame$21\",\"def_pos\":0,\"signature\":\"lambda$addFrame$21(ru.jecklandin.stickman.units.Frame): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;)V\",\"is_constructor\":false},{\"name\":\"lambda$addSound$27\",\"def_pos\":0,\"signature\":\"lambda$addSound$27(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"lambda$addSoundLegacy$28\",\"def_pos\":0,\"signature\":\"lambda$addSoundLegacy$28(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"lambda$autosaveMaybe$41\",\"def_pos\":0,\"signature\":\"lambda$autosaveMaybe$41(java.lang.Runnable[], java.io.File): void\",\"dex_descriptor\":\"([Ljava/lang/Runnable;Ljava/io/File;)V\",\"is_constructor\":false},{\"name\":\"lambda$deleteSelectedFrames$22\",\"def_pos\":0,\"signature\":\"lambda$deleteSelectedFrames$22(): java.lang.Integer\",\"dex_descriptor\":\"()Ljava/lang/Integer;\",\"is_constructor\":false},{\"name\":\"lambda$deleteSelectedFrames$23\",\"def_pos\":0,\"signature\":\"lambda$deleteSelectedFrames$23(java.lang.Integer): void\",\"dex_descriptor\":\"(Ljava/lang/Integer;)V\",\"is_constructor\":false},{\"name\":\"lambda$doSave$33\",\"def_pos\":0,\"signature\":\"lambda$doSave$33(java.lang.String, android.graphics.Bitmap[], int, int): java.lang.String\",\"dex_descriptor\":\"(Ljava/lang/String;[Landroid/graphics/Bitmap;II)Ljava/lang/String;\",\"is_constructor\":false},{\"name\":\"lambda$doSave$34\",\"def_pos\":0,\"signature\":\"lambda$doSave$34(java.lang.Throwable): void\",\"dex_descriptor\":\"(Ljava/lang/Throwable;)V\",\"is_constructor\":false},{\"name\":\"lambda$export$35\",\"def_pos\":0,\"signature\":\"lambda$export$35(boolean, boolean): void\",\"dex_descriptor\":\"(ZZ)V\",\"is_constructor\":false},{\"name\":\"lambda$export$36\",\"def_pos\":0,\"signature\":\"lambda$export$36(boolean): void\",\"dex_descriptor\":\"(Z)V\",\"is_constructor\":false},{\"name\":\"lambda$onClick$24\",\"def_pos\":0,\"signature\":\"lambda$onClick$24(android.view.View): void\",\"dex_descriptor\":\"(Landroid/view/View;)V\",\"is_constructor\":false},{\"name\":\"lambda$onCreate$0\",\"def_pos\":0,\"signature\":\"lambda$onCreate$0(boolean, boolean, boolean): void\",\"dex_descriptor\":\"(ZZZ)V\",\"is_constructor\":false},{\"name\":\"lambda$onCreate$1\",\"def_pos\":0,\"signature\":\"lambda$onCreate$1(android.view.View): void\",\"dex_descriptor\":\"(Landroid/view/View;)V\",\"is_constructor\":false},{\"name\":\"lambda$onCreate$2\",\"def_pos\":0,\"signature\":\"lambda$onCreate$2(android.view.View): void\",\"dex_descriptor\":\"(Landroid/view/View;)V\",\"is_constructor\":false},{\"name\":\"lambda$onCreate$3\",\"def_pos\":0,\"signature\":\"lambda$onCreate$3(android.view.View, android.view.MotionEvent): boolean\",\"dex_descriptor\":\"(Landroid/view/View;Landroid/view/MotionEvent;)Z\",\"is_constructor\":false},{\"name\":\"lambda$onMessageEvent$40\",\"def_pos\":0,\"signature\":\"lambda$onMessageEvent$40(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"lambda$onPlayClicked$26\",\"def_pos\":0,\"signature\":\"lambda$onPlayClicked$26(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"lambda$onSaveRequested$25\",\"def_pos\":0,\"signature\":\"lambda$onSaveRequested$25(int, int): boolean\",\"dex_descriptor\":\"(II)Z\",\"is_constructor\":false},{\"name\":\"lambda$save$31\",\"def_pos\":0,\"signature\":\"lambda$save$31(java.lang.String): java.lang.String\",\"dex_descriptor\":\"(Ljava/lang/String;)Ljava/lang/String;\",\"is_constructor\":false},{\"name\":\"lambda$save$32\",\"def_pos\":0,\"signature\":\"lambda$save$32(int, int, java.lang.String): void\",\"dex_descriptor\":\"(IILjava/lang/String;)V\",\"is_constructor\":false},{\"name\":\"lambda$setBackground$29\",\"def_pos\":0,\"signature\":\"lambda$setBackground$29(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"lambda$setCamera$30\",\"def_pos\":0,\"signature\":\"lambda$setCamera$30(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"lambda$setListeners$10\",\"def_pos\":0,\"signature\":\"lambda$setListeners$10(java.lang.Boolean): void\",\"dex_descriptor\":\"(Ljava/lang/Boolean;)V\",\"is_constructor\":false},{\"name\":\"lambda$setListeners$11\",\"def_pos\":0,\"signature\":\"lambda$setListeners$11(int, int): boolean\",\"dex_descriptor\":\"(II)Z\",\"is_constructor\":false},{\"name\":\"lambda$setListeners$12\",\"def_pos\":0,\"signature\":\"lambda$setListeners$12(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"lambda$setListeners$13\",\"def_pos\":0,\"signature\":\"lambda$setListeners$13(android.view.View): boolean\",\"dex_descriptor\":\"(Landroid/view/View;)Z\",\"is_constructor\":false},{\"name\":\"lambda$setListeners$14\",\"def_pos\":0,\"signature\":\"lambda$setListeners$14(int, int): boolean\",\"dex_descriptor\":\"(II)Z\",\"is_constructor\":false},{\"name\":\"lambda$setListeners$15\",\"def_pos\":0,\"signature\":\"lambda$setListeners$15(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"lambda$setListeners$16\",\"def_pos\":0,\"signature\":\"lambda$setListeners$16(android.view.View): boolean\",\"dex_descriptor\":\"(Landroid/view/View;)Z\",\"is_constructor\":false},{\"name\":\"lambda$setListeners$17\",\"def_pos\":0,\"signature\":\"lambda$setListeners$17(java.io.File): void\",\"dex_descriptor\":\"(Ljava/io/File;)V\",\"is_constructor\":false},{\"name\":\"lambda$setListeners$18\",\"def_pos\":0,\"signature\":\"lambda$setListeners$18(android.view.View): boolean\",\"dex_descriptor\":\"(Landroid/view/View;)Z\",\"is_constructor\":false},{\"name\":\"lambda$setListeners$19\",\"def_pos\":0,\"signature\":\"lambda$setListeners$19(android.view.View): boolean\",\"dex_descriptor\":\"(Landroid/view/View;)Z\",\"is_constructor\":false},{\"name\":\"lambda$setupRangeBar$4\",\"def_pos\":0,\"signature\":\"lambda$setupRangeBar$4(int, int): void\",\"dex_descriptor\":\"(II)V\",\"is_constructor\":false},{\"name\":\"lambda$setupRangeBar$5\",\"def_pos\":0,\"signature\":\"lambda$setupRangeBar$5(boolean, int): void\",\"dex_descriptor\":\"(ZI)V\",\"is_constructor\":false},{\"name\":\"lambda$showRangeDialog$37\",\"def_pos\":0,\"signature\":\"lambda$showRangeDialog$37(android.os.Bundle): void\",\"dex_descriptor\":\"(Landroid/os/Bundle;)V\",\"is_constructor\":false},{\"name\":\"lambda$showRangeDialog$38\",\"def_pos\":0,\"signature\":\"lambda$showRangeDialog$38(ru.jecklandin.stickman.widgets.rangeops.VisualRangeOpsFragment, int, int): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/widgets/rangeops/VisualRangeOpsFragment;II)Z\",\"is_constructor\":false},{\"name\":\"lambda$showRangeDialog$39\",\"def_pos\":0,\"signature\":\"lambda$showRangeDialog$39(ru.jecklandin.stickman.units.Scene, int, int, ru.jecklandin.stickman.widgets.rangeops.VisualRangeOpsFragment, int, int): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;IILru/jecklandin/stickman/widgets/rangeops/VisualRangeOpsFragment;II)Z\",\"is_constructor\":false},{\"name\":\"lambda$triggerHint$8\",\"def_pos\":0,\"signature\":\"lambda$triggerHint$8(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"lambda$triggerHint$9\",\"def_pos\":0,\"signature\":\"lambda$triggerHint$9(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"lambda$unitTweenAction$6\",\"def_pos\":0,\"signature\":\"lambda$unitTweenAction$6(): ru.jecklandin.stickman.units.Unit\",\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/Unit;\",\"is_constructor\":false},{\"name\":\"lambda$unitTweenAction$7\",\"def_pos\":0,\"signature\":\"lambda$unitTweenAction$7(): boolean\",\"dex_descriptor\":\"()Z\",\"is_constructor\":false},{\"name\":\"m14368$r8$lambda$3ACu0ybGAGXCSScG8miLKCz7z0\",\"def_pos\":0,\"signature\":\"m14368$r8$lambda$3ACu0ybGAGXCSScG8miLKCz7z0(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"m14369$r8$lambda$42mffjCiEBmx9G5qicaOc321s\",\"def_pos\":0,\"signature\":\"m14369$r8$lambda$42mffjCiEBmx9G5qicaOc321s(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"m14370$r8$lambda$EI4J1fnEXPfKkwqg0iYDybhJp0\",\"def_pos\":0,\"signature\":\"m14370$r8$lambda$EI4J1fnEXPfKkwqg0iYDybhJp0(ru.jecklandin.stickman.features.editor.MainEditor, java.lang.Integer): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Ljava/lang/Integer;)V\",\"is_constructor\":false},{\"name\":\"m14371$r8$lambda$PKvjPxR2E8yM_HsuTb9XNqpQaQ\",\"def_pos\":0,\"signature\":\"m14371$r8$lambda$PKvjPxR2E8yM_HsuTb9XNqpQaQ(ru.jecklandin.stickman.features.editor.MainEditor, android.os.Bundle): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/os/Bundle;)V\",\"is_constructor\":false},{\"name\":\"m14372$r8$lambda$PM30bO329S5wCaFPm8ED1N23QI\",\"def_pos\":0,\"signature\":\"m14372$r8$lambda$PM30bO329S5wCaFPm8ED1N23QI(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"m14373$r8$lambda$XiVGZkTDZ6ppAUvEy47GxPrw4k\",\"def_pos\":0,\"signature\":\"m14373$r8$lambda$XiVGZkTDZ6ppAUvEy47GxPrw4k(ru.jecklandin.stickman.features.editor.MainEditor, java.io.File): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Ljava/io/File;)V\",\"is_constructor\":false},{\"name\":\"m14374$r8$lambda$_dIkdGUOUvbDoFlNiiThDDoEo4\",\"def_pos\":0,\"signature\":\"m14374$r8$lambda$_dIkdGUOUvbDoFlNiiThDDoEo4(ru.jecklandin.stickman.features.editor.MainEditor, int, int): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;II)Z\",\"is_constructor\":false},{\"name\":\"m14375$r8$lambda$hdeGYZka2toJlSDatT1rJcZP34\",\"def_pos\":0,\"signature\":\"m14375$r8$lambda$hdeGYZka2toJlSDatT1rJcZP34(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"m14376$r8$lambda$hiBHPi8jBHblEWYuFL0KWxcocs\",\"def_pos\":0,\"signature\":\"m14376$r8$lambda$hiBHPi8jBHblEWYuFL0KWxcocs(ru.jecklandin.stickman.features.editor.MainEditor): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)Z\",\"is_constructor\":false},{\"name\":\"m14377$r8$lambda$m5j3nquDThmk_WGzUVoib8o3GE\",\"def_pos\":0,\"signature\":\"m14377$r8$lambda$m5j3nquDThmk_WGzUVoib8o3GE(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;)Z\",\"is_constructor\":false},{\"name\":\"m14378$r8$lambda$mVdtpsa9X8wMUhcSLIJ6BUy5zI\",\"def_pos\":0,\"signature\":\"m14378$r8$lambda$mVdtpsa9X8wMUhcSLIJ6BUy5zI(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"m14379$r8$lambda$mwigy5OwHvA6Sy_PSxJXFto1OY\",\"def_pos\":0,\"signature\":\"m14379$r8$lambda$mwigy5OwHvA6Sy_PSxJXFto1OY(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;)Z\",\"is_constructor\":false},{\"name\":\"m14380$r8$lambda$q1rFGkONVvMAeoxHWZ7gLQ6yoE\",\"def_pos\":0,\"signature\":\"m14380$r8$lambda$q1rFGkONVvMAeoxHWZ7gLQ6yoE(ru.jecklandin.stickman.features.editor.MainEditor, java.lang.Runnable[], java.io.File): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;[Ljava/lang/Runnable;Ljava/io/File;)V\",\"is_constructor\":false},{\"name\":\"m14381$r8$lambda$sdHutj0a8JzlOEWfyAkS6pbg\",\"def_pos\":0,\"signature\":\"m14381$r8$lambda$sdHutj0a8JzlOEWfyAkS6pbg(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;)Z\",\"is_constructor\":false},{\"name\":\"m14382$r8$lambda$tYraA7ROEmYUlGVqjRPaIKMxpE\",\"def_pos\":0,\"signature\":\"m14382$r8$lambda$tYraA7ROEmYUlGVqjRPaIKMxpE(ru.jecklandin.stickman.features.editor.MainEditor): ru.jecklandin.stickman.units.Unit\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)Lru/jecklandin/stickman/units/Unit;\",\"is_constructor\":false},{\"name\":\"m14383$r8$lambda$v83AYXeYPW55ftGk6FnxHhkvsQ\",\"def_pos\":0,\"signature\":\"m14383$r8$lambda$v83AYXeYPW55ftGk6FnxHhkvsQ(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"m14384$r8$lambda$xP5eneXcQHAsPmPOt9Z3_xCK4\",\"def_pos\":0,\"signature\":\"m14384$r8$lambda$xP5eneXcQHAsPmPOt9Z3_xCK4(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"m14385$r8$lambda$xrsWRa9XwjTfVJP5mPiZrROH5Q\",\"def_pos\":0,\"signature\":\"m14385$r8$lambda$xrsWRa9XwjTfVJP5mPiZrROH5Q(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"m14386$r8$lambda$zYFjK3u_Icircp5x_gOlf7DyPM\",\"def_pos\":0,\"signature\":\"m14386$r8$lambda$zYFjK3u_Icircp5x_gOlf7DyPM(ru.jecklandin.stickman.features.editor.MainEditor, ru.jecklandin.stickman.units.Frame): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Lru/jecklandin/stickman/units/Frame;)V\",\"is_constructor\":false},{\"name\":\"m14387$$Nest$fgetmCurrentScene\",\"def_pos\":0,\"signature\":\"m14387$$Nest$fgetmCurrentScene(ru.jecklandin.stickman.features.editor.MainEditor): ru.jecklandin.stickman.units.Scene\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)Lru/jecklandin/stickman/units/Scene;\",\"is_constructor\":false},{\"name\":\"m14388$$Nest$fgetmOnboardingMode\",\"def_pos\":0,\"signature\":\"m14388$$Nest$fgetmOnboardingMode(ru.jecklandin.stickman.features.editor.MainEditor): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)Z\",\"is_constructor\":false},{\"name\":\"m14389$$Nest$fgetmTutorial\",\"def_pos\":0,\"signature\":\"m14389$$Nest$fgetmTutorial(ru.jecklandin.stickman.features.editor.MainEditor): ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove$InEditor\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)Lru/jecklandin/stickman/features/landing/onboarding/OBPracticeMove$InEditor;\",\"is_constructor\":false},{\"name\":\"m14390$$Nest$fputmTutorial\",\"def_pos\":0,\"signature\":\"m14390$$Nest$fputmTutorial(ru.jecklandin.stickman.features.editor.MainEditor, ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove$InEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;Lru/jecklandin/stickman/features/landing/onboarding/OBPracticeMove$InEditor;)V\",\"is_constructor\":false},{\"name\":\"m14391$$Nest$mframe\",\"def_pos\":0,\"signature\":\"m14391$$Nest$mframe(ru.jecklandin.stickman.features.editor.MainEditor): ru.jecklandin.stickman.units.Frame\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)Lru/jecklandin/stickman/units/Frame;\",\"is_constructor\":false},{\"name\":\"m14392$$Nest$minsertSaleBanner\",\"def_pos\":0,\"signature\":\"m14392$$Nest$minsertSaleBanner(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\",\"is_constructor\":false},{\"name\":\"m14393$$Nest$misTutorial\",\"def_pos\":0,\"signature\":\"m14393$$Nest$misTutorial(ru.jecklandin.stickman.features.editor.MainEditor): boolean\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)Z\",\"is_constructor\":false},{\"name\":\"m14394$$Nest$mselectedRootUnitName\",\"def_pos\":0,\"signature\":\"m14394$$Nest$mselectedRootUnitName(ru.jecklandin.stickman.features.editor.MainEditor): java.lang.String\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)Ljava/lang/String;\",\"is_constructor\":false},{\"name\":\"onActivityResult\",\"def_pos\":0,\"signature\":\"onActivityResult(int, int, android.content.Intent): void\",\"dex_descriptor\":\"(IILandroid/content/Intent;)V\",\"is_constructor\":false},{\"name\":\"onClick\",\"def_pos\":0,\"signature\":\"onClick(android.view.View): void\",\"dex_descriptor\":\"(Landroid/view/View;)V\",\"is_constructor\":false},{\"name\":\"onCreate\",\"def_pos\":0,\"signature\":\"onCreate(android.os.Bundle): void\",\"dex_descriptor\":\"(Landroid/os/Bundle;)V\",\"is_constructor\":false},{\"name\":\"onEditFrameButtonClicked\",\"def_pos\":0,\"signature\":\"onEditFrameButtonClicked(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"onEditUnitButtonClicked\",\"def_pos\":0,\"signature\":\"onEditUnitButtonClicked(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"onFrameTouchSelected\",\"def_pos\":0,\"signature\":\"onFrameTouchSelected(boolean, int): void\",\"dex_descriptor\":\"(ZI)V\",\"is_constructor\":false},{\"name\":\"onFramesPasted\",\"def_pos\":0,\"signature\":\"onFramesPasted(int): void\",\"dex_descriptor\":\"(I)V\",\"is_constructor\":false},{\"name\":\"onItemButtonClicked\",\"def_pos\":0,\"signature\":\"onItemButtonClicked(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"onKeyDown\",\"def_pos\":0,\"signature\":\"onKeyDown(int, android.view.KeyEvent): boolean\",\"dex_descriptor\":\"(ILandroid/view/KeyEvent;)Z\",\"is_constructor\":false},{\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.editor2.events.UndoEvent): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/editor2/events/UndoEvent;)V\",\"is_constructor\":false},{\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.background.event.BgLoadedEvent): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/background/event/BgLoadedEvent;)V\",\"is_constructor\":false},{\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.editor.MainEditor$DoSelectUnitEvent): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor$DoSelectUnitEvent;)V\",\"is_constructor\":false},{\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.editor.MainEditor$GeneralErrorEvent): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor$GeneralErrorEvent;)V\",\"is_constructor\":false},{\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.editor.MainEditor$OnChunkSelectedEvent): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor$OnChunkSelectedEvent;)V\",\"is_constructor\":false},{\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.editor.MainEditor$OnSelectUnitEvent): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor$OnSelectUnitEvent;)V\",\"is_constructor\":false},{\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.editor.MainEditor$OnUndoCommittedEvent): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor$OnUndoCommittedEvent;)V\",\"is_constructor\":false},{\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.editor.MainEditor$RedrawRequestedEvent): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor$RedrawRequestedEvent;)V\",\"is_constructor\":false},{\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.editor.events.AutoTweenLockedEditEvent): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/events/AutoTweenLockedEditEvent;)V\",\"is_constructor\":false},{\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.editor.events.FramesPastedEvent): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/events/FramesPastedEvent;)V\",\"is_constructor\":false},{\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.editor.events.ScenePropsEvent): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/events/ScenePropsEvent;)V\",\"is_constructor\":false},{\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.editor.events.ScreenshotRequestEvent): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/events/ScreenshotRequestEvent;)V\",\"is_constructor\":false},{\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.editor.events.UpdateEvent): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/events/UpdateEvent;)V\",\"is_constructor\":false},{\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.tutorial.TutorialEvent): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/tutorial/TutorialEvent;)V\",\"is_constructor\":false},{\"name\":\"onNextFramePressed\",\"def_pos\":0,\"signature\":\"onNextFramePressed(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"onPause\",\"def_pos\":0,\"signature\":\"onPause(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"onPlayClicked\",\"def_pos\":0,\"signature\":\"onPlayClicked(android.view.View): void\",\"dex_descriptor\":\"(Landroid/view/View;)V\",\"is_constructor\":false},{\"name\":\"onPrevFramePressed\",\"def_pos\":0,\"signature\":\"onPrevFramePressed(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"onResume\",\"def_pos\":0,\"signature\":\"onResume(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"onSaveInstanceState\",\"def_pos\":0,\"signature\":\"onSaveInstanceState(android.os.Bundle): void\",\"dex_descriptor\":\"(Landroid/os/Bundle;)V\",\"is_constructor\":false},{\"name\":\"onSaveRequested\",\"def_pos\":0,\"signature\":\"onSaveRequested(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"onSavedSuccess\",\"def_pos\":0,\"signature\":\"onSavedSuccess(java.lang.String): void\",\"dex_descriptor\":\"(Ljava/lang/String;)V\",\"is_constructor\":false},{\"name\":\"onSceneLoaded\",\"def_pos\":0,\"signature\":\"onSceneLoaded(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"onScreenshotRequested\",\"def_pos\":0,\"signature\":\"onScreenshotRequested(boolean): void\",\"dex_descriptor\":\"(Z)V\",\"is_constructor\":false},{\"name\":\"onStart\",\"def_pos\":0,\"signature\":\"onStart(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"onStop\",\"def_pos\":0,\"signature\":\"onStop(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"onUndoButtonClicked\",\"def_pos\":0,\"signature\":\"onUndoButtonClicked(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"onUndoStateChanged\",\"def_pos\":0,\"signature\":\"onUndoStateChanged(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"resolveActiveEasingStatus\",\"def_pos\":0,\"signature\":\"resolveActiveEasingStatus(): ru.jecklandin.stickman.features.editor.MainEditor$EasingStatus\",\"dex_descriptor\":\"()Lru/jecklandin/stickman/features/editor/MainEditor$EasingStatus;\",\"is_constructor\":false},{\"name\":\"resolveDebugSpanRange\",\"def_pos\":0,\"signature\":\"resolveDebugSpanRange(ru.jecklandin.stickman.units.Scene, java.lang.String, int): ru.jecklandin.stickman.units.Scene$AutoTweenRange\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;Ljava/lang/String;I)Lru/jecklandin/stickman/units/Scene$AutoTweenRange;\",\"is_constructor\":false},{\"name\":\"restartSaleBanner\",\"def_pos\":0,\"signature\":\"restartSaleBanner(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"save\",\"def_pos\":0,\"signature\":\"save(int, int): void\",\"dex_descriptor\":\"(II)V\",\"is_constructor\":false},{\"name\":\"scheduleUpdateControls\",\"def_pos\":0,\"signature\":\"scheduleUpdateControls(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"selectedRootUnitName\",\"def_pos\":0,\"signature\":\"selectedRootUnitName(): java.lang.String\",\"dex_descriptor\":\"()Ljava/lang/String;\",\"is_constructor\":false},{\"name\":\"setBackground\",\"def_pos\":0,\"signature\":\"setBackground(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"setCamera\",\"def_pos\":0,\"signature\":\"setCamera(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"setListeners\",\"def_pos\":0,\"signature\":\"setListeners(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"setVarSpeeds\",\"def_pos\":0,\"signature\":\"setVarSpeeds(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"setupFramesBar\",\"def_pos\":0,\"signature\":\"setupFramesBar(): ru.jecklandin.stickman.widgets.DualNavigation\",\"dex_descriptor\":\"()Lru/jecklandin/stickman/widgets/DualNavigation;\",\"is_constructor\":false},{\"name\":\"setupRangeBar\",\"def_pos\":0,\"signature\":\"setupRangeBar(): ru.jecklandin.stickman.widgets.DualNavigation\",\"dex_descriptor\":\"()Lru/jecklandin/stickman/widgets/DualNavigation;\",\"is_constructor\":false},{\"name\":\"shareScreenshot\",\"def_pos\":0,\"signature\":\"shareScreenshot(java.io.File): void\",\"dex_descriptor\":\"(Ljava/io/File;)V\",\"is_constructor\":false},{\"name\":\"showLockedChipHint\",\"def_pos\":0,\"signature\":\"showLockedChipHint(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"showRangeDialog\",\"def_pos\":0,\"signature\":\"showRangeDialog(ru.jecklandin.stickman.units.Scene, android.os.Bundle): void\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;Landroid/os/Bundle;)V\",\"is_constructor\":false},{\"name\":\"showSceneInfo\",\"def_pos\":0,\"signature\":\"showSceneInfo(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"showScenePropsDialog\",\"def_pos\":0,\"signature\":\"showScenePropsDialog(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"showShiftHoldTip\",\"def_pos\":0,\"signature\":\"showShiftHoldTip(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"startPlay\",\"def_pos\":0,\"signature\":\"startPlay(boolean, boolean): void\",\"dex_descriptor\":\"(ZZ)V\",\"is_constructor\":false},{\"name\":\"startPlay\",\"def_pos\":0,\"signature\":\"startPlay(boolean, boolean, int, int): void\",\"dex_descriptor\":\"(ZZII)V\",\"is_constructor\":false},{\"name\":\"triggerHint\",\"def_pos\":0,\"signature\":\"triggerHint(int): void\",\"dex_descriptor\":\"(I)V\",\"is_constructor\":false},{\"name\":\"unitTweenAction\",\"def_pos\":0,\"signature\":\"unitTweenAction(): ru.jecklandin.stickman.features.editor.widgets.usecases.UnitTweenAction\",\"dex_descriptor\":\"()Lru/jecklandin/stickman/features/editor/widgets/usecases/UnitTweenAction;\",\"is_constructor\":false},{\"name\":\"updateEasingDebugLabel\",\"def_pos\":0,\"signature\":\"updateEasingDebugLabel(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"updateLockedHandlers\",\"def_pos\":0,\"signature\":\"updateLockedHandlers(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"updateShiftButtonState\",\"def_pos\":0,\"signature\":\"updateShiftButtonState(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"updateUnitPanelIfShown\",\"def_pos\":0,\"signature\":\"updateUnitPanelIfShown(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"updateUnitSpanChip\",\"def_pos\":0,\"signature\":\"updateUnitSpanChip(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"updateWidgets\",\"def_pos\":0,\"signature\":\"updateWidgets(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":false},{\"name\":\"value\",\"def_pos\":0,\"signature\":\"value(androidx.lifecycle.LiveData\\u003cjava.lang.Boolean\\u003e): boolean\",\"dex_descriptor\":\"(Landroidx/lifecycle/LiveData;)Z\",\"is_constructor\":false}]}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    ]
+  },
+  "normalized_result": {
+    "engine": {
+      "name": "jadx-headless-mcp",
+      "version": "0.7.1",
+      "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+      "worker_count": 1,
+      "heap_limit_mib": 4088
+    },
+    "class_name": "ru.jecklandin.stickman.features.editor.MainEditor",
+    "methods": [
+      {
+        "name": "$r8$lambda$28I8xMgmwBOuzgxBfR16Y0joFgI",
+        "reported_signature": "$r8$lambda$28I8xMgmwBOuzgxBfR16Y0joFgI(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "$r8$lambda$2GZnrDjFNUBW2d7VoDyp_BCkrvE",
+        "reported_signature": "$r8$lambda$2GZnrDjFNUBW2d7VoDyp_BCkrvE(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;)V"
+      },
+      {
+        "name": "$r8$lambda$4_qrG_gbOQEVZITppIi6J5o219o",
+        "reported_signature": "$r8$lambda$4_qrG_gbOQEVZITppIi6J5o219o(ru.jecklandin.stickman.features.editor.MainEditor, boolean, int): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;ZI)V"
+      },
+      {
+        "name": "$r8$lambda$8pByq9NW18gpi2mnz9AZXfiXdOI",
+        "reported_signature": "$r8$lambda$8pByq9NW18gpi2mnz9AZXfiXdOI(ru.jecklandin.stickman.features.editor.MainEditor, int, int): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;II)Z"
+      },
+      {
+        "name": "$r8$lambda$BmfKAnSY32pWVE0TNQdzK9OmP0U",
+        "reported_signature": "$r8$lambda$BmfKAnSY32pWVE0TNQdzK9OmP0U(ru.jecklandin.stickman.features.editor.MainEditor, java.lang.String): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Ljava/lang/String;)V"
+      },
+      {
+        "name": "$r8$lambda$E2IUlU78Qz9KY_mMm4ETTLEm0PU",
+        "reported_signature": "$r8$lambda$E2IUlU78Qz9KY_mMm4ETTLEm0PU(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "$r8$lambda$Fpdx0MMfA1plRdnLPqTFpfT3amo",
+        "reported_signature": "$r8$lambda$Fpdx0MMfA1plRdnLPqTFpfT3amo(ru.jecklandin.stickman.features.editor.MainEditor, java.lang.Throwable): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Ljava/lang/Throwable;)V"
+      },
+      {
+        "name": "$r8$lambda$Gj3JgwU20XRSlPuYScbbXYdWJtA",
+        "reported_signature": "$r8$lambda$Gj3JgwU20XRSlPuYScbbXYdWJtA(ru.jecklandin.stickman.features.editor.MainEditor, boolean, boolean, boolean): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;ZZZ)V"
+      },
+      {
+        "name": "$r8$lambda$HBVCrjli3HyNk1FsLco4R4eXKhY",
+        "reported_signature": "$r8$lambda$HBVCrjli3HyNk1FsLco4R4eXKhY(ru.jecklandin.stickman.features.editor.MainEditor, boolean, int): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;ZI)V"
+      },
+      {
+        "name": "$r8$lambda$HO_YM2gLlfZTEkjuiiV4f6yJmRM",
+        "reported_signature": "$r8$lambda$HO_YM2gLlfZTEkjuiiV4f6yJmRM(ru.jecklandin.stickman.features.editor.MainEditor): ru.jecklandin.stickman.units.Frame",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)Lru/jecklandin/stickman/units/Frame;"
+      },
+      {
+        "name": "$r8$lambda$HhhO72cgA5ZTvtxhRE4BNZaVJXA",
+        "reported_signature": "$r8$lambda$HhhO72cgA5ZTvtxhRE4BNZaVJXA(ru.jecklandin.stickman.features.editor.MainEditor, int, int): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;II)Z"
+      },
+      {
+        "name": "$r8$lambda$NAPBWcBQWDSN_Mp7NNtLjczL3no",
+        "reported_signature": "$r8$lambda$NAPBWcBQWDSN_Mp7NNtLjczL3no(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;)V"
+      },
+      {
+        "name": "$r8$lambda$NS_xTPtK8haR5X3sYRo_58Tg2CA",
+        "reported_signature": "$r8$lambda$NS_xTPtK8haR5X3sYRo_58Tg2CA(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View, android.view.MotionEvent): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;Landroid/view/MotionEvent;)Z"
+      },
+      {
+        "name": "$r8$lambda$ODCAApzl8bXw7srYRK4UFwwrqJ8",
+        "reported_signature": "$r8$lambda$ODCAApzl8bXw7srYRK4UFwwrqJ8(ru.jecklandin.stickman.features.editor.MainEditor, java.lang.String, android.graphics.Bitmap[], int, int): java.lang.String",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Ljava/lang/String;[Landroid/graphics/Bitmap;II)Ljava/lang/String;"
+      },
+      {
+        "name": "$r8$lambda$OLI4HUK4gZkMdXZMHD5xIJiYk7o",
+        "reported_signature": "$r8$lambda$OLI4HUK4gZkMdXZMHD5xIJiYk7o(ru.jecklandin.stickman.features.editor.MainEditor, boolean, boolean): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;ZZ)V"
+      },
+      {
+        "name": "$r8$lambda$OxHFD4j2xJpqrAgG6P7O2lF76qc",
+        "reported_signature": "$r8$lambda$OxHFD4j2xJpqrAgG6P7O2lF76qc(ru.jecklandin.stickman.features.editor.MainEditor, java.lang.String): java.lang.String",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Ljava/lang/String;)Ljava/lang/String;"
+      },
+      {
+        "name": "$r8$lambda$Qrvzgx4ZtRmtZEPAazCmYfOGZeA",
+        "reported_signature": "$r8$lambda$Qrvzgx4ZtRmtZEPAazCmYfOGZeA(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "$r8$lambda$RFoOVrzhwTXgRBMVkEoYRvn6hHM",
+        "reported_signature": "$r8$lambda$RFoOVrzhwTXgRBMVkEoYRvn6hHM(ru.jecklandin.stickman.features.editor.MainEditor): java.lang.String",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)Ljava/lang/String;"
+      },
+      {
+        "name": "$r8$lambda$TKjH1JbieWI90mhMxqXBuIu15V8",
+        "reported_signature": "$r8$lambda$TKjH1JbieWI90mhMxqXBuIu15V8(ru.jecklandin.stickman.features.editor.MainEditor, ru.jecklandin.stickman.units.Scene, int, int, ru.jecklandin.stickman.widgets.rangeops.VisualRangeOpsFragment, int, int): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Lru/jecklandin/stickman/units/Scene;IILru/jecklandin/stickman/widgets/rangeops/VisualRangeOpsFragment;II)Z"
+      },
+      {
+        "name": "$r8$lambda$VCIO0PN67UF7Mgd20priZT07rdw",
+        "reported_signature": "$r8$lambda$VCIO0PN67UF7Mgd20priZT07rdw(ru.jecklandin.stickman.features.editor.MainEditor, int, int): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;II)V"
+      },
+      {
+        "name": "$r8$lambda$aA3w9Y95nKjSPzfzclr9sAuGebk",
+        "reported_signature": "$r8$lambda$aA3w9Y95nKjSPzfzclr9sAuGebk(java.lang.Throwable): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/lang/Throwable;)V"
+      },
+      {
+        "name": "$r8$lambda$cjUMysbCU0rxwc_Xhg0Q3W_c9Jw",
+        "reported_signature": "$r8$lambda$cjUMysbCU0rxwc_Xhg0Q3W_c9Jw(ru.jecklandin.stickman.features.editor.MainEditor, ru.jecklandin.stickman.widgets.rangeops.VisualRangeOpsFragment, int, int): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Lru/jecklandin/stickman/widgets/rangeops/VisualRangeOpsFragment;II)Z"
+      },
+      {
+        "name": "$r8$lambda$dqCejZy6Q7JYh9t6le3MC24QqyI",
+        "reported_signature": "$r8$lambda$dqCejZy6Q7JYh9t6le3MC24QqyI(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;)V"
+      },
+      {
+        "name": "$r8$lambda$jJM6xrkX1cKO0x5CrIsnohMixNc",
+        "reported_signature": "$r8$lambda$jJM6xrkX1cKO0x5CrIsnohMixNc(ru.jecklandin.stickman.features.editor.MainEditor, boolean): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Z)V"
+      },
+      {
+        "name": "$r8$lambda$jKY2E0dbee36MeW9j4ExXoTOtSc",
+        "reported_signature": "$r8$lambda$jKY2E0dbee36MeW9j4ExXoTOtSc(ru.jecklandin.stickman.features.editor.MainEditor): java.lang.Integer",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)Ljava/lang/Integer;"
+      },
+      {
+        "name": "$r8$lambda$lOWb5Eygfogd8kT3Io7hE64JWzc",
+        "reported_signature": "$r8$lambda$lOWb5Eygfogd8kT3Io7hE64JWzc(): float",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()F"
+      },
+      {
+        "name": "$r8$lambda$npeZaJcCEddwaZzSjWkXTpEtsCg",
+        "reported_signature": "$r8$lambda$npeZaJcCEddwaZzSjWkXTpEtsCg(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;)Z"
+      },
+      {
+        "name": "$r8$lambda$rfhba_1lcpkMDuhLNMj9WSfAjjk",
+        "reported_signature": "$r8$lambda$rfhba_1lcpkMDuhLNMj9WSfAjjk(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "$r8$lambda$sDzkTN7yrrOcPHM3q95e5peZfvg",
+        "reported_signature": "$r8$lambda$sDzkTN7yrrOcPHM3q95e5peZfvg(ru.jecklandin.stickman.features.editor.MainEditor, int, int, java.lang.String): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;IILjava/lang/String;)V"
+      },
+      {
+        "name": "$r8$lambda$tdcnuwtKKYLdl61Rh5AzG_49MO8",
+        "reported_signature": "$r8$lambda$tdcnuwtKKYLdl61Rh5AzG_49MO8(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "$r8$lambda$uYbCEfypZoP2E1_xIES95EgIqJQ",
+        "reported_signature": "$r8$lambda$uYbCEfypZoP2E1_xIES95EgIqJQ(ru.jecklandin.stickman.features.editor.MainEditor, java.lang.Boolean): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Ljava/lang/Boolean;)V"
+      },
+      {
+        "name": "$r8$lambda$wnML8rzAHhhIRJRKzgDLaVivFks",
+        "reported_signature": "$r8$lambda$wnML8rzAHhhIRJRKzgDLaVivFks(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "<init>",
+        "reported_signature": "<init>(): void",
+        "overload_index": 0,
+        "is_constructor": true,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "addFrame",
+        "reported_signature": "addFrame(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "addSound",
+        "reported_signature": "addSound(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "addSoundLegacy",
+        "reported_signature": "addSoundLegacy(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "applyNoLabelsToMainToolButtons",
+        "reported_signature": "applyNoLabelsToMainToolButtons(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "autosaveMaybe",
+        "reported_signature": "autosaveMaybe(java.lang.Runnable[]): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "([Ljava/lang/Runnable;)V"
+      },
+      {
+        "name": "bindViews",
+        "reported_signature": "bindViews(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "copyTouchHeldStructureToFrameIfNoConflicts",
+        "reported_signature": "copyTouchHeldStructureToFrameIfNoConflicts(ru.jecklandin.stickman.units.Frame, int): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/units/Frame;I)V"
+      },
+      {
+        "name": "delayedTransition",
+        "reported_signature": "delayedTransition(java.lang.Runnable): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/lang/Runnable;)V"
+      },
+      {
+        "name": "deleteSelectedFrames",
+        "reported_signature": "deleteSelectedFrames(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "doSave",
+        "reported_signature": "doSave(java.lang.String, int, int): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/lang/String;II)V"
+      },
+      {
+        "name": "ensureFramesNumber",
+        "reported_signature": "ensureFramesNumber(int, java.lang.Runnable): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(ILjava/lang/Runnable;)V"
+      },
+      {
+        "name": "export",
+        "reported_signature": "export(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "export",
+        "reported_signature": "export(boolean): void",
+        "overload_index": 1,
+        "is_constructor": false,
+        "dex_descriptor": "(Z)V"
+      },
+      {
+        "name": "flashActiveFrame",
+        "reported_signature": "flashActiveFrame(boolean): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Z)V"
+      },
+      {
+        "name": "flashView",
+        "reported_signature": "flashView(android.view.View): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/view/View;)V"
+      },
+      {
+        "name": "frame",
+        "reported_signature": "frame(): ru.jecklandin.stickman.units.Frame",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Lru/jecklandin/stickman/units/Frame;"
+      },
+      {
+        "name": "hasSelectedUnitWithStretchableBone",
+        "reported_signature": "hasSelectedUnitWithStretchableBone(): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Z"
+      },
+      {
+        "name": "hideShiftHoldTip",
+        "reported_signature": "hideShiftHoldTip(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "insertSaleBanner",
+        "reported_signature": "insertSaleBanner(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "isTutorial",
+        "reported_signature": "isTutorial(): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Z"
+      },
+      {
+        "name": "lambda$addFrame$20",
+        "reported_signature": "lambda$addFrame$20(): ru.jecklandin.stickman.units.Frame",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Lru/jecklandin/stickman/units/Frame;"
+      },
+      {
+        "name": "lambda$addFrame$21",
+        "reported_signature": "lambda$addFrame$21(ru.jecklandin.stickman.units.Frame): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/units/Frame;)V"
+      },
+      {
+        "name": "lambda$addSound$27",
+        "reported_signature": "lambda$addSound$27(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "lambda$addSoundLegacy$28",
+        "reported_signature": "lambda$addSoundLegacy$28(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "lambda$autosaveMaybe$41",
+        "reported_signature": "lambda$autosaveMaybe$41(java.lang.Runnable[], java.io.File): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "([Ljava/lang/Runnable;Ljava/io/File;)V"
+      },
+      {
+        "name": "lambda$deleteSelectedFrames$22",
+        "reported_signature": "lambda$deleteSelectedFrames$22(): java.lang.Integer",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Ljava/lang/Integer;"
+      },
+      {
+        "name": "lambda$deleteSelectedFrames$23",
+        "reported_signature": "lambda$deleteSelectedFrames$23(java.lang.Integer): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/lang/Integer;)V"
+      },
+      {
+        "name": "lambda$doSave$33",
+        "reported_signature": "lambda$doSave$33(java.lang.String, android.graphics.Bitmap[], int, int): java.lang.String",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/lang/String;[Landroid/graphics/Bitmap;II)Ljava/lang/String;"
+      },
+      {
+        "name": "lambda$doSave$34",
+        "reported_signature": "lambda$doSave$34(java.lang.Throwable): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/lang/Throwable;)V"
+      },
+      {
+        "name": "lambda$export$35",
+        "reported_signature": "lambda$export$35(boolean, boolean): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(ZZ)V"
+      },
+      {
+        "name": "lambda$export$36",
+        "reported_signature": "lambda$export$36(boolean): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Z)V"
+      },
+      {
+        "name": "lambda$onClick$24",
+        "reported_signature": "lambda$onClick$24(android.view.View): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/view/View;)V"
+      },
+      {
+        "name": "lambda$onCreate$0",
+        "reported_signature": "lambda$onCreate$0(boolean, boolean, boolean): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(ZZZ)V"
+      },
+      {
+        "name": "lambda$onCreate$1",
+        "reported_signature": "lambda$onCreate$1(android.view.View): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/view/View;)V"
+      },
+      {
+        "name": "lambda$onCreate$2",
+        "reported_signature": "lambda$onCreate$2(android.view.View): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/view/View;)V"
+      },
+      {
+        "name": "lambda$onCreate$3",
+        "reported_signature": "lambda$onCreate$3(android.view.View, android.view.MotionEvent): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/view/View;Landroid/view/MotionEvent;)Z"
+      },
+      {
+        "name": "lambda$onMessageEvent$40",
+        "reported_signature": "lambda$onMessageEvent$40(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "lambda$onPlayClicked$26",
+        "reported_signature": "lambda$onPlayClicked$26(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "lambda$onSaveRequested$25",
+        "reported_signature": "lambda$onSaveRequested$25(int, int): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(II)Z"
+      },
+      {
+        "name": "lambda$save$31",
+        "reported_signature": "lambda$save$31(java.lang.String): java.lang.String",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/lang/String;)Ljava/lang/String;"
+      },
+      {
+        "name": "lambda$save$32",
+        "reported_signature": "lambda$save$32(int, int, java.lang.String): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(IILjava/lang/String;)V"
+      },
+      {
+        "name": "lambda$setBackground$29",
+        "reported_signature": "lambda$setBackground$29(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "lambda$setCamera$30",
+        "reported_signature": "lambda$setCamera$30(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "lambda$setListeners$10",
+        "reported_signature": "lambda$setListeners$10(java.lang.Boolean): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/lang/Boolean;)V"
+      },
+      {
+        "name": "lambda$setListeners$11",
+        "reported_signature": "lambda$setListeners$11(int, int): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(II)Z"
+      },
+      {
+        "name": "lambda$setListeners$12",
+        "reported_signature": "lambda$setListeners$12(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "lambda$setListeners$13",
+        "reported_signature": "lambda$setListeners$13(android.view.View): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/view/View;)Z"
+      },
+      {
+        "name": "lambda$setListeners$14",
+        "reported_signature": "lambda$setListeners$14(int, int): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(II)Z"
+      },
+      {
+        "name": "lambda$setListeners$15",
+        "reported_signature": "lambda$setListeners$15(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "lambda$setListeners$16",
+        "reported_signature": "lambda$setListeners$16(android.view.View): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/view/View;)Z"
+      },
+      {
+        "name": "lambda$setListeners$17",
+        "reported_signature": "lambda$setListeners$17(java.io.File): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/io/File;)V"
+      },
+      {
+        "name": "lambda$setListeners$18",
+        "reported_signature": "lambda$setListeners$18(android.view.View): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/view/View;)Z"
+      },
+      {
+        "name": "lambda$setListeners$19",
+        "reported_signature": "lambda$setListeners$19(android.view.View): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/view/View;)Z"
+      },
+      {
+        "name": "lambda$setupRangeBar$4",
+        "reported_signature": "lambda$setupRangeBar$4(int, int): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(II)V"
+      },
+      {
+        "name": "lambda$setupRangeBar$5",
+        "reported_signature": "lambda$setupRangeBar$5(boolean, int): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(ZI)V"
+      },
+      {
+        "name": "lambda$showRangeDialog$37",
+        "reported_signature": "lambda$showRangeDialog$37(android.os.Bundle): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/os/Bundle;)V"
+      },
+      {
+        "name": "lambda$showRangeDialog$38",
+        "reported_signature": "lambda$showRangeDialog$38(ru.jecklandin.stickman.widgets.rangeops.VisualRangeOpsFragment, int, int): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/widgets/rangeops/VisualRangeOpsFragment;II)Z"
+      },
+      {
+        "name": "lambda$showRangeDialog$39",
+        "reported_signature": "lambda$showRangeDialog$39(ru.jecklandin.stickman.units.Scene, int, int, ru.jecklandin.stickman.widgets.rangeops.VisualRangeOpsFragment, int, int): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/units/Scene;IILru/jecklandin/stickman/widgets/rangeops/VisualRangeOpsFragment;II)Z"
+      },
+      {
+        "name": "lambda$triggerHint$8",
+        "reported_signature": "lambda$triggerHint$8(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "lambda$triggerHint$9",
+        "reported_signature": "lambda$triggerHint$9(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "lambda$unitTweenAction$6",
+        "reported_signature": "lambda$unitTweenAction$6(): ru.jecklandin.stickman.units.Unit",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Lru/jecklandin/stickman/units/Unit;"
+      },
+      {
+        "name": "lambda$unitTweenAction$7",
+        "reported_signature": "lambda$unitTweenAction$7(): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Z"
+      },
+      {
+        "name": "m14368$r8$lambda$3ACu0ybGAGXCSScG8miLKCz7z0",
+        "reported_signature": "m14368$r8$lambda$3ACu0ybGAGXCSScG8miLKCz7z0(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "m14369$r8$lambda$42mffjCiEBmx9G5qicaOc321s",
+        "reported_signature": "m14369$r8$lambda$42mffjCiEBmx9G5qicaOc321s(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "m14370$r8$lambda$EI4J1fnEXPfKkwqg0iYDybhJp0",
+        "reported_signature": "m14370$r8$lambda$EI4J1fnEXPfKkwqg0iYDybhJp0(ru.jecklandin.stickman.features.editor.MainEditor, java.lang.Integer): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Ljava/lang/Integer;)V"
+      },
+      {
+        "name": "m14371$r8$lambda$PKvjPxR2E8yM_HsuTb9XNqpQaQ",
+        "reported_signature": "m14371$r8$lambda$PKvjPxR2E8yM_HsuTb9XNqpQaQ(ru.jecklandin.stickman.features.editor.MainEditor, android.os.Bundle): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/os/Bundle;)V"
+      },
+      {
+        "name": "m14372$r8$lambda$PM30bO329S5wCaFPm8ED1N23QI",
+        "reported_signature": "m14372$r8$lambda$PM30bO329S5wCaFPm8ED1N23QI(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "m14373$r8$lambda$XiVGZkTDZ6ppAUvEy47GxPrw4k",
+        "reported_signature": "m14373$r8$lambda$XiVGZkTDZ6ppAUvEy47GxPrw4k(ru.jecklandin.stickman.features.editor.MainEditor, java.io.File): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Ljava/io/File;)V"
+      },
+      {
+        "name": "m14374$r8$lambda$_dIkdGUOUvbDoFlNiiThDDoEo4",
+        "reported_signature": "m14374$r8$lambda$_dIkdGUOUvbDoFlNiiThDDoEo4(ru.jecklandin.stickman.features.editor.MainEditor, int, int): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;II)Z"
+      },
+      {
+        "name": "m14375$r8$lambda$hdeGYZka2toJlSDatT1rJcZP34",
+        "reported_signature": "m14375$r8$lambda$hdeGYZka2toJlSDatT1rJcZP34(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "m14376$r8$lambda$hiBHPi8jBHblEWYuFL0KWxcocs",
+        "reported_signature": "m14376$r8$lambda$hiBHPi8jBHblEWYuFL0KWxcocs(ru.jecklandin.stickman.features.editor.MainEditor): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)Z"
+      },
+      {
+        "name": "m14377$r8$lambda$m5j3nquDThmk_WGzUVoib8o3GE",
+        "reported_signature": "m14377$r8$lambda$m5j3nquDThmk_WGzUVoib8o3GE(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;)Z"
+      },
+      {
+        "name": "m14378$r8$lambda$mVdtpsa9X8wMUhcSLIJ6BUy5zI",
+        "reported_signature": "m14378$r8$lambda$mVdtpsa9X8wMUhcSLIJ6BUy5zI(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "m14379$r8$lambda$mwigy5OwHvA6Sy_PSxJXFto1OY",
+        "reported_signature": "m14379$r8$lambda$mwigy5OwHvA6Sy_PSxJXFto1OY(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;)Z"
+      },
+      {
+        "name": "m14380$r8$lambda$q1rFGkONVvMAeoxHWZ7gLQ6yoE",
+        "reported_signature": "m14380$r8$lambda$q1rFGkONVvMAeoxHWZ7gLQ6yoE(ru.jecklandin.stickman.features.editor.MainEditor, java.lang.Runnable[], java.io.File): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;[Ljava/lang/Runnable;Ljava/io/File;)V"
+      },
+      {
+        "name": "m14381$r8$lambda$sdHutj0a8JzlOEWfyAkS6pbg",
+        "reported_signature": "m14381$r8$lambda$sdHutj0a8JzlOEWfyAkS6pbg(ru.jecklandin.stickman.features.editor.MainEditor, android.view.View): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Landroid/view/View;)Z"
+      },
+      {
+        "name": "m14382$r8$lambda$tYraA7ROEmYUlGVqjRPaIKMxpE",
+        "reported_signature": "m14382$r8$lambda$tYraA7ROEmYUlGVqjRPaIKMxpE(ru.jecklandin.stickman.features.editor.MainEditor): ru.jecklandin.stickman.units.Unit",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)Lru/jecklandin/stickman/units/Unit;"
+      },
+      {
+        "name": "m14383$r8$lambda$v83AYXeYPW55ftGk6FnxHhkvsQ",
+        "reported_signature": "m14383$r8$lambda$v83AYXeYPW55ftGk6FnxHhkvsQ(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "m14384$r8$lambda$xP5eneXcQHAsPmPOt9Z3_xCK4",
+        "reported_signature": "m14384$r8$lambda$xP5eneXcQHAsPmPOt9Z3_xCK4(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "m14385$r8$lambda$xrsWRa9XwjTfVJP5mPiZrROH5Q",
+        "reported_signature": "m14385$r8$lambda$xrsWRa9XwjTfVJP5mPiZrROH5Q(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "m14386$r8$lambda$zYFjK3u_Icircp5x_gOlf7DyPM",
+        "reported_signature": "m14386$r8$lambda$zYFjK3u_Icircp5x_gOlf7DyPM(ru.jecklandin.stickman.features.editor.MainEditor, ru.jecklandin.stickman.units.Frame): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Lru/jecklandin/stickman/units/Frame;)V"
+      },
+      {
+        "name": "m14387$$Nest$fgetmCurrentScene",
+        "reported_signature": "m14387$$Nest$fgetmCurrentScene(ru.jecklandin.stickman.features.editor.MainEditor): ru.jecklandin.stickman.units.Scene",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)Lru/jecklandin/stickman/units/Scene;"
+      },
+      {
+        "name": "m14388$$Nest$fgetmOnboardingMode",
+        "reported_signature": "m14388$$Nest$fgetmOnboardingMode(ru.jecklandin.stickman.features.editor.MainEditor): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)Z"
+      },
+      {
+        "name": "m14389$$Nest$fgetmTutorial",
+        "reported_signature": "m14389$$Nest$fgetmTutorial(ru.jecklandin.stickman.features.editor.MainEditor): ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove$InEditor",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)Lru/jecklandin/stickman/features/landing/onboarding/OBPracticeMove$InEditor;"
+      },
+      {
+        "name": "m14390$$Nest$fputmTutorial",
+        "reported_signature": "m14390$$Nest$fputmTutorial(ru.jecklandin.stickman.features.editor.MainEditor, ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove$InEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;Lru/jecklandin/stickman/features/landing/onboarding/OBPracticeMove$InEditor;)V"
+      },
+      {
+        "name": "m14391$$Nest$mframe",
+        "reported_signature": "m14391$$Nest$mframe(ru.jecklandin.stickman.features.editor.MainEditor): ru.jecklandin.stickman.units.Frame",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)Lru/jecklandin/stickman/units/Frame;"
+      },
+      {
+        "name": "m14392$$Nest$minsertSaleBanner",
+        "reported_signature": "m14392$$Nest$minsertSaleBanner(ru.jecklandin.stickman.features.editor.MainEditor): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)V"
+      },
+      {
+        "name": "m14393$$Nest$misTutorial",
+        "reported_signature": "m14393$$Nest$misTutorial(ru.jecklandin.stickman.features.editor.MainEditor): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)Z"
+      },
+      {
+        "name": "m14394$$Nest$mselectedRootUnitName",
+        "reported_signature": "m14394$$Nest$mselectedRootUnitName(ru.jecklandin.stickman.features.editor.MainEditor): java.lang.String",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor;)Ljava/lang/String;"
+      },
+      {
+        "name": "onActivityResult",
+        "reported_signature": "onActivityResult(int, int, android.content.Intent): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(IILandroid/content/Intent;)V"
+      },
+      {
+        "name": "onClick",
+        "reported_signature": "onClick(android.view.View): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/view/View;)V"
+      },
+      {
+        "name": "onCreate",
+        "reported_signature": "onCreate(android.os.Bundle): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/os/Bundle;)V"
+      },
+      {
+        "name": "onEditFrameButtonClicked",
+        "reported_signature": "onEditFrameButtonClicked(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onEditUnitButtonClicked",
+        "reported_signature": "onEditUnitButtonClicked(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onFrameTouchSelected",
+        "reported_signature": "onFrameTouchSelected(boolean, int): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(ZI)V"
+      },
+      {
+        "name": "onFramesPasted",
+        "reported_signature": "onFramesPasted(int): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(I)V"
+      },
+      {
+        "name": "onItemButtonClicked",
+        "reported_signature": "onItemButtonClicked(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onKeyDown",
+        "reported_signature": "onKeyDown(int, android.view.KeyEvent): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(ILandroid/view/KeyEvent;)Z"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.editor2.events.UndoEvent): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/editor2/events/UndoEvent;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.background.event.BgLoadedEvent): void",
+        "overload_index": 1,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/background/event/BgLoadedEvent;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.editor.MainEditor$DoSelectUnitEvent): void",
+        "overload_index": 2,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor$DoSelectUnitEvent;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.editor.MainEditor$GeneralErrorEvent): void",
+        "overload_index": 3,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor$GeneralErrorEvent;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.editor.MainEditor$OnChunkSelectedEvent): void",
+        "overload_index": 4,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor$OnChunkSelectedEvent;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.editor.MainEditor$OnSelectUnitEvent): void",
+        "overload_index": 5,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor$OnSelectUnitEvent;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.editor.MainEditor$OnUndoCommittedEvent): void",
+        "overload_index": 6,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor$OnUndoCommittedEvent;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.editor.MainEditor$RedrawRequestedEvent): void",
+        "overload_index": 7,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/MainEditor$RedrawRequestedEvent;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.editor.events.AutoTweenLockedEditEvent): void",
+        "overload_index": 8,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/events/AutoTweenLockedEditEvent;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.editor.events.FramesPastedEvent): void",
+        "overload_index": 9,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/events/FramesPastedEvent;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.editor.events.ScenePropsEvent): void",
+        "overload_index": 10,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/events/ScenePropsEvent;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.editor.events.ScreenshotRequestEvent): void",
+        "overload_index": 11,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/events/ScreenshotRequestEvent;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.editor.events.UpdateEvent): void",
+        "overload_index": 12,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/events/UpdateEvent;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.tutorial.TutorialEvent): void",
+        "overload_index": 13,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/tutorial/TutorialEvent;)V"
+      },
+      {
+        "name": "onNextFramePressed",
+        "reported_signature": "onNextFramePressed(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onPause",
+        "reported_signature": "onPause(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onPlayClicked",
+        "reported_signature": "onPlayClicked(android.view.View): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/view/View;)V"
+      },
+      {
+        "name": "onPrevFramePressed",
+        "reported_signature": "onPrevFramePressed(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onResume",
+        "reported_signature": "onResume(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onSaveInstanceState",
+        "reported_signature": "onSaveInstanceState(android.os.Bundle): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/os/Bundle;)V"
+      },
+      {
+        "name": "onSaveRequested",
+        "reported_signature": "onSaveRequested(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onSavedSuccess",
+        "reported_signature": "onSavedSuccess(java.lang.String): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/lang/String;)V"
+      },
+      {
+        "name": "onSceneLoaded",
+        "reported_signature": "onSceneLoaded(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onScreenshotRequested",
+        "reported_signature": "onScreenshotRequested(boolean): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Z)V"
+      },
+      {
+        "name": "onStart",
+        "reported_signature": "onStart(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onStop",
+        "reported_signature": "onStop(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onUndoButtonClicked",
+        "reported_signature": "onUndoButtonClicked(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onUndoStateChanged",
+        "reported_signature": "onUndoStateChanged(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "resolveActiveEasingStatus",
+        "reported_signature": "resolveActiveEasingStatus(): ru.jecklandin.stickman.features.editor.MainEditor$EasingStatus",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Lru/jecklandin/stickman/features/editor/MainEditor$EasingStatus;"
+      },
+      {
+        "name": "resolveDebugSpanRange",
+        "reported_signature": "resolveDebugSpanRange(ru.jecklandin.stickman.units.Scene, java.lang.String, int): ru.jecklandin.stickman.units.Scene$AutoTweenRange",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/units/Scene;Ljava/lang/String;I)Lru/jecklandin/stickman/units/Scene$AutoTweenRange;"
+      },
+      {
+        "name": "restartSaleBanner",
+        "reported_signature": "restartSaleBanner(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "save",
+        "reported_signature": "save(int, int): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(II)V"
+      },
+      {
+        "name": "scheduleUpdateControls",
+        "reported_signature": "scheduleUpdateControls(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "selectedRootUnitName",
+        "reported_signature": "selectedRootUnitName(): java.lang.String",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Ljava/lang/String;"
+      },
+      {
+        "name": "setBackground",
+        "reported_signature": "setBackground(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "setCamera",
+        "reported_signature": "setCamera(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "setListeners",
+        "reported_signature": "setListeners(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "setVarSpeeds",
+        "reported_signature": "setVarSpeeds(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "setupFramesBar",
+        "reported_signature": "setupFramesBar(): ru.jecklandin.stickman.widgets.DualNavigation",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Lru/jecklandin/stickman/widgets/DualNavigation;"
+      },
+      {
+        "name": "setupRangeBar",
+        "reported_signature": "setupRangeBar(): ru.jecklandin.stickman.widgets.DualNavigation",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Lru/jecklandin/stickman/widgets/DualNavigation;"
+      },
+      {
+        "name": "shareScreenshot",
+        "reported_signature": "shareScreenshot(java.io.File): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/io/File;)V"
+      },
+      {
+        "name": "showLockedChipHint",
+        "reported_signature": "showLockedChipHint(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "showRangeDialog",
+        "reported_signature": "showRangeDialog(ru.jecklandin.stickman.units.Scene, android.os.Bundle): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/units/Scene;Landroid/os/Bundle;)V"
+      },
+      {
+        "name": "showSceneInfo",
+        "reported_signature": "showSceneInfo(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "showScenePropsDialog",
+        "reported_signature": "showScenePropsDialog(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "showShiftHoldTip",
+        "reported_signature": "showShiftHoldTip(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "startPlay",
+        "reported_signature": "startPlay(boolean, boolean): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(ZZ)V"
+      },
+      {
+        "name": "startPlay",
+        "reported_signature": "startPlay(boolean, boolean, int, int): void",
+        "overload_index": 1,
+        "is_constructor": false,
+        "dex_descriptor": "(ZZII)V"
+      },
+      {
+        "name": "triggerHint",
+        "reported_signature": "triggerHint(int): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(I)V"
+      },
+      {
+        "name": "unitTweenAction",
+        "reported_signature": "unitTweenAction(): ru.jecklandin.stickman.features.editor.widgets.usecases.UnitTweenAction",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Lru/jecklandin/stickman/features/editor/widgets/usecases/UnitTweenAction;"
+      },
+      {
+        "name": "updateEasingDebugLabel",
+        "reported_signature": "updateEasingDebugLabel(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "updateLockedHandlers",
+        "reported_signature": "updateLockedHandlers(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "updateShiftButtonState",
+        "reported_signature": "updateShiftButtonState(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "updateUnitPanelIfShown",
+        "reported_signature": "updateUnitPanelIfShown(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "updateUnitSpanChip",
+        "reported_signature": "updateUnitSpanChip(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "updateWidgets",
+        "reported_signature": "updateWidgets(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "value",
+        "reported_signature": "value(androidx.lifecycle.LiveData<java.lang.Boolean>): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroidx/lifecycle/LiveData;)Z"
+      }
+    ],
+    "fields": [
+      {
+        "name": "EXTRA_FIRST_LAUNCH",
+        "reported_type": "java.lang.String",
+        "dex_static_value": {
+          "type": "string",
+          "value": "first_launch"
+        }
+      },
+      {
+        "name": "EXTRA_LAUNCH_DEMO",
+        "reported_type": "java.lang.String",
+        "dex_static_value": {
+          "type": "string",
+          "value": "demo"
+        }
+      },
+      {
+        "name": "EXTRA_LOAD_BG",
+        "reported_type": "java.lang.String",
+        "dex_static_value": {
+          "type": "string",
+          "value": "load_bg"
+        }
+      },
+      {
+        "name": "EXTRA_OB_PRACTICE_MOVE",
+        "reported_type": "java.lang.String",
+        "dex_static_value": {
+          "type": "string",
+          "value": "ob_practice_move"
+        }
+      },
+      {
+        "name": "SHIFT_HOLD_TIP_MAX_SHOWS",
+        "reported_type": "int",
+        "dex_static_value": {
+          "type": "int",
+          "value": 3
+        }
+      },
+      {
+        "name": "SIMPLE_TUTORIAL",
+        "reported_type": "java.lang.String",
+        "dex_static_value": {
+          "type": "string",
+          "value": "simple_tutorial"
+        }
+      },
+      {
+        "name": "TAG",
+        "reported_type": "java.lang.String",
+        "dex_static_value": {
+          "type": "string",
+          "value": "MainActivity"
+        }
+      },
+      {
+        "name": "mAddAudio",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mAnimate",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mBackground",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mBuy",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mCamera",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mCartoonStage",
+        "reported_type": "ru.jecklandin.stickman.CartoonStage",
+        "dex_static_value": null
+      },
+      {
+        "name": "mControls",
+        "reported_type": "android.widget.LinearLayout",
+        "dex_static_value": null
+      },
+      {
+        "name": "mCurrentScene",
+        "reported_type": "ru.jecklandin.stickman.units.Scene",
+        "dex_static_value": null
+      },
+      {
+        "name": "mDebug",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mDisposables",
+        "reported_type": "io.reactivex.disposables.CompositeDisposable",
+        "dex_static_value": null
+      },
+      {
+        "name": "mDrawerLayout",
+        "reported_type": "androidx.drawerlayout.widget.DrawerLayout",
+        "dex_static_value": null
+      },
+      {
+        "name": "mDualNav",
+        "reported_type": "ru.jecklandin.stickman.widgets.DualNavigation",
+        "dex_static_value": null
+      },
+      {
+        "name": "mEasingDebug",
+        "reported_type": "android.widget.TextView",
+        "dex_static_value": null
+      },
+      {
+        "name": "mEdit",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mFlash",
+        "reported_type": "ru.jecklandin.stickman.widgets.ScreenFlash",
+        "dex_static_value": null
+      },
+      {
+        "name": "mFragmentCont",
+        "reported_type": "android.widget.FrameLayout",
+        "dex_static_value": null
+      },
+      {
+        "name": "mFrames",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mFramesContainer",
+        "reported_type": "android.view.View",
+        "dex_static_value": null
+      },
+      {
+        "name": "mFullscreenHint",
+        "reported_type": "com.zalivka.commons.utils.ui.FullscreenHint",
+        "dex_static_value": null
+      },
+      {
+        "name": "mHelp",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mInsert",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mListener",
+        "reported_type": "ru.jecklandin.stickman.features.editor.MainEditor$GlobalLayoutListener",
+        "dex_static_value": null
+      },
+      {
+        "name": "mLockedChipReset",
+        "reported_type": "java.lang.Runnable",
+        "dex_static_value": null
+      },
+      {
+        "name": "mLockedChipUntilMs",
+        "reported_type": "long",
+        "dex_static_value": null
+      },
+      {
+        "name": "mNavBtn",
+        "reported_type": "android.widget.ImageButton",
+        "dex_static_value": null
+      },
+      {
+        "name": "mOnboardingMode",
+        "reported_type": "boolean",
+        "dex_static_value": null
+      },
+      {
+        "name": "mPanels",
+        "reported_type": "ru.jecklandin.stickman.features.editor.Panels",
+        "dex_static_value": null
+      },
+      {
+        "name": "mPrefs",
+        "reported_type": "android.content.SharedPreferences",
+        "dex_static_value": null
+      },
+      {
+        "name": "mRequestDiscount",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mSVPresenter",
+        "reported_type": "ru.jecklandin.stickman.features.editor.widgets.presenters.SVPresenter",
+        "dex_static_value": null
+      },
+      {
+        "name": "mSalesBanner",
+        "reported_type": "ru.jecklandin.stickman.billing_v3.subs.CountDownSaleView",
+        "dex_static_value": null
+      },
+      {
+        "name": "mSceneManager",
+        "reported_type": "ru.jecklandin.stickman.SceneManager",
+        "dex_static_value": null
+      },
+      {
+        "name": "mShift",
+        "reported_type": "android.widget.ImageButton",
+        "dex_static_value": null
+      },
+      {
+        "name": "mShiftHoldTip",
+        "reported_type": "android.widget.TextView",
+        "dex_static_value": null
+      },
+      {
+        "name": "mSidebarConstr",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mSidebarSave",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mSidebarSceneProps",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mSidebarSettings",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mSidebarStepShare",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mSpanChipDelete",
+        "reported_type": "android.view.View",
+        "dex_static_value": null
+      },
+      {
+        "name": "mSpanChipLabel",
+        "reported_type": "android.widget.TextView",
+        "dex_static_value": null
+      },
+      {
+        "name": "mSpanChipRow",
+        "reported_type": "android.view.View",
+        "dex_static_value": null
+      },
+      {
+        "name": "mStickmanView",
+        "reported_type": "ru.jecklandin.stickman.features.editor.widgets.StickmanView",
+        "dex_static_value": null
+      },
+      {
+        "name": "mTutorial",
+        "reported_type": "ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove$InEditor",
+        "dex_static_value": null
+      },
+      {
+        "name": "mUndoBtn",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mUnlocked",
+        "reported_type": "boolean",
+        "dex_static_value": null
+      },
+      {
+        "name": "mVarSpeeds",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      }
+    ],
+    "inner_classes": [
+      "ru.jecklandin.stickman.features.editor.MainEditor.AnonymousClass1",
+      "ru.jecklandin.stickman.features.editor.MainEditor.AnonymousClass2",
+      "ru.jecklandin.stickman.features.editor.MainEditor.AnonymousClass3",
+      "ru.jecklandin.stickman.features.editor.MainEditor.DoSelectUnitEvent",
+      "ru.jecklandin.stickman.features.editor.MainEditor.EasingStatus",
+      "ru.jecklandin.stickman.features.editor.MainEditor.GeneralErrorEvent",
+      "ru.jecklandin.stickman.features.editor.MainEditor.GlobalLayoutListener",
+      "ru.jecklandin.stickman.features.editor.MainEditor.NotImplementedException",
+      "ru.jecklandin.stickman.features.editor.MainEditor.OnChunkSelectedEvent",
+      "ru.jecklandin.stickman.features.editor.MainEditor.OnSelectUnitEvent",
+      "ru.jecklandin.stickman.features.editor.MainEditor.OnUndoCommittedEvent",
+      "ru.jecklandin.stickman.features.editor.MainEditor.RedrawRequestedEvent"
+    ]
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

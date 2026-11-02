@@ -1,0 +1,6 @@
+tools/
+decoded/
+original-assets/
+.build/
+.swiftpm/
+out/

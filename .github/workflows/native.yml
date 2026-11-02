@@ -1,0 +1,14 @@
+name: Native reconstruction checks
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  core:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test native scene reader against original fixture
+        run: swift test
