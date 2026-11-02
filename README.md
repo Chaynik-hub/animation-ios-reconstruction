@@ -10,4 +10,4 @@ Download **AnimationIOS-IPA** from the workflow artifacts. Open its IPA in Sidel
 
 Local macOS build, if ever needed: `brew install xcodegen`, `xcodegen generate`, then build scheme AnimationIOS. Native core checks: `swift test`.
 
-Original fonts, artwork and icons are retained in App/Resources. `original-assets/` and `decoded/` are local research inputs excluded from git; `analysis/evidence/` holds focused REA evidence.
+Original fonts, artwork and icons are retained in App/Content. `original-assets/` and `decoded/` are local research inputs excluded from git; `analysis/evidence/` holds focused REA evidence.

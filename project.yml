@@ -13,9 +13,9 @@ targets:
     platform: iOS
     sources:
       - path: App
-        excludes: [Resources]
+        excludes: [Content]
       - path: Sources/AnimationCore
-      - path: App/Resources
+      - path: App/Content
         type: folder
         buildPhase: resources
     dependencies:
@@ -31,7 +31,7 @@ targets:
         INFOPLIST_KEY_UIStatusBarHidden: YES
         INFOPLIST_KEY_UIViewControllerBasedStatusBarAppearance: YES
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
-        INFOPLIST_KEY_UIAppFonts: [Resources/Roboto-Regular.ttf]
+        INFOPLIST_KEY_UIAppFonts: [Content/Roboto-Regular.ttf]
         INFOPLIST_KEY_UIFileSharingEnabled: YES
         INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace: YES
         INFOPLIST_KEY_UILaunchScreen_Generation: YES

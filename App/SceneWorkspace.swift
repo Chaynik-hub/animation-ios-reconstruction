@@ -21,7 +21,7 @@ final class Workspace {
     var selected: Int?
     var history: [SceneDocument] = []
     var future: [SceneDocument] = []
-    var catalog = (try? JSONDecoder().decode([ArtworkDefinition].self,from:Data(contentsOf:Bundle.main.resourceURL!.appendingPathComponent("Resources/catalog.json")))) ?? []
+    var catalog = (try? JSONDecoder().decode([ArtworkDefinition].self,from:Data(contentsOf:Bundle.main.resourceURL!.appendingPathComponent("Content/catalog.json")))) ?? []
     var onChange: (() -> Void)?
     let directory = FileManager.default.urls(for:.documentDirectory,in:.userDomainMask)[0]
     var frame: SceneFrame { document.frames[index] }
@@ -82,7 +82,7 @@ final class SceneCanvas: UIView {
     var ratio: CGFloat {min(viewport.width/workspace.document.width,viewport.height/workspace.document.height)*cameraScale}
     var origin: CGPoint {CGPoint(x:bounds.midX-workspace.document.width*ratio/2+cameraOffset.x,y:bounds.midY-workspace.document.height*ratio/2+cameraOffset.y)}
     var images:[String:UIImage]=[:]
-    func image(_ path:String)->UIImage? {if let i=images[path]{return i};let i=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Resources/"+path).path);images[path]=i;return i}
+    func image(_ path:String)->UIImage? {if let i=images[path]{return i};let i=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/"+path).path);images[path]=i;return i}
     override func draw(_ rect:CGRect) {
         guard let c=UIGraphicsGetCurrentContext() else{return};UIColor(white:0.17,alpha:1).setFill();c.fill(bounds)
         c.saveGState();c.translateBy(x:origin.x,y:origin.y);c.scaleBy(x:ratio,y:ratio)
