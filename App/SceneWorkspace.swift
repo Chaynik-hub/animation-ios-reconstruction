@@ -196,10 +196,12 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         }
         guard let snapshot = transformStart else { return }
         guard workspace.index == transformFrameIndex else {
-            workspace.document.frames[transformFrameIndex] = snapshot.frames[transformFrameIndex]
+            if workspace.document.frames.indices.contains(transformFrameIndex), workspace.document.frames[transformFrameIndex].id == snapshot.frames[transformFrameIndex].id {
+                workspace.document.frames[transformFrameIndex] = snapshot.frames[transformFrameIndex]
+            }
             transformStart = nil; updateTransformControls(); workspace.notify(); return
         }
-        if gesture.state == .began || gesture.state == .changed {
+        if gesture.state == .began || gesture.state == .changed || gesture.state == .ended {
             guard let base = snapshot.frames[workspace.index].units[transformUnit].joints.first(where: { $0.attributes["base"] == "true" }) else { return }
             let location = gesture.location(in: self)
             let target = CGPoint(x: (location.x - transformTouchOffset.x - origin.x) / ratio, y: (location.y - transformTouchOffset.y - origin.y) / ratio)
@@ -215,7 +217,8 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             do { try SpriteTransform.apply(operation, to: &frame, unitIndex: transformUnit) } catch { return }
             workspace.document.frames[workspace.index] = frame; transformChanged = frame != snapshot.frames[workspace.index]
             updateTransformControls(); setNeedsDisplay()
-        } else {
+        }
+        if gesture.state == .ended || gesture.state == .cancelled || gesture.state == .failed {
             if gesture.state == .cancelled || gesture.state == .failed { workspace.document = snapshot }
             else if transformChanged { workspace.history.append(snapshot); if workspace.history.count > 60 { workspace.history.removeFirst() }; workspace.future = [] }
             transformStart = nil; updateTransformControls(); workspace.notify()
