@@ -25,7 +25,8 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: app.reconstruction.animation
         SWIFT_VERSION: '5.0'
         TARGETED_DEVICE_FAMILY: '1,2'
-        GENERATE_INFOPLIST_FILE: YES
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: App/Info.plist
         INFOPLIST_KEY_CFBundleDisplayName: Animation
         INFOPLIST_KEY_UIStatusBarHidden: YES
         INFOPLIST_KEY_UIViewControllerBasedStatusBarAppearance: YES

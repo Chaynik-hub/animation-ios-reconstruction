@@ -27,11 +27,11 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         sidebar.backgroundColor=view.backgroundColor;navigation.backgroundColor=view.backgroundColor
         let entries:[(String,String,UIColor,()->Void)]=[
             ("main_btn_nav","",.white,{[weak self] in self?.menu()}),
-            ("main_btn_play","Играть",.orange,{[weak self] in self?.togglePlayback()}),
-            ("main_btn_insert","Вставить",.systemGreen,{[weak self] in self?.objects()}),
-            ("main_btn_props","Объект",.systemTeal,{[weak self] in self?.objectTools()}),
-            ("main_btn_frames","Кадры",.systemBlue,{[weak self] in self?.frameTools()}),
-            ("main_btn_undo_normal","Назад",.cyan,{[weak self] in self?.workspace.undo()})]
+            ("main_btn_play","ПУСК",.orange,{[weak self] in self?.togglePlayback()}),
+            ("main_btn_insert","ДОБАВИТЬ",.systemGreen,{[weak self] in self?.objects()}),
+            ("main_btn_props","РЕДАКТ.",.systemTeal,{[weak self] in self?.objectTools()}),
+            ("main_btn_frames","РЕД. КАДР",.systemBlue,{[weak self] in self?.frameTools()}),
+            ("main_btn_undo_normal","ОТМЕНА",.cyan,{[weak self] in self?.workspace.undo()})]
         for (icon,title,color,action) in entries {
             let button=UIButton(type:.custom);var config=UIButton.Configuration.plain();config.image=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Resources/Icons/"+icon+".png").path)?.resizedIcon();config.title=title;config.imagePlacement = .top;config.imagePadding=2;config.baseForegroundColor=color;config.titleTextAttributesTransformer=UIConfigurationTextAttributesTransformer{v in var x=v;x.font=UIFont(name:"Roboto-Regular",size:12) ?? .systemFont(ofSize:12);return x};button.configuration=config;button.addAction(UIAction{_ in action()},for:.touchUpInside);sidebar.addArrangedSubview(button)
         }
@@ -49,10 +49,21 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func update(){frameLabel.text="\(workspace.index+1) /\n\(workspace.document.frames.count)";canvas.setNeedsDisplay()}
     func perform(_ work:()throws->Void){do{try work()}catch{message("Не удалось выполнить",String(describing:error))}}
     func message(_ title:String,_ text:String){let alert=UIAlertController(title:title,message:text,preferredStyle:.alert);alert.addAction(UIAlertAction(title:"OK",style:.default));present(alert,animated:true)}
-    func choices(_ title:String,_ actions:[(String,()->Void)]){stop();let alert=UIAlertController(title:title,message:nil,preferredStyle:.actionSheet);for (label,action) in actions{alert.addAction(UIAlertAction(title:label,style:.default){_ in action()})};alert.addAction(UIAlertAction(title:"Отмена",style:.cancel));alert.popoverPresentationController?.sourceView=sidebar;alert.popoverPresentationController?.sourceRect=sidebar.bounds;present(alert,animated:true)}
+    var toolPanel:UIView?
+    func dismissTools(){toolPanel?.removeFromSuperview();toolPanel=nil}
+    func choices(_ title:String,_ actions:[(String,()->Void)]){
+        stop();dismissTools()
+        let cover=UIView(frame:view.bounds);cover.autoresizingMask=[.flexibleWidth,.flexibleHeight]
+        let outside=UIButton(frame:cover.bounds);outside.autoresizingMask=[.flexibleWidth,.flexibleHeight];outside.backgroundColor=UIColor.black.withAlphaComponent(0.2);outside.addAction(UIAction{[weak self] _ in self?.dismissTools()},for:.touchUpInside);cover.addSubview(outside)
+        let scroll=UIScrollView(frame:CGRect(x:view.safeAreaInsets.left+80,y:0,width:min(280,view.bounds.width-160),height:view.bounds.height));scroll.backgroundColor=UIColor(red:36/255,green:37/255,blue:48/255,alpha:1);scroll.autoresizingMask=[.flexibleHeight];cover.addSubview(scroll)
+        let stack=UIStackView();stack.axis = .vertical;stack.spacing=1;stack.frame=CGRect(x:0,y:0,width:scroll.bounds.width,height:CGFloat(actions.count+1)*48)
+        let heading=UILabel();heading.text=title;heading.textColor = .white;heading.textAlignment = .center;stack.addArrangedSubview(heading)
+        for (name,action) in actions{let b=button(name,{[weak self] in self?.dismissTools();action()});b.titleLabel?.font=UIFont(name:"Roboto-Regular",size:14);b.contentHorizontalAlignment = .leading;b.contentEdgeInsets=UIEdgeInsets(top:0,left:14,bottom:0,right:10);b.backgroundColor=UIColor(white:1,alpha:0.04);stack.addArrangedSubview(b)}
+        stack.distribution = .fillEqually;scroll.addSubview(stack);scroll.contentSize=stack.bounds.size;view.addSubview(cover);toolPanel=cover
+    }
     func menu(){choices("Проект",[("Новая сцена",{[weak self] in self?.newScene()}),("Сохранить",{[weak self] in self?.save()}),("Открыть",{[weak self] in self?.openFiles()}),("Мои сцены",{[weak self] in self?.savedScenes()}),("Экспорт",{[weak self] in self?.exports()}),("Фон",{[weak self] in self?.backgrounds()}),("Параметры сцены",{[weak self] in self?.properties()}),("Звук",{[weak self] in self?.audioPicker()})])}
     func newScene(){workspace.checkpoint();workspace.document=SceneDocument(width:960,height:540,interframes:4,frames:[SceneFrame(id:0,units:[],attributes:[:])],attributes:[:]);workspace.index=0;workspace.selected=nil;workspace.notify()}
-    func objects(){stop();let picker=CatalogController(workspace.catalog){[weak self] asset in self?.workspace.add(asset)};present(picker,animated:true)}
+    func objects(){stop();let picker=CatalogController(workspace.catalog){[weak self] asset in self?.workspace.add(asset)};picker.modalPresentationStyle = .overFullScreen;present(picker,animated:true)}
     func objectTools(){choices("Объект",[("Выбрать объект",{[weak self] in self?.selectObject()}),("Отразить",{[weak self] in self?.workspace.flip()}),("Дублировать",{[weak self] in guard let self,let i=self.workspace.selected,self.workspace.frame.units.indices.contains(i) else{return};self.workspace.checkpoint();var u=self.workspace.frame.units[i];u.name += "#"+UUID().uuidString;self.workspace.document.frames[self.workspace.index].units.append(u);self.workspace.selected=self.workspace.frame.units.count-1;self.workspace.notify()}),("Удалить",{[weak self] in self?.workspace.removeObject()}),("Показать/скрыть суставы",{[weak self] in self?.canvas.handles.toggle();self?.canvas.setNeedsDisplay()})])}
     func selectObject(){choices("Выбрать",workspace.frame.units.enumerated().map{i,u in (u.name.components(separatedBy:"#")[0],{[weak self] in self?.workspace.selected=i;self?.update()})})}
     func frameTools(){choices("Кадры",[("Добавить промежуточный / копию",{[weak self] in self?.perform{try self?.workspace.addFrame()}}),("Удалить кадр",{[weak self] in self?.workspace.deleteFrame()}),("Копировать кадр",{[weak self] in self?.clipboard=self?.workspace.frame}),("Вставить кадр",{[weak self] in guard let self,var f=self.clipboard else{return};self.workspace.checkpoint();f.id=(self.workspace.document.frames.map(\.id).max() ?? 0)+1;self.workspace.document.frames.insert(f,at:self.workspace.index+1);self.workspace.index+=1;self.workspace.notify()}),("Предыдущий кадр полупрозрачно",{[weak self] in self?.canvas.onion.toggle();self?.update()}),("Повторить действие",{[weak self] in self?.workspace.redo()})])}
