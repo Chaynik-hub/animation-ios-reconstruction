@@ -38,6 +38,13 @@ for step in range(24):
             (root/'editor-settled.xml').write_text(settled)
             (root/'editor-settled.png').write_bytes(adb('exec-out','screencap','-p',binary=True))
             (root/'editor-activities.txt').write_text(adb('shell','dumpsys','activity','activities'))
+            # The first editor is the observed OBPracticeMove lesson, not the
+            # regular workspace. Move its visible hand, then capture the next state.
+            adb('shell','input','swipe','406','273','460','220','700')
+            time.sleep(3)
+            adb('shell','uiautomator','dump','/sdcard/practice.xml')
+            (root/'practice-moved.xml').write_text(adb('shell','cat','/sdcard/practice.xml'))
+            (root/'practice-moved.png').write_bytes(adb('exec-out','screencap','-p',binary=True))
             adb('shell','input','keyevent','4')
             time.sleep(3)
             adb('shell','uiautomator','dump','/sdcard/back.xml')
