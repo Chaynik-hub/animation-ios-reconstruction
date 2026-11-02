@@ -54,8 +54,8 @@ final class Workspace {
     var frame: SceneFrame { document.frames[index] }
     func checkpoint() { history.append(document); if history.count>60 { history.removeFirst() }; future=[] }
     func notify() { index=min(max(0,index),document.frames.count-1);onChange?();if let data=try? JSONEncoder().encode(document){try? data.write(to:directory.appendingPathComponent("Autosave.animation.json"),options:.atomic)} }
-    func undo() { guard let old=history.popLast() else{return};future.append(document);document=old;restoreArtwork();selected=nil;notify() }
-    func redo() { guard let next=future.popLast() else{return};history.append(document);document=next;restoreArtwork();selected=nil;notify() }
+    func undo() { guard let old=history.popLast() else{return};future.append(document);document=old;restoreArtwork();selected=nil;latchedUnitName=nil;notify() }
+    func redo() { guard let next=future.popLast() else{return};history.append(document);document=next;restoreArtwork();selected=nil;latchedUnitName=nil;notify() }
     func add(_ asset:ArtworkDefinition) { checkpoint();var unit=asset.unit(at:CGPoint(x:document.width/2,y:document.height/2));unit.name = UnitIdentity.inserting(unit.name,in:frame);document.frames[index].units.append(unit);selected=frame.units.count-1;notify() }
     func addFrame() throws {
         var next=frame
@@ -67,7 +67,7 @@ final class Workspace {
         document.frames.insert(next,at:index+1);index+=1;notify()
     }
     func deleteFrame() { guard document.frames.count>1 else{return};checkpoint();document.frames.remove(at:index);notify() }
-    func removeObject() { guard let i=selected,frame.units.indices.contains(i) else{return};checkpoint();UnitEditing.remove(i,from:&document.frames[index]);selected=nil;notify() }
+    func removeObject() { guard let i=selected,frame.units.indices.contains(i) else{return};checkpoint();UnitEditing.remove(i,from:&document.frames[index]);selected=nil;latchedUnitName=nil;notify() }
     func duplicateObject() {
         guard let i=selected,frame.units.indices.contains(i) else{return}
         let snapshot=UnitEditing.snapshot(in:frame,selected:i)
@@ -109,7 +109,7 @@ final class Workspace {
         } else if url.pathExtension.lowercased()=="xml" { value=try SceneXMLReader.read(Data(contentsOf:url)) }
         else {value=try JSONDecoder().decode(SceneDocument.self,from:Data(contentsOf:url))}
         guard !value.frames.isEmpty,value.width>0,value.height>0 else {throw SceneReadError.invalidScene}
-        checkpoint();document=value;restoreArtwork();index=0;selected=nil;notify()
+        checkpoint();document=value;restoreArtwork();index=0;selected=nil;latchedUnitName=nil;notify()
     }
 }
 

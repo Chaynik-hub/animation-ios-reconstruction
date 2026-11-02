@@ -22,23 +22,23 @@ extension EditorController {
         var commands: [FrameToolsPanel.Command] = []
         var icons: [String:String] = [:]
         func add(_ id: String, _ text: String, _ icon: String, enabled: Bool = true, action: @escaping () -> Void) {
-            icons[id] = icon; commands.append(.init(id: id, title: text, height: 70, enabled: enabled, action: action))
+            icons[id] = icon; commands.append(.init(id: id, title: text, height: id == "prop_set_states" ? 84 : 70, enabled: enabled, action: action))
         }
-        if workspace.states(for: unit).count > 1 { add("prop_set_states", "Кадры", "props_state", action: { [weak self] in self?.showAssetStates() }) }
+        if workspace.states(for: unit).count > 1 { add("prop_set_states", "Кадры\nпредмета", "props_state", action: { [weak self] in self?.showAssetStates() }) }
         add("prop_delete", "Удалить", "props_delete", action: { [weak self] in self?.workspace.removeObject() })
-        add("prop_set_opacity", "Прозрачн.", "props_opacity", action: { [weak self] in self?.showOpacity() })
+        add("prop_set_opacity", "Прозр.", "props_opacity", action: { [weak self] in self?.showOpacity() })
         add("prop_flip", "Отразить", "props_flip", action: { [weak self] in self?.workspace.flip() })
-        if FrameManipulation.attachment(unit) != nil { add("prop_detach", "Отсоединить", "props_detach", action: { [weak self] in
+        if FrameManipulation.attachment(unit) != nil { add("prop_detach", "Отсоед.", "props_detach", action: { [weak self] in
             guard let self, let selected = self.workspace.selected else { return }; var frame = self.workspace.frame
-            guard UnitEditing.detach(selected, in: &frame) else { return }; self.workspace.checkpoint(); self.workspace.document.frames[self.workspace.index] = frame; self.workspace.notify()
+            guard UnitEditing.detach(selected, in: &frame) else { return }; self.workspace.latchedUnitName=nil; self.workspace.checkpoint(); self.workspace.document.frames[self.workspace.index] = frame; self.workspace.notify()
         }) }
         let order = UnitEditing.orderedIndices(in: workspace.frame), rank = order.firstIndex(of: index) ?? 0
         add("prop_rearrange_up", "Выше", "props_down", enabled: rank < order.count - 1, action: { [weak self] in self?.rearrangeUnit(forward: true) })
         add("prop_rearrange_down", "Ниже", "props_up", enabled: rank > 0, action: { [weak self] in self?.rearrangeUnit(forward: false) })
-        add("prop_copy", "Копировать", "props_copy", action: { [weak self] in
+        add("prop_copy", "Копир.", "props_copy", action: { [weak self] in
             guard let self, let selected = self.workspace.selected else { return }; self.unitClipboard = UnitEditing.snapshot(in: self.workspace.frame, selected: selected); self.workspace.selected = nil; self.update()
         })
-        add("prop_lock",workspace.latchedUnitName == nil ? "Закрепить":"Отпустить",workspace.latchedUnitName == nil ? "props_lock_others":"props_unlock_others",action:{[weak self] in
+        add("prop_lock",workspace.latchedUnitName == nil ? "Выделить":"Отпустить",workspace.latchedUnitName == nil ? "props_lock_others":"props_unlock_others",action:{[weak self] in
             guard let self,let selected=self.workspace.selected else{return}
             if self.workspace.latchedUnitName != nil {self.workspace.latchedUnitName=nil;self.workspace.selected=nil}
             else {var root=selected;var visited=Set<Int>();while visited.insert(root).inserted,let parent=FrameManipulation.attachment(self.workspace.frame.units[root])?.0,let index=self.workspace.frame.units.firstIndex(where:{$0.name==parent}) {root=index};self.workspace.latchedUnitName=self.workspace.frame.units[root].name;self.workspace.selected=root}

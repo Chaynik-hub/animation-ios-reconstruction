@@ -100,7 +100,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         stack.distribution = .fillEqually;scroll.addSubview(stack);scroll.contentSize=stack.bounds.size;view.addSubview(cover);toolPanel=cover
     }
     func menu(){showProjectDrawer()}
-    func newScene(){workspace.checkpoint();workspace.document=SceneDocument(width:960,height:540,interframes:4,frames:[SceneFrame(id:0,units:[],attributes:[:])],attributes:[:]);workspace.restoreArtwork();workspace.index=0;workspace.selected=nil;workspace.notify()}
+    func newScene(){workspace.checkpoint();workspace.document=SceneDocument(width:960,height:540,interframes:4,frames:[SceneFrame(id:0,units:[],attributes:[:])],attributes:[:]);workspace.restoreArtwork();workspace.index=0;workspace.selected=nil;workspace.latchedUnitName=nil;workspace.notify()}
     private var catalogController: CatalogController?
     func highlightCatalog(_ active: Bool) {
         guard let button = sidebar.arrangedSubviews[2] as? UIButton else { return }
