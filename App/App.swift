@@ -99,7 +99,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         for (name,action) in actions{let b=button(name,{[weak self] in self?.dismissTools();action()});b.titleLabel?.font=UIFont(name:"Roboto-Regular",size:14);b.contentHorizontalAlignment = .leading;b.contentEdgeInsets=UIEdgeInsets(top:0,left:14,bottom:0,right:10);b.backgroundColor=UIColor(white:1,alpha:0.04);stack.addArrangedSubview(b)}
         stack.distribution = .fillEqually;scroll.addSubview(stack);scroll.contentSize=stack.bounds.size;view.addSubview(cover);toolPanel=cover
     }
-    func menu(){choices("Проект",[("Новая сцена",{[weak self] in self?.newScene()}),("Сохранить",{[weak self] in self?.save()}),("Открыть",{[weak self] in self?.openFiles()}),("Мои сцены",{[weak self] in self?.savedScenes()}),("Экспорт",{[weak self] in self?.exports()}),("Фон",{[weak self] in self?.backgrounds()}),("Параметры сцены",{[weak self] in self?.properties()}),("Звук",{[weak self] in self?.audioPicker()}),("Предыдущий кадр полупрозрачно",{[weak self] in self?.canvas.onion.toggle();self?.update()}),("Повторить действие",{[weak self] in self?.workspace.redo()})])}
+    func menu(){showProjectDrawer()}
     func newScene(){workspace.checkpoint();workspace.document=SceneDocument(width:960,height:540,interframes:4,frames:[SceneFrame(id:0,units:[],attributes:[:])],attributes:[:]);workspace.restoreArtwork();workspace.index=0;workspace.selected=nil;workspace.notify()}
     private var catalogController: CatalogController?
     func highlightCatalog(_ active: Bool) {

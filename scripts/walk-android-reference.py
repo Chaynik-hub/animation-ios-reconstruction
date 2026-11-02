@@ -79,6 +79,17 @@ for step in range(24):
                         adb('shell','uiautomator','dump','/sdcard/panel.xml')
                         (root/f'panel-{label}.xml').write_text(adb('shell','cat','/sdcard/panel.xml'))
                         (root/f'panel-{label}.png').write_bytes(adb('exec-out','screencap','-p',binary=True))
+                        if label == 'drawer':
+                            for resource_name, capture_name in [('main_sidebar_bg', 'background-editor'), ('bg_btn_add', 'background-chooser')]:
+                                adb('shell','uiautomator','dump','/sdcard/bg-step.xml')
+                                bg_nodes=list(ET.fromstring(adb('shell','cat','/sdcard/bg-step.xml')).iter('node'))
+                                target=next((n for n in bg_nodes if n.get('resource-id','').endswith(':id/'+resource_name)),None)
+                                if target is None:break
+                                bounds=list(map(int,re.findall(r'\d+',target.get('bounds',''))))
+                                adb('shell','input','tap',str((bounds[0]+bounds[2])//2),str((bounds[1]+bounds[3])//2));time.sleep(4)
+                                adb('shell','uiautomator','dump','/sdcard/bg-capture.xml')
+                                (root/f'{capture_name}.xml').write_text(adb('shell','cat','/sdcard/bg-capture.xml'))
+                                (root/f'{capture_name}.png').write_bytes(adb('exec-out','screencap','-p',binary=True))
                         if label == 'unit':
                             panel_nodes = list(ET.fromstring(adb('shell','cat','/sdcard/panel.xml')).iter('node'))
                             thumbnail = next((n for n in panel_nodes if n.get('resource-id','').endswith(':id/unit_arrange_elem_label')), None)
