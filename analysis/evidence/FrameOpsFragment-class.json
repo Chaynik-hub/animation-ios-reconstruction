@@ -1,0 +1,450 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"evidence_id\":\"ev_b57bf578cb05e9276658b48fc00eb15e20e850dfae50d3bb55355f2b9addfd5f\",\"subject\":{\"name\":\"com.zalivka.animation2_397.apk\",\"digest\":{\"sha256\":\"03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4\"},\"local_path\":\"D:\\\\downloads\\\\com.zalivka.animation2_397.apk\",\"format\":\"apk\",\"architecture\":null},\"provider\":{\"id\":\"jadx\",\"name\":\"JADX headless\",\"version\":\"0.7.1\"},\"analysis_profile\":null,\"predicate_type\":\"rea.analysis\",\"operation\":\"inspect_android_class\",\"parameters\":{\"path\":\"D:\\\\downloads\\\\com.zalivka.animation2_397.apk\",\"class_name\":\"ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment\"},\"raw_result\":{\"server\":{\"name\":\"rea-jadx-bridge\",\"version\":\"7\"},\"bridge_sha256\":\"e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30\",\"jar_sha256\":\"6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75\",\"loaded\":{\"state\":\"LOADED\",\"apk_path\":\"C:\\\\Users\\\\mamir\\\\AppData\\\\Local\\\\Temp\\\\rea-android-04c8e8ffc67c8001a318849ac0a27477\\\\target.apk\",\"class_count\":47382,\"resource_count\":4573,\"threads\":1,\"resources\":\"full\"},\"calls\":[{\"operation\":\"rea_jvm_status\",\"input\":{},\"response\":{\"content\":[{\"type\":\"text\",\"text\":\"{\\\"engine_reported_version\\\":\\\"0.7.1\\\",\\\"metadata_scope\\\":\\\"parsed_members\\\",\\\"max_heap_bytes\\\":4286578688,\\\"java_version\\\":\\\"21.0.13\\\",\\\"available_processors\\\":8}\"}],\"isError\":false}},{\"operation\":\"load_apk\",\"input\":{\"path\":\"C:\\\\Users\\\\mamir\\\\AppData\\\\Local\\\\Temp\\\\rea-android-04c8e8ffc67c8001a318849ac0a27477\\\\target.apk\",\"threads\":1,\"resources\":\"full\"},\"response\":{\"content\":[{\"type\":\"text\",\"text\":\"{\\\"state\\\":\\\"LOADED\\\",\\\"apk_path\\\":\\\"C:\\\\\\\\Users\\\\\\\\mamir\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\rea-android-04c8e8ffc67c8001a318849ac0a27477\\\\\\\\target.apk\\\",\\\"class_count\\\":47382,\\\"raw_class_count\\\":47382,\\\"resource_count\\\":4573,\\\"load_duration_ms\\\":36702,\\\"decompile_timeout_ms\\\":90000,\\\"threads\\\":1,\\\"code_cache_size\\\":64,\\\"resources\\\":\\\"full\\\"}\"}],\"isError\":false}},{\"operation\":\"get_class_summary\",\"input\":{\"class_name\":\"ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment\",\"dex_static_values\":true},\"response\":{\"content\":[{\"type\":\"text\",\"text\":\"{\\\"fields\\\":[{\\\"def_pos\\\":0,\\\"name\\\":\\\"APPEND_BLOCKED_BY_PAID_FRAMES\\\",\\\"type\\\":\\\"int\\\",\\\"dex_static_value\\\":{\\\"type\\\":\\\"int\\\",\\\"value\\\":-1}},{\\\"def_pos\\\":0,\\\"name\\\":\\\"PASTE_BLOCKED_BY_AUTO_TWEEN\\\",\\\"type\\\":\\\"java.lang.String\\\",\\\"dex_static_value\\\":{\\\"type\\\":\\\"string\\\",\\\"value\\\":\\\"paste_blocked_by_auto_tween\\\"}},{\\\"def_pos\\\":0,\\\"name\\\":\\\"mAdd\\\",\\\"type\\\":\\\"android.widget.Button\\\"},{\\\"def_pos\\\":0,\\\"name\\\":\\\"mBuffer\\\",\\\"type\\\":\\\"ru.jecklandin.stickman.CopyPasteBuffer\\\"},{\\\"def_pos\\\":0,\\\"name\\\":\\\"mCopy\\\",\\\"type\\\":\\\"android.widget.Button\\\"},{\\\"def_pos\\\":0,\\\"name\\\":\\\"mDelete\\\",\\\"type\\\":\\\"android.widget.Button\\\"},{\\\"def_pos\\\":0,\\\"name\\\":\\\"mEpisodes\\\",\\\"type\\\":\\\"android.widget.Button\\\"},{\\\"def_pos\\\":0,\\\"name\\\":\\\"mPaste\\\",\\\"type\\\":\\\"android.widget.Button\\\"},{\\\"def_pos\\\":0,\\\"name\\\":\\\"mPasteScene\\\",\\\"type\\\":\\\"android.widget.Button\\\"},{\\\"def_pos\\\":0,\\\"name\\\":\\\"mPasteSceneProgress\\\",\\\"type\\\":\\\"android.app.ProgressDialog\\\"},{\\\"def_pos\\\":0,\\\"name\\\":\\\"mScene\\\",\\\"type\\\":\\\"ru.jecklandin.stickman.units.Scene\\\"},{\\\"def_pos\\\":0,\\\"name\\\":\\\"mStage\\\",\\\"type\\\":\\\"ru.jecklandin.stickman.CartoonStage\\\"}],\\\"methods\\\":[{\\\"name\\\":\\\"$r8$lambda$2iIT_04ADLVJgZntxV9Z9eDbKx0\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V\\\",\\\"signature\\\":\\\"$r8$lambda$2iIT_04ADLVJgZntxV9Z9eDbKx0(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"$r8$lambda$OihekFE5_VqyMbsNSfaARAvcgwU\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Lio/reactivex/disposables/Disposable;)V\\\",\\\"signature\\\":\\\"$r8$lambda$OihekFE5_VqyMbsNSfaARAvcgwU(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, io.reactivex.disposables.Disposable): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"$r8$lambda$PQpcujgY6dGwGi3KY8fakyY9We8\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/String;Lru/jecklandin/stickman/CartoonStage;)Ljava/lang/Integer;\\\",\\\"signature\\\":\\\"$r8$lambda$PQpcujgY6dGwGi3KY8fakyY9We8(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.String, ru.jecklandin.stickman.CartoonStage): java.lang.Integer\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"$r8$lambda$X7j65xr9aA9erpHdM_4ERobWIz0\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V\\\",\\\"signature\\\":\\\"$r8$lambda$X7j65xr9aA9erpHdM_4ERobWIz0(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"$r8$lambda$cVXp4e4QBvs8jtI_K5CxMIgkJuU\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/Integer;)V\\\",\\\"signature\\\":\\\"$r8$lambda$cVXp4e4QBvs8jtI_K5CxMIgkJuU(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.Integer): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"$r8$lambda$l98aXDp2wGj6G6yPPAMeumzNfWg\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/Throwable;)V\\\",\\\"signature\\\":\\\"$r8$lambda$l98aXDp2wGj6G6yPPAMeumzNfWg(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.Throwable): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"$r8$lambda$lcK2aQvmAm0Znok4dnW2vH78JqY\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V\\\",\\\"signature\\\":\\\"$r8$lambda$lcK2aQvmAm0Znok4dnW2vH78JqY(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"\\\\u003cinit\\\\u003e\\\",\\\"is_constructor\\\":true,\\\"dex_descriptor\\\":\\\"()V\\\",\\\"signature\\\":\\\"\\\\u003cinit\\\\u003e(): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"appendScene\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Ljava/lang/String;)V\\\",\\\"signature\\\":\\\"appendScene(java.lang.String): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"copyFrames\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"()V\\\",\\\"signature\\\":\\\"copyFrames(): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"flipPasteSceneProgress\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Z)V\\\",\\\"signature\\\":\\\"flipPasteSceneProgress(boolean): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"invalidate\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"()V\\\",\\\"signature\\\":\\\"invalidate(): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"isPasteFramesBlockedByAutoTween\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"()Z\\\",\\\"signature\\\":\\\"isPasteFramesBlockedByAutoTween(): boolean\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"lambda$appendScene$10\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Ljava/lang/Throwable;)V\\\",\\\"signature\\\":\\\"lambda$appendScene$10(java.lang.Throwable): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"lambda$appendScene$6\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Ljava/lang/String;Lru/jecklandin/stickman/CartoonStage;)Ljava/lang/Integer;\\\",\\\"signature\\\":\\\"lambda$appendScene$6(java.lang.String, ru.jecklandin.stickman.CartoonStage): java.lang.Integer\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"lambda$appendScene$7\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Lio/reactivex/disposables/Disposable;)V\\\",\\\"signature\\\":\\\"lambda$appendScene$7(io.reactivex.disposables.Disposable): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"lambda$appendScene$8\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"()V\\\",\\\"signature\\\":\\\"lambda$appendScene$8(): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"lambda$appendScene$9\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Ljava/lang/Integer;)V\\\",\\\"signature\\\":\\\"lambda$appendScene$9(java.lang.Integer): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"lambda$copyFrames$1\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"()V\\\",\\\"signature\\\":\\\"lambda$copyFrames$1(): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"lambda$copyFrames$2\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Ljava/lang/Throwable;)V\\\",\\\"signature\\\":\\\"lambda$copyFrames$2(java.lang.Throwable): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"lambda$onCreateView$0\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Landroid/view/View;Landroid/view/MotionEvent;)Z\\\",\\\"signature\\\":\\\"lambda$onCreateView$0(android.view.View, android.view.MotionEvent): boolean\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"lambda$pasteFrames$3\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"()V\\\",\\\"signature\\\":\\\"lambda$pasteFrames$3(): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"lambda$pasteFrames$4\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"()V\\\",\\\"signature\\\":\\\"lambda$pasteFrames$4(): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"lambda$pasteFrames$5\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Ljava/lang/Throwable;)V\\\",\\\"signature\\\":\\\"lambda$pasteFrames$5(java.lang.Throwable): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"m14407$r8$lambda$CAtfFJmGKn3wJBMEEb4wjpxPcQ\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/Throwable;)V\\\",\\\"signature\\\":\\\"m14407$r8$lambda$CAtfFJmGKn3wJBMEEb4wjpxPcQ(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.Throwable): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"m14408$r8$lambda$YJvcWERL4LGsV6r7OlE8ZyeYqY\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V\\\",\\\"signature\\\":\\\"m14408$r8$lambda$YJvcWERL4LGsV6r7OlE8ZyeYqY(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"onClick\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Landroid/view/View;)V\\\",\\\"signature\\\":\\\"onClick(android.view.View): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"onCreateView\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;\\\",\\\"signature\\\":\\\"onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle): android.view.View\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"onFramesPasted\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(I)V\\\",\\\"signature\\\":\\\"onFramesPasted(int): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"onMessageEvent\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Lru/jecklandin/stickman/features/landing/SavedFragment$OnSceneSelected;)V\\\",\\\"signature\\\":\\\"onMessageEvent(ru.jecklandin.stickman.features.landing.SavedFragment$OnSceneSelected): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"onStart\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"()V\\\",\\\"signature\\\":\\\"onStart(): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"onStop\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"()V\\\",\\\"signature\\\":\\\"onStop(): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"onViewCreated\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"(Landroid/view/View;Landroid/os/Bundle;)V\\\",\\\"signature\\\":\\\"onViewCreated(android.view.View, android.os.Bundle): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"pasteFrames\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"()Lio/reactivex/disposables/Disposable;\\\",\\\"signature\\\":\\\"pasteFrames(): io.reactivex.disposables.Disposable\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"setListeners\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"()V\\\",\\\"signature\\\":\\\"setListeners(): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"update\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"()V\\\",\\\"signature\\\":\\\"update(): void\\\",\\\"def_pos\\\":0},{\\\"name\\\":\\\"updateUI\\\",\\\"is_constructor\\\":false,\\\"dex_descriptor\\\":\\\"()V\\\",\\\"signature\\\":\\\"updateUI(): void\\\",\\\"def_pos\\\":0}],\\\"inner_classes\\\":[],\\\"inner_class_count\\\":0,\\\"name\\\":\\\"FrameOpsFragment\\\",\\\"field_count\\\":12,\\\"full_name\\\":\\\"ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment\\\",\\\"method_count\\\":37,\\\"raw_name\\\":\\\"ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment\\\"}\"}],\"isError\":false}}]},\"normalized_result\":{\"engine\":{\"name\":\"jadx-headless-mcp\",\"version\":\"0.7.1\",\"artifact_sha256\":\"6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75\",\"source_revision\":\"5844800a486d2248fa949b74c9896285f5b54de2\",\"worker_count\":1,\"heap_limit_mib\":4088},\"class_name\":\"ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment\",\"methods\":[{\"name\":\"$r8$lambda$2iIT_04ADLVJgZntxV9Z9eDbKx0\",\"reported_signature\":\"$r8$lambda$2iIT_04ADLVJgZntxV9Z9eDbKx0(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V\"},{\"name\":\"$r8$lambda$OihekFE5_VqyMbsNSfaARAvcgwU\",\"reported_signature\":\"$r8$lambda$OihekFE5_VqyMbsNSfaARAvcgwU(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, io.reactivex.disposables.Disposable): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Lio/reactivex/disposables/Disposable;)V\"},{\"name\":\"$r8$lambda$PQpcujgY6dGwGi3KY8fakyY9We8\",\"reported_signature\":\"$r8$lambda$PQpcujgY6dGwGi3KY8fakyY9We8(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.String, ru.jecklandin.stickman.CartoonStage): java.lang.Integer\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/String;Lru/jecklandin/stickman/CartoonStage;)Ljava/lang/Integer;\"},{\"name\":\"$r8$lambda$X7j65xr9aA9erpHdM_4ERobWIz0\",\"reported_signature\":\"$r8$lambda$X7j65xr9aA9erpHdM_4ERobWIz0(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V\"},{\"name\":\"$r8$lambda$cVXp4e4QBvs8jtI_K5CxMIgkJuU\",\"reported_signature\":\"$r8$lambda$cVXp4e4QBvs8jtI_K5CxMIgkJuU(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.Integer): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/Integer;)V\"},{\"name\":\"$r8$lambda$l98aXDp2wGj6G6yPPAMeumzNfWg\",\"reported_signature\":\"$r8$lambda$l98aXDp2wGj6G6yPPAMeumzNfWg(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.Throwable): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/Throwable;)V\"},{\"name\":\"$r8$lambda$lcK2aQvmAm0Znok4dnW2vH78JqY\",\"reported_signature\":\"$r8$lambda$lcK2aQvmAm0Znok4dnW2vH78JqY(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V\"},{\"name\":\"<init>\",\"reported_signature\":\"<init>(): void\",\"overload_index\":0,\"is_constructor\":true,\"dex_descriptor\":\"()V\"},{\"name\":\"appendScene\",\"reported_signature\":\"appendScene(java.lang.String): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Ljava/lang/String;)V\"},{\"name\":\"copyFrames\",\"reported_signature\":\"copyFrames(): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"()V\"},{\"name\":\"flipPasteSceneProgress\",\"reported_signature\":\"flipPasteSceneProgress(boolean): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Z)V\"},{\"name\":\"invalidate\",\"reported_signature\":\"invalidate(): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"()V\"},{\"name\":\"isPasteFramesBlockedByAutoTween\",\"reported_signature\":\"isPasteFramesBlockedByAutoTween(): boolean\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"()Z\"},{\"name\":\"lambda$appendScene$10\",\"reported_signature\":\"lambda$appendScene$10(java.lang.Throwable): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Ljava/lang/Throwable;)V\"},{\"name\":\"lambda$appendScene$6\",\"reported_signature\":\"lambda$appendScene$6(java.lang.String, ru.jecklandin.stickman.CartoonStage): java.lang.Integer\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Ljava/lang/String;Lru/jecklandin/stickman/CartoonStage;)Ljava/lang/Integer;\"},{\"name\":\"lambda$appendScene$7\",\"reported_signature\":\"lambda$appendScene$7(io.reactivex.disposables.Disposable): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Lio/reactivex/disposables/Disposable;)V\"},{\"name\":\"lambda$appendScene$8\",\"reported_signature\":\"lambda$appendScene$8(): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"()V\"},{\"name\":\"lambda$appendScene$9\",\"reported_signature\":\"lambda$appendScene$9(java.lang.Integer): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Ljava/lang/Integer;)V\"},{\"name\":\"lambda$copyFrames$1\",\"reported_signature\":\"lambda$copyFrames$1(): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"()V\"},{\"name\":\"lambda$copyFrames$2\",\"reported_signature\":\"lambda$copyFrames$2(java.lang.Throwable): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Ljava/lang/Throwable;)V\"},{\"name\":\"lambda$onCreateView$0\",\"reported_signature\":\"lambda$onCreateView$0(android.view.View, android.view.MotionEvent): boolean\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Landroid/view/View;Landroid/view/MotionEvent;)Z\"},{\"name\":\"lambda$pasteFrames$3\",\"reported_signature\":\"lambda$pasteFrames$3(): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"()V\"},{\"name\":\"lambda$pasteFrames$4\",\"reported_signature\":\"lambda$pasteFrames$4(): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"()V\"},{\"name\":\"lambda$pasteFrames$5\",\"reported_signature\":\"lambda$pasteFrames$5(java.lang.Throwable): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Ljava/lang/Throwable;)V\"},{\"name\":\"m14407$r8$lambda$CAtfFJmGKn3wJBMEEb4wjpxPcQ\",\"reported_signature\":\"m14407$r8$lambda$CAtfFJmGKn3wJBMEEb4wjpxPcQ(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.Throwable): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/Throwable;)V\"},{\"name\":\"m14408$r8$lambda$YJvcWERL4LGsV6r7OlE8ZyeYqY\",\"reported_signature\":\"m14408$r8$lambda$YJvcWERL4LGsV6r7OlE8ZyeYqY(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V\"},{\"name\":\"onClick\",\"reported_signature\":\"onClick(android.view.View): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Landroid/view/View;)V\"},{\"name\":\"onCreateView\",\"reported_signature\":\"onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle): android.view.View\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;\"},{\"name\":\"onFramesPasted\",\"reported_signature\":\"onFramesPasted(int): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(I)V\"},{\"name\":\"onMessageEvent\",\"reported_signature\":\"onMessageEvent(ru.jecklandin.stickman.features.landing.SavedFragment$OnSceneSelected): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/landing/SavedFragment$OnSceneSelected;)V\"},{\"name\":\"onStart\",\"reported_signature\":\"onStart(): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"()V\"},{\"name\":\"onStop\",\"reported_signature\":\"onStop(): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"()V\"},{\"name\":\"onViewCreated\",\"reported_signature\":\"onViewCreated(android.view.View, android.os.Bundle): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"(Landroid/view/View;Landroid/os/Bundle;)V\"},{\"name\":\"pasteFrames\",\"reported_signature\":\"pasteFrames(): io.reactivex.disposables.Disposable\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"()Lio/reactivex/disposables/Disposable;\"},{\"name\":\"setListeners\",\"reported_signature\":\"setListeners(): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"()V\"},{\"name\":\"update\",\"reported_signature\":\"update(): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"()V\"},{\"name\":\"updateUI\",\"reported_signature\":\"updateUI(): void\",\"overload_index\":0,\"is_constructor\":false,\"dex_descriptor\":\"()V\"}],\"fields\":[{\"name\":\"APPEND_BLOCKED_BY_PAID_FRAMES\",\"reported_type\":\"int\",\"dex_static_value\":{\"type\":\"int\",\"value\":-1}},{\"name\":\"PASTE_BLOCKED_BY_AUTO_TWEEN\",\"reported_type\":\"java.lang.String\",\"dex_static_value\":{\"type\":\"string\",\"value\":\"paste_blocked_by_auto_tween\"}},{\"name\":\"mAdd\",\"reported_type\":\"android.widget.Button\",\"dex_static_value\":null},{\"name\":\"mBuffer\",\"reported_type\":\"ru.jecklandin.stickman.CopyPasteBuffer\",\"dex_static_value\":null},{\"name\":\"mCopy\",\"reported_type\":\"android.widget.Button\",\"dex_static_value\":null},{\"name\":\"mDelete\",\"reported_type\":\"android.widget.Button\",\"dex_static_value\":null},{\"name\":\"mEpisodes\",\"reported_type\":\"android.widget.Button\",\"dex_static_value\":null},{\"name\":\"mPaste\",\"reported_type\":\"android.widget.Button\",\"dex_static_value\":null},{\"name\":\"mPasteScene\",\"reported_type\":\"android.widget.Button\",\"dex_static_value\":null},{\"name\":\"mPasteSceneProgress\",\"reported_type\":\"android.app.ProgressDialog\",\"dex_static_value\":null},{\"name\":\"mScene\",\"reported_type\":\"ru.jecklandin.stickman.units.Scene\",\"dex_static_value\":null},{\"name\":\"mStage\",\"reported_type\":\"ru.jecklandin.stickman.CartoonStage\",\"dex_static_value\":null}],\"inner_classes\":[]},\"confidence\":\"observed\",\"authority\":\"shipped-artifact\",\"environment\":null,\"limitations\":[\"Static decompiler observations do not establish runtime behavior; the APK is never executed.\",\"Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.\",\"Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.\",\"Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.\",\"Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider.\"],\"relationship_coverage\":null,\"locations\":[],\"evidence_links\":[]}"
+    }
+  ],
+  "structuredContent": {
+    "evidence_id": "ev_b57bf578cb05e9276658b48fc00eb15e20e850dfae50d3bb55355f2b9addfd5f",
+    "subject": {
+      "name": "com.zalivka.animation2_397.apk",
+      "digest": {
+        "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+      },
+      "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+      "format": "apk",
+      "architecture": null
+    },
+    "provider": {
+      "id": "jadx",
+      "name": "JADX headless",
+      "version": "0.7.1"
+    },
+    "analysis_profile": null,
+    "predicate_type": "rea.analysis",
+    "operation": "inspect_android_class",
+    "parameters": {
+      "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+      "class_name": "ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment"
+    },
+    "raw_result": {
+      "server": {
+        "name": "rea-jadx-bridge",
+        "version": "7"
+      },
+      "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+      "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "loaded": {
+        "state": "LOADED",
+        "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-04c8e8ffc67c8001a318849ac0a27477\\target.apk",
+        "class_count": 47382,
+        "resource_count": 4573,
+        "threads": 1,
+        "resources": "full"
+      },
+      "calls": [
+        {
+          "operation": "rea_jvm_status",
+          "input": {},
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"engine_reported_version\":\"0.7.1\",\"metadata_scope\":\"parsed_members\",\"max_heap_bytes\":4286578688,\"java_version\":\"21.0.13\",\"available_processors\":8}"
+              }
+            ],
+            "isError": false
+          }
+        },
+        {
+          "operation": "load_apk",
+          "input": {
+            "path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-04c8e8ffc67c8001a318849ac0a27477\\target.apk",
+            "threads": 1,
+            "resources": "full"
+          },
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"state\":\"LOADED\",\"apk_path\":\"C:\\\\Users\\\\mamir\\\\AppData\\\\Local\\\\Temp\\\\rea-android-04c8e8ffc67c8001a318849ac0a27477\\\\target.apk\",\"class_count\":47382,\"raw_class_count\":47382,\"resource_count\":4573,\"load_duration_ms\":36702,\"decompile_timeout_ms\":90000,\"threads\":1,\"code_cache_size\":64,\"resources\":\"full\"}"
+              }
+            ],
+            "isError": false
+          }
+        },
+        {
+          "operation": "get_class_summary",
+          "input": {
+            "class_name": "ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment",
+            "dex_static_values": true
+          },
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"fields\":[{\"def_pos\":0,\"name\":\"APPEND_BLOCKED_BY_PAID_FRAMES\",\"type\":\"int\",\"dex_static_value\":{\"type\":\"int\",\"value\":-1}},{\"def_pos\":0,\"name\":\"PASTE_BLOCKED_BY_AUTO_TWEEN\",\"type\":\"java.lang.String\",\"dex_static_value\":{\"type\":\"string\",\"value\":\"paste_blocked_by_auto_tween\"}},{\"def_pos\":0,\"name\":\"mAdd\",\"type\":\"android.widget.Button\"},{\"def_pos\":0,\"name\":\"mBuffer\",\"type\":\"ru.jecklandin.stickman.CopyPasteBuffer\"},{\"def_pos\":0,\"name\":\"mCopy\",\"type\":\"android.widget.Button\"},{\"def_pos\":0,\"name\":\"mDelete\",\"type\":\"android.widget.Button\"},{\"def_pos\":0,\"name\":\"mEpisodes\",\"type\":\"android.widget.Button\"},{\"def_pos\":0,\"name\":\"mPaste\",\"type\":\"android.widget.Button\"},{\"def_pos\":0,\"name\":\"mPasteScene\",\"type\":\"android.widget.Button\"},{\"def_pos\":0,\"name\":\"mPasteSceneProgress\",\"type\":\"android.app.ProgressDialog\"},{\"def_pos\":0,\"name\":\"mScene\",\"type\":\"ru.jecklandin.stickman.units.Scene\"},{\"def_pos\":0,\"name\":\"mStage\",\"type\":\"ru.jecklandin.stickman.CartoonStage\"}],\"methods\":[{\"name\":\"$r8$lambda$2iIT_04ADLVJgZntxV9Z9eDbKx0\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V\",\"signature\":\"$r8$lambda$2iIT_04ADLVJgZntxV9Z9eDbKx0(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void\",\"def_pos\":0},{\"name\":\"$r8$lambda$OihekFE5_VqyMbsNSfaARAvcgwU\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Lio/reactivex/disposables/Disposable;)V\",\"signature\":\"$r8$lambda$OihekFE5_VqyMbsNSfaARAvcgwU(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, io.reactivex.disposables.Disposable): void\",\"def_pos\":0},{\"name\":\"$r8$lambda$PQpcujgY6dGwGi3KY8fakyY9We8\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/String;Lru/jecklandin/stickman/CartoonStage;)Ljava/lang/Integer;\",\"signature\":\"$r8$lambda$PQpcujgY6dGwGi3KY8fakyY9We8(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.String, ru.jecklandin.stickman.CartoonStage): java.lang.Integer\",\"def_pos\":0},{\"name\":\"$r8$lambda$X7j65xr9aA9erpHdM_4ERobWIz0\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V\",\"signature\":\"$r8$lambda$X7j65xr9aA9erpHdM_4ERobWIz0(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void\",\"def_pos\":0},{\"name\":\"$r8$lambda$cVXp4e4QBvs8jtI_K5CxMIgkJuU\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/Integer;)V\",\"signature\":\"$r8$lambda$cVXp4e4QBvs8jtI_K5CxMIgkJuU(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.Integer): void\",\"def_pos\":0},{\"name\":\"$r8$lambda$l98aXDp2wGj6G6yPPAMeumzNfWg\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/Throwable;)V\",\"signature\":\"$r8$lambda$l98aXDp2wGj6G6yPPAMeumzNfWg(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.Throwable): void\",\"def_pos\":0},{\"name\":\"$r8$lambda$lcK2aQvmAm0Znok4dnW2vH78JqY\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V\",\"signature\":\"$r8$lambda$lcK2aQvmAm0Znok4dnW2vH78JqY(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void\",\"def_pos\":0},{\"name\":\"\\u003cinit\\u003e\",\"is_constructor\":true,\"dex_descriptor\":\"()V\",\"signature\":\"\\u003cinit\\u003e(): void\",\"def_pos\":0},{\"name\":\"appendScene\",\"is_constructor\":false,\"dex_descriptor\":\"(Ljava/lang/String;)V\",\"signature\":\"appendScene(java.lang.String): void\",\"def_pos\":0},{\"name\":\"copyFrames\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"copyFrames(): void\",\"def_pos\":0},{\"name\":\"flipPasteSceneProgress\",\"is_constructor\":false,\"dex_descriptor\":\"(Z)V\",\"signature\":\"flipPasteSceneProgress(boolean): void\",\"def_pos\":0},{\"name\":\"invalidate\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"invalidate(): void\",\"def_pos\":0},{\"name\":\"isPasteFramesBlockedByAutoTween\",\"is_constructor\":false,\"dex_descriptor\":\"()Z\",\"signature\":\"isPasteFramesBlockedByAutoTween(): boolean\",\"def_pos\":0},{\"name\":\"lambda$appendScene$10\",\"is_constructor\":false,\"dex_descriptor\":\"(Ljava/lang/Throwable;)V\",\"signature\":\"lambda$appendScene$10(java.lang.Throwable): void\",\"def_pos\":0},{\"name\":\"lambda$appendScene$6\",\"is_constructor\":false,\"dex_descriptor\":\"(Ljava/lang/String;Lru/jecklandin/stickman/CartoonStage;)Ljava/lang/Integer;\",\"signature\":\"lambda$appendScene$6(java.lang.String, ru.jecklandin.stickman.CartoonStage): java.lang.Integer\",\"def_pos\":0},{\"name\":\"lambda$appendScene$7\",\"is_constructor\":false,\"dex_descriptor\":\"(Lio/reactivex/disposables/Disposable;)V\",\"signature\":\"lambda$appendScene$7(io.reactivex.disposables.Disposable): void\",\"def_pos\":0},{\"name\":\"lambda$appendScene$8\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"lambda$appendScene$8(): void\",\"def_pos\":0},{\"name\":\"lambda$appendScene$9\",\"is_constructor\":false,\"dex_descriptor\":\"(Ljava/lang/Integer;)V\",\"signature\":\"lambda$appendScene$9(java.lang.Integer): void\",\"def_pos\":0},{\"name\":\"lambda$copyFrames$1\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"lambda$copyFrames$1(): void\",\"def_pos\":0},{\"name\":\"lambda$copyFrames$2\",\"is_constructor\":false,\"dex_descriptor\":\"(Ljava/lang/Throwable;)V\",\"signature\":\"lambda$copyFrames$2(java.lang.Throwable): void\",\"def_pos\":0},{\"name\":\"lambda$onCreateView$0\",\"is_constructor\":false,\"dex_descriptor\":\"(Landroid/view/View;Landroid/view/MotionEvent;)Z\",\"signature\":\"lambda$onCreateView$0(android.view.View, android.view.MotionEvent): boolean\",\"def_pos\":0},{\"name\":\"lambda$pasteFrames$3\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"lambda$pasteFrames$3(): void\",\"def_pos\":0},{\"name\":\"lambda$pasteFrames$4\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"lambda$pasteFrames$4(): void\",\"def_pos\":0},{\"name\":\"lambda$pasteFrames$5\",\"is_constructor\":false,\"dex_descriptor\":\"(Ljava/lang/Throwable;)V\",\"signature\":\"lambda$pasteFrames$5(java.lang.Throwable): void\",\"def_pos\":0},{\"name\":\"m14407$r8$lambda$CAtfFJmGKn3wJBMEEb4wjpxPcQ\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/Throwable;)V\",\"signature\":\"m14407$r8$lambda$CAtfFJmGKn3wJBMEEb4wjpxPcQ(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.Throwable): void\",\"def_pos\":0},{\"name\":\"m14408$r8$lambda$YJvcWERL4LGsV6r7OlE8ZyeYqY\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V\",\"signature\":\"m14408$r8$lambda$YJvcWERL4LGsV6r7OlE8ZyeYqY(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void\",\"def_pos\":0},{\"name\":\"onClick\",\"is_constructor\":false,\"dex_descriptor\":\"(Landroid/view/View;)V\",\"signature\":\"onClick(android.view.View): void\",\"def_pos\":0},{\"name\":\"onCreateView\",\"is_constructor\":false,\"dex_descriptor\":\"(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;\",\"signature\":\"onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle): android.view.View\",\"def_pos\":0},{\"name\":\"onFramesPasted\",\"is_constructor\":false,\"dex_descriptor\":\"(I)V\",\"signature\":\"onFramesPasted(int): void\",\"def_pos\":0},{\"name\":\"onMessageEvent\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/landing/SavedFragment$OnSceneSelected;)V\",\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.landing.SavedFragment$OnSceneSelected): void\",\"def_pos\":0},{\"name\":\"onStart\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"onStart(): void\",\"def_pos\":0},{\"name\":\"onStop\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"onStop(): void\",\"def_pos\":0},{\"name\":\"onViewCreated\",\"is_constructor\":false,\"dex_descriptor\":\"(Landroid/view/View;Landroid/os/Bundle;)V\",\"signature\":\"onViewCreated(android.view.View, android.os.Bundle): void\",\"def_pos\":0},{\"name\":\"pasteFrames\",\"is_constructor\":false,\"dex_descriptor\":\"()Lio/reactivex/disposables/Disposable;\",\"signature\":\"pasteFrames(): io.reactivex.disposables.Disposable\",\"def_pos\":0},{\"name\":\"setListeners\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"setListeners(): void\",\"def_pos\":0},{\"name\":\"update\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"update(): void\",\"def_pos\":0},{\"name\":\"updateUI\",\"is_constructor\":false,\"dex_descriptor\":\"()V\",\"signature\":\"updateUI(): void\",\"def_pos\":0}],\"inner_classes\":[],\"inner_class_count\":0,\"name\":\"FrameOpsFragment\",\"field_count\":12,\"full_name\":\"ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment\",\"method_count\":37,\"raw_name\":\"ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment\"}"
+              }
+            ],
+            "isError": false
+          }
+        }
+      ]
+    },
+    "normalized_result": {
+      "engine": {
+        "name": "jadx-headless-mcp",
+        "version": "0.7.1",
+        "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+        "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+        "worker_count": 1,
+        "heap_limit_mib": 4088
+      },
+      "class_name": "ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment",
+      "methods": [
+        {
+          "name": "$r8$lambda$2iIT_04ADLVJgZntxV9Z9eDbKx0",
+          "reported_signature": "$r8$lambda$2iIT_04ADLVJgZntxV9Z9eDbKx0(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V"
+        },
+        {
+          "name": "$r8$lambda$OihekFE5_VqyMbsNSfaARAvcgwU",
+          "reported_signature": "$r8$lambda$OihekFE5_VqyMbsNSfaARAvcgwU(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, io.reactivex.disposables.Disposable): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Lio/reactivex/disposables/Disposable;)V"
+        },
+        {
+          "name": "$r8$lambda$PQpcujgY6dGwGi3KY8fakyY9We8",
+          "reported_signature": "$r8$lambda$PQpcujgY6dGwGi3KY8fakyY9We8(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.String, ru.jecklandin.stickman.CartoonStage): java.lang.Integer",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/String;Lru/jecklandin/stickman/CartoonStage;)Ljava/lang/Integer;"
+        },
+        {
+          "name": "$r8$lambda$X7j65xr9aA9erpHdM_4ERobWIz0",
+          "reported_signature": "$r8$lambda$X7j65xr9aA9erpHdM_4ERobWIz0(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V"
+        },
+        {
+          "name": "$r8$lambda$cVXp4e4QBvs8jtI_K5CxMIgkJuU",
+          "reported_signature": "$r8$lambda$cVXp4e4QBvs8jtI_K5CxMIgkJuU(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.Integer): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/Integer;)V"
+        },
+        {
+          "name": "$r8$lambda$l98aXDp2wGj6G6yPPAMeumzNfWg",
+          "reported_signature": "$r8$lambda$l98aXDp2wGj6G6yPPAMeumzNfWg(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.Throwable): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/Throwable;)V"
+        },
+        {
+          "name": "$r8$lambda$lcK2aQvmAm0Znok4dnW2vH78JqY",
+          "reported_signature": "$r8$lambda$lcK2aQvmAm0Znok4dnW2vH78JqY(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V"
+        },
+        {
+          "name": "<init>",
+          "reported_signature": "<init>(): void",
+          "overload_index": 0,
+          "is_constructor": true,
+          "dex_descriptor": "()V"
+        },
+        {
+          "name": "appendScene",
+          "reported_signature": "appendScene(java.lang.String): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Ljava/lang/String;)V"
+        },
+        {
+          "name": "copyFrames",
+          "reported_signature": "copyFrames(): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "()V"
+        },
+        {
+          "name": "flipPasteSceneProgress",
+          "reported_signature": "flipPasteSceneProgress(boolean): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Z)V"
+        },
+        {
+          "name": "invalidate",
+          "reported_signature": "invalidate(): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "()V"
+        },
+        {
+          "name": "isPasteFramesBlockedByAutoTween",
+          "reported_signature": "isPasteFramesBlockedByAutoTween(): boolean",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "()Z"
+        },
+        {
+          "name": "lambda$appendScene$10",
+          "reported_signature": "lambda$appendScene$10(java.lang.Throwable): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Ljava/lang/Throwable;)V"
+        },
+        {
+          "name": "lambda$appendScene$6",
+          "reported_signature": "lambda$appendScene$6(java.lang.String, ru.jecklandin.stickman.CartoonStage): java.lang.Integer",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Ljava/lang/String;Lru/jecklandin/stickman/CartoonStage;)Ljava/lang/Integer;"
+        },
+        {
+          "name": "lambda$appendScene$7",
+          "reported_signature": "lambda$appendScene$7(io.reactivex.disposables.Disposable): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Lio/reactivex/disposables/Disposable;)V"
+        },
+        {
+          "name": "lambda$appendScene$8",
+          "reported_signature": "lambda$appendScene$8(): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "()V"
+        },
+        {
+          "name": "lambda$appendScene$9",
+          "reported_signature": "lambda$appendScene$9(java.lang.Integer): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Ljava/lang/Integer;)V"
+        },
+        {
+          "name": "lambda$copyFrames$1",
+          "reported_signature": "lambda$copyFrames$1(): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "()V"
+        },
+        {
+          "name": "lambda$copyFrames$2",
+          "reported_signature": "lambda$copyFrames$2(java.lang.Throwable): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Ljava/lang/Throwable;)V"
+        },
+        {
+          "name": "lambda$onCreateView$0",
+          "reported_signature": "lambda$onCreateView$0(android.view.View, android.view.MotionEvent): boolean",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Landroid/view/View;Landroid/view/MotionEvent;)Z"
+        },
+        {
+          "name": "lambda$pasteFrames$3",
+          "reported_signature": "lambda$pasteFrames$3(): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "()V"
+        },
+        {
+          "name": "lambda$pasteFrames$4",
+          "reported_signature": "lambda$pasteFrames$4(): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "()V"
+        },
+        {
+          "name": "lambda$pasteFrames$5",
+          "reported_signature": "lambda$pasteFrames$5(java.lang.Throwable): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Ljava/lang/Throwable;)V"
+        },
+        {
+          "name": "m14407$r8$lambda$CAtfFJmGKn3wJBMEEb4wjpxPcQ",
+          "reported_signature": "m14407$r8$lambda$CAtfFJmGKn3wJBMEEb4wjpxPcQ(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment, java.lang.Throwable): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;Ljava/lang/Throwable;)V"
+        },
+        {
+          "name": "m14408$r8$lambda$YJvcWERL4LGsV6r7OlE8ZyeYqY",
+          "reported_signature": "m14408$r8$lambda$YJvcWERL4LGsV6r7OlE8ZyeYqY(ru.jecklandin.stickman.features.editor.widgets.FrameOpsFragment): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Lru/jecklandin/stickman/features/editor/widgets/FrameOpsFragment;)V"
+        },
+        {
+          "name": "onClick",
+          "reported_signature": "onClick(android.view.View): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Landroid/view/View;)V"
+        },
+        {
+          "name": "onCreateView",
+          "reported_signature": "onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle): android.view.View",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;"
+        },
+        {
+          "name": "onFramesPasted",
+          "reported_signature": "onFramesPasted(int): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(I)V"
+        },
+        {
+          "name": "onMessageEvent",
+          "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.landing.SavedFragment$OnSceneSelected): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Lru/jecklandin/stickman/features/landing/SavedFragment$OnSceneSelected;)V"
+        },
+        {
+          "name": "onStart",
+          "reported_signature": "onStart(): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "()V"
+        },
+        {
+          "name": "onStop",
+          "reported_signature": "onStop(): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "()V"
+        },
+        {
+          "name": "onViewCreated",
+          "reported_signature": "onViewCreated(android.view.View, android.os.Bundle): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "(Landroid/view/View;Landroid/os/Bundle;)V"
+        },
+        {
+          "name": "pasteFrames",
+          "reported_signature": "pasteFrames(): io.reactivex.disposables.Disposable",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "()Lio/reactivex/disposables/Disposable;"
+        },
+        {
+          "name": "setListeners",
+          "reported_signature": "setListeners(): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "()V"
+        },
+        {
+          "name": "update",
+          "reported_signature": "update(): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "()V"
+        },
+        {
+          "name": "updateUI",
+          "reported_signature": "updateUI(): void",
+          "overload_index": 0,
+          "is_constructor": false,
+          "dex_descriptor": "()V"
+        }
+      ],
+      "fields": [
+        {
+          "name": "APPEND_BLOCKED_BY_PAID_FRAMES",
+          "reported_type": "int",
+          "dex_static_value": {
+            "type": "int",
+            "value": -1
+          }
+        },
+        {
+          "name": "PASTE_BLOCKED_BY_AUTO_TWEEN",
+          "reported_type": "java.lang.String",
+          "dex_static_value": {
+            "type": "string",
+            "value": "paste_blocked_by_auto_tween"
+          }
+        },
+        {
+          "name": "mAdd",
+          "reported_type": "android.widget.Button",
+          "dex_static_value": null
+        },
+        {
+          "name": "mBuffer",
+          "reported_type": "ru.jecklandin.stickman.CopyPasteBuffer",
+          "dex_static_value": null
+        },
+        {
+          "name": "mCopy",
+          "reported_type": "android.widget.Button",
+          "dex_static_value": null
+        },
+        {
+          "name": "mDelete",
+          "reported_type": "android.widget.Button",
+          "dex_static_value": null
+        },
+        {
+          "name": "mEpisodes",
+          "reported_type": "android.widget.Button",
+          "dex_static_value": null
+        },
+        {
+          "name": "mPaste",
+          "reported_type": "android.widget.Button",
+          "dex_static_value": null
+        },
+        {
+          "name": "mPasteScene",
+          "reported_type": "android.widget.Button",
+          "dex_static_value": null
+        },
+        {
+          "name": "mPasteSceneProgress",
+          "reported_type": "android.app.ProgressDialog",
+          "dex_static_value": null
+        },
+        {
+          "name": "mScene",
+          "reported_type": "ru.jecklandin.stickman.units.Scene",
+          "dex_static_value": null
+        },
+        {
+          "name": "mStage",
+          "reported_type": "ru.jecklandin.stickman.CartoonStage",
+          "dex_static_value": null
+        }
+      ],
+      "inner_classes": []
+    },
+    "confidence": "observed",
+    "authority": "shipped-artifact",
+    "environment": null,
+    "limitations": [
+      "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+      "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+      "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+      "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+      "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+    ],
+    "relationship_coverage": null,
+    "locations": [],
+    "evidence_links": []
+  }
+}

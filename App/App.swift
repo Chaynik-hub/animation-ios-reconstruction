@@ -78,11 +78,11 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         if ProcessInfo.processInfo.arguments.contains("--ui-capture"),let first=workspace.catalog.first(where:{$0.name.contains("boy")}){workspace.add(first)}
     }
     func button(_ title:String,_ action:@escaping()->Void)->UIButton{let b=UIButton(type:.system);b.setTitle(title,for:.normal);b.tintColor = .white;b.addAction(UIAction{_ in action()},for:.touchUpInside);return b}
-    func update(){frameLabel.text="\(workspace.index+1) /\n\(workspace.document.frames.count)";frameNavigator.count=workspace.document.frames.count;frameNavigator.current=workspace.index;canvas.setNeedsDisplay()}
+    func update(){refreshFrameTools();frameLabel.text="\(workspace.index+1) /\n\(workspace.document.frames.count)";frameNavigator.count=workspace.document.frames.count;frameNavigator.current=workspace.index;canvas.setNeedsDisplay()}
     func perform(_ work:()throws->Void){do{try work()}catch{message("Не удалось выполнить",String(describing:error))}}
     func message(_ title:String,_ text:String){let alert=UIAlertController(title:title,message:text,preferredStyle:.alert);alert.addAction(UIAlertAction(title:"OK",style:.default));present(alert,animated:true)}
     var toolPanel:UIView?
-    func dismissTools(){toolPanel?.removeFromSuperview();toolPanel=nil}
+    func dismissTools(){toolPanel?.removeFromSuperview();toolPanel=nil;shift.isHidden=false}
     func choices(_ title:String,_ actions:[(String,()->Void)]){
         stop();dismissTools()
         let cover=UIView(frame:view.bounds);cover.autoresizingMask=[.flexibleWidth,.flexibleHeight]
@@ -93,13 +93,66 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         for (name,action) in actions{let b=button(name,{[weak self] in self?.dismissTools();action()});b.titleLabel?.font=UIFont(name:"Roboto-Regular",size:14);b.contentHorizontalAlignment = .leading;b.contentEdgeInsets=UIEdgeInsets(top:0,left:14,bottom:0,right:10);b.backgroundColor=UIColor(white:1,alpha:0.04);stack.addArrangedSubview(b)}
         stack.distribution = .fillEqually;scroll.addSubview(stack);scroll.contentSize=stack.bounds.size;view.addSubview(cover);toolPanel=cover
     }
-    func menu(){choices("Проект",[("Новая сцена",{[weak self] in self?.newScene()}),("Сохранить",{[weak self] in self?.save()}),("Открыть",{[weak self] in self?.openFiles()}),("Мои сцены",{[weak self] in self?.savedScenes()}),("Экспорт",{[weak self] in self?.exports()}),("Фон",{[weak self] in self?.backgrounds()}),("Параметры сцены",{[weak self] in self?.properties()}),("Звук",{[weak self] in self?.audioPicker()})])}
+    func menu(){choices("Проект",[("Новая сцена",{[weak self] in self?.newScene()}),("Сохранить",{[weak self] in self?.save()}),("Открыть",{[weak self] in self?.openFiles()}),("Мои сцены",{[weak self] in self?.savedScenes()}),("Экспорт",{[weak self] in self?.exports()}),("Фон",{[weak self] in self?.backgrounds()}),("Параметры сцены",{[weak self] in self?.properties()}),("Звук",{[weak self] in self?.audioPicker()}),("Предыдущий кадр полупрозрачно",{[weak self] in self?.canvas.onion.toggle();self?.update()}),("Повторить действие",{[weak self] in self?.workspace.redo()})])}
     func newScene(){workspace.checkpoint();workspace.document=SceneDocument(width:960,height:540,interframes:4,frames:[SceneFrame(id:0,units:[],attributes:[:])],attributes:[:]);workspace.restoreArtwork();workspace.index=0;workspace.selected=nil;workspace.notify()}
     func objects(){stop();let picker=CatalogController(workspace.catalog,resolve:workspace.artworkURL){[weak self] asset in self?.workspace.add(asset)};picker.modalPresentationStyle = .overFullScreen;present(picker,animated:true)}
     func objectTools(){choices("Объект",[("Выбрать объект",{[weak self] in self?.selectObject()}),("Отразить",{[weak self] in self?.workspace.flip()}),("Дублировать",{[weak self] in guard let self,let i=self.workspace.selected,self.workspace.frame.units.indices.contains(i) else{return};self.workspace.checkpoint();var u=self.workspace.frame.units[i];u.name = UnitIdentity.inserting(u.name,in:self.workspace.frame);self.workspace.document.frames[self.workspace.index].units.append(u);self.workspace.selected=self.workspace.frame.units.count-1;self.workspace.notify()}),("Удалить",{[weak self] in self?.workspace.removeObject()}),("Показать/скрыть суставы",{[weak self] in self?.canvas.handles.toggle();self?.canvas.setNeedsDisplay()})])}
     func selectObject(){choices("Выбрать",workspace.frame.units.enumerated().map{i,u in (u.name.components(separatedBy:"#")[0],{[weak self] in self?.workspace.selected=i;self?.update()})})}
-    func frameTools(){choices("Кадры",[("Добавить промежуточный / копию",{[weak self] in self?.perform{try self?.workspace.addFrame()}}),("Удалить кадр",{[weak self] in self?.workspace.deleteFrame()}),("Копировать кадр",{[weak self] in self?.clipboard=self?.workspace.frame}),("Вставить кадр",{[weak self] in guard let self,var f=self.clipboard else{return};self.workspace.checkpoint();f.id=(self.workspace.document.frames.map(\.id).max() ?? 0)+1;self.workspace.document.frames.insert(f,at:self.workspace.index+1);self.workspace.index+=1;self.workspace.notify()}),("Предыдущий кадр полупрозрачно",{[weak self] in self?.canvas.onion.toggle();self?.update()}),("Повторить действие",{[weak self] in self?.workspace.redo()})])}
-    var clipboard:SceneFrame?
+    var frameClipboard: [SceneFrame] = []
+    func refreshFrameTools() {
+        guard let panel = toolPanel as? FrameToolsPanel else { return }
+        panel.setEnabled(!frameClipboard.isEmpty, for: "frame_ops_paste")
+        panel.setEnabled(workspace.document.frames.count > 1, for: "frame_ops_del")
+    }
+    func frameTools() {
+        if toolPanel is FrameToolsPanel { dismissTools(); return }
+        stop(); dismissTools()
+        let panel = FrameToolsPanel(commands: [
+            .init(id: "frame_ops_add", title: "Добавить", height: 81, enabled: true, action: { [weak self] in self?.perform { try self?.workspace.addFrame() } }),
+            .init(id: "frame_ops_del", title: "Удалить", height: 81, enabled: workspace.document.frames.count > 1, action: { [weak self] in self?.workspace.deleteFrame() }),
+            .init(id: "frame_ops_copy", title: "Копировать", height: 81, enabled: true, action: { [weak self] in
+                guard let self else { return }; self.frameClipboard = [self.workspace.frame]; self.refreshFrameTools()
+            }),
+            .init(id: "frame_ops_paste", title: "Вставить", height: 81, enabled: !frameClipboard.isEmpty, action: { [weak self] in self?.pasteFrames() }),
+            .init(id: "frame_ops_paste_scene", title: "Вст.\nсцену", height: 95, enabled: true, action: { [weak self] in self?.scenesToInsert() })
+        ])
+        panel.translatesAutoresizingMaskIntoConstraints = false
+        view.insertSubview(panel, belowSubview: shift)
+        NSLayoutConstraint.activate([
+            panel.leadingAnchor.constraint(equalTo: sidebarScroll.trailingAnchor),
+            panel.topAnchor.constraint(equalTo: view.topAnchor),
+            panel.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            panel.widthAnchor.constraint(equalToConstant: 86)
+        ])
+        toolPanel = panel; shift.isHidden = true
+    }
+    func pasteFrames() {
+        guard !frameClipboard.isEmpty else { return }
+        var next = workspace.document
+        guard FrameClipboard.paste(frameClipboard, into: &next, currentIndex: workspace.index) != nil else { return }
+        workspace.checkpoint(); workspace.document = next; workspace.selected = nil; workspace.notify()
+    }
+    func scenesToInsert() {
+        let files = ((try? FileManager.default.contentsOfDirectory(at: workspace.directory, includingPropertiesForKeys: nil)) ?? [])
+            .filter { $0.lastPathComponent.hasSuffix(".animation.json") && $0.lastPathComponent != "Autosave.animation.json" }
+            .sorted { $0.lastPathComponent < $1.lastPathComponent }
+        guard !files.isEmpty else { dismissTools(); message("Вставить сцену", "Сначала сохраните сцену, которую хотите вставить."); return }
+        choices("Вставить сцену", files.map { url in
+            (url.lastPathComponent.replacingOccurrences(of: ".animation.json", with: ""), { [weak self] in
+                self?.perform {
+                    guard let self else { return }
+                    let source = try JSONDecoder().decode(SceneDocument.self, from: Data(contentsOf: url))
+                    guard !source.frames.isEmpty else { throw SceneReadError.invalidScene }
+                    if let artwork = source.attributes["nativeArtworkDirectory"], artwork != self.workspace.document.attributes["nativeArtworkDirectory"] {
+                        self.message("Вставить сцену", "Вставка сцены с другим набором пользовательских рисунков пока недоступна."); return
+                    }
+                    let previousClipboard = self.frameClipboard
+                    self.frameClipboard = source.frames; self.pasteFrames(); self.frameClipboard = previousClipboard
+                    self.frameTools()
+                }
+            })
+        })
+    }
     func step(_ offset:Int){stop();if offset>0 && workspace.index==workspace.document.frames.count-1 {perform{try workspace.addFrame()}}else{workspace.index=min(max(0,workspace.index+offset),workspace.document.frames.count-1);workspace.notify()}}
     func stop(){displayLink?.invalidate();displayLink=nil;canvas.displayed=nil;audio?.pause();update()}
     func togglePlayback(){stop();present(PreviewController(workspace:workspace,audio:audio),animated:false)}

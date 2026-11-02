@@ -2,6 +2,31 @@ import XCTest
 
 final class EditorUITests:XCTestCase {
     override func setUpWithError()throws {XCUIDevice.shared.orientation = .landscapeLeft}
+    func testFramePanelClipboardAndUndo() throws {
+        let app = XCUIApplication(); app.launchArguments = ["--reference-practice"]; app.launch()
+        let navigator = app.otherElements["FrameNavigator"]
+        XCTAssertTrue(navigator.waitForExistence(timeout: 10))
+        app.buttons["РЕД. КАДР"].tap()
+        let panel = app.otherElements["FrameToolsPanel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 5))
+        let paste = app.buttons["frame_ops_paste"]
+        XCTAssertFalse(paste.isEnabled)
+        app.buttons["frame_ops_copy"].tap()
+        XCTAssertTrue(paste.isEnabled)
+        paste.tap()
+        XCTAssertEqual(navigator.value as? String, "1 / 3")
+        XCTAssertTrue(panel.exists)
+        app.buttons["ОТМЕНА"].tap()
+        XCTAssertEqual(navigator.value as? String, "1 / 2")
+        app.buttons["frame_ops_del"].tap()
+        XCTAssertEqual(navigator.value as? String, "1 / 1")
+        XCTAssertFalse(app.buttons["frame_ops_del"].isEnabled)
+        let screenshot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        screenshot.name = "Original frame tools panel with clipboard and last-frame guard"
+        screenshot.lifetime = .keepAlways; add(screenshot)
+        app.buttons["РЕД. КАДР"].tap()
+        XCTAssertFalse(panel.exists)
+    }
     func testOriginalATSWithEmbeddedArtwork()throws {
         let app=XCUIApplication();app.launchArguments=["--reference-practice"];app.launch()
         let navigator=app.otherElements["FrameNavigator"]
