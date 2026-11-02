@@ -30,7 +30,11 @@ jobs:
           DEVICE=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for g in d["devices"].values() for x in g if "iPhone" in x["name"]))')
           xcrun simctl boot "$DEVICE"
           xcrun simctl bootstatus "$DEVICE" -b
-          xcrun simctl install "$DEVICE" build/simulator/Build/Products/Debug-iphonesimulator/AnimationIOS.app
+          APP="$PWD/build/simulator/Build/Products/Debug-iphonesimulator/AnimationIOS.app"
+          plutil -p "$APP/Info.plist" | tee out/simulator-info.txt
+          codesign --force --deep --sign - "$APP"
+          ditto -c -k --keepParent "$APP" out/simulator-app.zip
+          xcrun simctl install "$DEVICE" "$APP"
           xcrun simctl launch "$DEVICE" app.reconstruction.animation --ui-capture
           sleep 5
           xcrun simctl io "$DEVICE" screenshot out/editor.png
@@ -42,3 +46,5 @@ jobs:
             build.log
             simulator.log
             out/*.png
+            out/simulator-info.txt
+            out/simulator-app.zip
