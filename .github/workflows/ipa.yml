@@ -38,6 +38,7 @@ jobs:
           xcrun simctl launch "$DEVICE" app.reconstruction.animation --ui-capture
           sleep 5
           xcrun simctl io "$DEVICE" screenshot out/editor.png
+          xcodebuild -project AnimationIOS.xcodeproj -scheme AnimationIOS -destination "platform=iOS Simulator,id=$DEVICE" -derivedDataPath build/uitests -resultBundlePath out/EditorTests.xcresult CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- test > uitests.log 2>&1
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -45,6 +46,8 @@ jobs:
           path: |
             build.log
             simulator.log
+            uitests.log
+            out/EditorTests.xcresult
             out/*.png
             out/simulator-info.txt
             out/simulator-app.zip
