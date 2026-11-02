@@ -38,7 +38,7 @@ targets:
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         CODE_SIGNING_ALLOWED: NO
   AnimationIOSRenderTests:
-    type: bundle.unit-testing
+    type: bundle.unit-test
     platform: iOS
     sources: [RenderTests]
     dependencies:
