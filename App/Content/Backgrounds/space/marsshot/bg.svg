@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <!-- Martian sky -->
+  <rect x="0" y="0" width="640" height="225" fill="#1E0A0A"/>
+  <!-- Sparse stars (dusty air, faint) -->
+  <circle cx="70" cy="55" r="0.9" fill="#FFD8C8" opacity="0.55"/>
+  <circle cx="220" cy="42" r="0.8" fill="#FFE8E0" opacity="0.5"/>
+  <circle cx="380" cy="88" r="0.9" fill="#FFD0C4" opacity="0.45"/>
+  <circle cx="520" cy="52" r="0.7" fill="#FFE0D8" opacity="0.5"/>
+  <circle cx="160" cy="130" r="0.8" fill="#FFD8CC" opacity="0.4"/>
+
+  <!-- Tiny sun -->
+  <circle cx="110" cy="72" r="9" fill="#FFD54F" opacity="0.95"/>
+  <circle cx="110" cy="72" r="12" fill="#FFAB40" opacity="0.35"/>
+
+  <!-- Tiny moon -->
+  <circle cx="548" cy="95" r="6" fill="#C4CCD4"/>
+  <circle cx="551" cy="93" r="2" fill="#8A9098" opacity="0.5"/>
+
+  <!-- Distant mountains (opaque silhouettes, horizon) -->
+  <polygon points="0,232 0,214 55,188 120,202 185,176 255,192 320,178 395,188 460,170 525,185 585,172 640,198 640,232" fill="#2A0C08"/>
+  <polygon points="0,232 0,220 95,205 165,212 230,198 305,208 375,195 445,210 515,200 580,215 640,208 640,232" fill="#4A1E14"/>
+  <polygon points="0,232 70,222 140,215 210,225 285,218 355,228 425,220 495,230 565,224 640,232" fill="#6B2A1C"/>
+
+  <!-- Horizon dust -->
+  <rect x="0" y="200" width="640" height="38" fill="#6E2A20" opacity="0.5"/>
+
+  <!-- Surface: layered reds (close foreground for walk) -->
+  <rect x="0" y="232" width="640" height="248" fill="#A53828"/>
+  <rect x="0" y="232" width="640" height="36" fill="#C24E3A" opacity="0.55"/>
+  <rect x="0" y="380" width="640" height="100" fill="#7A2818" opacity="0.35"/>
+
+  <!-- Sparse stones -->
+  <polygon points="95,278 118,272 125,290 108,302 82,295" fill="#8D6E63"/>
+  <ellipse cx="220" cy="318" rx="15" ry="10" fill="#4E342E"/>
+  <polygon points="318,288 338,282 345,302 328,312 305,305" fill="#795548"/>
+  <polygon points="395,355 428,348 438,382 412,392 378,378" fill="#5D4037"/>
+  <ellipse cx="505" cy="292" rx="12" ry="8" fill="#8B4513"/>
+  <polygon points="52,405 78,395 88,428 65,438 35,428" fill="#4A342E"/>
+  <circle cx="580" cy="425" r="10" fill="#5C443C"/>
+
+  <!-- Few pebbles -->
+  <ellipse cx="165" cy="368" rx="4" ry="2" fill="#4A1812" opacity="0.55"/>
+  <ellipse cx="340" cy="448" rx="5" ry="3" fill="#542018" opacity="0.5"/>
+</svg>

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+    <!-- Autumn sky -->
+    <rect x="0" y="0" width="640" height="180" fill="#8EB0D0"/>
+    <rect x="0" y="140" width="640" height="100" fill="#D4A880"/>
+    <rect x="0" y="220" width="640" height="80" fill="#E8C090"/>
+
+    <!-- Distant ridge -->
+    <polygon points="0,320 120,280 240,300 360,265 480,285 640,255 640,360 0,360" fill="#8B5030"/>
+    <polygon points="0,340 160,310 320,325 480,300 640,318 640,360 0,360" fill="#7A4828"/>
+
+    <!-- Left grove (taller, denser) -->
+    <rect x="52" y="318" width="10" height="52" fill="#5C3820"/>
+    <circle cx="57" cy="298" r="34" fill="#C86028"/>
+    <rect x="88" y="328" width="9" height="42" fill="#5C3820"/>
+    <circle cx="92" cy="310" r="28" fill="#D87830"/>
+    <rect x="118" y="322" width="10" height="48" fill="#543018"/>
+    <circle cx="123" cy="300" r="32" fill="#A84820"/>
+    <rect x="152" y="330" width="8" height="38" fill="#5C3820"/>
+    <circle cx="156" cy="314" r="24" fill="#E09040"/>
+    <rect x="178" y="326" width="9" height="44" fill="#543018"/>
+    <circle cx="182" cy="305" r="30" fill="#C86828"/>
+
+    <!-- Center-back trees (smaller, softer) -->
+    <rect x="268" y="334" width="7" height="34" fill="#5C3820"/>
+    <circle cx="271" cy="320" r="20" fill="#B85828"/>
+    <rect x="310" y="336" width="7" height="32" fill="#543018"/>
+    <circle cx="313" cy="322" r="18" fill="#D07030"/>
+    <rect x="352" y="334" width="7" height="34" fill="#5C3820"/>
+    <circle cx="355" cy="318" r="22" fill="#C86028"/>
+
+    <!-- Right grove (lighter, more open) -->
+    <rect x="420" y="330" width="8" height="38" fill="#5C3820"/>
+    <circle cx="424" cy="312" r="26" fill="#D87830"/>
+    <rect x="468" y="334" width="7" height="34" fill="#543018"/>
+    <circle cx="471" cy="318" r="22" fill="#A84820"/>
+    <rect x="520" y="328" width="8" height="40" fill="#5C3820"/>
+    <circle cx="524" cy="308" r="28" fill="#E09040"/>
+    <rect x="568" y="336" width="7" height="32" fill="#543018"/>
+    <circle cx="571" cy="322" r="20" fill="#C86828"/>
+
+    <!-- Leaf litter ground -->
+    <rect x="0" y="360" width="640" height="120" fill="#6B4428"/>
+    <polygon points="0,360 640,360 640,372 0,368" fill="#755038"/>
+    <polygon points="0,368 640,372 640,378 0,374" fill="#7A5840" opacity="0.5"/>
+
+    <!-- Foreground left canopy (frames edge) -->
+    <rect x="8" y="340" width="14" height="140" fill="#4A2818"/>
+    <ellipse cx="22" cy="320" rx="48" ry="42" fill="#B05020"/>
+    <ellipse cx="30" cy="305" rx="38" ry="34" fill="#C86828"/>
+
+    <!-- Foreground right partial trunk + low bush -->
+    <rect x="612" y="345" width="12" height="135" fill="#4A2818"/>
+    <ellipse cx="598" cy="355" rx="36" ry="28" fill="#8B4828"/>
+    <ellipse cx="555" cy="448" rx="42" ry="16" fill="#5C3828"/>
+    <ellipse cx="85" cy="452" rx="36" ry="14" fill="#5C3828"/>
+
+    <!-- Falling leaves -->
+    <circle cx="140" cy="95" r="3" fill="#D87830" opacity="0.75"/>
+    <circle cx="220" cy="130" r="2.5" fill="#C86028" opacity="0.7"/>
+    <circle cx="310" cy="80" r="2.8" fill="#E09040" opacity="0.8"/>
+    <circle cx="400" cy="115" r="2.5" fill="#A84820" opacity="0.65"/>
+    <circle cx="480" cy="70" r="3" fill="#D87830" opacity="0.75"/>
+    <circle cx="560" cy="105" r="2.5" fill="#C86828" opacity="0.7"/>
+    <circle cx="185" cy="195" r="2.2" fill="#E09040" opacity="0.6"/>
+    <circle cx="445" cy="185" r="2.4" fill="#C86028" opacity="0.6"/>
+    <circle cx="520" cy="220" r="2" fill="#D07030" opacity="0.55"/>
+    <circle cx="95" cy="240" r="2.2" fill="#A84820" opacity="0.5"/>
+</svg>

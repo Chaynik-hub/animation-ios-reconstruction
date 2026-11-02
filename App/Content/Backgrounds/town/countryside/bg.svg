@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <!-- European countryside, blue sunset sky -->
+
+  <!-- Sunset sky (blue dominant, warm band at horizon) -->
+  <rect x="0" y="0" width="640" height="95" fill="#0F4C9D"/>
+  <rect x="0" y="95" width="640" height="75" fill="#1565C0"/>
+  <rect x="0" y="170" width="640" height="45" fill="#1E74C9"/>
+  <rect x="0" y="215" width="640" height="28" fill="#4EA3E8"/>
+  <rect x="0" y="243" width="640" height="15" fill="#FFB97A"/>
+
+  <!-- Backdrop under hills / fields (removes wedges and band gaps between paths) -->
+  <rect x="0" y="258" width="640" height="110" fill="#5F7A53"/>
+
+  <!-- Distant church -->
+  <rect x="569" y="292" width="20" height="26" fill="#E8EDF4"/>
+  <polygon points="569,292 579,254 589,292" fill="#CBD4E4"/>
+  <rect x="574" y="302" width="10" height="12" rx="1" ry="1" fill="#8E97A8"/>
+
+  <!-- Ridge + woodland -->
+  <path d="M0 284 Q210 258 390 279 T640 266 L640 322 L0 322 Z" fill="#54724C"/>
+  <path d="M0 306 Q260 284 460 306 T640 296 L640 352 L0 352 Z" fill="#638A58"/>
+
+  <!-- Fields -->
+  <path d="M0 352 Q260 332 470 354 T640 342 L640 408 L0 408 Z" fill="#93B54C"/>
+  <path d="M0 385 Q340 364 630 389 L640 384 L640 448 L0 448 Z" fill="#AAC85A"/>
+  <path d="M430 350 L634 348 L632 394 L426 394 Z" fill="#DDE37A" opacity="0.9"/>
+  <path d="M0 368 L210 362 L218 394 L0 396 Z" fill="#AABF54" opacity="0.78"/>
+
+  <!-- Hedge -->
+  <path d="M0 324 L614 294 L628 338 L14 356 Z" fill="#4F6B46"/>
+  <ellipse cx="98" cy="318" rx="26" ry="15" fill="#5C8052"/>
+  <ellipse cx="228" cy="308" rx="30" ry="16" fill="#56754C"/>
+  <ellipse cx="368" cy="310" rx="32" ry="16" fill="#4F6E46"/>
+  <ellipse cx="512" cy="300" rx="28" ry="15" fill="#5A7A52"/>
+
+  <!-- Trees -->
+  <rect x="76" y="324" width="6" height="22" fill="#5D4938"/>
+  <circle cx="79" cy="314" r="18" fill="#6B945E"/>
+  <rect x="184" y="320" width="5" height="18" fill="#5D4938"/>
+  <circle cx="187" cy="312" r="17" fill="#6B945E"/>
+  <rect x="452" y="314" width="6" height="20" fill="#5D4938"/>
+  <circle cx="455" cy="304" r="18" fill="#5F8A54"/>
+
+  <!-- Cottage: symmetrical gable (triangle roof) -->
+  <rect x="26" y="332" width="86" height="38" fill="#E5DACE"/>
+  <polygon points="26,332 69,294 112,332" fill="#BE3A31"/>
+  <rect x="38" y="348" width="16" height="22" rx="1" ry="1" fill="#5C4A3D"/>
+  <rect x="68" y="342" width="14" height="12" rx="1" ry="1" fill="#6D7D8F"/>
+  <rect x="90" y="348" width="14" height="12" rx="1" ry="1" fill="#6D7D8F"/>
+
+  <!-- Barn: box + wedge roof -->
+  <rect x="124" y="338" width="58" height="32" fill="#A08972"/>
+  <polygon points="124,338 153,298 182,338" fill="#704B3D"/>
+
+  <!-- Lane -->
+  <path d="M300 480 L380 480 L460 394 L396 382 L296 394 Z" fill="#CFBA9D"/>
+  <path d="M318 478 L362 478 L432 394 L348 394 Z" fill="#C0AC92" opacity="0.82"/>
+
+  <!-- Front verge -->
+  <rect x="0" y="420" width="640" height="60" fill="#659D48"/>
+  <path d="M0 420 Q160 396 340 418 T620 416 L640 420 L640 480 L0 480 Z" fill="#579042"/>
+</svg>

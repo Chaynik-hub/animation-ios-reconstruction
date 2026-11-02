@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <!-- upper dusk -->
+  <rect width="640" height="480" fill="#4A2F5C"/>
+
+  <!-- sunset band (solid, no gradient) -->
+  <rect x="0" y="160" width="640" height="220" fill="#D4633A"/>
+
+  <!-- sun low -->
+  <circle cx="500" cy="200" r="44" fill="#FFF0A0"/>
+
+  <!-- far ridge -->
+  <polygon fill="#8B5560" points="0,300 90,200 170,270 280,140 380,250 470,180 560,240 640,210 640,360 0,360"/>
+
+  <!-- near ridge -->
+  <polygon fill="#3A2438" points="0,340 70,250 160,310 250,220 360,300 460,240 540,290 640,260 640,400 0,400"/>
+
+  <!-- quiet ground -->
+  <rect x="0" y="380" width="640" height="100" fill="#2A1A2E"/>
+</svg>

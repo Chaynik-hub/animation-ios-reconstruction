@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <!-- Sunny shallow water + green sheet coral + one tree coral -->
+
+  <rect x="0" y="0" width="640" height="110" fill="#A5E5FB"/>
+  <rect x="0" y="110" width="640" height="100" fill="#78D4EE"/>
+  <rect x="0" y="210" width="640" height="100" fill="#4FC3D9"/>
+  <rect x="0" y="310" width="640" height="55" fill="#29B6D6"/>
+
+  <polygon points="160,0 240,0 400,360 290,378" fill="#FFF8E1" opacity="0.19"/>
+  <polygon points="320,0 390,0 470,340 410,355" fill="#FFFDE7" opacity="0.15"/>
+  <polygon points="50,0 110,0 195,345 105,362" fill="#FFFFFF" opacity="0.11"/>
+
+  <!-- Lettuce / sheet coral -->
+  <path d="M320 295 C280 280 250 300 240 330 C255 345 290 355 325 348 C360 338 395 345 420 332 C435 318 428 290 400 282 C375 272 350 285 320 295 Z" fill="#2E7D32"/>
+  <path d="M305 310 C290 302 268 315 262 332 C275 342 300 338 322 332 C348 322 368 332 388 322 C398 312 392 302 375 298 C352 292 325 300 305 310 Z" fill="#43A047" opacity="0.85"/>
+  <path d="M315 322 C302 318 288 328 292 338 C302 342 318 338 330 335 C340 330 338 322 325 320 C322 320 318 321 315 322 Z" fill="#81C784" opacity="0.7"/>
+
+  <!-- Sand (raised) -->
+  <path d="M0 318 Q200 305 400 320 T640 314 L640 480 L0 480 Z" fill="#E8D4B0"/>
+  <path d="M0 345 Q260 338 440 352 T640 342 L640 480 L0 480 Z" fill="#CFAF78"/>
+
+  <!-- Branching tree coral (right) -->
+  <ellipse cx="528" cy="322" rx="42" ry="14" fill="#1B5E20"/>
+  <ellipse cx="528" cy="318" rx="32" ry="10" fill="#2E7D32"/>
+  <polygon points="518,320 524,245 532,243 536,320" fill="#1B5E20"/>
+  <polygon points="524,315 534,205 544,203 534,318" fill="#2E7D32"/>
+  <polygon points="536,300 562,218 572,220 542,305" fill="#388E3C"/>
+  <polygon points="530,290 518,195 508,198 522,295" fill="#2E7D32"/>
+  <polygon points="528,255 590,160 602,165 538,262" fill="#43A047"/>
+  <polygon points="525,248 485,168 474,172 518,258" fill="#388E3C"/>
+  <polygon points="532,225 554,115 566,120 542,228" fill="#66BB6A"/>
+  <polygon points="528,218 502,138 490,142 520,222" fill="#43A047"/>
+  <polygon points="538,208 578,125 588,132 548,212" fill="#81C784"/>
+  <polygon points="518,270 472,205 462,210 512,278" fill="#2E7D32"/>
+  <polygon points="548,270 595,220 605,228 556,278" fill="#388E3C"/>
+  <polygon points="540,180 568,105 578,112 552,185" fill="#66BB6A"/>
+  <polygon points="520,175 500,105 488,110 512,180" fill="#81C784" opacity="0.9"/>
+  <polygon points="545,145 560,80 572,82 556,148" fill="#A5D6A7" opacity="0.85"/>
+
+  <ellipse cx="300" cy="360" rx="130" ry="20" fill="#FFFDE7" opacity="0.32"/>
+  <ellipse cx="520" cy="370" rx="85" ry="14" fill="#FFF8E1" opacity="0.22"/>
+
+  <!-- Bubbles -->
+  <circle cx="140" cy="70" r="3" fill="#FFFFFF" opacity="0.55"/>
+  <circle cx="410" cy="105" r="4.5" fill="#E1F5FE" opacity="0.5"/>
+  <circle cx="285" cy="45" r="2.5" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="510" cy="145" r="3.2" fill="#FFFFFF" opacity="0.45"/>
+  <circle cx="190" cy="185" r="2.2" fill="#B3E5FC" opacity="0.48"/>
+  <circle cx="350" cy="120" r="3.6" fill="#E0F7FA" opacity="0.42"/>
+  <circle cx="580" cy="80" r="2.9" fill="#FFFFFF" opacity="0.52"/>
+  <circle cx="230" cy="290" r="3.8" fill="#FFFFFF" opacity="0.28"/>
+  <circle cx="470" cy="265" r="2.3" fill="#E8F5E9" opacity="0.33"/>
+</svg>

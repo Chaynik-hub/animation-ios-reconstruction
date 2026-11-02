@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <!-- sky -->
+  <rect width="640" height="480" fill="#0B1E4A"/>
+
+  <!-- crescent moon (overlap, no mask) -->
+  <circle cx="520" cy="78" r="32" fill="#FFF8B5"/>
+  <circle cx="536" cy="66" r="26" fill="#0B1E4A"/>
+
+  <!-- far plateau -->
+  <polygon fill="#2D4A77" points="0,280 160,240 320,255 480,230 640,250 640,360 0,360"/>
+
+  <!-- main ridge (one crest, long shoulder) -->
+  <polygon fill="#1A2F52" points="0,360 40,330 140,300 220,150 280,170 420,290 520,310 640,295 640,400 0,400"/>
+
+  <!-- quiet ground -->
+  <rect x="0" y="380" width="640" height="100" fill="#0B1E4A"/>
+</svg>

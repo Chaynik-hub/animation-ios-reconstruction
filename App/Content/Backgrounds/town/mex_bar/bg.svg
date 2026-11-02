@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <!-- Sky + late-day sun. Action lives in the quiet sand (center-bottom). -->
+  <rect x="0" y="0" width="1280" height="268" fill="#6ec8f2"/>
+  <rect x="0" y="200" width="1280" height="68" fill="#8fd4f5"/>
+  <circle cx="1088" cy="78" r="46" fill="#ffd45a"/>
+  <ellipse cx="210" cy="64" rx="54" ry="18" fill="#ffffff" opacity="0.85"/>
+  <ellipse cx="248" cy="64" rx="32" ry="14" fill="#ffffff" opacity="0.85"/>
+  <ellipse cx="520" cy="46" rx="48" ry="16" fill="#ffffff" opacity="0.8"/>
+  <ellipse cx="554" cy="46" rx="28" ry="12" fill="#ffffff" opacity="0.8"/>
+
+  <!-- Ocean + far island -->
+  <rect x="0" y="268" width="1280" height="132" fill="#3aa0d4"/>
+  <rect x="0" y="268" width="1280" height="18" fill="#5eb8e0"/>
+  <ellipse cx="180" cy="312" rx="90" ry="8" fill="#7ecceb"/>
+  <ellipse cx="640" cy="328" rx="120" ry="7" fill="#7ecceb"/>
+  <ellipse cx="1040" cy="318" rx="80" ry="7" fill="#7ecceb"/>
+  <polygon points="70,268 140,232 210,268" fill="#4f8f72"/>
+  <polygon points="980,268 1060,238 1140,268" fill="#4a866b"/>
+
+  <!-- Sand: uniform floor, no path or clearing in the middle -->
+  <rect x="0" y="400" width="1280" height="320" fill="#e8c56a"/>
+  <rect x="0" y="400" width="1280" height="14" fill="#d7b05a"/>
+
+  <!-- Papel picado across the top -->
+  <line x1="40" y1="28" x2="1240" y2="28" stroke="#5a3a14" stroke-width="3"/>
+  <polygon points="50,28 70,28 60,58" fill="#e23b6a"/>
+  <polygon points="90,28 110,28 100,56" fill="#f5d031"/>
+  <polygon points="130,28 150,28 140,58" fill="#2f9e5b"/>
+  <polygon points="170,28 190,28 180,56" fill="#e25a1a"/>
+  <polygon points="210,28 230,28 220,58" fill="#3d7fe8"/>
+  <polygon points="250,28 270,28 260,56" fill="#e23b6a"/>
+  <polygon points="290,28 310,28 300,58" fill="#f5d031"/>
+  <polygon points="1010,28 1030,28 1020,58" fill="#2f9e5b"/>
+  <polygon points="1050,28 1070,28 1060,56" fill="#e25a1a"/>
+  <polygon points="1090,28 1110,28 1100,58" fill="#3d7fe8"/>
+  <polygon points="1130,28 1150,28 1140,56" fill="#e23b6a"/>
+  <polygon points="1170,28 1190,28 1180,58" fill="#f5d031"/>
+
+  <!-- Cantina hut (behind the walk; counter stays above the action) -->
+  <rect x="268" y="214" width="744" height="176" fill="#d97a4a"/>
+  <rect x="288" y="232" width="96" height="70" fill="#2d6f8a"/>
+  <rect x="896" y="232" width="96" height="70" fill="#2d6f8a"/>
+  <rect x="304" y="246" width="28" height="40" fill="#143848"/>
+  <rect x="340" y="246" width="28" height="40" fill="#143848"/>
+  <rect x="912" y="246" width="28" height="40" fill="#143848"/>
+  <rect x="948" y="246" width="28" height="40" fill="#143848"/>
+  <rect x="420" y="228" width="440" height="96" fill="#5c2e1c"/>
+  <rect x="436" y="242" width="36" height="68" fill="#1a1010"/>
+  <rect x="488" y="242" width="36" height="68" fill="#1a1010"/>
+  <rect x="540" y="242" width="36" height="68" fill="#1a1010"/>
+  <rect x="592" y="242" width="36" height="68" fill="#1a1010"/>
+  <rect x="644" y="242" width="36" height="68" fill="#1a1010"/>
+  <rect x="696" y="242" width="36" height="68" fill="#1a1010"/>
+  <rect x="748" y="242" width="36" height="68" fill="#1a1010"/>
+  <rect x="800" y="242" width="36" height="68" fill="#1a1010"/>
+  <!-- bottles on the back shelf -->
+  <rect x="448" y="252" width="10" height="28" fill="#2f9e5b"/>
+  <rect x="500" y="248" width="10" height="32" fill="#c43b3b"/>
+  <rect x="552" y="254" width="10" height="26" fill="#f5d031"/>
+  <rect x="604" y="250" width="10" height="30" fill="#2f6f8a"/>
+  <rect x="656" y="252" width="10" height="28" fill="#2f9e5b"/>
+  <rect x="708" y="248" width="10" height="32" fill="#c43b3b"/>
+  <rect x="760" y="254" width="10" height="26" fill="#f5d031"/>
+  <rect x="812" y="250" width="10" height="30" fill="#2f6f8a"/>
+  <!-- bar counter -->
+  <rect x="248" y="368" width="784" height="28" fill="#8a4a24"/>
+  <rect x="248" y="360" width="784" height="10" fill="#c47a3a"/>
+  <rect x="268" y="390" width="22" height="22" fill="#6a3818"/>
+  <rect x="990" y="390" width="22" height="22" fill="#6a3818"/>
+
+  <!-- Thatched palapa roof -->
+  <polygon points="220,214 640,96 1060,214" fill="#c48a3a"/>
+  <polygon points="250,214 640,118 1030,214" fill="#a86e28"/>
+  <polygon points="300,214 640,140 980,214" fill="#8a581c"/>
+  <ellipse cx="640" cy="118" rx="70" ry="16" fill="#d4a04a"/>
+  <!-- fascia "CANTINA" as block letters -->
+  <rect x="470" y="176" width="340" height="32" fill="#5c2e1c"/>
+  <!-- C -->
+  <rect x="484" y="182" width="6" height="20" fill="#f5d031"/>
+  <rect x="484" y="182" width="16" height="5" fill="#f5d031"/>
+  <rect x="484" y="197" width="16" height="5" fill="#f5d031"/>
+  <!-- A -->
+  <rect x="528" y="182" width="6" height="20" fill="#f5d031"/>
+  <rect x="544" y="182" width="6" height="20" fill="#f5d031"/>
+  <rect x="528" y="182" width="22" height="5" fill="#f5d031"/>
+  <rect x="528" y="191" width="22" height="4" fill="#f5d031"/>
+  <!-- N -->
+  <rect x="564" y="182" width="6" height="20" fill="#f5d031"/>
+  <rect x="582" y="182" width="6" height="20" fill="#f5d031"/>
+  <polygon points="570,182 576,182 588,202 582,202" fill="#f5d031"/>
+  <!-- T -->
+  <rect x="602" y="182" width="22" height="5" fill="#f5d031"/>
+  <rect x="610" y="182" width="6" height="20" fill="#f5d031"/>
+  <!-- I -->
+  <rect x="636" y="182" width="6" height="20" fill="#f5d031"/>
+  <!-- N -->
+  <rect x="654" y="182" width="6" height="20" fill="#f5d031"/>
+  <rect x="672" y="182" width="6" height="20" fill="#f5d031"/>
+  <polygon points="660,182 666,182 678,202 672,202" fill="#f5d031"/>
+  <!-- A -->
+  <rect x="690" y="182" width="6" height="20" fill="#f5d031"/>
+  <rect x="706" y="182" width="6" height="20" fill="#f5d031"/>
+  <rect x="690" y="182" width="22" height="5" fill="#f5d031"/>
+  <rect x="690" y="191" width="22" height="4" fill="#f5d031"/>
+
+  <!-- String lights under the eaves -->
+  <line x1="260" y1="214" x2="1020" y2="214" stroke="#5a3a14" stroke-width="2"/>
+  <circle cx="300" cy="220" r="5" fill="#f5d031"/>
+  <circle cx="380" cy="220" r="5" fill="#e23b6a"/>
+  <circle cx="460" cy="220" r="5" fill="#2f9e5b"/>
+  <circle cx="540" cy="220" r="5" fill="#f5d031"/>
+  <circle cx="620" cy="220" r="5" fill="#e25a1a"/>
+  <circle cx="700" cy="220" r="5" fill="#3d7fe8"/>
+  <circle cx="780" cy="220" r="5" fill="#f5d031"/>
+  <circle cx="860" cy="220" r="5" fill="#e23b6a"/>
+  <circle cx="940" cy="220" r="5" fill="#2f9e5b"/>
+
+  <!-- Left frame: palm + cactus + side table -->
+  <rect x="48" y="250" width="16" height="170" fill="#8b5a3c"/>
+  <ellipse cx="56" cy="236" rx="58" ry="14" fill="#2f9e5b"/>
+  <ellipse cx="56" cy="250" rx="48" ry="12" fill="#3aaa60"/>
+  <ellipse cx="18" cy="248" rx="22" ry="10" fill="#2f9e5b"/>
+  <ellipse cx="94" cy="248" rx="22" ry="10" fill="#2f9e5b"/>
+  <ellipse cx="86" cy="470" rx="18" ry="28" fill="#3aaa60"/>
+  <ellipse cx="86" cy="430" rx="10" ry="26" fill="#2f9e5b"/>
+  <ellipse cx="68" cy="438" rx="9" ry="20" fill="#2f9e5b"/>
+  <ellipse cx="104" cy="440" rx="9" ry="18" fill="#2f9e5b"/>
+  <rect x="36" y="488" width="44" height="10" fill="#8a4a24"/>
+  <circle cx="58" cy="478" r="12" fill="#c47a3a"/>
+  <!-- sombrero on the table -->
+  <ellipse cx="58" cy="468" rx="22" ry="6" fill="#e2b84a"/>
+  <ellipse cx="58" cy="460" rx="10" ry="8" fill="#d4a03a"/>
+
+  <!-- Right frame: palm + barrels -->
+  <rect x="1214" y="250" width="16" height="170" fill="#8b5a3c"/>
+  <ellipse cx="1222" cy="236" rx="58" ry="14" fill="#2f9e5b"/>
+  <ellipse cx="1222" cy="250" rx="48" ry="12" fill="#3aaa60"/>
+  <ellipse cx="1184" cy="248" rx="22" ry="10" fill="#2f9e5b"/>
+  <ellipse cx="1260" cy="248" rx="22" ry="10" fill="#2f9e5b"/>
+  <ellipse cx="1188" cy="500" rx="22" ry="16" fill="#8a4a24"/>
+  <ellipse cx="1188" cy="478" rx="20" ry="14" fill="#a85a28"/>
+  <ellipse cx="1188" cy="458" rx="18" ry="12" fill="#8a4a24"/>
+  <rect x="1148" y="488" width="44" height="10" fill="#8a4a24"/>
+  <circle cx="1170" cy="478" r="12" fill="#c47a3a"/>
+</svg>

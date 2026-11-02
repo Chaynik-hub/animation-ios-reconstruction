@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <!-- Underwater cave: water, shafts, cave walls, sand, bubbles -->
+
+  <!-- Water -->
+  <rect x="0" y="0" width="640" height="300" fill="#0A4A63"/>
+  <rect x="0" y="300" width="640" height="80" fill="#0D5F75"/>
+
+  <!-- Cave back -->
+  <path d="M140 0 L500 0 L460 240 L320 300 L180 240 Z" fill="#031E2A"/>
+
+  <!-- Ceiling -->
+  <path d="M0 0 L640 0 L640 88 L540 78 L400 86 L260 76 L120 88 L0 82 Z" fill="#061820"/>
+
+  <!-- Cave walls (single mass each) -->
+  <path d="M0 0 L0 480 L172 480 L158 320 L125 130 L75 45 L0 28 Z" fill="#0D1F28"/>
+  <path d="M640 0 L640 480 L468 480 L482 310 L515 120 L575 48 L640 28 Z" fill="#0D1F28"/>
+
+  <!-- Light shafts -->
+  <polygon points="140,0 200,0 360,450 260,465" fill="#B8F0FF" opacity="0.14"/>
+  <polygon points="260,0 320,0 460,440 380,450" fill="#D0F7FF" opacity="0.12"/>
+  <polygon points="400,0 460,0 540,400 480,408" fill="#A8E8F5" opacity="0.11"/>
+
+  <!-- Soft caustic -->
+  <ellipse cx="300" cy="200" rx="100" ry="30" fill="#4EC4D8" opacity="0.16"/>
+
+  <!-- Sand -->
+  <path d="M0 372 Q200 358 420 375 T640 370 L640 480 L0 480 Z" fill="#C9B896"/>
+  <path d="M0 402 Q220 392 440 410 T640 402 L640 480 L0 480 Z" fill="#AB9268"/>
+
+  <path d="M16 424 Q120 418 240 426 T480 424 T640 424" fill="none" stroke="#8C7752" stroke-width="1.8" opacity="0.42"/>
+  <ellipse cx="310" cy="428" rx="110" ry="20" fill="#E0F8C8" opacity="0.18"/>
+
+  <!-- One rock cluster -->
+  <ellipse cx="88" cy="418" rx="34" ry="16" fill="#4E5860"/>
+  <ellipse cx="556" cy="422" rx="30" ry="14" fill="#4E5860"/>
+
+  <!-- Air bubbles -->
+  <circle cx="180" cy="100" r="3.5" fill="#E8FEFF" opacity="0.5"/>
+  <circle cx="420" cy="140" r="5" fill="#D8FAFC" opacity="0.45"/>
+  <circle cx="310" cy="60" r="2.5" fill="#FFFFFF" opacity="0.55"/>
+  <circle cx="140" cy="220" r="2" fill="#E4FCFF" opacity="0.42"/>
+  <circle cx="500" cy="95" r="3" fill="#E8FEFF" opacity="0.48"/>
+  <circle cx="360" cy="175" r="2.2" fill="#C8F2F8" opacity="0.5"/>
+  <circle cx="250" cy="120" r="4" fill="#F0FFFF" opacity="0.4"/>
+  <circle cx="540" cy="200" r="2.8" fill="#D4F7FA" opacity="0.46"/>
+  <circle cx="200" cy="280" r="2" fill="#E0FAFC" opacity="0.38"/>
+  <circle cx="460" cy="250" r="3.2" fill="#E8FEFF" opacity="0.44"/>
+  <circle cx="330" cy="240" r="1.8" fill="#B8E8F0" opacity="0.52"/>
+  <circle cx="400" cy="320" r="2.5" fill="#D0F4FA" opacity="0.36"/>
+  <circle cx="220" cy="340" r="4.5" fill="#E6FBFF" opacity="0.32"/>
+  <circle cx="580" cy="300" r="2.4" fill="#DEF8FC" opacity="0.4"/>
+  <circle cx="120" cy="160" r="1.6" fill="#FFFFFF" opacity="0.45"/>
+  <circle cx="380" cy="90" r="2" fill="#ECFEFF" opacity="0.5"/>
+  <circle cx="280" cy="300" r="3" fill="#C4EEF5" opacity="0.34"/>
+  <circle cx="160" cy="380" r="2.6" fill="#E2F8FC" opacity="0.3"/>
+  <circle cx="520" cy="360" r="3.8" fill="#D8F6FA" opacity="0.28"/>
+</svg>

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+    <!-- Day sky -->
+    <rect x="0" y="0" width="640" height="240" fill="#5EB8F0"/>
+    <rect x="0" y="200" width="640" height="120" fill="#8AD0FA"/>
+    <rect x="0" y="290" width="640" height="70" fill="#A8DFF8"/>
+
+    <!-- Sun -->
+    <circle cx="540" cy="72" r="34" fill="#FFD54F"/>
+
+    <!-- Clouds -->
+    <ellipse cx="120" cy="78" rx="42" ry="14" fill="#FFFFFF" opacity="0.92"/>
+    <ellipse cx="148" cy="78" rx="28" ry="11" fill="#FFFFFF" opacity="0.92"/>
+    <ellipse cx="95" cy="82" rx="22" ry="9" fill="#FFFFFF" opacity="0.88"/>
+    <ellipse cx="320" cy="55" rx="36" ry="12" fill="#FFFFFF" opacity="0.9"/>
+    <ellipse cx="345" cy="55" rx="24" ry="10" fill="#FFFFFF" opacity="0.9"/>
+    <ellipse cx="430" cy="110" rx="30" ry="11" fill="#FFFFFF" opacity="0.85"/>
+    <ellipse cx="452" cy="110" rx="20" ry="9" fill="#FFFFFF" opacity="0.85"/>
+
+    <!-- Distant tree line -->
+    <polygon points="0,330 40,300 80,318 120,292 160,310 200,285 240,305 280,278 320,298 360,272 400,290 440,268 480,288 520,265 560,282 600,270 640,295 640,360 0,360" fill="#3A7A48"/>
+    <polygon points="0,345 50,322 100,340 150,318 200,335 250,312 300,328 350,308 400,325 450,302 500,318 550,298 600,312 640,325 640,360 0,360" fill="#2E6B3E"/>
+
+    <!-- Mid-layer pines -->
+    <polygon points="70,360 95,290 120,360" fill="#256032"/>
+    <polygon points="130,360 158,275 186,360" fill="#2A6838"/>
+    <polygon points="195,360 220,300 245,360" fill="#256032"/>
+    <polygon points="255,360 285,265 315,360" fill="#2A6838"/>
+    <polygon points="325,360 350,295 375,360" fill="#256032"/>
+    <polygon points="385,360 412,270 439,360" fill="#2A6838"/>
+    <polygon points="445,360 470,305 495,360" fill="#256032"/>
+    <polygon points="505,360 535,280 565,360" fill="#2A6838"/>
+    <polygon points="575,360 600,298 625,360" fill="#256032"/>
+
+    <!-- Forest floor -->
+    <rect x="0" y="360" width="640" height="120" fill="#358040"/>
+    <rect x="0" y="360" width="640" height="16" fill="#3D8A48"/>
+
+    <!-- Foreground left pine -->
+    <rect x="18" y="300" width="16" height="180" fill="#163822"/>
+    <polygon points="0,480 26,250 52,480" fill="#1A4A28"/>
+    <polygon points="8,480 34,210 60,480" fill="#163822"/>
+
+    <!-- Foreground right pine -->
+    <rect x="606" y="295" width="16" height="185" fill="#163822"/>
+    <polygon points="588,480 614,245 640,480" fill="#1A4A28"/>
+    <polygon points="580,480 606,205 632,480" fill="#163822"/>
+
+    <!-- Foreground shrubs (edges only) -->
+    <ellipse cx="95" cy="430" rx="38" ry="18" fill="#2D6838"/>
+    <ellipse cx="545" cy="435" rx="42" ry="20" fill="#2D6838"/>
+    <ellipse cx="140" cy="455" rx="28" ry="12" fill="#286030"/>
+    <ellipse cx="500" cy="458" rx="32" ry="14" fill="#286030"/>
+</svg>

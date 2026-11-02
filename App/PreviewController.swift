@@ -74,6 +74,7 @@ final class PreviewController: UIViewController, UIGestureRecognizerDelegate {
             canvas.displayed = (try? FrameInterpolation.between(current, next, progress: position - floor(position))) ?? current
             counter.text = String(index + 1)
         }
+        if let frame = canvas.displayed { canvas.displayed = workspace.applyAssetAnimations(to: frame, tick: Int(min(position, last) * Double(max(1, workspace.document.interframes + 1)))) }
         canvas.setNeedsDisplay()
     }
 }

@@ -2,6 +2,32 @@ import XCTest
 
 final class EditorUITests:XCTestCase {
     override func setUpWithError()throws {XCUIDevice.shared.orientation = .landscapeLeft}
+    func testDetachThroughOriginalPropertiesAndUndo() throws {
+        let app=XCUIApplication();app.launchArguments=["--reference-attached"];app.launch()
+        XCTAssertTrue(app.buttons["РЕДАКТ."].waitForExistence(timeout:10));app.buttons["РЕДАКТ."].tap()
+        let detach=app.buttons["prop_detach"];XCTAssertTrue(detach.waitForExistence(timeout:5));detach.tap()
+        XCTAssertFalse(detach.exists)
+        app.buttons["ОТМЕНА"].tap();app.buttons["unit-list-0"].tap()
+        XCTAssertTrue(detach.waitForExistence(timeout:5))
+        let image=XCTAttachment(screenshot:XCUIScreen.main.screenshot());image.name="Original unit properties with detach restored by undo";image.lifetime = .keepAlways;add(image)
+    }
+    func testManualAssetStateAndAnimationSettings() throws {
+        let app=XCUIApplication();app.launchArguments=["--reference-animation"];app.launch()
+        XCTAssertTrue(app.buttons["РЕДАКТ."].waitForExistence(timeout:10));app.buttons["РЕДАКТ."].tap();app.buttons["prop_set_states"].tap()
+        app.buttons["asset-state-1"].tap();XCTAssertEqual(app.otherElements["UnitStatesPanel"].value as? String,"1")
+        app.buttons["animation_cogs"].tap();let enabled=app.switches["AssetAnimationEnabled"];XCTAssertTrue(enabled.waitForExistence(timeout:5));enabled.tap();app.switches["AssetAnimationReverse"].tap();app.buttons["AssetAnimationApply"].tap()
+        let image=XCTAttachment(screenshot:XCUIScreen.main.screenshot());image.name="Manual sprite states and automatic animation entry";image.lifetime = .keepAlways;add(image)
+    }
+    func testOriginalBackgroundPickerAndSelection() throws {
+        let app=XCUIApplication();app.launchArguments=["--reference-practice"];app.launch()
+        XCTAssertTrue(app.buttons["ДОБАВИТЬ"].waitForExistence(timeout:10))
+        // The unlabelled first toolbar button opens the project drawer.
+        app.buttons["ProjectMenu"].tap();app.buttons["Фон"].tap()
+        XCTAssertTrue(app.tables.cells["background-pack-common"].waitForExistence(timeout:5))
+        let background=app.collectionViews.cells["background-common:bank"];XCTAssertTrue(background.waitForExistence(timeout:5));background.tap()
+        let image=XCTAttachment(screenshot:XCUIScreen.main.screenshot());image.name="Original two-column background library";image.lifetime = .keepAlways;add(image)
+        app.buttons["Закрыть фоны"].tap();XCTAssertFalse(app.collectionViews.firstMatch.exists)
+    }
     func testBasePointTransformHandlesAndSingleGestureUndo() throws {
         let app = XCUIApplication(); app.launchArguments = ["--reference-practice"]; app.launch()
         XCTAssertTrue(app.buttons["ДОБАВИТЬ"].waitForExistence(timeout: 10))

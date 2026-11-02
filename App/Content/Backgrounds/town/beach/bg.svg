@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+    <!-- Sky -->
+    <rect x="0" y="0" width="640" height="230" fill="#8FD6FF"/>
+    <!-- Sun -->
+    <circle cx="540" cy="70" r="34" fill="#FFD45A"/>
+    <!-- Ocean -->
+    <rect x="0" y="230" width="640" height="85" fill="#49AEDD"/>
+    <!-- Distant Rio mountains -->
+    <path d="M0 230 L70 190 L130 230 Z" fill="#5F8F7A"/>
+    <path d="M95 230 L190 170 L280 230 Z" fill="#4F7F6B"/>
+    <path d="M230 230 L330 185 L430 230 Z" fill="#5B8A75"/>
+    <!-- Sugarloaf Mountain (rounded monolith shape) -->
+    <path d="M430 230
+           Q438 205 454 190
+           Q470 174 486 168
+           Q500 163 512 168
+           Q525 173 533 186
+           Q542 201 548 230 Z"
+        fill="#4A7564"/>
+    <!-- Soft highlight on Sugarloaf -->
+    <path d="M486 175
+           Q500 172 512 181
+           Q500 188 486 186 Z"
+        fill="#6A9987" opacity="0.45"/>
+    <!-- Tiny Christ statue silhouette on hill -->
+    <rect x="188" y="148" width="4" height="12" fill="#F2F2F2"/>
+    <rect x="182" y="152" width="16" height="3" fill="#F2F2F2"/>
+    <!-- Beach -->
+    <rect x="0" y="315" width="640" height="165" fill="#E8CB8F"/>
+    <!-- Copacabana-inspired promenade wave strip -->
+    <rect x="0" y="340" width="640" height="36" fill="#F3E4C5"/>
+    <path d="M0 356 Q20 346 40 356 T80 356 T120 356 T160 356 T200 356 T240 356 T280 356 T320 356 T360 356 T400 356 T440 356 T480 356 T520 356 T560 356 T600 356 T640 356"
+        fill="none" stroke="#2C2C2C" stroke-width="4"/>
+    <path d="M0 362 Q20 372 40 362 T80 362 T120 362 T160 362 T200 362 T240 362 T280 362 T320 362 T360 362 T400 362 T440 362 T480 362 T520 362 T560 362 T600 362 T640 362"
+        fill="none" stroke="#2C2C2C" stroke-width="4"/>
+    <!-- Open action area -->
+    <rect x="140" y="382" width="360" height="86" fill="#E2C07C" opacity="0.55"/>
+    <!-- Palm trees framing edges -->
+    <rect x="18" y="255" width="12" height="95" fill="#8B5A3C"/>
+    <ellipse cx="24" cy="248" rx="38" ry="10" fill="#45B86A"/>
+    <ellipse cx="24" cy="260" rx="32" ry="9" fill="#3FAA60"/>
+    <rect x="610" y="255" width="12" height="95" fill="#8B5A3C"/>
+    <ellipse cx="616" cy="248" rx="38" ry="10" fill="#45B86A"/>
+    <ellipse cx="616" cy="260" rx="32" ry="9" fill="#3FAA60"/>
+    <!-- Beach umbrellas -->
+    <rect x="90" y="380" width="4" height="26" fill="#7A5A45"/>
+    <path d="M74 381 Q92 364 110 381 Z" fill="#F06E6E"/>
+    <rect x="548" y="380" width="4" height="26" fill="#7A5A45"/>
+    <path d="M532 381 Q550 364 568 381 Z" fill="#6EA8F0"/>
+    <!-- Clouds -->
+    <ellipse cx="120" cy="72" rx="28" ry="12" fill="#FFFFFF" opacity="0.9"/>
+    <ellipse cx="145" cy="72" rx="20" ry="10" fill="#FFFFFF" opacity="0.9"/>
+    <ellipse cx="355" cy="95" rx="25" ry="11" fill="#FFFFFF" opacity="0.9"/>
+    <ellipse cx="377" cy="95" rx="18" ry="9" fill="#FFFFFF" opacity="0.9"/>
+</svg>

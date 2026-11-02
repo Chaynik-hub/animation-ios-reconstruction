@@ -48,6 +48,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         for (row,entry) in entries.enumerated() {
             let (icon,title,color,action)=entry
             let button=UIButton(type:.custom);var config=UIButton.Configuration.plain();config.image=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/"+icon+".png").path)?.resizedIcon();config.title=title;config.imagePlacement = .top;config.imagePadding=0;config.contentInsets=NSDirectionalEdgeInsets(top:2,leading:2,bottom:2,trailing:2);config.baseForegroundColor=color;config.titleTextAttributesTransformer=UIConfigurationTextAttributesTransformer{v in var x=v;x.font=UIFont(name:"Roboto-Regular",size:12) ?? .systemFont(ofSize:12);return x};button.configuration=config;button.addAction(UIAction{_ in action()},for:.touchUpInside);sidebar.addArrangedSubview(button)
+            if row == 0 {button.accessibilityIdentifier="ProjectMenu";button.accessibilityLabel="Меню проекта"}
             button.heightAnchor.constraint(equalToConstant:[47.0,68,61,62,60,61][row]).isActive=true
         }
         sidebar.addArrangedSubview(UIView())
@@ -75,14 +76,19 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         view.addSubview(shift);NSLayoutConstraint.activate([shift.leadingAnchor.constraint(equalTo:sidebar.trailingAnchor),shift.topAnchor.constraint(equalTo:view.topAnchor),shift.widthAnchor.constraint(equalToConstant:48),shift.heightAnchor.constraint(equalToConstant:48)])
         workspace.onChange = {[weak self] in self?.update()};restoreAudio();update()
         if ProcessInfo.processInfo.arguments.contains("--reference-practice"),let url=Bundle.main.resourceURL?.appendingPathComponent("Content/Reference/practice.ats") {perform{try workspace.load(url)}}
+        if ProcessInfo.processInfo.arguments.contains("--reference-attached") { workspace.installAttachedReference() }
+        if ProcessInfo.processInfo.arguments.contains("--reference-animation"), let asset=workspace.catalog.first(where:{$0.name=="farid.things:semaphor"}) { workspace.document=SceneDocument(width:960,height:540,interframes:4,frames:[SceneFrame(id:0,units:[],attributes:[:])],attributes:[:]);workspace.index=0;workspace.add(asset);workspace.document.frames=(0..<20).map{SceneFrame(id:$0,units:workspace.frame.units,attributes:[:])};workspace.notify() }
         if ProcessInfo.processInfo.arguments.contains("--ui-capture"),let first=workspace.catalog.first(where:{$0.name.contains("boy")}){workspace.add(first)}
     }
     func button(_ title:String,_ action:@escaping()->Void)->UIButton{let b=UIButton(type:.system);b.setTitle(title,for:.normal);b.tintColor = .white;b.addAction(UIAction{_ in action()},for:.touchUpInside);return b}
-    func update(){refreshFrameTools();frameLabel.text="\(workspace.index+1) /\n\(workspace.document.frames.count)";frameNavigator.count=workspace.document.frames.count;frameNavigator.current=workspace.index;canvas.updateTransformControls();canvas.setNeedsDisplay()}
+    func update(){refreshFrameTools();refreshUnitTools();frameLabel.text="\(workspace.index+1) /\n\(workspace.document.frames.count)";frameNavigator.count=workspace.document.frames.count;frameNavigator.current=workspace.index;canvas.updateTransformControls();canvas.setNeedsDisplay()}
     func perform(_ work:()throws->Void){do{try work()}catch{message("Не удалось выполнить",String(describing:error))}}
     func message(_ title:String,_ text:String){let alert=UIAlertController(title:title,message:text,preferredStyle:.alert);alert.addAction(UIAlertAction(title:"OK",style:.default));present(alert,animated:true)}
+    var backgroundController: BackgroundChooserController?
+    var unitToolsActive = false
+    var unitClipboard: [SceneUnit] = []
     var toolPanel:UIView?
-    func dismissTools(){if let controller=catalogController {controller.willMove(toParent:nil);controller.view.removeFromSuperview();controller.removeFromParent();catalogController=nil};toolPanel?.removeFromSuperview();toolPanel=nil;shift.isHidden=false;highlightFrameTools(false);highlightCatalog(false)}
+    func dismissTools(){if let controller=backgroundController {controller.willMove(toParent:nil);controller.view.removeFromSuperview();controller.removeFromParent();backgroundController=nil};unitToolsActive=false;if let controller=catalogController {controller.willMove(toParent:nil);controller.view.removeFromSuperview();controller.removeFromParent();catalogController=nil};toolPanel?.removeFromSuperview();toolPanel=nil;shift.isHidden=false;highlightFrameTools(false);highlightCatalog(false);highlightUnitTools(false)}
     func choices(_ title:String,_ actions:[(String,()->Void)]){
         stop();dismissTools()
         let cover=UIView(frame:view.bounds);cover.autoresizingMask=[.flexibleWidth,.flexibleHeight]
@@ -114,8 +120,8 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         NSLayoutConstraint.activate([picker.view.leadingAnchor.constraint(equalTo: sidebarScroll.trailingAnchor), picker.view.topAnchor.constraint(equalTo: view.topAnchor), picker.view.bottomAnchor.constraint(equalTo: view.bottomAnchor), picker.view.widthAnchor.constraint(equalToConstant: 180)])
         picker.didMove(toParent: self); catalogController = picker; toolPanel = picker.view; shift.isHidden = true; highlightCatalog(true)
     }
-    func objectTools(){choices("Объект",[("Выбрать объект",{[weak self] in self?.selectObject()}),("Отразить",{[weak self] in self?.workspace.flip()}),("Дублировать",{[weak self] in self?.workspace.duplicateObject()}),("Удалить",{[weak self] in self?.workspace.removeObject()}),("Показать/скрыть суставы",{[weak self] in self?.canvas.handles.toggle();self?.canvas.setNeedsDisplay()})])}
-    func selectObject(){choices("Выбрать",workspace.frame.units.enumerated().map{i,u in (u.name.components(separatedBy:"#")[0],{[weak self] in self?.workspace.selected=i;self?.update()})})}
+    func objectTools(){if unitToolsActive {dismissTools();return};stop();showUnitTools()}
+    func selectObject(){workspace.selected=nil;showUnitList()}
     var frameClipboard: [SceneFrame] = []
     func highlightFrameTools(_ active: Bool) {
         guard sidebar.arrangedSubviews.indices.contains(4), let button = sidebar.arrangedSubviews[4] as? UIButton else { return }
@@ -133,7 +139,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         panel.setEnabled(workspace.document.frames.count > 1, for: "frame_ops_del")
     }
     func frameTools() {
-        if toolPanel is FrameToolsPanel { dismissTools(); return }
+        if toolPanel?.accessibilityIdentifier == "FrameToolsPanel" { dismissTools(); return }
         stop(); dismissTools()
         let panel = FrameToolsPanel(commands: [
             .init(id: "frame_ops_add", title: "Добавить", height: 81, enabled: true, action: { [weak self] in self?.perform { try self?.workspace.addFrame() } }),
@@ -186,7 +192,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func togglePlayback(){stop();present(PreviewController(workspace:workspace,audio:audio),animated:false)}
     func frameAt(_ elapsed:Double)->SceneFrame {
         let perKey=max(1,workspace.document.interframes+1);let position=elapsed*60/Double(perKey)+Double(startFrame);let count=workspace.document.frames.count;let index=Int(position)%count;let t=position-floor(position);let frame=workspace.document.frames[index],next=workspace.document.frames[(index+1)%count]
-        return (try? FrameInterpolation.between(frame,next,progress:t)) ?? frame
+        return workspace.applyAssetAnimations(to:(try? FrameInterpolation.between(frame,next,progress:t)) ?? frame,tick:Int(max(0,elapsed*60))+startFrame*perKey)
     }
     @objc func tick(_ link:CADisplayLink){canvas.displayed=frameAt(link.timestamp-playbackStart);canvas.setNeedsDisplay()}
     func save(){let alert=UIAlertController(title:"Сохранить сцену",message:nil,preferredStyle:.alert);alert.addTextField{$0.text=self.titleOfScene};alert.addAction(UIAlertAction(title:"Сохранить",style:.default){[weak self] _ in guard let self else{return};self.titleOfScene=alert.textFields?.first?.text ?? "Animation";self.perform{_ = try self.workspace.save(name:self.titleOfScene)}});alert.addAction(UIAlertAction(title:"Отмена",style:.cancel));present(alert,animated:true)}
@@ -198,7 +204,17 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func restoreAudio(){audio=nil;if let name=workspace.document.attributes["nativeAudio"],!name.contains("/"),let player=try? AVAudioPlayer(contentsOf:workspace.directory.appendingPathComponent(name)){audio=player;audio?.prepareToPlay()}}
 
     func audioPicker(){pickingAudio=true;let picker=UIDocumentPickerViewController(forOpeningContentTypes:[.audio],asCopy:true);picker.delegate=self;present(picker,animated:true)}
-    func backgrounds(){choices("Цвет фона",[("Белый",{[weak self] in self?.canvas.backgroundColorValue = .white;self?.update()}),("Чёрный",{[weak self] in self?.canvas.backgroundColorValue = .black;self?.update()}),("Зелёный",{[weak self] in self?.canvas.backgroundColorValue = .green;self?.update()}),("Сбросить масштаб камеры",{[weak self] in self?.canvas.cameraScale=1;self?.canvas.cameraOffset = .zero;self?.update()})])}
+    func backgrounds() {
+        stop(); dismissTools()
+        let chooser = BackgroundChooserController(values: workspace.backgroundCatalog, select: { [weak self] value in
+            guard let self else { return }; self.workspace.checkpoint()
+            self.workspace.document.frames[self.workspace.index].attributes["nativeBackgroundID"] = value?.id
+            self.workspace.notify()
+        }, close: { [weak self] in self?.dismissTools() })
+        addChild(chooser); chooser.view.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(chooser.view)
+        NSLayoutConstraint.activate([chooser.view.leadingAnchor.constraint(equalTo: sidebarScroll.trailingAnchor), chooser.view.topAnchor.constraint(equalTo: view.topAnchor), chooser.view.bottomAnchor.constraint(equalTo: view.bottomAnchor), chooser.view.widthAnchor.constraint(equalToConstant: min(360, max(180, view.bounds.width - view.safeAreaInsets.left - view.safeAreaInsets.right - 140)))])
+        chooser.didMove(toParent: self); backgroundController = chooser; toolPanel = chooser.view; shift.isHidden = true
+    }
     func properties(){let a=UIAlertController(title:"Сцена",message:"Ширина, высота и промежуточные кадры",preferredStyle:.alert);for value in [Int(workspace.document.width),Int(workspace.document.height),workspace.document.interframes]{a.addTextField{$0.text=String(value);$0.keyboardType = .numberPad}};a.addAction(UIAlertAction(title:"OK",style:.default){[weak self] _ in guard let self,let f=a.textFields,let w=Double(f[0].text ?? ""),let h=Double(f[1].text ?? ""),let n=Int(f[2].text ?? ""),w>0,h>0,w<=4096,h<=4096,n>=0,n<120 else{return};self.workspace.checkpoint();self.workspace.document.width=w;self.workspace.document.height=h;self.workspace.document.interframes=n;self.update()});a.addAction(UIAlertAction(title:"Отмена",style:.cancel));present(a,animated:true)}
     func exports(){choices("Экспорт",[("ATS-проект",{[weak self] in self?.perform{guard let self else{return};self.share(try self.workspace.saveATS())}}),("MP4 со звуком",{[weak self] in self?.exportVideo()}),("PNG текущего кадра",{[weak self] in self?.exportPNG()}),("GIF анимация",{[weak self] in self?.exportGIF()}),("Файл проекта JSON",{[weak self] in self?.perform{guard let self else{return};self.share(try self.workspace.save(name:self.titleOfScene))}})])}
     func share(_ url:URL){let vc=UIActivityViewController(activityItems:[url],applicationActivities:nil);vc.popoverPresentationController?.sourceView=sidebar;vc.popoverPresentationController?.sourceRect=sidebar.bounds;present(vc,animated:true)}

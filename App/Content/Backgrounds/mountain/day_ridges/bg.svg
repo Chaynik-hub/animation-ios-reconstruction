@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <!-- sky -->
+  <rect width="640" height="480" fill="#8EC4E8"/>
+
+  <!-- sun -->
+  <circle cx="540" cy="72" r="34" fill="#FFE566"/>
+
+  <!-- far ridge -->
+  <polygon fill="#6B8FA8" points="0,300 90,200 170,270 280,140 380,250 470,180 560,240 640,210 640,360 0,360"/>
+
+  <!-- near ridge -->
+  <polygon fill="#3F6A7A" points="0,340 70,250 160,310 250,220 360,300 460,240 540,290 640,260 640,400 0,400"/>
+
+  <!-- quiet ground -->
+  <rect x="0" y="380" width="640" height="100" fill="#2F5566"/>
+</svg>

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+    <!-- Dawn sky -->
+    <rect x="0" y="0" width="640" height="200" fill="#4A5888"/>
+    <rect x="0" y="160" width="640" height="90" fill="#8878A8"/>
+    <rect x="0" y="230" width="640" height="70" fill="#C88898"/>
+    <rect x="0" y="280" width="640" height="50" fill="#E8A878"/>
+    <rect x="0" y="310" width="640" height="50" fill="#F0C090"/>
+
+    <!-- Sun glow -->
+    <circle cx="120" cy="295" r="42" fill="#F8D090" opacity="0.85"/>
+    <circle cx="120" cy="295" r="28" fill="#FFE8B0"/>
+
+    <!-- Mist at horizon -->
+    <rect x="0" y="300" width="640" height="65" fill="#F0E0D0" opacity="0.35"/>
+
+    <!-- Distant ridge -->
+    <polygon points="0,320 120,285 240,302 360,270 480,290 640,262 640,360 0,360" fill="#283038"/>
+    <polygon points="0,338 160,312 320,326 480,302 640,318 640,360 0,360" fill="#202830"/>
+
+    <!-- Left grove (taller deciduous silhouettes) -->
+    <rect x="48" y="318" width="10" height="52" fill="#181C20"/>
+    <ellipse cx="53" cy="298" rx="34" ry="30" fill="#1E2830"/>
+    <rect x="84" y="326" width="9" height="44" fill="#181C20"/>
+    <ellipse cx="88" cy="308" rx="28" ry="26" fill="#222C34"/>
+    <rect x="114" y="320" width="10" height="50" fill="#141820"/>
+    <ellipse cx="119" cy="300" rx="32" ry="28" fill="#1A242C"/>
+    <rect x="148" y="328" width="8" height="42" fill="#181C20"/>
+    <ellipse cx="152" cy="312" rx="24" ry="22" fill="#202830"/>
+    <rect x="172" y="324" width="9" height="46" fill="#141820"/>
+    <ellipse cx="176" cy="304" rx="30" ry="27" fill="#1E2830"/>
+
+    <!-- Center-back trees -->
+    <rect x="262" y="334" width="7" height="34" fill="#181C20"/>
+    <ellipse cx="265" cy="320" rx="20" ry="18" fill="#222C34"/>
+    <rect x="304" y="336" width="7" height="32" fill="#141820"/>
+    <ellipse cx="307" cy="322" rx="18" ry="16" fill="#1E2830"/>
+    <rect x="346" y="334" width="7" height="34" fill="#181C20"/>
+    <ellipse cx="349" cy="318" rx="22" ry="20" fill="#222C34"/>
+
+    <!-- Right grove (lighter, more open) -->
+    <rect x="414" y="330" width="8" height="38" fill="#181C20"/>
+    <ellipse cx="418" cy="312" rx="26" ry="24" fill="#1E2830"/>
+    <rect x="462" y="334" width="7" height="34" fill="#141820"/>
+    <ellipse cx="465" cy="318" rx="22" ry="20" fill="#222C34"/>
+    <rect x="512" y="328" width="8" height="40" fill="#181C20"/>
+    <ellipse cx="516" cy="308" rx="28" ry="26" fill="#1A242C"/>
+    <rect x="560" y="336" width="7" height="32" fill="#141820"/>
+    <ellipse cx="563" cy="322" rx="20" ry="18" fill="#1E2830"/>
+
+    <!-- Ground -->
+    <rect x="0" y="360" width="640" height="120" fill="#283038"/>
+    <rect x="0" y="360" width="640" height="14" fill="#303840"/>
+
+    <!-- Foreground left canopy -->
+    <rect x="6" y="342" width="14" height="138" fill="#101418"/>
+    <ellipse cx="20" cy="322" rx="46" ry="40" fill="#181C24"/>
+    <ellipse cx="28" cy="308" rx="36" ry="32" fill="#1E2428"/>
+
+    <!-- Foreground right framing -->
+    <rect x="610" y="346" width="12" height="134" fill="#101418"/>
+    <ellipse cx="596" cy="358" rx="34" ry="26" fill="#222830"/>
+    <ellipse cx="552" cy="450" rx="40" ry="15" fill="#283038"/>
+    <ellipse cx="82" cy="454" rx="34" ry="13" fill="#283038"/>
+</svg>

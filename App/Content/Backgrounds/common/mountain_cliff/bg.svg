@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <!-- Evening: same geometry, dusk palette -->
+
+  <!-- Sky -->
+  <rect x="0" y="0" width="640" height="160" fill="#263056"/>
+  <rect x="0" y="160" width="640" height="75" fill="#3E4878"/>
+  <rect x="0" y="235" width="640" height="48" fill="#D8726E"/>
+
+  <!-- Solid haze band (no gaps under silhouette curves) -->
+  <rect x="0" y="275" width="640" height="90" fill="#9B87A8"/>
+
+  <!-- Furthest peaks -->
+  <path d="M0 298 L0 278 L42 268 L95 278 L148 258 L205 268 L268 248 L332 258 L392 238 L458 248 L520 232 L578 242 L640 228 L640 298 Z" fill="#5C6078"/>
+  <path d="M0 308 L0 288 L58 278 L118 292 L178 278 L238 288 L298 268 L362 278 L428 265 L492 278 L558 268 L622 278 L640 272 L640 308 Z" fill="#4E5268"/>
+
+  <!-- Mid ridges -->
+  <path d="M0 332 L0 302 L72 292 L142 312 L218 296 L298 318 L378 286 L458 306 L538 292 L608 308 L640 298 L640 332 Z" fill="#3F4358"/>
+  <path d="M0 348 L0 322 L88 312 L162 332 L248 318 L332 342 L418 305 L508 328 L598 312 L640 318 L640 348 Z" fill="#363948"/>
+
+  <!-- Plateau slab -->
+  <polygon points="0,480 640,480 640,348 560,332 440,342 320,328 180,336 0,348" fill="#706862"/>
+  <polygon points="0,480 640,480 640,362 520,348 380,356 240,348 0,368" fill="#766E66"/>
+
+  <!-- Cliff lip shadow -->
+  <path d="M0 348 Q160 332 320 318 Q480 305 640 348 L640 366 Q440 350 320 358 Q160 368 0 378 Z" fill="#4A4540"/>
+
+  <!-- Boulder facets -->
+  <polygon points="120,452 280,438 340,472 160,480" fill="#5D5852"/>
+  <polygon points="380,458 560,442 620,478 420,480" fill="#605954"/>
+  <ellipse cx="520" cy="432" rx="55" ry="18" fill="#696058"/>
+  <ellipse cx="140" cy="428" rx="48" ry="16" fill="#7D746C"/>
+
+  <!-- Edge rocks -->
+  <ellipse cx="210" cy="382" rx="28" ry="14" fill="#544F49"/>
+  <ellipse cx="455" cy="372" rx="32" ry="15" fill="#4E4944"/>
+  <ellipse cx="335" cy="376" rx="22" ry="11" fill="#58534D"/>
+
+  <!-- Cracks -->
+  <path d="M180 455 L225 418 L268 442" fill="none" stroke="#32302E" stroke-width="2" opacity="0.75"/>
+  <path d="M420 448 L458 408 L498 438" fill="none" stroke="#32302E" stroke-width="2" opacity="0.65"/>
+  <path d="M300 472 L338 435 L376 458" fill="none" stroke="#383634" stroke-width="1.5" opacity="0.55"/>
+</svg>

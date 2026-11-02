@@ -183,7 +183,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             let value = hypot(base.x - point.x, base.y - point.y)
             if value < distance { distance = value; selected = i }
         }
-        workspace.selected = selected; updateTransformControls(); setNeedsDisplay()
+        workspace.selected = selected; updateTransformControls(); setNeedsDisplay(); workspace.onChange?()
     }
     @objc private func selectBase(_ gesture: UITapGestureRecognizer) { selectBase(at: gesture.location(in: self)) }
     @objc private func transformDrag(_ gesture: UIPanGestureRecognizer) {
@@ -235,6 +235,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         guard let c=UIGraphicsGetCurrentContext() else{return};UIColor.original(0x3d3e4c).setFill();c.fill(bounds)
         c.saveGState();c.translateBy(x:origin.x,y:origin.y);c.scaleBy(x:ratio,y:ratio)
         backgroundColorValue.setFill();c.fill(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height));c.clip(to:CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))
+        paintBackground(displayed ?? workspace.frame,in:c)
         if onion && displayed==nil && workspace.index>0 {c.saveGState();paint(workspace.document.frames[workspace.index-1],in:c,showHandles:false,opacity:0.18);c.restoreGState()}
         paint(displayed ?? workspace.frame,in:c,showHandles:handles && displayed==nil);c.restoreGState()
     }
@@ -300,6 +301,6 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         }
     }
     func snapshot(size:CGSize)->UIImage {let format=UIGraphicsImageRendererFormat();format.scale=1;return UIGraphicsImageRenderer(size:size,format:format).image{context in
-        context.cgContext.scaleBy(x:size.width/workspace.document.width,y:size.height/workspace.document.height);backgroundColorValue.setFill();context.fill(CGRect(origin:.zero,size:CGSize(width:workspace.document.width,height:workspace.document.height)));paint(displayed ?? workspace.frame,in:context.cgContext,showHandles:false)
+        context.cgContext.scaleBy(x:size.width/workspace.document.width,y:size.height/workspace.document.height);backgroundColorValue.setFill();context.fill(CGRect(origin:.zero,size:CGSize(width:workspace.document.width,height:workspace.document.height)));paintBackground(displayed ?? workspace.frame,in:context.cgContext);paint(displayed ?? workspace.frame,in:context.cgContext,showHandles:false)
     }}
 }

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <!-- Deep space -->
+  <rect x="0" y="0" width="640" height="480" fill="#060814"/>
+
+  <!-- Stars (order: back to front of sky) -->
+  <circle cx="80" cy="52" r="1.2" fill="#FFFFFF" opacity="0.95"/>
+  <circle cx="210" cy="38" r="1" fill="#FFFFFF" opacity="0.85"/>
+  <circle cx="400" cy="90" r="1.5" fill="#E8F4FF" opacity="0.9"/>
+  <circle cx="520" cy="44" r="1" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="600" cy="120" r="1.3" fill="#FFFFFF" opacity="0.88"/>
+  <circle cx="48" cy="180" r="0.9" fill="#FFFFFF" opacity="0.75"/>
+  <circle cx="310" cy="140" r="1" fill="#FFFFFF" opacity="0.7"/>
+  <circle cx="580" cy="260" r="1.2" fill="#E8F4FF" opacity="0.85"/>
+  <circle cx="95" cy="320" r="1" fill="#FFFFFF" opacity="0.78"/>
+  <circle cx="250" cy="360" r="1.4" fill="#FFFFFF" opacity="0.9"/>
+  <circle cx="470" cy="400" r="1" fill="#FFFFFF" opacity="0.72"/>
+  <circle cx="35" cy="420" r="0.9" fill="#FFFFFF" opacity="0.65"/>
+  <circle cx="190" cy="95" r="0.8" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="360" cy="280" r="1.1" fill="#FFFFFF" opacity="0.82"/>
+  <circle cx="630" cy="340" r="1" fill="#FFFFFF" opacity="0.7"/>
+
+  <!-- Sun -->
+  <circle cx="130" cy="210" r="88" fill="#FFB300" opacity="0.28"/>
+  <circle cx="130" cy="210" r="72" fill="#FFD54F"/>
+
+  <!-- Earth: ocean + one tangled continent (bays / capes / isthmus hints; verts inside limb) -->
+  <circle cx="380" cy="235" r="58" fill="#1565C0"/>
+  <polygon points="427,252 424,259 417,264 411,268 409,278 403,285 393,279 384,268 379,268 374,267 367,270 357,277 345,280 339,273 338,263 333,257 329,249 334,241 341,234 342,228 343,221 345,216 346,208 350,202 359,203 365,204 368,192 373,178 382,178 391,179 398,185 400,198 400,209 405,212 413,213 415,219 416,225 424,230 431,237 431,245" fill="#4CAF50" opacity="0.95"/>
+</svg>

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <!-- Simplified daytime city (based on daycity) -->
+
+  <rect x="0" y="0" width="640" height="215" fill="#8EC5ED"/>
+  <rect x="0" y="215" width="640" height="53" fill="#B9DDF5"/>
+
+  <circle cx="528" cy="70" r="26" fill="#FFEB3B"/>
+  <circle cx="525" cy="68" r="14" fill="#FFFDE7"/>
+
+  <ellipse cx="160" cy="58" rx="70" ry="16" fill="#FFFFFF" opacity="0.78"/>
+  <ellipse cx="410" cy="72" rx="90" ry="18" fill="#FFFFFF" opacity="0.7"/>
+
+  <!-- Distant city (one soft mass) -->
+  <path d="M0 258 L0 270 L640 270 L640 255 L580 228 L500 245 L420 222 L320 248 L220 232 L120 250 L40 236 L0 252 Z" fill="#95A6B8"/>
+
+  <!-- Mid band -->
+  <rect x="0" y="218" width="640" height="92" fill="#A89B8E"/>
+  <rect x="0" y="218" width="200" height="12" fill="#BFB3A7"/>
+  <rect x="240" y="218" width="200" height="12" fill="#BFB3A7"/>
+  <rect x="480" y="218" width="160" height="12" fill="#BFB3A7"/>
+
+  <!-- Foreground: three stepped towers -->
+  <rect x="-6" y="198" width="145" height="120" fill="#6D6359"/>
+  <rect x="14" y="168" width="105" height="30" fill="#7A7066"/>
+  <rect x="36" y="128" width="62" height="40" fill="#8A7E73"/>
+  <polygon points="67,128 67,108 73,100 79,108 79,128" fill="#C9A961"/>
+
+  <rect x="188" y="208" width="175" height="110" fill="#655B52"/>
+  <rect x="218" y="168" width="115" height="40" fill="#73685E"/>
+  <rect x="248" y="118" width="55" height="50" fill="#85796E"/>
+  <polygon points="275,118 265,95 285,95" fill="#E6C35C"/>
+
+  <rect x="418" y="195" width="228" height="123" fill="#6A5F55"/>
+  <rect x="448" y="162" width="168" height="33" fill="#786D63"/>
+  <rect x="498" y="118" width="68" height="44" fill="#8A7E74"/>
+  <polygon points="532,118 520,88 544,88" fill="#D4B349"/>
+
+  <!-- One horizontal deco band -->
+  <rect x="28" y="258" width="560" height="5" fill="#988A7A"/>
+
+  <!-- Trim + windows (minimal) -->
+  <rect x="48" y="218" width="5" height="72" fill="#B54D3C" opacity="0.5"/>
+  <rect x="295" y="148" width="72" height="5" fill="#B54D3C" opacity="0.45"/>
+  <rect x="540" y="218" width="5" height="82" fill="#B54D3C" opacity="0.45"/>
+
+  <rect x="48" y="228" width="10" height="14" fill="#7BA3C4"/>
+  <rect x="275" y="138" width="10" height="14" fill="#D6EBF7"/>
+  <rect x="518" y="218" width="10" height="14" fill="#90B8D8"/>
+  <rect x="472" y="258" width="10" height="14" fill="#A8C8E0"/>
+
+  <!-- Street -->
+  <rect x="0" y="318" width="640" height="162" fill="#9AA0A8"/>
+  <rect x="0" y="318" width="640" height="6" fill="#B8BEC6"/>
+
+  <!-- Two lamps -->
+  <rect x="118" y="298" width="5" height="20" fill="#6B7078"/>
+  <rect x="112" y="289" width="17" height="9" rx="2" ry="2" fill="#7A8088"/>
+  <circle cx="121" cy="282" r="8" fill="#DCE2EA" opacity="0.8"/>
+
+  <rect x="458" y="298" width="5" height="20" fill="#6B7078"/>
+  <rect x="452" y="289" width="17" height="9" rx="2" ry="2" fill="#7A8088"/>
+  <circle cx="461" cy="282" r="8" fill="#DCE2EA" opacity="0.8"/>
+
+  <rect x="280" y="436" width="80" height="5" fill="#E8ECF0" opacity="0.85"/>
+  <rect x="280" y="448" width="80" height="5" fill="#E8ECF0" opacity="0.85"/>
+</svg>

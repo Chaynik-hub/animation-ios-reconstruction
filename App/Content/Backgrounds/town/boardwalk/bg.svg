@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+    <!-- Sky -->
+    <rect x="0" y="0" width="640" height="210" fill="#90D6FF"/>
+    <!-- Sea -->
+    <rect x="0" y="210" width="640" height="80" fill="#4EAEDF"/>
+    <!-- Distant town strip -->
+    <rect x="0" y="180" width="640" height="30" fill="#8DC68E"/>
+    <!-- Sun -->
+    <circle cx="555" cy="68" r="32" fill="#FFD45A"/>
+    <!-- Left mini town -->
+    <rect x="35" y="150" width="52" height="30" fill="#F5E7C7"/>
+    <polygon points="30,150 61,128 92,150" fill="#C7645D"/>
+    <rect x="54" y="163" width="10" height="17" fill="#8D6644"/>
+    <rect x="95" y="154" width="55" height="26" fill="#EFDFBD"/>
+    <polygon points="90,154 122,133 155,154" fill="#D97A60"/>
+    <rect x="115" y="165" width="10" height="15" fill="#8D6644"/>
+    <!-- Right mini town -->
+    <rect x="500" y="152" width="54" height="28" fill="#F5E7C7"/>
+    <polygon points="495,152 527,130 559,152" fill="#C7645D"/>
+    <rect x="520" y="164" width="10" height="16" fill="#8D6644"/>
+    <rect x="562" y="156" width="48" height="24" fill="#EFDFBD"/>
+    <polygon points="557,156 586,137 615,156" fill="#D97A60"/>
+    <rect x="580" y="166" width="9" height="14" fill="#8D6644"/>
+    <!-- Boardwalk movie stage -->
+    <rect x="0" y="290" width="640" height="190" fill="#B88452"/>
+    <!-- Boardwalk plank lines -->
+    <rect x="0" y="314" width="640" height="3" fill="#A77445"/>
+    <rect x="0" y="338" width="640" height="3" fill="#A77445"/>
+    <rect x="0" y="362" width="640" height="3" fill="#A77445"/>
+    <rect x="0" y="386" width="640" height="3" fill="#A77445"/>
+    <rect x="0" y="410" width="640" height="3" fill="#A77445"/>
+    <rect x="0" y="434" width="640" height="3" fill="#A77445"/>
+    <!-- Vertical plank seams -->
+    <rect x="80" y="290" width="2" height="190" fill="#A77445"/>
+    <rect x="160" y="290" width="2" height="190" fill="#A77445"/>
+    <rect x="240" y="290" width="2" height="190" fill="#A77445"/>
+    <rect x="320" y="290" width="2" height="190" fill="#A77445"/>
+    <rect x="400" y="290" width="2" height="190" fill="#A77445"/>
+    <rect x="480" y="290" width="2" height="190" fill="#A77445"/>
+    <rect x="560" y="290" width="2" height="190" fill="#A77445"/>
+    <!-- Open action zone highlight -->
+    <rect x="170" y="315" width="300" height="140" fill="#C99560" opacity="0.45"/>
+    <!-- Stage side lights -->
+    <rect x="20" y="300" width="14" height="120" fill="#5F4A38"/>
+    <circle cx="27" cy="320" r="8" fill="#FFE08A"/>
+    <circle cx="27" cy="350" r="8" fill="#FFE08A"/>
+    <circle cx="27" cy="380" r="8" fill="#FFE08A"/>
+    <rect x="606" y="300" width="14" height="120" fill="#5F4A38"/>
+    <circle cx="613" cy="320" r="8" fill="#FFE08A"/>
+    <circle cx="613" cy="350" r="8" fill="#FFE08A"/>
+    <circle cx="613" cy="380" r="8" fill="#FFE08A"/>
+    <!-- Left and right palm silhouettes (framing) -->
+    <rect x="4" y="225" width="10" height="70" fill="#8B5A3C"/>
+    <ellipse cx="9" cy="222" rx="28" ry="8" fill="#42B567"/>
+    <ellipse cx="9" cy="232" rx="24" ry="7" fill="#3FAA60"/>
+    <rect x="626" y="225" width="10" height="70" fill="#8B5A3C"/>
+    <ellipse cx="631" cy="222" rx="28" ry="8" fill="#42B567"/>
+    <ellipse cx="631" cy="232" rx="24" ry="7" fill="#3FAA60"/>
+    <!-- Simple clouds -->
+    <ellipse cx="120" cy="65" rx="25" ry="11" fill="#FFFFFF" opacity="0.9"/>
+    <ellipse cx="142" cy="65" rx="18" ry="9" fill="#FFFFFF" opacity="0.9"/>
+    <ellipse cx="350" cy="90" rx="23" ry="10" fill="#FFFFFF" opacity="0.9"/>
+    <ellipse cx="370" cy="90" rx="16" ry="8" fill="#FFFFFF" opacity="0.9"/>
+</svg>

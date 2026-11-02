@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <!-- European central square -->
+
+  <rect x="0" y="0" width="640" height="200" fill="#A8B2BE"/>
+  <rect x="0" y="200" width="640" height="85" fill="#959FAD"/>
+  <rect x="0" y="255" width="640" height="43" fill="#7E8896"/>
+
+  <!-- ========== LEFT HOUSE ========== -->
+  <path d="M44 298 L182 298 L182 175 L164 146 L114 126 L62 146 L44 175 Z" fill="#C7B9A9"/>
+  <path d="M54 298 L173 298 L173 206 L114 146 L54 206 Z" fill="#B8A997"/>
+  <rect x="50" y="268" width="8" height="30" fill="#A89886"/>
+  <rect x="169" y="268" width="8" height="30" fill="#A89886"/>
+
+  <!-- Quoins -->
+  <rect x="44" y="178" width="10" height="120" fill="#BFB0A2"/>
+  <rect x="168" y="178" width="14" height="120" fill="#BFB0A2"/>
+
+  <!-- Belt courses -->
+  <rect x="54" y="206" width="119" height="5" fill="#A69684"/>
+  <rect x="54" y="242" width="119" height="4" fill="#A69684"/>
+  <rect x="54" y="276" width="119" height="4" fill="#9C8B79"/>
+
+  <!-- Chimney -->
+  <rect x="146" y="138" width="18" height="38" fill="#BCAE9E"/>
+
+  <!-- Windows + shutters -->
+  <!-- Row upper -->
+  <rect x="73" y="188" width="14" height="18" rx="1" ry="1" fill="#5C6776"/>
+  <rect x="68" y="188" width="5" height="18" fill="#9B6F5F"/>
+  <rect x="87" y="188" width="5" height="18" fill="#9B6F5F"/>
+  <rect x="112" y="188" width="14" height="18" rx="1" ry="1" fill="#5C6776"/>
+  <rect x="107" y="188" width="5" height="18" fill="#9B6F5F"/>
+  <rect x="126" y="188" width="5" height="18" fill="#9B6F5F"/>
+  <!-- Row middle -->
+  <rect x="73" y="222" width="14" height="18" rx="1" ry="1" fill="#596575"/>
+  <rect x="68" y="222" width="5" height="18" fill="#9B6F5F"/>
+  <rect x="87" y="222" width="5" height="18" fill="#9B6F5F"/>
+  <rect x="112" y="222" width="14" height="18" rx="1" ry="1" fill="#596575"/>
+  <rect x="107" y="222" width="5" height="18" fill="#9B6F5F"/>
+  <rect x="126" y="222" width="5" height="18" fill="#9B6F5F"/>
+  <!-- Row lower / shop -->
+  <rect x="70" y="255" width="18" height="22" rx="1" ry="1" fill="#4F5A69"/>
+  <rect x="64" y="255" width="5" height="22" fill="#9B6F5F"/>
+  <rect x="89" y="255" width="5" height="22" fill="#9B6F5F"/>
+  <rect x="105" y="255" width="52" height="22" rx="1" ry="1" fill="#5A6778"/>
+  <rect x="140" y="255" width="5" height="22" fill="#9B6F5F"/>
+
+  <!-- Door -->
+  <rect x="148" y="262" width="16" height="36" rx="2" ry="2" fill="#6B5948"/>
+  <ellipse cx="162" cy="280" rx="5" ry="5" fill="#CFD6E6"/>
+  <rect x="161" y="276" width="2" height="8" fill="#8B929E"/>
+
+  <!-- ========== RIGHT HOUSE (mirror composition) ========== -->
+  <path d="M458 298 L596 298 L596 175 L578 146 L528 126 L478 146 L458 175 Z" fill="#C7B9A9"/>
+  <path d="M466 298 L587 298 L587 206 L528 146 L466 206 Z" fill="#B8A997"/>
+  <rect x="464" y="268" width="8" height="30" fill="#A89886"/>
+  <rect x="583" y="268" width="8" height="30" fill="#A89886"/>
+
+  <rect x="582" y="178" width="14" height="120" fill="#BFB0A2"/>
+  <rect x="452" y="178" width="10" height="120" fill="#BFB0A2"/>
+
+  <rect x="468" y="206" width="118" height="5" fill="#A69684"/>
+  <rect x="468" y="242" width="118" height="4" fill="#A69684"/>
+  <rect x="468" y="276" width="118" height="4" fill="#9C8B79"/>
+
+  <rect x="478" y="138" width="18" height="38" fill="#BCAE9E"/>
+
+  <!-- Windows right -->
+  <rect x="485" y="188" width="14" height="18" rx="1" ry="1" fill="#5C6776"/>
+  <rect x="480" y="188" width="5" height="18" fill="#9B6F5F"/>
+  <rect x="499" y="188" width="5" height="18" fill="#9B6F5F"/>
+  <rect x="526" y="188" width="14" height="18" rx="1" ry="1" fill="#5C6776"/>
+  <rect x="521" y="188" width="5" height="18" fill="#9B6F5F"/>
+  <rect x="540" y="188" width="5" height="18" fill="#9B6F5F"/>
+  <rect x="485" y="222" width="14" height="18" rx="1" ry="1" fill="#596575"/>
+  <rect x="480" y="222" width="5" height="18" fill="#9B6F5F"/>
+  <rect x="499" y="222" width="5" height="18" fill="#9B6F5F"/>
+  <rect x="526" y="222" width="14" height="18" rx="1" ry="1" fill="#596575"/>
+  <rect x="521" y="222" width="5" height="18" fill="#9B6F5F"/>
+  <rect x="540" y="222" width="5" height="18" fill="#9B6F5F"/>
+  <rect x="524" y="255" width="18" height="22" rx="1" ry="1" fill="#4F5A69"/>
+  <rect x="518" y="255" width="5" height="22" fill="#9B6F5F"/>
+  <rect x="543" y="255" width="5" height="22" fill="#9B6F5F"/>
+  <rect x="470" y="255" width="52" height="22" rx="1" ry="1" fill="#5A6778"/>
+  <rect x="519" y="255" width="5" height="22" fill="#9B6F5F"/>
+
+  <rect x="476" y="262" width="16" height="36" rx="2" ry="2" fill="#6B5948"/>
+  <ellipse cx="489" cy="280" rx="5" ry="5" fill="#CFD6E6"/>
+  <rect x="488" y="276" width="2" height="8" fill="#8B929E"/>
+
+  <!-- ========== TOWN HALL ========== -->
+  <rect x="242" y="248" width="156" height="50" fill="#BDAC9A"/>
+  <rect x="258" y="184" width="124" height="64" fill="#B09E8B"/>
+
+  <!-- Pilasters -->
+  <rect x="252" y="248" width="10" height="50" fill="#A89582"/>
+  <rect x="378" y="248" width="10" height="50" fill="#A89582"/>
+
+  <polygon points="320,148 284,184 356,184" fill="#997E68"/>
+  <polygon points="320,118 294,146 346,146" fill="#806B58"/>
+  <rect x="272" y="202" width="22" height="28" rx="2" ry="2" fill="#556070"/>
+  <rect x="305" y="202" width="28" height="28" rx="2" ry="2" fill="#556070"/>
+  <rect x="346" y="202" width="22" height="28" rx="2" ry="2" fill="#556070"/>
+  <!-- Sills -->
+  <rect x="269" y="232" width="94" height="4" fill="#8E816F"/>
+
+  <circle cx="320" cy="162" r="17" fill="#8B939F"/>
+  <circle cx="320" cy="162" r="11" fill="#BDC4D4"/>
+  <rect x="318" y="156" width="4" height="13" fill="#788292"/>
+
+  <!-- Arch -->
+  <path d="M275 298 L366 298 L366 275 L356 275 L356 267 L346 267 L346 275 L297 275 L297 267 L287 267 L287 275 L276 275 L275 298 Z" fill="#76685A"/>
+  <ellipse cx="320" cy="288" rx="34" ry="22" fill="#5F564A"/>
+
+  <!-- balcony strip -->
+  <rect x="260" y="262" width="122" height="6" fill="#9A8875"/>
+
+  <!-- ========== Plaza + fountain (right) ========== -->
+  <rect x="0" y="298" width="640" height="114" fill="#959EAE"/>
+
+  <!-- Shadow pool -->
+  <ellipse cx="502" cy="388" rx="72" ry="14" fill="#7E8794" opacity="0.45"/>
+
+  <!-- Fountain -->
+  <ellipse cx="500" cy="368" rx="62" ry="15" fill="#A3ACBA"/>
+  <ellipse cx="500" cy="364" rx="44" ry="9" fill="#B9C4D4"/>
+  <rect x="488" y="318" width="24" height="48" rx="3" ry="3" fill="#B9C5D5"/>
+  <ellipse cx="500" cy="318" rx="20" ry="11" fill="#DDE4EE"/>
+  <rect x="494" y="278" width="12" height="40" fill="#DCE3EE"/>
+  <ellipse cx="500" cy="278" rx="8" ry="6" fill="#BBC6D8"/>
+
+  <!-- Cobbles -->
+  <rect x="0" y="412" width="640" height="68" fill="#8791A4"/>
+  <path d="M0 438 L640 438" stroke="#768090" stroke-width="2" opacity="0.55"/>
+</svg>

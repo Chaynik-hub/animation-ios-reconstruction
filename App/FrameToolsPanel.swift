@@ -10,10 +10,10 @@ final class FrameToolsPanel: UIView {
         let action: () -> Void
     }
     private var buttons: [String: UIButton] = [:]
-    init(commands: [Command]) {
+    init(commands: [Command], accent: UIColor = .original(0x84d8ff), caption: String? = nil, identifier: String = "FrameToolsPanel", icons: [String:String] = [:]) {
         super.init(frame: .zero)
-        accessibilityIdentifier = "FrameToolsPanel"
-        backgroundColor = .original(0x84d8ff)
+        accessibilityIdentifier = identifier
+        backgroundColor = accent
         let scroll = UIScrollView()
         scroll.backgroundColor = .original(0x212121)
         scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -33,10 +33,14 @@ final class FrameToolsPanel: UIView {
             stack.bottomAnchor.constraint(equalTo: scroll.contentLayoutGuide.bottomAnchor),
             stack.widthAnchor.constraint(equalTo: scroll.frameLayoutGuide.widthAnchor)
         ])
+        if let caption {
+            let label = UILabel(); label.text = caption; label.textColor = .white; label.backgroundColor = accent; label.textAlignment = .center; label.font = UIFont(name: "Roboto-Regular", size: 12)
+            stack.addArrangedSubview(label); label.heightAnchor.constraint(equalToConstant: 27).isActive = true
+        }
         for command in commands {
             let button = UIButton(type: .custom)
             var configuration = UIButton.Configuration.plain()
-            if let url = Bundle.main.resourceURL?.appendingPathComponent("Content/Icons/" + command.id + ".png"),
+            if let url = Bundle.main.resourceURL?.appendingPathComponent("Content/Icons/" + (icons[command.id] ?? command.id) + ".png"),
                let image = UIImage(contentsOfFile: url.path) {
                 configuration.image = image.resizedIcon(density: 2)
             }
@@ -48,7 +52,7 @@ final class FrameToolsPanel: UIView {
             configuration.baseForegroundColor = .original(0xdddddd)
             configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { value in
                 var attributes = value
-                attributes.font = UIFont(name: "Roboto-Regular", size: 12) ?? .systemFont(ofSize: 12)
+                attributes.font = UIFont(name: "Roboto-Regular", size: command.id.hasPrefix("asset-state-") ? 30 : 12) ?? .systemFont(ofSize: 12)
                 return attributes
             }
             button.configuration = configuration

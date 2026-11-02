@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <!-- Sky -->
+  <rect x="0" y="0" width="640" height="255" fill="#05060E"/>
+
+  <!-- Stars -->
+  <circle cx="45" cy="38" r="1" fill="#FFFFFF" opacity="0.95"/>
+  <circle cx="180" cy="55" r="0.8" fill="#E8F0FF" opacity="0.85"/>
+  <circle cx="310" cy="28" r="0.9" fill="#FFFFFF" opacity="0.75"/>
+  <circle cx="400" cy="95" r="0.7" fill="#FFFFFF" opacity="0.65"/>
+  <circle cx="580" cy="42" r="1.1" fill="#FFFFFF" opacity="0.9"/>
+  <circle cx="95" cy="130" r="0.6" fill="#FFFFFF" opacity="0.55"/>
+  <circle cx="220" cy="160" r="0.7" fill="#FFFFFF" opacity="0.5"/>
+
+  <!-- Earth (distant) -->
+  <circle cx="528" cy="72" fill="#1565C0" r="18"/>
+  <polygon points="514,66 522,60 532,62 536,72 528,78 518,76" fill="#43A047" opacity="0.9"/>
+
+  <!-- Horizon dust -->
+
+  <rect x="0" y="235" width="640" height="25" fill="#4A4A4E" opacity="0.45"/>
+
+  <!-- Regolith -->
+  <rect x="0" y="255" width="640" height="225" fill="#7A7A7E"/>
+  <rect x="0" y="255" width="640" height="28" fill="#8A8A8E" opacity="0.5"/>
+
+  <!-- Soft crater -->
+  <ellipse cx="120" cy="380" rx="55" ry="18" fill="#5E5E62" opacity="0.45"/>
+  <ellipse cx="120" cy="380" rx="35" ry="11" fill="#4A4A4E" opacity="0.5"/>
+
+  <!-- Long shadows (sun from upper right) -->
+  <polygon points="95,310 180,310 120,420 25,420" fill="#2A2A2E" opacity="0.35"/>
+  <polygon points="220,285 340,285 280,430 140,430" fill="#2C2C30" opacity="0.32"/>
+  <polygon points="440,295 580,295 520,450 300,450" fill="#242428" opacity="0.28"/>
+
+  <!-- Main habitat block -->
+  <rect x="85" y="240" width="195" height="75" fill="#A8ADB4"/>
+  <rect x="90" y="232" width="185" height="12" fill="#8E939A"/>
+  <rect x="95" y="248" width="42" height="22" fill="#1E2630" opacity="0.75"/>
+  <rect x="148" y="248" width="42" height="22" fill="#1E2630" opacity="0.75"/>
+  <rect x="201" y="248" width="42" height="22" fill="#1E2630" opacity="0.75"/>
+
+  <!-- Dome module -->
+  <ellipse cx="310" cy="255" rx="52" ry="28" fill="#B8BDC4"/>
+  <rect x="258" y="255" width="104" height="48" fill="#A8ADB4"/>
+  <rect x="275" y="265" width="28" height="18" fill="#2A3540" opacity="0.8"/>
+  <rect x="315" y="265" width="28" height="18" fill="#2A3540" opacity="0.8"/>
+
+  <!-- Secondary lab block -->
+  <rect x="385" y="268" width="155" height="58" fill="#9CA2AA"/>
+  <rect x="385" y="260" width="155" height="10" fill="#858B94"/>
+  <rect x="400" y="278" width="36" height="24" fill="#1A2228" opacity="0.75"/>
+  <rect x="448" y="278" width="36" height="24" fill="#1A2228" opacity="0.75"/>
+
+  <!-- Comm tower -->
+  <rect x="565" y="180" width="14" height="165" fill="#787E86"/>
+  <polygon points="572,180 592,195 558,195" fill="#A8ADB4"/>
+  <circle cx="572" cy="178" r="6" fill="#C8CCD0"/>
+
+  <!-- Solar wing (angled parallelogram as polygon) -->
+  <polygon points="455,248 530,252 525,268 448,262" fill="#1A3A5C"/>
+  <polygon points="458,252 520,255 517,264 452,260" fill="#2A5080" opacity="0.7"/>
+
+  <!-- Airlock / hatch detail -->
+  <rect x="128" y="302" width="28" height="13" fill="#6E747C"/>
+
+  <!-- Runway / guide lights -->
+  <circle cx="72" cy="415" r="3" fill="#FFE566"/>
+  <circle cx="132" cy="418" r="3" fill="#FFE566"/>
+  <circle cx="192" cy="421" r="3" fill="#FFE566"/>
+  <circle cx="252" cy="424" r="3" fill="#FFE566"/>
+  <circle cx="320" cy="426" r="3" fill="#FFE566"/>
+  <circle cx="388" cy="424" r="3" fill="#FFE566"/>
+  <circle cx="448" cy="421" r="3" fill="#FFE566"/>
+  <circle cx="508" cy="418" r="3" fill="#FFE566"/>
+  <circle cx="568" cy="415" r="3" fill="#FFE566"/>
+
+  <!-- Ground struts -->
+  <rect x="278" y="303" width="8" height="27" fill="#5A6068"/>
+  <rect x="340" y="303" width="8" height="27" fill="#5A6068"/>
+</svg>
