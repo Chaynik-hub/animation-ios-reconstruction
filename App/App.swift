@@ -88,7 +88,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     var unitToolsActive = false
     var unitClipboard: [SceneUnit] = []
     var toolPanel:UIView?
-    func dismissTools(){if let controller=backgroundController {controller.willMove(toParent:nil);controller.view.removeFromSuperview();controller.removeFromParent();backgroundController=nil};unitToolsActive=false;if let controller=catalogController {controller.willMove(toParent:nil);controller.view.removeFromSuperview();controller.removeFromParent();catalogController=nil};toolPanel?.removeFromSuperview();toolPanel=nil;shift.isHidden=false;highlightFrameTools(false);highlightCatalog(false);highlightUnitTools(false)}
+    func dismissTools(){if let controller=backgroundController {controller.dismiss(animated:false);backgroundController=nil};unitToolsActive=false;if let controller=catalogController {controller.willMove(toParent:nil);controller.view.removeFromSuperview();controller.removeFromParent();catalogController=nil};toolPanel?.removeFromSuperview();toolPanel=nil;shift.isHidden=false;highlightFrameTools(false);highlightCatalog(false);highlightUnitTools(false)}
     func choices(_ title:String,_ actions:[(String,()->Void)]){
         stop();dismissTools()
         let cover=UIView(frame:view.bounds);cover.autoresizingMask=[.flexibleWidth,.flexibleHeight]
@@ -196,27 +196,25 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     }
     @objc func tick(_ link:CADisplayLink){canvas.displayed=frameAt(link.timestamp-playbackStart);canvas.setNeedsDisplay()}
     func save(){let alert=UIAlertController(title:"Сохранить сцену",message:nil,preferredStyle:.alert);alert.addTextField{$0.text=self.titleOfScene};alert.addAction(UIAlertAction(title:"Сохранить",style:.default){[weak self] _ in guard let self else{return};self.titleOfScene=alert.textFields?.first?.text ?? "Animation";self.perform{_ = try self.workspace.save(name:self.titleOfScene)}});alert.addAction(UIAlertAction(title:"Отмена",style:.cancel));present(alert,animated:true)}
+    var importingBackgroundImage=false
     var importingUserATI=false
     func importUserATI(){importingUserATI=true;pickingAudio=false;let picker=UIDocumentPickerViewController(forOpeningContentTypes:[.data],asCopy:true);picker.delegate=self;present(picker,animated:true)}
-    func documentPickerWasCancelled(_ controller:UIDocumentPickerViewController){importingUserATI=false}
+    func documentPickerWasCancelled(_ controller:UIDocumentPickerViewController){importingUserATI=false;importingBackgroundImage=false}
     var pickingAudio=false
     func openFiles(){pickingAudio=false;let picker=UIDocumentPickerViewController(forOpeningContentTypes:[.data],asCopy:true);picker.delegate=self;present(picker,animated:true)}
     func savedScenes(){let files=(try? FileManager.default.contentsOfDirectory(at:workspace.directory,includingPropertiesForKeys:nil)) ?? [];choices("Мои сцены",files.filter{$0.lastPathComponent.hasSuffix(".animation.json")}.map{url in (url.deletingPathExtension().lastPathComponent,{[weak self] in self?.perform{try self?.workspace.load(url);self?.restoreAudio()}})})}
-    func documentPicker(_ controller:UIDocumentPickerViewController,didPickDocumentsAt urls:[URL]){guard let url=urls.first else{return};perform{if importingUserATI {importingUserATI=false;_ = try UserSpriteLibrary.importATI(url,directory:workspace.directory);workspace.restoreArtwork();catalogController?.updateAssets(workspace.catalog);workspace.notify()}else if pickingAudio {let scoped=url.startAccessingSecurityScopedResource();defer{if scoped{url.stopAccessingSecurityScopedResource()}};let target=workspace.directory.appendingPathComponent(UUID().uuidString+"."+url.pathExtension);try FileManager.default.copyItem(at:url,to:target);workspace.document.attributes["nativeAudio"]=target.lastPathComponent;audio=try AVAudioPlayer(contentsOf:target);audio?.prepareToPlay();workspace.notify()}else{try workspace.load(url);restoreAudio()}}}
+    func documentPicker(_ controller:UIDocumentPickerViewController,didPickDocumentsAt urls:[URL]){guard let url=urls.first else{return};perform{if importingBackgroundImage {importingBackgroundImage=false;try installBackgroundImage(url)}else if importingUserATI {importingUserATI=false;_ = try UserSpriteLibrary.importATI(url,directory:workspace.directory);workspace.restoreArtwork();catalogController?.updateAssets(workspace.catalog);workspace.notify()}else if pickingAudio {let scoped=url.startAccessingSecurityScopedResource();defer{if scoped{url.stopAccessingSecurityScopedResource()}};let target=workspace.directory.appendingPathComponent(UUID().uuidString+"."+url.pathExtension);try FileManager.default.copyItem(at:url,to:target);workspace.document.attributes["nativeAudio"]=target.lastPathComponent;audio=try AVAudioPlayer(contentsOf:target);audio?.prepareToPlay();workspace.notify()}else{try workspace.load(url);restoreAudio()}}}
     var audio:AVAudioPlayer?
     func restoreAudio(){audio=nil;if let name=workspace.document.attributes["nativeAudio"],!name.contains("/"),let player=try? AVAudioPlayer(contentsOf:workspace.directory.appendingPathComponent(name)){audio=player;audio?.prepareToPlay()}}
 
     func audioPicker(){pickingAudio=true;let picker=UIDocumentPickerViewController(forOpeningContentTypes:[.audio],asCopy:true);picker.delegate=self;present(picker,animated:true)}
+    func closeBackgroundChooser(_ completion:@escaping()->Void = {}) {let chooser=backgroundController;backgroundController=nil;chooser?.dismiss(animated:false,completion:completion)}
     func backgrounds() {
-        stop(); dismissTools()
-        let chooser = BackgroundChooserController(values: workspace.backgroundCatalog, select: { [weak self] value in
-            guard let self else { return }; self.workspace.checkpoint()
-            self.workspace.document.frames[self.workspace.index].attributes["nativeBackgroundID"] = value?.id
-            self.workspace.notify()
-        }, close: { [weak self] in self?.dismissTools() })
-        addChild(chooser); chooser.view.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(chooser.view)
-        NSLayoutConstraint.activate([chooser.view.leadingAnchor.constraint(equalTo: sidebarScroll.trailingAnchor), chooser.view.topAnchor.constraint(equalTo: view.topAnchor), chooser.view.bottomAnchor.constraint(equalTo: view.bottomAnchor), chooser.view.widthAnchor.constraint(equalToConstant: min(360, max(180, view.bounds.width - view.safeAreaInsets.left - view.safeAreaInsets.right - 140)))])
-        chooser.didMove(toParent: self); backgroundController = chooser; toolPanel = chooser.view; shift.isHidden = true
+        stop();dismissTools()
+        let chooser=BackgroundChooserController(values:workspace.backgroundCatalog,select:{[weak self] value in
+            guard let self else{return};self.workspace.checkpoint();self.workspace.document.frames[self.workspace.index].attributes["nativeBackgroundID"]=value?.id;self.workspace.document.frames[self.workspace.index].attributes.removeValue(forKey:"nativeBackgroundImage");self.workspace.document.frames[self.workspace.index].attributes.removeValue(forKey:"nativeBackgroundColor");self.workspace.notify()
+        },close:{[weak self] in self?.closeBackgroundChooser()},actions:[{[weak self] in self?.closeBackgroundChooser{[weak self] in self?.pickBackgroundColor()}},{[weak self] in self?.closeBackgroundChooser{[weak self] in self?.pickBackgroundImage()}},{[weak self] in self?.closeBackgroundChooser{[weak self] in self?.drawBackground()}}],resolve:workspace.artworkURL)
+        chooser.modalPresentationStyle = .overFullScreen;backgroundController=chooser;present(chooser,animated:false)
     }
     func properties(){let a=UIAlertController(title:"Сцена",message:"Ширина, высота и промежуточные кадры",preferredStyle:.alert);for value in [Int(workspace.document.width),Int(workspace.document.height),workspace.document.interframes]{a.addTextField{$0.text=String(value);$0.keyboardType = .numberPad}};a.addAction(UIAlertAction(title:"OK",style:.default){[weak self] _ in guard let self,let f=a.textFields,let w=Double(f[0].text ?? ""),let h=Double(f[1].text ?? ""),let n=Int(f[2].text ?? ""),w>0,h>0,w<=4096,h<=4096,n>=0,n<120 else{return};self.workspace.checkpoint();self.workspace.document.width=w;self.workspace.document.height=h;self.workspace.document.interframes=n;self.update()});a.addAction(UIAlertAction(title:"Отмена",style:.cancel));present(a,animated:true)}
     func exports(){choices("Экспорт",[("ATS-проект",{[weak self] in self?.perform{guard let self else{return};self.share(try self.workspace.saveATS())}}),("MP4 со звуком",{[weak self] in self?.exportVideo()}),("PNG текущего кадра",{[weak self] in self?.exportPNG()}),("GIF анимация",{[weak self] in self?.exportGIF()}),("Файл проекта JSON",{[weak self] in self?.perform{guard let self else{return};self.share(try self.workspace.save(name:self.titleOfScene))}})])}
