@@ -1,0 +1,219 @@
+{
+  "evidence_id": "ev_3d5c10c0e31f6e2302aaeae51aaebeb1d3e36dffabb0a0bc382dc4dd68de47e9",
+  "subject": {
+    "name": "com.zalivka.animation2_397.apk",
+    "digest": {
+      "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+    },
+    "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "jadx",
+    "name": "JADX headless",
+    "version": "0.7.1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "trace_android_references",
+  "parameters": {
+    "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "class_name": "ru.jecklandin.stickman.units.Scene",
+    "method_name": "addFrame",
+    "overload_index": 0
+  },
+  "raw_result": {
+    "server": {
+      "name": "rea-jadx-bridge",
+      "version": "7"
+    },
+    "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+    "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "loaded": {
+      "state": "LOADED",
+      "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-d12c274e0edbac0b757df90becd5253d\\target.apk",
+      "class_count": 47382,
+      "resource_count": 4573,
+      "threads": 1,
+      "resources": "full"
+    },
+    "calls": [
+      {
+        "operation": "rea_jvm_status",
+        "input": {},
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"engine_reported_version\":\"0.7.1\",\"available_processors\":8,\"java_version\":\"21.0.13\",\"max_heap_bytes\":4286578688,\"metadata_scope\":\"parsed_members\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_class_summary",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.units.Scene"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"inner_classes\":[\"ru.jecklandin.stickman.units.Scene.AutoTweenRange\",\"ru.jecklandin.stickman.units.Scene.BackgroundAutoTweenRange\",\"ru.jecklandin.stickman.units.Scene.CameraAutoTweenRange\"],\"methods\":[{\"dex_descriptor\":\"(Lcom/google/common/base/Optional;)Ljava/lang/Object;\",\"is_constructor\":false,\"name\":\"$r8$lambda$OmmTw65R0sjZrv8ybT8HDFIKw6I\",\"def_pos\":0,\"signature\":\"$r8$lambda$OmmTw65R0sjZrv8ybT8HDFIKw6I(com.google.common.base.Optional): java.lang.Object\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/CartoonStage;)V\",\"is_constructor\":true,\"name\":\"\\u003cinit\\u003e\",\"def_pos\":0,\"signature\":\"\\u003cinit\\u003e(ru.jecklandin.stickman.CartoonStage): void\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/Frame;\",\"is_constructor\":false,\"name\":\"addFrame\",\"def_pos\":0,\"signature\":\"addFrame(): ru.jecklandin.stickman.units.Frame\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;)V\",\"is_constructor\":false,\"name\":\"addFrame\",\"def_pos\":0,\"signature\":\"addFrame(ru.jecklandin.stickman.units.Frame): void\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/UnitAssets;\",\"is_constructor\":false,\"name\":\"assets\",\"def_pos\":0,\"signature\":\"assets(): ru.jecklandin.stickman.units.UnitAssets\"},{\"dex_descriptor\":\"(IILjava/lang/String;Lru/jecklandin/stickman/generator/interpolator/Easing$EASING;FFI)Lru/jecklandin/stickman/units/Scene$BackgroundAutoTweenRange;\",\"is_constructor\":false,\"name\":\"backgroundRangeForTest\",\"def_pos\":0,\"signature\":\"backgroundRangeForTest(int, int, java.lang.String, ru.jecklandin.stickman.generator.interpolator.Easing$EASING, float, float, int): ru.jecklandin.stickman.units.Scene$BackgroundAutoTweenRange\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Unit;)Ljava/lang/String;\",\"is_constructor\":false,\"name\":\"baseSummary\",\"def_pos\":0,\"signature\":\"baseSummary(ru.jecklandin.stickman.units.Unit): java.lang.String\"},{\"dex_descriptor\":\"(Ljava/lang/String;I)F\",\"is_constructor\":false,\"name\":\"boneRestLength\",\"def_pos\":0,\"signature\":\"boneRestLength(java.lang.String, int): float\"},{\"dex_descriptor\":\"(I)I\",\"is_constructor\":false,\"name\":\"bound\",\"def_pos\":0,\"signature\":\"bound(int): int\"},{\"dex_descriptor\":\"(IILru/jecklandin/stickman/generator/interpolator/Easing$EASING;FFI)Lru/jecklandin/stickman/units/Scene$CameraAutoTweenRange;\",\"is_constructor\":false,\"name\":\"cameraRangeForTest\",\"def_pos\":0,\"signature\":\"cameraRangeForTest(int, int, ru.jecklandin.stickman.generator.interpolator.Easing$EASING, float, float, int): ru.jecklandin.stickman.units.Scene$CameraAutoTweenRange\"},{\"dex_descriptor\":\"()Z\",\"is_constructor\":false,\"name\":\"canDeleteSelection\",\"def_pos\":0,\"signature\":\"canDeleteSelection(): boolean\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/generator/interpolator/Easing$EASING;F)F\",\"is_constructor\":false,\"name\":\"clampTweenFrequency\",\"def_pos\":0,\"signature\":\"clampTweenFrequency(ru.jecklandin.stickman.generator.interpolator.Easing$EASING, float): float\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/Frame;\",\"is_constructor\":false,\"name\":\"currentFrame\",\"def_pos\":0,\"signature\":\"currentFrame(): ru.jecklandin.stickman.units.Frame\"},{\"dex_descriptor\":\"(Ljava/lang/String;)Ljava/lang/String;\",\"is_constructor\":false,\"name\":\"extractOwnName\",\"def_pos\":0,\"signature\":\"extractOwnName(java.lang.String): java.lang.String\"},{\"dex_descriptor\":\"(Ljava/lang/String;)Ljava/lang/String;\",\"is_constructor\":false,\"name\":\"extractSceneName\",\"def_pos\":0,\"signature\":\"extractSceneName(java.lang.String): java.lang.String\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/Frame;\",\"is_constructor\":false,\"name\":\"ffToEnd\",\"def_pos\":0,\"signature\":\"ffToEnd(): ru.jecklandin.stickman.units.Frame\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/Frame;\",\"is_constructor\":false,\"name\":\"ffToStart\",\"def_pos\":0,\"signature\":\"ffToStart(): ru.jecklandin.stickman.units.Frame\"},{\"dex_descriptor\":\"(I)Lcom/google/common/base/Optional;\",\"is_constructor\":false,\"name\":\"findFrameById\",\"def_pos\":0,\"signature\":\"findFrameById(int): com.google.common.base.Optional\\u003cru.jecklandin.stickman.units.Frame\\u003e\"},{\"dex_descriptor\":\"(Lcom/google/common/base/Predicate;)Ljava/util/Set;\",\"is_constructor\":false,\"name\":\"findUnits\",\"def_pos\":0,\"signature\":\"findUnits(com.google.common.base.Predicate\\u003cru.jecklandin.stickman.units.Unit\\u003e): java.util.Set\\u003cru.jecklandin.stickman.units.Unit\\u003e\"},{\"dex_descriptor\":\"()I\",\"is_constructor\":false,\"name\":\"generateFrameId\",\"def_pos\":0,\"signature\":\"generateFrameId(): int\"},{\"dex_descriptor\":\"()I\",\"is_constructor\":false,\"name\":\"getCurrentIndex\",\"def_pos\":0,\"signature\":\"getCurrentIndex(): int\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UnitAssets$EdgeKey;I)Lru/jecklandin/stickman/units/UnitAssets$EdgeAsset;\",\"is_constructor\":false,\"name\":\"getDrawable\",\"def_pos\":0,\"signature\":\"getDrawable(ru.jecklandin.stickman.units.UnitAssets$EdgeKey, int): ru.jecklandin.stickman.units.UnitAssets$EdgeAsset\"},{\"dex_descriptor\":\"(Ljava/lang/String;IIIZ)I\",\"is_constructor\":false,\"name\":\"getEdgeWeight\",\"def_pos\":0,\"signature\":\"getEdgeWeight(java.lang.String, int, int, int, boolean): int\"},{\"dex_descriptor\":\"(I)Lru/jecklandin/stickman/units/Frame;\",\"is_constructor\":false,\"name\":\"getFrameById\",\"def_pos\":0,\"signature\":\"getFrameById(int): ru.jecklandin.stickman.units.Frame\"},{\"dex_descriptor\":\"(I)Lru/jecklandin/stickman/units/Frame;\",\"is_constructor\":false,\"name\":\"getFrameByIndex\",\"def_pos\":0,\"signature\":\"getFrameByIndex(int): ru.jecklandin.stickman.units.Frame\"},{\"dex_descriptor\":\"()Ljava/util/List;\",\"is_constructor\":false,\"name\":\"getFrames\",\"def_pos\":0,\"signature\":\"getFrames(): java.util.List\\u003cru.jecklandin.stickman.units.Frame\\u003e\"},{\"dex_descriptor\":\"()I\",\"is_constructor\":false,\"name\":\"getFramesNumber\",\"def_pos\":0,\"signature\":\"getFramesNumber(): int\"},{\"dex_descriptor\":\"(II)Ljava/util/List;\",\"is_constructor\":false,\"name\":\"getFramesRange\",\"def_pos\":0,\"signature\":\"getFramesRange(int, int): java.util.List\\u003cru.jecklandin.stickman.units.Frame\\u003e\"},{\"dex_descriptor\":\"(I)I\",\"is_constructor\":false,\"name\":\"getIndexOf\",\"def_pos\":0,\"signature\":\"getIndexOf(int): int\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;)I\",\"is_constructor\":false,\"name\":\"getIndexOf\",\"def_pos\":0,\"signature\":\"getIndexOf(ru.jecklandin.stickman.units.Frame): int\"},{\"dex_descriptor\":\"(I)F\",\"is_constructor\":false,\"name\":\"getSpeedMod\",\"def_pos\":0,\"signature\":\"getSpeedMod(int): float\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/SceneUndoManager;\",\"is_constructor\":false,\"name\":\"getUndoManager\",\"def_pos\":0,\"signature\":\"getUndoManager(): ru.jecklandin.stickman.units.SceneUndoManager\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/UnitLatch;\",\"is_constructor\":false,\"name\":\"getUnitLatch\",\"def_pos\":0,\"signature\":\"getUnitLatch(): ru.jecklandin.stickman.units.UnitLatch\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;I)V\",\"is_constructor\":false,\"name\":\"insertFrame\",\"def_pos\":0,\"signature\":\"insertFrame(ru.jecklandin.stickman.units.Frame, int): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"instantiateLinks\",\"def_pos\":0,\"signature\":\"instantiateLinks(): void\"},{\"dex_descriptor\":\"()Z\",\"is_constructor\":false,\"name\":\"isEmpty\",\"def_pos\":0,\"signature\":\"isEmpty(): boolean\"},{\"dex_descriptor\":\"()Z\",\"is_constructor\":false,\"name\":\"isEnd\",\"def_pos\":0,\"signature\":\"isEnd(): boolean\"},{\"dex_descriptor\":\"(Ljava/lang/String;)Z\",\"is_constructor\":false,\"name\":\"isItemCommon\",\"def_pos\":0,\"signature\":\"isItemCommon(java.lang.String): boolean\"},{\"dex_descriptor\":\"(Ljava/lang/String;)Z\",\"is_constructor\":false,\"name\":\"isItemCustom\",\"def_pos\":0,\"signature\":\"isItemCustom(java.lang.String): boolean\"},{\"dex_descriptor\":\"(Ljava/lang/String;)Z\",\"is_constructor\":false,\"name\":\"isItemFromExternalPack\",\"def_pos\":0,\"signature\":\"isItemFromExternalPack(java.lang.String): boolean\"},{\"dex_descriptor\":\"(Ljava/lang/String;)Z\",\"is_constructor\":false,\"name\":\"isItemUsed\",\"def_pos\":0,\"signature\":\"isItemUsed(java.lang.String): boolean\"},{\"dex_descriptor\":\"()Z\",\"is_constructor\":false,\"name\":\"isStart\",\"def_pos\":0,\"signature\":\"isStart(): boolean\"},{\"dex_descriptor\":\"(ILru/jecklandin/stickman/units/Frame;)Z\",\"is_constructor\":false,\"name\":\"lambda$findFrameById$1\",\"def_pos\":0,\"signature\":\"lambda$findFrameById$1(int, ru.jecklandin.stickman.units.Frame): boolean\"},{\"dex_descriptor\":\"(ILru/jecklandin/stickman/units/Frame;)Z\",\"is_constructor\":false,\"name\":\"lambda$getFrameById$2\",\"def_pos\":0,\"signature\":\"lambda$getFrameById$2(int, ru.jecklandin.stickman.units.Frame): boolean\"},{\"dex_descriptor\":\"(Ljava/lang/String;Lru/jecklandin/stickman/units/Frame;)Z\",\"is_constructor\":false,\"name\":\"lambda$isItemUsed$3\",\"def_pos\":0,\"signature\":\"lambda$isItemUsed$3(java.lang.String, ru.jecklandin.stickman.units.Frame): boolean\"},{\"dex_descriptor\":\"(Ljava/lang/Integer;)Z\",\"is_constructor\":false,\"name\":\"lambda$removeFrames$0\",\"def_pos\":0,\"signature\":\"lambda$removeFrames$0(java.lang.Integer): boolean\"},{\"dex_descriptor\":\"()I\",\"is_constructor\":false,\"name\":\"lastIndex\",\"def_pos\":0,\"signature\":\"lastIndex(): int\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;Lru/jecklandin/stickman/units/Frame;Lru/jecklandin/stickman/units/Frame;)V\",\"is_constructor\":false,\"name\":\"logAddFrameInterpolation\",\"def_pos\":0,\"signature\":\"logAddFrameInterpolation(ru.jecklandin.stickman.units.Frame, ru.jecklandin.stickman.units.Frame, ru.jecklandin.stickman.units.Frame): void\"},{\"dex_descriptor\":\"(Ljava/lang/Object;)Z\",\"is_constructor\":false,\"name\":\"m14574$r8$lambda$hsOW14NnSOMgGTSMafbQ6_uWU\",\"def_pos\":0,\"signature\":\"m14574$r8$lambda$hsOW14NnSOMgGTSMafbQ6_uWU(java.lang.Object): boolean\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/generator/interpolator/Easing$EASING;F)F\",\"is_constructor\":false,\"name\":\"m14575$$Nest$smclampTweenFrequency\",\"def_pos\":0,\"signature\":\"m14575$$Nest$smclampTweenFrequency(ru.jecklandin.stickman.generator.interpolator.Easing$EASING, float): float\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"onLoaded\",\"def_pos\":0,\"signature\":\"onLoaded(): void\"},{\"dex_descriptor\":\"(Ljava/util/List;)Ljava/util/List;\",\"is_constructor\":false,\"name\":\"pasteFrames\",\"def_pos\":0,\"signature\":\"pasteFrames(java.util.List\\u003cru.jecklandin.stickman.units.Frame\\u003e): java.util.List\\u003cru.jecklandin.stickman.units.Frame\\u003e\"},{\"dex_descriptor\":\"(Ljava/util/Collection;IZ)Ljava/util/List;\",\"is_constructor\":false,\"name\":\"pasteFramesAtIndex\",\"def_pos\":0,\"signature\":\"pasteFramesAtIndex(java.util.Collection\\u003cru.jecklandin.stickman.units.Frame\\u003e, int, boolean): java.util.List\\u003cru.jecklandin.stickman.units.Frame\\u003e\"},{\"dex_descriptor\":\"(J)J\",\"is_constructor\":false,\"name\":\"playtimeInMs\",\"def_pos\":0,\"signature\":\"playtimeInMs(long): long\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"removeCurrentFrame\",\"def_pos\":0,\"signature\":\"removeCurrentFrame(): void\"},{\"dex_descriptor\":\"(Ljava/util/List;)V\",\"is_constructor\":false,\"name\":\"removeFrames\",\"def_pos\":0,\"signature\":\"removeFrames(java.util.List\\u003cru.jecklandin.stickman.units.Frame\\u003e): void\"},{\"dex_descriptor\":\"(Ljava/util/Collection;)V\",\"is_constructor\":false,\"name\":\"removeFramesByIds\",\"def_pos\":0,\"signature\":\"removeFramesByIds(java.util.Collection\\u003cjava.lang.Integer\\u003e): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"resetBackgroundMoves\",\"def_pos\":0,\"signature\":\"resetBackgroundMoves(): void\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/FramesSelectionRange;\",\"is_constructor\":false,\"name\":\"selectedRange\",\"def_pos\":0,\"signature\":\"selectedRange(): ru.jecklandin.stickman.units.FramesSelectionRange\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Frame;)V\",\"is_constructor\":false,\"name\":\"setCurrentFrame\",\"def_pos\":0,\"signature\":\"setCurrentFrame(ru.jecklandin.stickman.units.Frame): void\"},{\"dex_descriptor\":\"(I)V\",\"is_constructor\":false,\"name\":\"setCurrentIndex\",\"def_pos\":0,\"signature\":\"setCurrentIndex(int): void\"},{\"dex_descriptor\":\"(I)V\",\"is_constructor\":false,\"name\":\"setFrame\",\"def_pos\":0,\"signature\":\"setFrame(int): void\"},{\"dex_descriptor\":\"(Ljava/util/List;)V\",\"is_constructor\":false,\"name\":\"setFrames\",\"def_pos\":0,\"signature\":\"setFrames(java.util.List\\u003cru.jecklandin.stickman.units.Frame\\u003e): void\"},{\"dex_descriptor\":\"()Z\",\"is_constructor\":false,\"name\":\"showNext\",\"def_pos\":0,\"signature\":\"showNext(): boolean\"},{\"dex_descriptor\":\"()Z\",\"is_constructor\":false,\"name\":\"showPrevious\",\"def_pos\":0,\"signature\":\"showPrevious(): boolean\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/TweenManager;\",\"is_constructor\":false,\"name\":\"tweens\",\"def_pos\":0,\"signature\":\"tweens(): ru.jecklandin.stickman.units.TweenManager\"},{\"dex_descriptor\":\"()Lru/jecklandin/stickman/units/speed/SpeedModifier;\",\"is_constructor\":false,\"name\":\"updateSpeedPoints\",\"def_pos\":0,\"signature\":\"updateSpeedPoints(): ru.jecklandin.stickman.units.speed.SpeedModifier\"}],\"fields\":[{\"name\":\"AUTO_TWEEN_TAG\",\"def_pos\":0,\"type\":\"java.lang.String\"},{\"name\":\"BACKGROUND_TWEEN_OWNER_TYPE\",\"def_pos\":0,\"type\":\"java.lang.String\"},{\"name\":\"CAMERA_TWEEN_OWNER_TYPE\",\"def_pos\":0,\"type\":\"java.lang.String\"},{\"name\":\"INVALID_FRAME_ID\",\"def_pos\":0,\"type\":\"int\"},{\"name\":\"UNIT_TWEEN_OWNER_TYPE\",\"def_pos\":0,\"type\":\"java.lang.String\"},{\"name\":\"mAssetsOp\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.assets.IAssetsOperator\"},{\"name\":\"mChunks\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.chunks.ChunksStructure\"},{\"name\":\"mConfig\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.scene.SceneConfig\"},{\"name\":\"mCurrentFrame\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.Frame\"},{\"name\":\"mFrames\",\"def_pos\":0,\"type\":\"java.util.List\\u003cru.jecklandin.stickman.units.Frame\\u003e\"},{\"name\":\"mFramesSelection\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.FramesSelectionRange\"},{\"name\":\"mMasks\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.Masks\"},{\"name\":\"mSize\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.SceneSize\"},{\"name\":\"mSpeedModifier\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.speed.SpeedModifier\"},{\"name\":\"mSpeedMods\",\"def_pos\":0,\"type\":\"float[]\"},{\"name\":\"mStage\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.CartoonStage\"},{\"name\":\"mTweens\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.TweenManager\"},{\"name\":\"mUnitAnimations\",\"def_pos\":0,\"type\":\"java.util.HashMap\\u003cjava.lang.String, ru.jecklandin.stickman.units.FBFAnimation\\u003e\"},{\"name\":\"mUnitSelection\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.units.UnitLatch\"}],\"raw_name\":\"ru.jecklandin.stickman.units.Scene\",\"method_count\":67,\"full_name\":\"ru.jecklandin.stickman.units.Scene\",\"field_count\":19,\"name\":\"Scene\",\"inner_class_count\":3}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_xrefs_to_method",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.units.Scene",
+          "method_name": "addFrame",
+          "overload_index": 0,
+          "limit": 2147483647,
+          "resolve_line": false
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"count\":5,\"items\":[{\"kind\":\"method\",\"name\":\"makeOneFrameStage\",\"full_name\":\"ru.jecklandin.stickman.CartoonStage.makeOneFrameStage\",\"containing_class\":\"ru.jecklandin.stickman.CartoonStage\",\"top_class\":\"ru.jecklandin.stickman.CartoonStage\",\"def_pos\":0,\"direct_invokes\":[{\"dex_code_unit_offset\":7,\"dex_method_index\":59703,\"source_raw_method_id\":\"ru.jecklandin.stickman.CartoonStage.makeOneFrameStage()Lru/jecklandin/stickman/CartoonStage;\",\"dex_entry\":\"classes3.dex\",\"opcode\":\"INVOKE_VIRTUAL\"}],\"direct_invokes_exhaustive\":true},{\"kind\":\"method\",\"name\":\"lambda$setupFramesBar$6\",\"full_name\":\"ru.jecklandin.stickman.features.background.BgAnimatorActivity2.lambda$setupFramesBar$6\",\"containing_class\":\"ru.jecklandin.stickman.features.background.BgAnimatorActivity2\",\"top_class\":\"ru.jecklandin.stickman.features.background.BgAnimatorActivity2\",\"def_pos\":0,\"direct_invokes\":[{\"dex_code_unit_offset\":43,\"dex_method_index\":11171,\"source_raw_method_id\":\"ru.jecklandin.stickman.features.background.BgAnimatorActivity2.lambda$setupFramesBar$6()V\",\"dex_entry\":\"classes4.dex\",\"opcode\":\"INVOKE_VIRTUAL\"}],\"direct_invokes_exhaustive\":true},{\"kind\":\"method\",\"name\":\"lambda$setupFramesBar$7\",\"full_name\":\"ru.jecklandin.stickman.features.camera.CameraAnimatorActivity.lambda$setupFramesBar$7\",\"containing_class\":\"ru.jecklandin.stickman.features.camera.CameraAnimatorActivity\",\"top_class\":\"ru.jecklandin.stickman.features.camera.CameraAnimatorActivity\",\"def_pos\":0,\"direct_invokes\":[{\"dex_code_unit_offset\":43,\"dex_method_index\":11171,\"source_raw_method_id\":\"ru.jecklandin.stickman.features.camera.CameraAnimatorActivity.lambda$setupFramesBar$7()V\",\"dex_entry\":\"classes4.dex\",\"opcode\":\"INVOKE_VIRTUAL\"}],\"direct_invokes_exhaustive\":true},{\"kind\":\"method\",\"name\":\"lambda$addFrame$20\",\"full_name\":\"ru.jecklandin.stickman.features.editor.MainEditor.lambda$addFrame$20\",\"containing_class\":\"ru.jecklandin.stickman.features.editor.MainEditor\",\"top_class\":\"ru.jecklandin.stickman.features.editor.MainEditor\",\"def_pos\":0,\"direct_invokes\":[{\"dex_code_unit_offset\":12,\"dex_method_index\":11171,\"source_raw_method_id\":\"ru.jecklandin.stickman.features.editor.MainEditor.lambda$addFrame$20()Lru/jecklandin/stickman/units/Frame;\",\"dex_entry\":\"classes4.dex\",\"opcode\":\"INVOKE_VIRTUAL\"}],\"direct_invokes_exhaustive\":true},{\"kind\":\"method\",\"name\":\"onNextFramePressed\",\"full_name\":\"ru.jecklandin.stickman.features.editor.MainEditor.onNextFramePressed\",\"containing_class\":\"ru.jecklandin.stickman.features.editor.MainEditor\",\"top_class\":\"ru.jecklandin.stickman.features.editor.MainEditor\",\"def_pos\":0,\"direct_invokes\":[{\"dex_code_unit_offset\":46,\"dex_method_index\":11171,\"source_raw_method_id\":\"ru.jecklandin.stickman.features.editor.MainEditor.onNextFramePressed()V\",\"dex_entry\":\"classes4.dex\",\"opcode\":\"INVOKE_VIRTUAL\"}],\"direct_invokes_exhaustive\":true}],\"total\":5,\"resolve_line\":false,\"target\":\"ru.jecklandin.stickman.units.Scene.addFrame\",\"overload_index\":0,\"reported_signature\":\"addFrame(): ru.jecklandin.stickman.units.Frame\"}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    ]
+  },
+  "normalized_result": {
+    "engine": {
+      "name": "jadx-headless-mcp",
+      "version": "0.7.1",
+      "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+      "worker_count": 1,
+      "heap_limit_mib": 4088
+    },
+    "class_name": "ru.jecklandin.stickman.units.Scene",
+    "method_name": "addFrame",
+    "overload_index": 0,
+    "reported_signature": "addFrame(): ru.jecklandin.stickman.units.Frame",
+    "dex_descriptor": "()Lru/jecklandin/stickman/units/Frame;",
+    "total": 5,
+    "references": [
+      {
+        "kind": "method",
+        "name": "makeOneFrameStage",
+        "reported_full_name": "ru.jecklandin.stickman.CartoonStage.makeOneFrameStage",
+        "containing_class": "ru.jecklandin.stickman.CartoonStage",
+        "top_class": "ru.jecklandin.stickman.CartoonStage",
+        "source_line": null,
+        "dex_offset": null,
+        "direct_invokes_exhaustive": true,
+        "direct_invokes": [
+          {
+            "dex_entry": "classes3.dex",
+            "source_raw_method_id": "ru.jecklandin.stickman.CartoonStage.makeOneFrameStage()Lru/jecklandin/stickman/CartoonStage;",
+            "dex_code_unit_offset": 7,
+            "dex_method_index": 59703,
+            "opcode": "INVOKE_VIRTUAL"
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "name": "lambda$setupFramesBar$6",
+        "reported_full_name": "ru.jecklandin.stickman.features.background.BgAnimatorActivity2.lambda$setupFramesBar$6",
+        "containing_class": "ru.jecklandin.stickman.features.background.BgAnimatorActivity2",
+        "top_class": "ru.jecklandin.stickman.features.background.BgAnimatorActivity2",
+        "source_line": null,
+        "dex_offset": null,
+        "direct_invokes_exhaustive": true,
+        "direct_invokes": [
+          {
+            "dex_entry": "classes4.dex",
+            "source_raw_method_id": "ru.jecklandin.stickman.features.background.BgAnimatorActivity2.lambda$setupFramesBar$6()V",
+            "dex_code_unit_offset": 43,
+            "dex_method_index": 11171,
+            "opcode": "INVOKE_VIRTUAL"
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "name": "lambda$setupFramesBar$7",
+        "reported_full_name": "ru.jecklandin.stickman.features.camera.CameraAnimatorActivity.lambda$setupFramesBar$7",
+        "containing_class": "ru.jecklandin.stickman.features.camera.CameraAnimatorActivity",
+        "top_class": "ru.jecklandin.stickman.features.camera.CameraAnimatorActivity",
+        "source_line": null,
+        "dex_offset": null,
+        "direct_invokes_exhaustive": true,
+        "direct_invokes": [
+          {
+            "dex_entry": "classes4.dex",
+            "source_raw_method_id": "ru.jecklandin.stickman.features.camera.CameraAnimatorActivity.lambda$setupFramesBar$7()V",
+            "dex_code_unit_offset": 43,
+            "dex_method_index": 11171,
+            "opcode": "INVOKE_VIRTUAL"
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "name": "lambda$addFrame$20",
+        "reported_full_name": "ru.jecklandin.stickman.features.editor.MainEditor.lambda$addFrame$20",
+        "containing_class": "ru.jecklandin.stickman.features.editor.MainEditor",
+        "top_class": "ru.jecklandin.stickman.features.editor.MainEditor",
+        "source_line": null,
+        "dex_offset": null,
+        "direct_invokes_exhaustive": true,
+        "direct_invokes": [
+          {
+            "dex_entry": "classes4.dex",
+            "source_raw_method_id": "ru.jecklandin.stickman.features.editor.MainEditor.lambda$addFrame$20()Lru/jecklandin/stickman/units/Frame;",
+            "dex_code_unit_offset": 12,
+            "dex_method_index": 11171,
+            "opcode": "INVOKE_VIRTUAL"
+          }
+        ]
+      },
+      {
+        "kind": "method",
+        "name": "onNextFramePressed",
+        "reported_full_name": "ru.jecklandin.stickman.features.editor.MainEditor.onNextFramePressed",
+        "containing_class": "ru.jecklandin.stickman.features.editor.MainEditor",
+        "top_class": "ru.jecklandin.stickman.features.editor.MainEditor",
+        "source_line": null,
+        "dex_offset": null,
+        "direct_invokes_exhaustive": true,
+        "direct_invokes": [
+          {
+            "dex_entry": "classes4.dex",
+            "source_raw_method_id": "ru.jecklandin.stickman.features.editor.MainEditor.onNextFramePressed()V",
+            "dex_code_unit_offset": 46,
+            "dex_method_index": 11171,
+            "opcode": "INVOKE_VIRTUAL"
+          }
+        ]
+      }
+    ],
+    "coverage": "complete",
+    "reference_unit": "using_node"
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

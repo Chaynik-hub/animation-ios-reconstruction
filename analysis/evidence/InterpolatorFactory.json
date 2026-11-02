@@ -1,0 +1,147 @@
+{
+  "evidence_id": "ev_c3eab958819b4561e212799093dbeccf2e8ed13f917dd1a3884a7767696facdb",
+  "subject": {
+    "name": "com.zalivka.animation2_397.apk",
+    "digest": {
+      "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+    },
+    "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "jadx",
+    "name": "JADX headless",
+    "version": "0.7.1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_android_method",
+  "parameters": {
+    "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "class_name": "ru.jecklandin.stickman.generator.interpolator.InterpolatorFactory",
+    "method_name": "forInterpolation"
+  },
+  "raw_result": {
+    "server": {
+      "name": "rea-jadx-bridge",
+      "version": "7"
+    },
+    "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+    "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "loaded": {
+      "state": "LOADED",
+      "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-6083ef62fce511b33dba287a4ca2caa6\\target.apk",
+      "class_count": 47382,
+      "resource_count": 4573,
+      "threads": 1,
+      "resources": "full"
+    },
+    "calls": [
+      {
+        "operation": "rea_jvm_status",
+        "input": {},
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"max_heap_bytes\":4286578688,\"metadata_scope\":\"parsed_members\",\"engine_reported_version\":\"0.7.1\",\"available_processors\":8,\"java_version\":\"21.0.13\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "load_apk",
+        "input": {
+          "path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-6083ef62fce511b33dba287a4ca2caa6\\target.apk",
+          "threads": 1,
+          "resources": "full"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"state\":\"LOADED\",\"apk_path\":\"C:\\\\Users\\\\mamir\\\\AppData\\\\Local\\\\Temp\\\\rea-android-6083ef62fce511b33dba287a4ca2caa6\\\\target.apk\",\"class_count\":47382,\"raw_class_count\":47382,\"resource_count\":4573,\"load_duration_ms\":33623,\"decompile_timeout_ms\":90000,\"threads\":1,\"code_cache_size\":64,\"resources\":\"full\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_class_summary",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.generator.interpolator.InterpolatorFactory"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"full_name\":\"ru.jecklandin.stickman.generator.interpolator.InterpolatorFactory\",\"field_count\":0,\"name\":\"InterpolatorFactory\",\"inner_class_count\":0,\"inner_classes\":[],\"methods\":[{\"signature\":\"\\u003cinit\\u003e(): void\",\"dex_descriptor\":\"()V\",\"is_constructor\":true,\"name\":\"\\u003cinit\\u003e\",\"def_pos\":0},{\"signature\":\"forInterpolation(): ru.jecklandin.stickman.generator.interpolator.IInterpolator\",\"dex_descriptor\":\"()Lru/jecklandin/stickman/generator/interpolator/IInterpolator;\",\"is_constructor\":false,\"name\":\"forInterpolation\",\"def_pos\":0},{\"signature\":\"inbetweenStates(ru.jecklandin.stickman.units.UnitState, ru.jecklandin.stickman.units.UnitState, int, int, ru.jecklandin.stickman.generator.interpolator.Easing$EASING, float): ru.jecklandin.stickman.units.UnitState\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UnitState;Lru/jecklandin/stickman/units/UnitState;IILru/jecklandin/stickman/generator/interpolator/Easing$EASING;F)Lru/jecklandin/stickman/units/UnitState;\",\"is_constructor\":false,\"name\":\"inbetweenStates\",\"def_pos\":0},{\"signature\":\"inbetweenStatesAt(ru.jecklandin.stickman.units.UnitState, ru.jecklandin.stickman.units.UnitState, float): ru.jecklandin.stickman.units.UnitState\",\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/UnitState;Lru/jecklandin/stickman/units/UnitState;F)Lru/jecklandin/stickman/units/UnitState;\",\"is_constructor\":false,\"name\":\"inbetweenStatesAt\",\"def_pos\":0}],\"fields\":[],\"raw_name\":\"ru.jecklandin.stickman.generator.interpolator.InterpolatorFactory\",\"method_count\":4}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_method_body",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.generator.interpolator.InterpolatorFactory",
+          "method_name": "forInterpolation",
+          "overload_index": 0,
+          "smali_fallback": true
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"markers\":[],\"body\":\"    public static IInterpolator forInterpolation() {\\r\\n        return new NlerpInterpolator();\\r\\n    }\",\"mode\":\"java\",\"class_name\":\"ru.jecklandin.stickman.generator.interpolator.InterpolatorFactory\",\"dex_descriptor\":\"()Lru/jecklandin/stickman/generator/interpolator/IInterpolator;\",\"overload_count\":1,\"method_name\":\"forInterpolation\",\"overload_index\":0,\"full_name\":\"ru.jecklandin.stickman.generator.interpolator.InterpolatorFactory.forInterpolation\",\"fell_back\":false}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    ]
+  },
+  "normalized_result": {
+    "engine": {
+      "name": "jadx-headless-mcp",
+      "version": "0.7.1",
+      "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+      "worker_count": 1,
+      "heap_limit_mib": 4088
+    },
+    "class_name": "ru.jecklandin.stickman.generator.interpolator.InterpolatorFactory",
+    "method": {
+      "name": "forInterpolation",
+      "reported_signature": "forInterpolation(): ru.jecklandin.stickman.generator.interpolator.IInterpolator",
+      "overload_index": 0,
+      "is_constructor": false,
+      "dex_descriptor": "()Lru/jecklandin/stickman/generator/interpolator/IInterpolator;"
+    },
+    "overload_count": 1,
+    "representation": "java",
+    "body_status": "available",
+    "fell_back": false,
+    "markers": [],
+    "source": {
+      "status": "complete",
+      "text": "    public static IInterpolator forInterpolation() {\r\n        return new NlerpInterpolator();\r\n    }",
+      "reported_total_bytes": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

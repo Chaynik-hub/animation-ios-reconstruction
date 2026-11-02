@@ -1,0 +1,429 @@
+{
+  "evidence_id": "ev_19bf27947a880890c886fa9b058542965d712c18432fe39476ec1c0adbdb0700",
+  "subject": {
+    "name": "com.zalivka.animation2_397.apk",
+    "digest": {
+      "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+    },
+    "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "jadx",
+    "name": "JADX headless",
+    "version": "0.7.1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_android_class",
+  "parameters": {
+    "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "class_name": "ru.jecklandin.stickman.features.landing.LandingActivity"
+  },
+  "raw_result": {
+    "server": {
+      "name": "rea-jadx-bridge",
+      "version": "7"
+    },
+    "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+    "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "loaded": {
+      "state": "LOADED",
+      "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-d12c274e0edbac0b757df90becd5253d\\target.apk",
+      "class_count": 47382,
+      "resource_count": 4573,
+      "threads": 1,
+      "resources": "full"
+    },
+    "calls": [
+      {
+        "operation": "rea_jvm_status",
+        "input": {},
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"engine_reported_version\":\"0.7.1\",\"available_processors\":8,\"java_version\":\"21.0.13\",\"max_heap_bytes\":4286578688,\"metadata_scope\":\"parsed_members\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_class_summary",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.features.landing.LandingActivity",
+          "dex_static_values": true
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"inner_classes\":[\"ru.jecklandin.stickman.features.landing.LandingActivity.AnonymousClass1\",\"ru.jecklandin.stickman.features.landing.LandingActivity.AnonymousClass2\",\"ru.jecklandin.stickman.features.landing.LandingActivity.AnonymousClass3\"],\"methods\":[{\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/landing/LandingActivity;Landroid/graphics/Bitmap;)V\",\"is_constructor\":false,\"name\":\"$r8$lambda$BzOMdYYyKGBGYlN7tmdYby_IdAg\",\"def_pos\":0,\"signature\":\"$r8$lambda$BzOMdYYyKGBGYlN7tmdYby_IdAg(ru.jecklandin.stickman.features.landing.LandingActivity, android.graphics.Bitmap): void\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/landing/LandingActivity;Landroid/graphics/Bitmap;)V\",\"is_constructor\":false,\"name\":\"$r8$lambda$pnZckWe_5DWvc_1EBUiIyvcpfEQ\",\"def_pos\":0,\"signature\":\"$r8$lambda$pnZckWe_5DWvc_1EBUiIyvcpfEQ(ru.jecklandin.stickman.features.landing.LandingActivity, android.graphics.Bitmap): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":true,\"name\":\"\\u003cinit\\u003e\",\"def_pos\":0,\"signature\":\"\\u003cinit\\u003e(): void\"},{\"dex_descriptor\":\"()Lio/reactivex/disposables/Disposable;\",\"is_constructor\":false,\"name\":\"allow\",\"def_pos\":0,\"signature\":\"allow(): io.reactivex.disposables.Disposable\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"checkAndConfiscate\",\"def_pos\":0,\"signature\":\"checkAndConfiscate(): void\"},{\"dex_descriptor\":\"(Z)V\",\"is_constructor\":false,\"name\":\"grantFreeShit\",\"def_pos\":0,\"signature\":\"grantFreeShit(boolean): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"initGplayLicenseCheck\",\"def_pos\":0,\"signature\":\"initGplayLicenseCheck(): void\"},{\"dex_descriptor\":\"(Ljava/lang/Integer;)V\",\"is_constructor\":false,\"name\":\"lambda$allow$5\",\"def_pos\":0,\"signature\":\"lambda$allow$5(java.lang.Integer): void\"},{\"dex_descriptor\":\"(Ljava/lang/Boolean;)V\",\"is_constructor\":false,\"name\":\"lambda$checkAndConfiscate$4\",\"def_pos\":0,\"signature\":\"lambda$checkAndConfiscate$4(java.lang.Boolean): void\"},{\"dex_descriptor\":\"(Ljava/lang/Integer;)V\",\"is_constructor\":false,\"name\":\"lambda$grantFreeShit$6\",\"def_pos\":0,\"signature\":\"lambda$grantFreeShit$6(java.lang.Integer): void\"},{\"dex_descriptor\":\"()Landroid/graphics/Bitmap;\",\"is_constructor\":false,\"name\":\"lambda$loadUIImages$0\",\"def_pos\":0,\"signature\":\"lambda$loadUIImages$0(): android.graphics.Bitmap\"},{\"dex_descriptor\":\"(Landroid/graphics/Bitmap;)V\",\"is_constructor\":false,\"name\":\"lambda$loadUIImages$1\",\"def_pos\":0,\"signature\":\"lambda$loadUIImages$1(android.graphics.Bitmap): void\"},{\"dex_descriptor\":\"()Landroid/graphics/Bitmap;\",\"is_constructor\":false,\"name\":\"lambda$loadUIImages$2\",\"def_pos\":0,\"signature\":\"lambda$loadUIImages$2(): android.graphics.Bitmap\"},{\"dex_descriptor\":\"(Landroid/graphics/Bitmap;)V\",\"is_constructor\":false,\"name\":\"lambda$loadUIImages$3\",\"def_pos\":0,\"signature\":\"lambda$loadUIImages$3(android.graphics.Bitmap): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"loadUIImages\",\"def_pos\":0,\"signature\":\"loadUIImages(): void\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/landing/LandingActivity;Ljava/lang/Integer;)V\",\"is_constructor\":false,\"name\":\"m14479$r8$lambda$2Bds7Uqbncor3KDaaWzltFgnM\",\"def_pos\":0,\"signature\":\"m14479$r8$lambda$2Bds7Uqbncor3KDaaWzltFgnM(ru.jecklandin.stickman.features.landing.LandingActivity, java.lang.Integer): void\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/landing/LandingActivity;)V\",\"is_constructor\":false,\"name\":\"m14480$r8$lambda$JyGVu0N1X4EC9uDjbsyKFDJA0Y\",\"def_pos\":0,\"signature\":\"m14480$r8$lambda$JyGVu0N1X4EC9uDjbsyKFDJA0Y(ru.jecklandin.stickman.features.landing.LandingActivity): void\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/landing/LandingActivity;)Lio/reactivex/disposables/CompositeDisposable;\",\"is_constructor\":false,\"name\":\"m14481$$Nest$fgetmDisposables\",\"def_pos\":0,\"signature\":\"m14481$$Nest$fgetmDisposables(ru.jecklandin.stickman.features.landing.LandingActivity): io.reactivex.disposables.CompositeDisposable\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/landing/LandingActivity;)Lru/jecklandin/stickman/features/landing/SavedFragment;\",\"is_constructor\":false,\"name\":\"m14482$$Nest$fgetmSavedFragment\",\"def_pos\":0,\"signature\":\"m14482$$Nest$fgetmSavedFragment(ru.jecklandin.stickman.features.landing.LandingActivity): ru.jecklandin.stickman.features.landing.SavedFragment\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/landing/LandingActivity;)Lio/reactivex/disposables/Disposable;\",\"is_constructor\":false,\"name\":\"m14483$$Nest$mallow\",\"def_pos\":0,\"signature\":\"m14483$$Nest$mallow(ru.jecklandin.stickman.features.landing.LandingActivity): io.reactivex.disposables.Disposable\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"onBackPressed\",\"def_pos\":0,\"signature\":\"onBackPressed(): void\"},{\"dex_descriptor\":\"(Landroid/view/View;)V\",\"is_constructor\":false,\"name\":\"onClick\",\"def_pos\":0,\"signature\":\"onClick(android.view.View): void\"},{\"dex_descriptor\":\"(Landroid/view/MenuItem;)Z\",\"is_constructor\":false,\"name\":\"onContextItemSelected\",\"def_pos\":0,\"signature\":\"onContextItemSelected(android.view.MenuItem): boolean\"},{\"dex_descriptor\":\"(Landroid/os/Bundle;)V\",\"is_constructor\":false,\"name\":\"onCreate\",\"def_pos\":0,\"signature\":\"onCreate(android.os.Bundle): void\"},{\"dex_descriptor\":\"(Landroid/view/ContextMenu;Landroid/view/View;Landroid/view/ContextMenu$ContextMenuInfo;)V\",\"is_constructor\":false,\"name\":\"onCreateContextMenu\",\"def_pos\":0,\"signature\":\"onCreateContextMenu(android.view.ContextMenu, android.view.View, android.view.ContextMenu$ContextMenuInfo): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"onDestroy\",\"def_pos\":0,\"signature\":\"onDestroy(): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"onEmbeddedAssetsReady\",\"def_pos\":0,\"signature\":\"onEmbeddedAssetsReady(): void\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/ExternalPack$PackError;)V\",\"is_constructor\":false,\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.ExternalPack$PackError): void\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/landing/events/OpenSceneEvent;)V\",\"is_constructor\":false,\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.landing.events.OpenSceneEvent): void\"},{\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/landing/events/SwitchPanelEvent;)V\",\"is_constructor\":false,\"name\":\"onMessageEvent\",\"def_pos\":0,\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.landing.events.SwitchPanelEvent): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"onPause\",\"def_pos\":0,\"signature\":\"onPause(): void\"},{\"dex_descriptor\":\"(Landroid/os/Bundle;)V\",\"is_constructor\":false,\"name\":\"onSaveInstanceState\",\"def_pos\":0,\"signature\":\"onSaveInstanceState(android.os.Bundle): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"onStart\",\"def_pos\":0,\"signature\":\"onStart(): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"onStop\",\"def_pos\":0,\"signature\":\"onStop(): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"proceedApp\",\"def_pos\":0,\"signature\":\"proceedApp(): void\"},{\"dex_descriptor\":\"()V\",\"is_constructor\":false,\"name\":\"showPrivacyDialogIfNeeded\",\"def_pos\":0,\"signature\":\"showPrivacyDialogIfNeeded(): void\"},{\"dex_descriptor\":\"(Ljava/lang/String;)V\",\"is_constructor\":false,\"name\":\"switchPanel\",\"def_pos\":0,\"signature\":\"switchPanel(java.lang.String): void\"}],\"fields\":[{\"name\":\"LAUNCH_ONBOARDING_EVERY_TIME\",\"def_pos\":0,\"type\":\"boolean\",\"dex_static_value\":{\"type\":\"boolean\",\"value\":false}},{\"name\":\"TAG\",\"def_pos\":0,\"type\":\"java.lang.String\",\"dex_static_value\":{\"type\":\"string\",\"value\":\"Landing4\"}},{\"name\":\"mDisposables\",\"def_pos\":0,\"type\":\"io.reactivex.disposables.CompositeDisposable\"},{\"name\":\"mFullscreenHint\",\"def_pos\":0,\"type\":\"com.zalivka.commons.utils.ui.FullscreenHint\"},{\"name\":\"mLoad\",\"def_pos\":0,\"type\":\"android.widget.Button\"},{\"name\":\"mMake\",\"def_pos\":0,\"type\":\"android.widget.Button\"},{\"name\":\"mMakeFragment\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.features.landing.MakeFragment\"},{\"name\":\"mMsgReceiver\",\"def_pos\":0,\"type\":\"android.content.BroadcastReceiver\"},{\"name\":\"mSavedFragment\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.features.landing.SavedFragment\"},{\"name\":\"mUIDisposables\",\"def_pos\":0,\"type\":\"io.reactivex.disposables.CompositeDisposable\"},{\"name\":\"mWatch\",\"def_pos\":0,\"type\":\"android.widget.Button\"},{\"name\":\"mWatchFragment\",\"def_pos\":0,\"type\":\"ru.jecklandin.stickman.features.landing.WatchFragment\"}],\"raw_name\":\"ru.jecklandin.stickman.features.landing.LandingActivity\",\"method_count\":37,\"full_name\":\"ru.jecklandin.stickman.features.landing.LandingActivity\",\"field_count\":12,\"name\":\"LandingActivity\",\"inner_class_count\":3}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    ]
+  },
+  "normalized_result": {
+    "engine": {
+      "name": "jadx-headless-mcp",
+      "version": "0.7.1",
+      "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+      "worker_count": 1,
+      "heap_limit_mib": 4088
+    },
+    "class_name": "ru.jecklandin.stickman.features.landing.LandingActivity",
+    "methods": [
+      {
+        "name": "$r8$lambda$BzOMdYYyKGBGYlN7tmdYby_IdAg",
+        "reported_signature": "$r8$lambda$BzOMdYYyKGBGYlN7tmdYby_IdAg(ru.jecklandin.stickman.features.landing.LandingActivity, android.graphics.Bitmap): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/landing/LandingActivity;Landroid/graphics/Bitmap;)V"
+      },
+      {
+        "name": "$r8$lambda$pnZckWe_5DWvc_1EBUiIyvcpfEQ",
+        "reported_signature": "$r8$lambda$pnZckWe_5DWvc_1EBUiIyvcpfEQ(ru.jecklandin.stickman.features.landing.LandingActivity, android.graphics.Bitmap): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/landing/LandingActivity;Landroid/graphics/Bitmap;)V"
+      },
+      {
+        "name": "<init>",
+        "reported_signature": "<init>(): void",
+        "overload_index": 0,
+        "is_constructor": true,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "allow",
+        "reported_signature": "allow(): io.reactivex.disposables.Disposable",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Lio/reactivex/disposables/Disposable;"
+      },
+      {
+        "name": "checkAndConfiscate",
+        "reported_signature": "checkAndConfiscate(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "grantFreeShit",
+        "reported_signature": "grantFreeShit(boolean): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Z)V"
+      },
+      {
+        "name": "initGplayLicenseCheck",
+        "reported_signature": "initGplayLicenseCheck(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "lambda$allow$5",
+        "reported_signature": "lambda$allow$5(java.lang.Integer): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/lang/Integer;)V"
+      },
+      {
+        "name": "lambda$checkAndConfiscate$4",
+        "reported_signature": "lambda$checkAndConfiscate$4(java.lang.Boolean): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/lang/Boolean;)V"
+      },
+      {
+        "name": "lambda$grantFreeShit$6",
+        "reported_signature": "lambda$grantFreeShit$6(java.lang.Integer): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/lang/Integer;)V"
+      },
+      {
+        "name": "lambda$loadUIImages$0",
+        "reported_signature": "lambda$loadUIImages$0(): android.graphics.Bitmap",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Landroid/graphics/Bitmap;"
+      },
+      {
+        "name": "lambda$loadUIImages$1",
+        "reported_signature": "lambda$loadUIImages$1(android.graphics.Bitmap): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/graphics/Bitmap;)V"
+      },
+      {
+        "name": "lambda$loadUIImages$2",
+        "reported_signature": "lambda$loadUIImages$2(): android.graphics.Bitmap",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()Landroid/graphics/Bitmap;"
+      },
+      {
+        "name": "lambda$loadUIImages$3",
+        "reported_signature": "lambda$loadUIImages$3(android.graphics.Bitmap): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/graphics/Bitmap;)V"
+      },
+      {
+        "name": "loadUIImages",
+        "reported_signature": "loadUIImages(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "m14479$r8$lambda$2Bds7Uqbncor3KDaaWzltFgnM",
+        "reported_signature": "m14479$r8$lambda$2Bds7Uqbncor3KDaaWzltFgnM(ru.jecklandin.stickman.features.landing.LandingActivity, java.lang.Integer): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/landing/LandingActivity;Ljava/lang/Integer;)V"
+      },
+      {
+        "name": "m14480$r8$lambda$JyGVu0N1X4EC9uDjbsyKFDJA0Y",
+        "reported_signature": "m14480$r8$lambda$JyGVu0N1X4EC9uDjbsyKFDJA0Y(ru.jecklandin.stickman.features.landing.LandingActivity): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/landing/LandingActivity;)V"
+      },
+      {
+        "name": "m14481$$Nest$fgetmDisposables",
+        "reported_signature": "m14481$$Nest$fgetmDisposables(ru.jecklandin.stickman.features.landing.LandingActivity): io.reactivex.disposables.CompositeDisposable",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/landing/LandingActivity;)Lio/reactivex/disposables/CompositeDisposable;"
+      },
+      {
+        "name": "m14482$$Nest$fgetmSavedFragment",
+        "reported_signature": "m14482$$Nest$fgetmSavedFragment(ru.jecklandin.stickman.features.landing.LandingActivity): ru.jecklandin.stickman.features.landing.SavedFragment",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/landing/LandingActivity;)Lru/jecklandin/stickman/features/landing/SavedFragment;"
+      },
+      {
+        "name": "m14483$$Nest$mallow",
+        "reported_signature": "m14483$$Nest$mallow(ru.jecklandin.stickman.features.landing.LandingActivity): io.reactivex.disposables.Disposable",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/landing/LandingActivity;)Lio/reactivex/disposables/Disposable;"
+      },
+      {
+        "name": "onBackPressed",
+        "reported_signature": "onBackPressed(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onClick",
+        "reported_signature": "onClick(android.view.View): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/view/View;)V"
+      },
+      {
+        "name": "onContextItemSelected",
+        "reported_signature": "onContextItemSelected(android.view.MenuItem): boolean",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/view/MenuItem;)Z"
+      },
+      {
+        "name": "onCreate",
+        "reported_signature": "onCreate(android.os.Bundle): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/os/Bundle;)V"
+      },
+      {
+        "name": "onCreateContextMenu",
+        "reported_signature": "onCreateContextMenu(android.view.ContextMenu, android.view.View, android.view.ContextMenu$ContextMenuInfo): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/view/ContextMenu;Landroid/view/View;Landroid/view/ContextMenu$ContextMenuInfo;)V"
+      },
+      {
+        "name": "onDestroy",
+        "reported_signature": "onDestroy(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onEmbeddedAssetsReady",
+        "reported_signature": "onEmbeddedAssetsReady(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.ExternalPack$PackError): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/ExternalPack$PackError;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.landing.events.OpenSceneEvent): void",
+        "overload_index": 1,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/landing/events/OpenSceneEvent;)V"
+      },
+      {
+        "name": "onMessageEvent",
+        "reported_signature": "onMessageEvent(ru.jecklandin.stickman.features.landing.events.SwitchPanelEvent): void",
+        "overload_index": 2,
+        "is_constructor": false,
+        "dex_descriptor": "(Lru/jecklandin/stickman/features/landing/events/SwitchPanelEvent;)V"
+      },
+      {
+        "name": "onPause",
+        "reported_signature": "onPause(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onSaveInstanceState",
+        "reported_signature": "onSaveInstanceState(android.os.Bundle): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Landroid/os/Bundle;)V"
+      },
+      {
+        "name": "onStart",
+        "reported_signature": "onStart(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "onStop",
+        "reported_signature": "onStop(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "proceedApp",
+        "reported_signature": "proceedApp(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "showPrivacyDialogIfNeeded",
+        "reported_signature": "showPrivacyDialogIfNeeded(): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "()V"
+      },
+      {
+        "name": "switchPanel",
+        "reported_signature": "switchPanel(java.lang.String): void",
+        "overload_index": 0,
+        "is_constructor": false,
+        "dex_descriptor": "(Ljava/lang/String;)V"
+      }
+    ],
+    "fields": [
+      {
+        "name": "LAUNCH_ONBOARDING_EVERY_TIME",
+        "reported_type": "boolean",
+        "dex_static_value": {
+          "type": "boolean",
+          "value": false
+        }
+      },
+      {
+        "name": "TAG",
+        "reported_type": "java.lang.String",
+        "dex_static_value": {
+          "type": "string",
+          "value": "Landing4"
+        }
+      },
+      {
+        "name": "mDisposables",
+        "reported_type": "io.reactivex.disposables.CompositeDisposable",
+        "dex_static_value": null
+      },
+      {
+        "name": "mFullscreenHint",
+        "reported_type": "com.zalivka.commons.utils.ui.FullscreenHint",
+        "dex_static_value": null
+      },
+      {
+        "name": "mLoad",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mMake",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mMakeFragment",
+        "reported_type": "ru.jecklandin.stickman.features.landing.MakeFragment",
+        "dex_static_value": null
+      },
+      {
+        "name": "mMsgReceiver",
+        "reported_type": "android.content.BroadcastReceiver",
+        "dex_static_value": null
+      },
+      {
+        "name": "mSavedFragment",
+        "reported_type": "ru.jecklandin.stickman.features.landing.SavedFragment",
+        "dex_static_value": null
+      },
+      {
+        "name": "mUIDisposables",
+        "reported_type": "io.reactivex.disposables.CompositeDisposable",
+        "dex_static_value": null
+      },
+      {
+        "name": "mWatch",
+        "reported_type": "android.widget.Button",
+        "dex_static_value": null
+      },
+      {
+        "name": "mWatchFragment",
+        "reported_type": "ru.jecklandin.stickman.features.landing.WatchFragment",
+        "dex_static_value": null
+      }
+    ],
+    "inner_classes": [
+      "ru.jecklandin.stickman.features.landing.LandingActivity.AnonymousClass1",
+      "ru.jecklandin.stickman.features.landing.LandingActivity.AnonymousClass2",
+      "ru.jecklandin.stickman.features.landing.LandingActivity.AnonymousClass3"
+    ]
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}
