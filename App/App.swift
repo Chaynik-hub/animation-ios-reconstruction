@@ -70,7 +70,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     var clipboard:SceneFrame?
     func step(_ offset:Int){stop();workspace.index=min(max(0,workspace.index+offset),workspace.document.frames.count-1);workspace.notify()}
     func stop(){displayLink?.invalidate();displayLink=nil;canvas.displayed=nil;audio?.pause();update()}
-    func togglePlayback(){if displayLink != nil{stop();return};startFrame=workspace.index;playbackStart=CACurrentMediaTime();let link=CADisplayLink(target:self,selector:#selector(tick(_:)));link.preferredFrameRateRange=CAFrameRateRange(minimum:30,maximum:60,preferred:60);link.add(to:.main,forMode:.common);displayLink=link;audio?.currentTime=Double(startFrame*(workspace.document.interframes+1))/60;audio?.play()}
+    func togglePlayback(){stop();present(PreviewController(workspace:workspace,audio:audio),animated:false)}
     func frameAt(_ elapsed:Double)->SceneFrame {
         let perKey=max(1,workspace.document.interframes+1);let position=elapsed*60/Double(perKey)+Double(startFrame);let count=workspace.document.frames.count;let index=Int(position)%count;let t=position-floor(position);var frame=workspace.document.frames[index];let next=workspace.document.frames[(index+1)%count]
         for i in frame.units.indices{if let end=next.units.first(where:{$0.name==frame.units[i].name}),let pose=try? PoseInterpolation.between(frame.units[i],end,progress:t){frame.units[i]=pose}};return frame

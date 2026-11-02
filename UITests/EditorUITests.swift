@@ -13,7 +13,10 @@ final class EditorUITests:XCTestCase {
         app.buttons["+"].tap()
         XCTAssertTrue(app.staticTexts["2 /\n2"].waitForExistence(timeout:5))
         app.buttons["ПУСК"].tap()
-        app.buttons["ПУСК"].tap()
+        XCTAssertTrue(app.otherElements["PreviewCanvas"].waitForExistence(timeout:5))
+        XCTAssertFalse(app.buttons["ДОБАВИТЬ"].isHittable)
+        app.coordinate(withNormalizedOffset:CGVector(dx:0.001,dy:0.5)).press(forDuration:0.1,thenDragTo:app.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.5)))
+        XCTAssertTrue(app.buttons["ДОБАВИТЬ"].waitForExistence(timeout:5))
         let attachment=XCTAttachment(screenshot:app.screenshot())
         attachment.name="Editor after character insertion and frame playback"
         attachment.lifetime = .keepAlways

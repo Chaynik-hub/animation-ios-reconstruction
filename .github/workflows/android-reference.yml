@@ -1,0 +1,33 @@
+name: Observe original Android reference
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch private reference input
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download android-reference --repo "$GITHUB_REPOSITORY" -p '*.apk' -D input
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          disable-animations: false
+          script: bash scripts/capture-android-reference.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-android-runtime
+          path: reference-output

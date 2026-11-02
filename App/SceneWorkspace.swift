@@ -123,15 +123,12 @@ final class SceneCanvas: UIView {
         let screen=gesture.location(in:self);let p=CGPoint(x:(screen.x-origin.x)/ratio,y:(screen.y-origin.y)/ratio)
         if gesture.state == .began {
             var distance=30/ratio
-            for (i,unit) in workspace.frame.units.enumerated(){for (j,joint) in unit.joints.enumerated(){let d=hypot(joint.x-p.x,joint.y-p.y);if d<distance{distance=d;dragged=(i,j)}}}
+            for (i,unit) in workspace.frame.units.enumerated(){for (j,joint) in unit.joints.enumerated(){let d=hypot(joint.x-p.x,joint.y-p.y);if d<distance && (joint.attributes["fixed"] != "true" || joint.attributes["base"]=="true"){distance=d;dragged=(i,j)}}}
             before=p;if let target=dragged{workspace.checkpoint();workspace.selected=target.0}
         } else if gesture.state == .changed {
             if let (i,j)=dragged {
-                let delta=CGPoint(x:p.x-before.x,y:p.y-before.y)
-                let root=workspace.document.frames[workspace.index].units[i].joints[j]
-                var moved=Set([root.id]);var changed=true
-                while changed {changed=false;for v in workspace.frame.units[i].joints {if let parent=v.parent,moved.contains(parent),moved.insert(v.id).inserted{changed=true}}}
-                for k in workspace.document.frames[workspace.index].units[i].joints.indices{if moved.contains(workspace.frame.units[i].joints[k].id){workspace.document.frames[workspace.index].units[i].joints[k].x+=delta.x;workspace.document.frames[workspace.index].units[i].joints[k].y+=delta.y}}
+                let id=workspace.frame.units[i].joints[j].id
+                try? JointManipulation.move(&workspace.document.frames[workspace.index].units[i],jointID:id,x:p.x,y:p.y)
             } else {let d=gesture.translation(in:self);cameraOffset.x+=d.x;cameraOffset.y+=d.y;gesture.setTranslation(.zero,in:self)}
             before=p;setNeedsDisplay()
         } else {dragged=nil;workspace.notify()}
