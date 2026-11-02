@@ -74,6 +74,8 @@ final class EditorUITests:XCTestCase {
         app.buttons["ПУСК"].tap()
         XCTAssertTrue(app.otherElements["PreviewCanvas"].waitForExistence(timeout:5))
         XCTAssertFalse(app.buttons["ДОБАВИТЬ"].isHittable)
+        XCTAssertTrue(app.buttons["PreviewReplay"].waitForExistence(timeout: 5))
+        let preview = XCTAttachment(screenshot: XCUIScreen.main.screenshot()); preview.name = "Separate preview with explicit close and replay"; preview.lifetime = .keepAlways; add(preview)
         app.buttons["PreviewClose"].tap()
         XCTAssertTrue(app.buttons["ДОБАВИТЬ"].waitForExistence(timeout:5))
         let attachment=XCTAttachment(screenshot:XCUIScreen.main.screenshot())
