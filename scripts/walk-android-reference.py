@@ -45,6 +45,27 @@ for step in range(24):
             adb('shell','uiautomator','dump','/sdcard/practice.xml')
             (root/'practice-moved.xml').write_text(adb('shell','cat','/sdcard/practice.xml'))
             (root/'practice-moved.png').write_bytes(adb('exec-out','screencap','-p',binary=True))
+            # The captured lesson explicitly requests the blue next-frame arrow.
+            for practice_step in range(8):
+                adb('shell','uiautomator','dump','/sdcard/practice-step.xml')
+                practice_xml=adb('shell','cat','/sdcard/practice-step.xml')
+                (root/f'practice-{practice_step:02d}.xml').write_text(practice_xml)
+                (root/f'practice-{practice_step:02d}.png').write_bytes(adb('exec-out','screencap','-p',binary=True))
+                practice_nodes=list(ET.fromstring(practice_xml).iter('node'))
+                button=next((n for n in practice_nodes if n.get('resource-id','').endswith(':id/main_btn_play') and n.get('enabled')=='true'),None)
+                is_play=button is not None
+                if button is None:
+                    button=next((n for n in practice_nodes if n.get('resource-id','').endswith(':id/btn_fwd') and n.get('enabled')=='true'),None)
+                if button is None:break
+                xy=list(map(int,re.findall(r'\d+',button.get('bounds',''))))
+                if len(xy)!=4:break
+                adb('shell','input','tap',str((xy[0]+xy[2])//2),str((xy[1]+xy[3])//2))
+                time.sleep(8 if is_play else 2)
+                if is_play:
+                    adb('shell','uiautomator','dump','/sdcard/post-play.xml')
+                    (root/'practice-post-play.xml').write_text(adb('shell','cat','/sdcard/post-play.xml'))
+                    (root/'practice-post-play.png').write_bytes(adb('exec-out','screencap','-p',binary=True))
+                    break
             adb('shell','input','keyevent','4')
             time.sleep(3)
             adb('shell','uiautomator','dump','/sdcard/back.xml')
