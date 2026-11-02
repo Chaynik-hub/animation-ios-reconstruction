@@ -29,6 +29,20 @@ for step in range(24):
             # Gesture measured in onboarding-next/onboarding-06.png at the fixed reference viewport.
             adb('shell','input','swipe','440','408','515','294','800')
             continue
+        if any(n.get('resource-id','').endswith(':id/scene_view') for n in nodes):
+            # Editor controls are populated asynchronously after onboarding closes.
+            # Retain a settled capture before interpreting missing controls as absent features.
+            time.sleep(15)
+            adb('shell','uiautomator','dump','/sdcard/settled.xml')
+            settled=adb('shell','cat','/sdcard/settled.xml')
+            (root/'editor-settled.xml').write_text(settled)
+            (root/'editor-settled.png').write_bytes(adb('exec-out','screencap','-p',binary=True))
+            (root/'editor-activities.txt').write_text(adb('shell','dumpsys','activity','activities'))
+            adb('shell','input','keyevent','4')
+            time.sleep(3)
+            adb('shell','uiautomator','dump','/sdcard/back.xml')
+            (root/'editor-back.xml').write_text(adb('shell','cat','/sdcard/back.xml'))
+            (root/'editor-back.png').write_bytes(adb('exec-out','screencap','-p',binary=True))
         break
     bounds=list(map(int,re.findall(r'\d+',next_node.get('bounds',''))))
     if len(bounds)!=4:break
