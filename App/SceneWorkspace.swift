@@ -24,9 +24,13 @@ final class Workspace {
     var catalog = (try? JSONDecoder().decode([ArtworkDefinition].self,from:Data(contentsOf:Bundle.main.resourceURL!.appendingPathComponent("Content/catalog.json")))) ?? []
     var onChange: (() -> Void)?
     let directory = FileManager.default.urls(for:.documentDirectory,in:.userDomainMask)[0]
+    init() {
+        let url=directory.appendingPathComponent("Autosave.animation.json")
+        if let bytes=try? Data(contentsOf:url),let saved=try? JSONDecoder().decode(SceneDocument.self,from:bytes),!saved.frames.isEmpty,saved.width>0,saved.height>0 {document=saved}
+    }
     var frame: SceneFrame { document.frames[index] }
     func checkpoint() { history.append(document); if history.count>60 { history.removeFirst() }; future=[] }
-    func notify() { index=min(max(0,index),document.frames.count-1);onChange?() }
+    func notify() { index=min(max(0,index),document.frames.count-1);onChange?();if let data=try? JSONEncoder().encode(document){try? data.write(to:directory.appendingPathComponent("Autosave.animation.json"),options:.atomic)} }
     func undo() { guard let old=history.popLast() else{return};future.append(document);document=old;notify() }
     func redo() { guard let next=future.popLast() else{return};history.append(document);document=next;notify() }
     func add(_ asset:ArtworkDefinition) { checkpoint();var unit=asset.unit(at:CGPoint(x:document.width/2,y:document.height/2));unit.name += "#"+UUID().uuidString;document.frames[index].units.append(unit);selected=frame.units.count-1;notify() }
@@ -71,7 +75,10 @@ final class SceneCanvas: UIView {
     var displayed: SceneFrame?
     var handles = true
     var onion = true
-    var backgroundColorValue = UIColor.white
+    var backgroundColorValue:UIColor {
+        get {switch workspace.document.attributes["nativeBackground"] {case "black":return .black;case "green":return .green;default:return .white}}
+        set {workspace.document.attributes["nativeBackground"] = newValue == .black ? "black" : newValue == .green ? "green" : "white"}
+    }
     var cameraScale: CGFloat = 1
     var cameraOffset = CGPoint.zero
     private var dragged: (Int,Int)?
