@@ -61,14 +61,29 @@ final class Workspace {
         let url=directory.appendingPathComponent(safe.isEmpty ? "Scene.animation.json":safe+".animation.json")
         try JSONEncoder().encode(document).write(to:url,options:.atomic);return url
     }
+    func saveATS()throws->URL {
+        let output=directory.appendingPathComponent(UUID().uuidString+".ats")
+        let archive:Archive
+        if let source=document.attributes["nativeSourceArchive"],!source.contains("/"),FileManager.default.fileExists(atPath:directory.appendingPathComponent(source).path) {
+            try FileManager.default.copyItem(at:directory.appendingPathComponent(source),to:output)
+            archive=try Archive(url:output,accessMode:.update)
+            if let old=archive["model.xml"]{try archive.remove(old)}
+        }else{archive=try Archive(url:output,accessMode:.create)}
+        let data=SceneXMLWriter.write(document)
+        try archive.addEntry(with:"model.xml",type:.file,uncompressedSize:Int64(data.count),compressionMethod:.deflate,provider:{position,size in data.subdata(in:Int(position)..<Int(position)+size)})
+        return output
+    }
     func load(_ url:URL) throws {
         let access=url.startAccessingSecurityScopedResource();defer{if access{url.stopAccessingSecurityScopedResource()}}
-        let value:SceneDocument
+        var value:SceneDocument
         if url.pathExtension.lowercased()=="ats" {
             let archive=try Archive(url:url,accessMode:.read)
             guard let entry=archive["model.xml"],entry.uncompressedSize<=64*1024*1024 else{throw SceneReadError.invalidScene}
             var bytes=Data();_ = try archive.extract(entry){ bytes.append($0) }
             value=try SceneXMLReader.read(bytes)
+            let preserved=directory.appendingPathComponent(UUID().uuidString+".ats")
+            try FileManager.default.copyItem(at:url,to:preserved)
+            value.attributes["nativeSourceArchive"]=preserved.lastPathComponent
         } else if url.pathExtension.lowercased()=="xml" { value=try SceneXMLReader.read(Data(contentsOf:url)) }
         else {value=try JSONDecoder().decode(SceneDocument.self,from:Data(contentsOf:url))}
         guard !value.frames.isEmpty,value.width>0,value.height>0 else {throw SceneReadError.invalidScene}
