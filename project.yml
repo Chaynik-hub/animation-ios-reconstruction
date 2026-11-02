@@ -1,0 +1,42 @@
+name: AnimationIOS
+options:
+  bundleIdPrefix: app.reconstruction
+  deploymentTarget:
+    iOS: '16.0'
+packages:
+  ZIPFoundation:
+    url: https://github.com/weichsel/ZIPFoundation.git
+    exactVersion: 0.9.19
+targets:
+  AnimationIOS:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+        excludes: [Resources]
+      - path: Sources/AnimationCore
+      - path: App/Resources
+        type: folder
+        buildPhase: resources
+    dependencies:
+      - package: ZIPFoundation
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.reconstruction.animation
+        SWIFT_VERSION: '5.0'
+        TARGETED_DEVICE_FAMILY: '1,2'
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Animation
+        INFOPLIST_KEY_UIStatusBarHidden: YES
+        INFOPLIST_KEY_UIViewControllerBasedStatusBarAppearance: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+        INFOPLIST_KEY_UIAppFonts: [Resources/Roboto-Regular.ttf]
+        INFOPLIST_KEY_UIFileSharingEnabled: YES
+        INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        CODE_SIGNING_ALLOWED: NO
+schemes:
+  AnimationIOS:
+    build:
+      targets:
+        AnimationIOS: all
