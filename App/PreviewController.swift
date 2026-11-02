@@ -29,8 +29,8 @@ final class PreviewController:UIViewController {
         let time=accumulated+(playing ? sender.timestamp-start:0)
         let duration=Double(max(1,workspace.document.interframes+1))/60
         let position=max(0,time/duration),index=Int(position)%workspace.document.frames.count
-        var frame=workspace.document.frames[index];let next=workspace.document.frames[(index+1)%workspace.document.frames.count]
-        for i in frame.units.indices{if let end=next.units.first(where:{$0.name==frame.units[i].name}),let pose=try? PoseInterpolation.between(frame.units[i],end,progress:position-floor(position)){frame.units[i]=pose}}
+        let current=workspace.document.frames[index],next=workspace.document.frames[(index+1)%workspace.document.frames.count]
+        let frame=(try? FrameInterpolation.between(current,next,progress:position-floor(position))) ?? current
         canvas.displayed=frame;canvas.setNeedsDisplay()
     }
 }

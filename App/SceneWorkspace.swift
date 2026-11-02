@@ -44,9 +44,7 @@ final class Workspace {
         var next=frame
         if index+1<document.frames.count {
             let following=document.frames[index+1]
-            for i in next.units.indices {
-                if let other=following.units.first(where:{$0.name==next.units[i].name}) { next.units[i]=try PoseInterpolation.between(next.units[i],other,progress:0.5) }
-            }
+            next=try FrameInterpolation.between(frame,following,progress:0.5)
         }
         checkpoint();next.id=(document.frames.map(\.id).max() ?? -1)+1
         document.frames.insert(next,at:index+1);index+=1;notify()

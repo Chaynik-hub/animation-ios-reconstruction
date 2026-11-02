@@ -1,0 +1,147 @@
+{
+  "evidence_id": "ev_ebd0b97e68319916da8ac5b3304955883f7b8d0d1f9c983778e7b87ab7b61b49",
+  "subject": {
+    "name": "com.zalivka.animation2_397.apk",
+    "digest": {
+      "sha256": "03bad059f228e2d0796e44eb74e373a30b9539d8b7bc29efc5a51cabf5a352b4"
+    },
+    "local_path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "jadx",
+    "name": "JADX headless",
+    "version": "0.7.1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_android_method",
+  "parameters": {
+    "path": "D:\\downloads\\com.zalivka.animation2_397.apk",
+    "class_name": "ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove.InEditor",
+    "method_name": "start"
+  },
+  "raw_result": {
+    "server": {
+      "name": "rea-jadx-bridge",
+      "version": "7"
+    },
+    "bridge_sha256": "e5044a8312dd0731f53af3f095508b3e5cff54df6b971c95d4305e2f39b4fa30",
+    "jar_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "loaded": {
+      "state": "LOADED",
+      "apk_path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-b45afd248f2413df42bdd33119bf54c6\\target.apk",
+      "class_count": 47382,
+      "resource_count": 4573,
+      "threads": 1,
+      "resources": "full"
+    },
+    "calls": [
+      {
+        "operation": "rea_jvm_status",
+        "input": {},
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"metadata_scope\":\"parsed_members\",\"max_heap_bytes\":4286578688,\"java_version\":\"21.0.13\",\"available_processors\":8,\"engine_reported_version\":\"0.7.1\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "load_apk",
+        "input": {
+          "path": "C:\\Users\\mamir\\AppData\\Local\\Temp\\rea-android-b45afd248f2413df42bdd33119bf54c6\\target.apk",
+          "threads": 1,
+          "resources": "full"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"state\":\"LOADED\",\"apk_path\":\"C:\\\\Users\\\\mamir\\\\AppData\\\\Local\\\\Temp\\\\rea-android-b45afd248f2413df42bdd33119bf54c6\\\\target.apk\",\"class_count\":47382,\"raw_class_count\":47382,\"resource_count\":4573,\"load_duration_ms\":47008,\"decompile_timeout_ms\":90000,\"threads\":1,\"code_cache_size\":64,\"resources\":\"full\"}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_class_summary",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove.InEditor"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"inner_class_count\":1,\"name\":\"InEditor\",\"field_count\":3,\"full_name\":\"ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove.InEditor\",\"method_count\":7,\"raw_name\":\"ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove$InEditor\",\"fields\":[{\"type\":\"int\",\"def_pos\":0,\"name\":\"mBonesMoved\"},{\"type\":\"ru.jecklandin.stickman.features.editor.MainEditor\",\"def_pos\":0,\"name\":\"mEditor\"},{\"type\":\"boolean\",\"def_pos\":0,\"name\":\"mPlayHintScheduled\"}],\"methods\":[{\"signature\":\"\\u003cinit\\u003e(ru.jecklandin.stickman.features.editor.MainEditor): void\",\"def_pos\":0,\"name\":\"\\u003cinit\\u003e\",\"is_constructor\":true,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/editor/MainEditor;)V\"},{\"signature\":\"finish(): void\",\"def_pos\":0,\"name\":\"finish\",\"is_constructor\":false,\"dex_descriptor\":\"()V\"},{\"signature\":\"lambda$onNextFrame$0(): void\",\"def_pos\":0,\"name\":\"lambda$onNextFrame$0\",\"is_constructor\":false,\"dex_descriptor\":\"()V\"},{\"signature\":\"m14525$r8$lambda$j8wtPHYs9L1d9lUXKgSW6PvIh4(ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove$InEditor): void\",\"def_pos\":0,\"name\":\"m14525$r8$lambda$j8wtPHYs9L1d9lUXKgSW6PvIh4\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/landing/onboarding/OBPracticeMove$InEditor;)V\"},{\"signature\":\"onMessageEvent(ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove$InEditor$BoneMovedEvent): void\",\"def_pos\":0,\"name\":\"onMessageEvent\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/features/landing/onboarding/OBPracticeMove$InEditor$BoneMovedEvent;)V\"},{\"signature\":\"onNextFrame(ru.jecklandin.stickman.units.Scene): void\",\"def_pos\":0,\"name\":\"onNextFrame\",\"is_constructor\":false,\"dex_descriptor\":\"(Lru/jecklandin/stickman/units/Scene;)V\"},{\"signature\":\"start(): void\",\"def_pos\":0,\"name\":\"start\",\"is_constructor\":false,\"dex_descriptor\":\"()V\"}],\"inner_classes\":[\"ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove.InEditor.BoneMovedEvent\"]}"
+            }
+          ],
+          "isError": false
+        }
+      },
+      {
+        "operation": "get_method_body",
+        "input": {
+          "class_name": "ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove.InEditor",
+          "method_name": "start",
+          "overload_index": 0,
+          "smali_fallback": true
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"markers\":[],\"fell_back\":false,\"full_name\":\"ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove.InEditor.start\",\"overload_index\":0,\"method_name\":\"start\",\"overload_count\":1,\"dex_descriptor\":\"()V\",\"class_name\":\"ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove.InEditor\",\"mode\":\"java\",\"body\":\"        public void start() {\\r\\n            this.mEditor.mDrawerLayout.setDrawerLockMode(1);\\r\\n            this.mEditor.mFramesContainer.setVisibility(8);\\r\\n            this.mEditor.mControls.setVisibility(8);\\r\\n            this.mEditor.mFragmentCont.setVisibility(8);\\r\\n            TempState.sNoOnion \\u003d true;\\r\\n            StickmanView stickmanView \\u003d this.mEditor.mStickmanView;\\r\\n            stickmanView.mStickmanPresenter.getDrawingConfig().mUseHandlers \\u003d false;\\r\\n            stickmanView.mStickmanPresenter.navigablePresenter().mAllowSceneMovements \\u003d false;\\r\\n            stickmanView.updateViewportProps();\\r\\n            stickmanView.invalidate();\\r\\n            MainEditor mainEditor \\u003d this.mEditor;\\r\\n            UIUtils.niceToast(mainEditor, mainEditor.getString(R.string.move_me), 1, UIUtils.TOAST_KIND.INFO);\\r\\n            EventBus.getDefault().register(this);\\r\\n        }\"}"
+            }
+          ],
+          "isError": false
+        }
+      }
+    ]
+  },
+  "normalized_result": {
+    "engine": {
+      "name": "jadx-headless-mcp",
+      "version": "0.7.1",
+      "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+      "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+      "worker_count": 1,
+      "heap_limit_mib": 4088
+    },
+    "class_name": "ru.jecklandin.stickman.features.landing.onboarding.OBPracticeMove.InEditor",
+    "method": {
+      "name": "start",
+      "reported_signature": "start(): void",
+      "overload_index": 0,
+      "is_constructor": false,
+      "dex_descriptor": "()V"
+    },
+    "overload_count": 1,
+    "representation": "java",
+    "body_status": "available",
+    "fell_back": false,
+    "markers": [],
+    "source": {
+      "status": "complete",
+      "text": "        public void start() {\r\n            this.mEditor.mDrawerLayout.setDrawerLockMode(1);\r\n            this.mEditor.mFramesContainer.setVisibility(8);\r\n            this.mEditor.mControls.setVisibility(8);\r\n            this.mEditor.mFragmentCont.setVisibility(8);\r\n            TempState.sNoOnion = true;\r\n            StickmanView stickmanView = this.mEditor.mStickmanView;\r\n            stickmanView.mStickmanPresenter.getDrawingConfig().mUseHandlers = false;\r\n            stickmanView.mStickmanPresenter.navigablePresenter().mAllowSceneMovements = false;\r\n            stickmanView.updateViewportProps();\r\n            stickmanView.invalidate();\r\n            MainEditor mainEditor = this.mEditor;\r\n            UIUtils.niceToast(mainEditor, mainEditor.getString(R.string.move_me), 1, UIUtils.TOAST_KIND.INFO);\r\n            EventBus.getDefault().register(this);\r\n        }",
+      "reported_total_bytes": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summaries are parsed once by REA's bridge from the exact root AndroidManifest.xml resource, using namespace-aware XML attributes; decoded XML is retained. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [],
+  "evidence_links": []
+}

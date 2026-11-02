@@ -78,8 +78,8 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func stop(){displayLink?.invalidate();displayLink=nil;canvas.displayed=nil;audio?.pause();update()}
     func togglePlayback(){stop();present(PreviewController(workspace:workspace,audio:audio),animated:false)}
     func frameAt(_ elapsed:Double)->SceneFrame {
-        let perKey=max(1,workspace.document.interframes+1);let position=elapsed*60/Double(perKey)+Double(startFrame);let count=workspace.document.frames.count;let index=Int(position)%count;let t=position-floor(position);var frame=workspace.document.frames[index];let next=workspace.document.frames[(index+1)%count]
-        for i in frame.units.indices{if let end=next.units.first(where:{$0.name==frame.units[i].name}),let pose=try? PoseInterpolation.between(frame.units[i],end,progress:t){frame.units[i]=pose}};return frame
+        let perKey=max(1,workspace.document.interframes+1);let position=elapsed*60/Double(perKey)+Double(startFrame);let count=workspace.document.frames.count;let index=Int(position)%count;let t=position-floor(position);let frame=workspace.document.frames[index],next=workspace.document.frames[(index+1)%count]
+        return (try? FrameInterpolation.between(frame,next,progress:t)) ?? frame
     }
     @objc func tick(_ link:CADisplayLink){canvas.displayed=frameAt(link.timestamp-playbackStart);canvas.setNeedsDisplay()}
     func save(){let alert=UIAlertController(title:"Сохранить сцену",message:nil,preferredStyle:.alert);alert.addTextField{$0.text=self.titleOfScene};alert.addAction(UIAlertAction(title:"Сохранить",style:.default){[weak self] _ in guard let self else{return};self.titleOfScene=alert.textFields?.first?.text ?? "Animation";self.perform{_ = try self.workspace.save(name:self.titleOfScene)}});alert.addAction(UIAlertAction(title:"Отмена",style:.cancel));present(alert,animated:true)}
