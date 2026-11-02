@@ -37,6 +37,17 @@ targets:
         INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace: YES
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         CODE_SIGNING_ALLOWED: NO
+  AnimationIOSRenderTests:
+    type: bundle.unit-testing
+    platform: iOS
+    sources: [RenderTests]
+    dependencies:
+      - target: AnimationIOS
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: app.reconstruction.animation.render-tests
+        SWIFT_VERSION: '5.0'
   AnimationIOSUITests:
     type: bundle.ui-testing
     platform: iOS
@@ -54,4 +65,4 @@ schemes:
       targets:
         AnimationIOS: all
     test:
-      targets: [AnimationIOSUITests]
+      targets: [AnimationIOSRenderTests, AnimationIOSUITests]

@@ -8,6 +8,9 @@ struct ArtworkDefinition: Codable {
     var thumbnail: String?
     var defaultScale: Double?
     var titles: [String:String]?
+    var packID: String?
+    var folderPath: [String]?
+    var catalogOrder: Int?
     var displayTitle:String {let language=Locale.preferredLanguages.first?.components(separatedBy:"-").first ?? "en";return titles?[language] ?? titles?["en"] ?? name}
     func unit(at location: CGPoint) -> SceneUnit {
         let scale=defaultScale ?? 1
@@ -128,10 +131,10 @@ final class SceneCanvas: UIView {
         guard let c=UIGraphicsGetCurrentContext() else{return};UIColor.original(0x3d3e4c).setFill();c.fill(bounds)
         c.saveGState();c.translateBy(x:origin.x,y:origin.y);c.scaleBy(x:ratio,y:ratio)
         backgroundColorValue.setFill();c.fill(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height));c.clip(to:CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))
-        if onion && displayed==nil && workspace.index>0 {c.saveGState();c.setAlpha(0.18);paint(workspace.document.frames[workspace.index-1],in:c,showHandles:false);c.restoreGState()}
+        if onion && displayed==nil && workspace.index>0 {c.saveGState();paint(workspace.document.frames[workspace.index-1],in:c,showHandles:false,opacity:0.18);c.restoreGState()}
         paint(displayed ?? workspace.frame,in:c,showHandles:handles && displayed==nil);c.restoreGState()
     }
-    func paint(_ frame:SceneFrame,in c:CGContext,showHandles:Bool) {
+    func paint(_ frame:SceneFrame,in c:CGContext,showHandles:Bool,opacity:CGFloat=1) {
         for (i,unit) in frame.units.enumerated() {
             let baseName=unit.name.components(separatedBy:"#")[0]
             let joints=Dictionary(unit.joints.map{($0.id,$0)},uniquingKeysWith:{$1})
@@ -156,7 +159,7 @@ final class SceneCanvas: UIView {
                         let rest=hypot(bx-ax,by-ay)*scale
                         if rest>0 {longitudinal=hypot(b.x-a.x,b.y-a.y)/rest}
                     }
-                    c.saveGState();c.setAlpha(Double(unit.attributes["alpha"] ?? "1") ?? 1);c.translateBy(x:a.x,y:a.y);c.rotate(by:atan2(b.y-a.y,b.x-a.x));c.scaleBy(x:scale*longitudinal,y:flipped && part["flipped"] != "true" ? -scale:scale)
+                    c.saveGState();c.setAlpha(CGFloat(Double(unit.attributes["alpha"] ?? "1") ?? 1)*opacity);c.translateBy(x:a.x,y:a.y);c.rotate(by:atan2(b.y-a.y,b.x-a.x));c.scaleBy(x:scale*longitudinal,y:flipped && part["flipped"] != "true" ? -scale:scale)
                     bitmap.draw(in:CGRect(x:Double(part["x_offset"] ?? "0") ?? 0,y:Double(part["y_offset"] ?? "0") ?? 0,width:bitmap.size.width,height:bitmap.size.height));c.restoreGState()
                 }
             } else {
@@ -164,7 +167,13 @@ final class SceneCanvas: UIView {
                 c.setStrokeColor(UIColor.systemRed.cgColor);c.setLineWidth(2)
                 for joint in unit.joints {if let p=joint.parent,let parent=joints[p]{c.move(to:CGPoint(x:parent.x,y:parent.y));c.addLine(to:CGPoint(x:joint.x,y:joint.y));c.strokePath()}}
             }
-            if showHandles && workspace.selected==i {for joint in unit.joints {let size=8/ratio;c.setFillColor(UIColor(red:1,green:0.5,blue:0,alpha:1).cgColor);c.fillEllipse(in:CGRect(x:joint.x-size/2,y:joint.y-size/2,width:size,height:size))}}
+            if showHandles && workspace.selected==i {
+                c.saveGState();c.setAlpha(1);c.setStrokeColor(UIColor.orange.cgColor);c.setLineWidth(1/ratio)
+                for joint in unit.joints {if let parentID=joint.parent,let parent=joints[parentID]{c.move(to:CGPoint(x:parent.x,y:parent.y));c.addLine(to:CGPoint(x:joint.x,y:joint.y))}}
+                c.strokePath()
+                for joint in unit.joints {let size=8/ratio;c.setFillColor(UIColor(red:1,green:0.5,blue:0,alpha:1).cgColor);c.fillEllipse(in:CGRect(x:joint.x-size/2,y:joint.y-size/2,width:size,height:size))}
+                c.restoreGState()
+            }
         }
     }
     @objc func pinch(_ gesture:UIPinchGestureRecognizer){cameraScale=min(4,max(0.25,cameraScale*gesture.scale));gesture.scale=1;setNeedsDisplay()}

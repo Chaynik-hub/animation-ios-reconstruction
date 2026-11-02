@@ -27,6 +27,25 @@ final class EditorUITests:XCTestCase {
         app.buttons["РЕД. КАДР"].tap()
         XCTAssertFalse(panel.exists)
     }
+    func testCatalogFoldersBackAndCloseWithoutInsertion() throws {
+        let app = XCUIApplication(); app.launchArguments = ["--reference-practice"]; app.launch()
+        XCTAssertTrue(app.buttons["ДОБАВИТЬ"].waitForExistence(timeout: 10))
+        app.buttons["ДОБАВИТЬ"].tap()
+        let pack = app.collectionViews.cells["catalog-pack-newstickman"]
+        XCTAssertTrue(pack.waitForExistence(timeout: 5)); pack.tap()
+        let folder = app.collectionViews.cells["catalog-folder-Weapons"]
+        XCTAssertTrue(folder.waitForExistence(timeout: 5)); folder.tap()
+        XCTAssertTrue(app.collectionViews.cells["catalog-item-newstickman:axe"].waitForExistence(timeout: 5))
+        app.buttons["Назад по каталогу"].tap()
+        XCTAssertTrue(app.collectionViews.cells["catalog-folder-Weapons"].waitForExistence(timeout: 5))
+        app.buttons["Назад по каталогу"].tap()
+        XCTAssertTrue(app.collectionViews.cells["catalog-pack-jungle"].waitForExistence(timeout: 5))
+        let shot = XCTAttachment(screenshot: XCUIScreen.main.screenshot()); shot.name = "Original pack covers and in-editor catalog"; shot.lifetime = .keepAlways; add(shot)
+        app.buttons["Закрыть каталог"].tap()
+        XCTAssertFalse(app.collectionViews.firstMatch.exists)
+        app.buttons["ДОБАВИТЬ"].tap(); app.buttons["ДОБАВИТЬ"].tap()
+        XCTAssertFalse(app.collectionViews.firstMatch.exists)
+    }
     func testOriginalATSWithEmbeddedArtwork()throws {
         let app=XCUIApplication();app.launchArguments=["--reference-practice"];app.launch()
         let navigator=app.otherElements["FrameNavigator"]
@@ -44,16 +63,18 @@ final class EditorUITests:XCTestCase {
         let insert=app.buttons["ДОБАВИТЬ"]
         XCTAssertTrue(insert.waitForExistence(timeout:10))
         insert.tap()
-        let item=app.collectionViews.cells.firstMatch
+        app.collectionViews.cells["catalog-pack-jungle"].tap()
+        let item=app.collectionViews.cells.matching(identifier:"catalog-item-jungle:lion").firstMatch
         XCTAssertTrue(item.waitForExistence(timeout:5))
         item.tap()
+        app.buttons["Закрыть каталог"].tap()
         app.buttons["Следующий кадр"].tap()
         let navigator=app.otherElements["FrameNavigator"]
         XCTAssertEqual(navigator.value as? String,"2 / 2")
         app.buttons["ПУСК"].tap()
         XCTAssertTrue(app.otherElements["PreviewCanvas"].waitForExistence(timeout:5))
         XCTAssertFalse(app.buttons["ДОБАВИТЬ"].isHittable)
-        app.coordinate(withNormalizedOffset:CGVector(dx:0.001,dy:0.5)).press(forDuration:0.1,thenDragTo:app.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.5)))
+        app.buttons["PreviewClose"].tap()
         XCTAssertTrue(app.buttons["ДОБАВИТЬ"].waitForExistence(timeout:5))
         let attachment=XCTAttachment(screenshot:XCUIScreen.main.screenshot())
         attachment.name="Editor after character insertion and frame playback"
