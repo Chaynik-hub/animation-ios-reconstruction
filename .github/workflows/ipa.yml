@@ -1,6 +1,11 @@
 name: Build native iOS IPA
 on:
   workflow_dispatch:
+    inputs:
+      preview:
+        description: 'Build the current incomplete version for testing on a phone'
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -10,6 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Enforce complete original parity before final IPA packaging
+        if: ${{ !inputs.preview }}
         run: python3 scripts/check-parity.py
       - run: brew install xcodegen
       - run: swift test
