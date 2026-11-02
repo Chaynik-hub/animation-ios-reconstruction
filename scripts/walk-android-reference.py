@@ -21,6 +21,9 @@ for step in range(24):
     if next_node is None:
         next_node=next((n for n in nodes if n.get('resource-id','').endswith(':id/boarding3_choice_learn') and n.get('enabled')=='true'),None)
     if next_node is None:
+        # Close the observed subscription screen; never start purchases or trials.
+        next_node=next((n for n in nodes if n.get('resource-id','').endswith(':id/paywall2_close') and n.get('enabled')=='true'),None)
+    if next_node is None:
         drag_hint=next((n for n in nodes if n.get('resource-id','').endswith(':id/boarding2_drag_hint') and n.get('text')=='Drag the sword'),None)
         if drag_hint is not None:
             # Gesture measured in onboarding-next/onboarding-06.png at the fixed reference viewport.
