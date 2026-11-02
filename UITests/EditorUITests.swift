@@ -10,7 +10,8 @@ final class EditorUITests:XCTestCase {
         // at runtime. This import test must match the archive, not the lesson's UI.
         XCTAssertEqual(navigator.value as? String,"1 / 2")
         XCTAssertFalse(app.alerts.firstMatch.exists,"Original ATS and its nested ATI must load without an import error")
-        let image=XCTAttachment(screenshot:app.screenshot());image.name="Original practice ATS with embedded ATI artwork";image.lifetime = .keepAlways;add(image)
+        let image=XCTAttachment(screenshot:XCUIScreen.main.screenshot());image.name="Entire display — original practice ATS with embedded ATI artwork";image.lifetime = .keepAlways;add(image)
+        let hierarchy=XCTAttachment(string:app.debugDescription);hierarchy.name="Original project accessibility geometry";hierarchy.lifetime = .keepAlways;add(hierarchy)
     }
     func testInsertCharacterCreateFrameAndPlayback() throws {
         let app=XCUIApplication()
@@ -29,7 +30,7 @@ final class EditorUITests:XCTestCase {
         XCTAssertFalse(app.buttons["ДОБАВИТЬ"].isHittable)
         app.coordinate(withNormalizedOffset:CGVector(dx:0.001,dy:0.5)).press(forDuration:0.1,thenDragTo:app.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:0.5)))
         XCTAssertTrue(app.buttons["ДОБАВИТЬ"].waitForExistence(timeout:5))
-        let attachment=XCTAttachment(screenshot:app.screenshot())
+        let attachment=XCTAttachment(screenshot:XCUIScreen.main.screenshot())
         attachment.name="Editor after character insertion and frame playback"
         attachment.lifetime = .keepAlways
         add(attachment)
