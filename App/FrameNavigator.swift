@@ -21,9 +21,9 @@ final class FrameNavigator:UIView {
             let bitmap=index==current ? active:normal
             bitmap?.draw(in:CGRect(x:(bounds.width-13)/2,y:y(index),width:13,height:13))
         }
-        let font=UIFont(name:"Roboto-Regular",size:14) ?? .systemFont(ofSize:14)
+        let font=UIFont(name:"Roboto-Bold",size:14) ?? .boldSystemFont(ofSize:14)
         (String(current+1) as NSString).draw(at:CGPoint(x:5,y:bounds.height/2-font.ascender),withAttributes:[.font:font,.foregroundColor:UIColor.black])
-        let small=UIFont(name:"Roboto-Regular",size:10) ?? .systemFont(ofSize:10)
+        let small=UIFont(name:"Roboto-Bold",size:10) ?? .boldSystemFont(ofSize:10)
         let attributes:[NSAttributedString.Key:Any]=[.font:small,.foregroundColor:UIColor.black.withAlphaComponent(0.5)]
         (String(first+1) as NSString).draw(at:CGPoint(x:10,y:10-small.ascender),withAttributes:attributes)
         (String(end) as NSString).draw(at:CGPoint(x:10,y:bounds.height-10-small.ascender),withAttributes:attributes)

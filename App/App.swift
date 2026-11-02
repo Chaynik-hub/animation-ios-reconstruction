@@ -16,7 +16,7 @@ final class SceneDelegate:UIResponder,UIWindowSceneDelegate {
     func scene(_ scene:UIScene,willConnectTo session:UISceneSession,options:UIScene.ConnectionOptions) {
         guard let windowScene=scene as? UIWindowScene else{return}
         let window=UIWindow(windowScene:windowScene);window.rootViewController=EditorController();self.window=window;window.makeKeyAndVisible()
-        windowScene.requestGeometryUpdate(.iOS(interfaceOrientations:.landscapeRight))
+        if !windowScene.interfaceOrientation.isLandscape {windowScene.requestGeometryUpdate(.iOS(interfaceOrientations:.landscapeRight))}
     }
 }
 

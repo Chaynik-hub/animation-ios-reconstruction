@@ -56,4 +56,15 @@ final class InverseKinematicsTests:XCTestCase {
         XCTAssertThrowsError(try InverseKinematics.solve(&pose,jointID:2,x:50,y:50))
         XCTAssertEqual(pose,before)
     }
+    func testAngularLimitsKeepConstrainedChainCollinear()throws {
+        var pose=arm()
+        pose.joints[1].attributes["minRotation"]="0"
+        pose.joints[1].attributes["maxRotation"]="0"
+        let before=pose
+        try JointManipulation.move(&pose,jointID:2,x:160,y:80)
+        let a=atan2(pose.joints[1].y-pose.joints[0].y,pose.joints[1].x-pose.joints[0].x)
+        let b=atan2(pose.joints[2].y-pose.joints[1].y,pose.joints[2].x-pose.joints[1].x)
+        XCTAssertEqual(atan2(sin(b-a),cos(b-a)),0,accuracy:0.00011)
+        assertLengths(before,pose)
+    }
 }
