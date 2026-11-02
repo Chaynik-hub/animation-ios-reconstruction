@@ -78,7 +78,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         if ProcessInfo.processInfo.arguments.contains("--ui-capture"),let first=workspace.catalog.first(where:{$0.name.contains("boy")}){workspace.add(first)}
     }
     func button(_ title:String,_ action:@escaping()->Void)->UIButton{let b=UIButton(type:.system);b.setTitle(title,for:.normal);b.tintColor = .white;b.addAction(UIAction{_ in action()},for:.touchUpInside);return b}
-    func update(){refreshFrameTools();frameLabel.text="\(workspace.index+1) /\n\(workspace.document.frames.count)";frameNavigator.count=workspace.document.frames.count;frameNavigator.current=workspace.index;canvas.setNeedsDisplay()}
+    func update(){refreshFrameTools();frameLabel.text="\(workspace.index+1) /\n\(workspace.document.frames.count)";frameNavigator.count=workspace.document.frames.count;frameNavigator.current=workspace.index;canvas.updateTransformControls();canvas.setNeedsDisplay()}
     func perform(_ work:()throws->Void){do{try work()}catch{message("Не удалось выполнить",String(describing:error))}}
     func message(_ title:String,_ text:String){let alert=UIAlertController(title:title,message:text,preferredStyle:.alert);alert.addAction(UIAlertAction(title:"OK",style:.default));present(alert,animated:true)}
     var toolPanel:UIView?

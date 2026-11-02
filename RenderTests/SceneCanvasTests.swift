@@ -35,6 +35,19 @@ final class SceneCanvasTests: XCTestCase {
         let exported = try rgba(canvas.snapshot(size: CGSize(width: 100, height: 100)), x: 50, y: 50)
         XCTAssertGreaterThan(exported[0], 250); XCTAssertGreaterThan(exported[2], 250)
     }
+    func testBaseTapShowsThreeOriginalHandlesWithConstantHitSize() throws {
+        let workspace = Workspace()
+        let unit = SceneUnit(name: "test:unit", joints: [Joint(id: 0, x: 50, y: 50, parent: nil, attributes: ["base":"true"]), Joint(id: 1, x: 70, y: 50, parent: 0, attributes: [:])], attributes: [:])
+        workspace.catalog = [ArtworkDefinition(name: "test:unit", points: [], parts: [], thumbnail: nil)]
+        workspace.document = SceneDocument(width: 100, height: 100, interframes: 4, frames: [SceneFrame(id: 0, units: [unit], attributes: [:])], attributes: [:]); workspace.selected = nil
+        let canvas = SceneCanvas(workspace); canvas.frame = CGRect(x: 0, y: 0, width: 500, height: 500)
+        canvas.selectBase(at: CGPoint(x: 250, y: 250))
+        let handles = canvas.subviews.compactMap { $0 as? UIButton }
+        XCTAssertEqual(handles.count, 3); XCTAssertTrue(handles.allSatisfy { !$0.isHidden && $0.frame.width == 65 && $0.image(for: .normal) != nil })
+        canvas.cameraScale = 2; canvas.updateTransformControls()
+        XCTAssertTrue(handles.allSatisfy { $0.frame.width == 65 && canvas.bounds.contains($0.frame) })
+        canvas.handles = false; canvas.updateTransformControls(); XCTAssertTrue(handles.allSatisfy(\.isHidden))
+    }
     private func rgba(_ image: UIImage, x: Int, y: Int) throws -> [Int] {
         let cg = try XCTUnwrap(image.cgImage)
         let px = Int(CGFloat(x) * image.scale), py = Int(CGFloat(y) * image.scale)

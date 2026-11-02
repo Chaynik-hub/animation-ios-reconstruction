@@ -112,7 +112,7 @@ final class Workspace {
     }
 }
 
-final class SceneCanvas: UIView {
+final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
     let workspace: Workspace
     var displayed: SceneFrame?
     var handles = true
@@ -127,7 +127,95 @@ final class SceneCanvas: UIView {
     private var dragged: (Int,Int)?
     private var before = CGPoint.zero
     private var captureOffset = CGPoint.zero
-    init(_ workspace:Workspace) {self.workspace=workspace;super.init(frame:.zero);isOpaque=true;addGestureRecognizer(UIPanGestureRecognizer(target:self,action:#selector(pan(_:))));addGestureRecognizer(UIPinchGestureRecognizer(target:self,action:#selector(pinch(_:))))}
+    private var transformButtons: [UIButton] = []
+    private var transformStart: SceneDocument?
+    private var transformUnit = 0
+    private var transformCenter = CGPoint.zero
+    private var transformTouchOffset = CGPoint.zero
+    private var transformChanged = false
+    init(_ workspace: Workspace) {
+        self.workspace = workspace; super.init(frame: .zero); isOpaque = true; accessibilityIdentifier = "SceneCanvas"
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(pan(_:))); pan.delegate = self; addGestureRecognizer(pan)
+        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinch(_:))); pinch.delegate = self; addGestureRecognizer(pinch)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(selectBase(_:))); tap.delegate = self; addGestureRecognizer(tap)
+        for (index, name) in ["rotator", "scaler", "mover"].enumerated() {
+            let button = UIButton(type: .custom); button.tag = index; button.isHidden = true
+            button.setImage(UIImage(contentsOfFile: Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/" + name + ".png").path), for: .normal)
+            button.imageView?.contentMode = .scaleAspectFit; button.imageEdgeInsets = UIEdgeInsets(top: 7.5, left: 7.5, bottom: 7.5, right: 7.5)
+            button.accessibilityIdentifier = ["SpriteRotate", "SpriteScale", "SpriteMove"][index]
+            button.accessibilityLabel = ["Повернуть спрайт", "Масштаб спрайта", "Переместить спрайт"][index]
+            button.accessibilityHint = "Потяните ручку для изменения"
+            button.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(transformDrag(_:))))
+            addSubview(button); transformButtons.append(button)
+        }
+    }
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        var target = touch.view
+        while let view = target { if view is UIControl { return false }; target = view.superview }
+        return true
+    }
+    override func layoutSubviews() { super.layoutSubviews(); updateTransformControls() }
+    func updateTransformControls() {
+        guard handles, displayed == nil, ratio > 0, let box = selectedArtworkBounds(), let selected = workspace.selected else {
+            transformButtons.forEach { $0.isHidden = true }; return
+        }
+        let centers = [CGPoint(x: box.minX * ratio + origin.x - 80 / 1.5, y: box.minY * ratio + origin.y - 80 / 1.5),
+                       CGPoint(x: box.maxX * ratio + origin.x + 80 / 1.5, y: box.minY * ratio + origin.y - 80 / 1.5),
+                       CGPoint(x: box.midX * ratio + origin.x, y: box.maxY * ratio + origin.y + 80)]
+        for (button, point) in zip(transformButtons, centers) {
+            // Keep the full hit target reachable when a large sprite fills the iPhone viewport.
+            let center = CGPoint(x: min(max(32.5, point.x), max(32.5, bounds.width - 32.5)), y: min(max(32.5, point.y), max(32.5, bounds.height - 32.5)))
+            button.frame = CGRect(x: center.x - 32.5, y: center.y - 32.5, width: 65, height: 65); button.isHidden = false
+            let unit = workspace.frame.units[selected]
+            if button.tag == 1 { button.accessibilityValue = unit.attributes["scale"] ?? "1" }
+            if button.tag == 0, let end = unit.joints.first(where: { $0.parent != nil }), let parent = unit.joints.first(where: { $0.id == end.parent }) { button.accessibilityValue = String(atan2(end.y - parent.y, end.x - parent.x)) }
+            if button.tag == 2, let base = unit.joints.first(where: { $0.attributes["base"] == "true" }) { button.accessibilityValue = "\(base.x), \(base.y)" }
+        }
+    }
+    func selectBase(at screen: CGPoint) {
+        let point = CGPoint(x: (screen.x - origin.x) / ratio, y: (screen.y - origin.y) / ratio)
+        var distance = 22 / ratio
+        var selected: Int?
+        for i in UnitEditing.orderedIndices(in: workspace.frame).reversed() {
+            guard let base = workspace.frame.units[i].joints.first(where: { $0.attributes["base"] == "true" }) else { continue }
+            let value = hypot(base.x - point.x, base.y - point.y)
+            if value < distance { distance = value; selected = i }
+        }
+        workspace.selected = selected; updateTransformControls(); setNeedsDisplay()
+    }
+    @objc private func selectBase(_ gesture: UITapGestureRecognizer) { selectBase(at: gesture.location(in: self)) }
+    @objc private func transformDrag(_ gesture: UIPanGestureRecognizer) {
+        guard let button = gesture.view as? UIButton else { return }
+        if gesture.state == .began {
+            guard let selected = workspace.selected, workspace.frame.units.indices.contains(selected) else { return }
+            transformStart = workspace.document; transformUnit = selected; transformCenter = button.center; transformChanged = false
+            let down = gesture.location(in: self), translation = gesture.translation(in: self)
+            transformTouchOffset = CGPoint(x: down.x - translation.x - button.center.x, y: down.y - translation.y - button.center.y)
+        }
+        guard let snapshot = transformStart else { return }
+        if gesture.state == .began || gesture.state == .changed {
+            guard let base = snapshot.frames[workspace.index].units[transformUnit].joints.first(where: { $0.attributes["base"] == "true" }) else { return }
+            let location = gesture.location(in: self)
+            let target = CGPoint(x: (location.x - transformTouchOffset.x - origin.x) / ratio, y: (location.y - transformTouchOffset.y - origin.y) / ratio)
+            let initial = CGPoint(x: (transformCenter.x - origin.x) / ratio, y: (transformCenter.y - origin.y) / ratio)
+            let operation: SpriteTransform.Operation
+            if button.tag == 0 { operation = .rotate(radians: atan2(target.y - base.y, target.x - base.x) - atan2(initial.y - base.y, initial.x - base.x)) }
+            else if button.tag == 1 {
+                let distance = hypot(initial.x - base.x, initial.y - base.y)
+                guard distance > 1e-8 else { return }
+                operation = .scale(factor: max(1e-4, hypot(target.x - base.x, target.y - base.y) / distance))
+            } else { operation = .move(dx: target.x - initial.x, dy: target.y - initial.y) }
+            var frame = snapshot.frames[workspace.index]
+            do { try SpriteTransform.apply(operation, to: &frame, unitIndex: transformUnit) } catch { return }
+            workspace.document.frames[workspace.index] = frame; transformChanged = frame != snapshot.frames[workspace.index]
+            updateTransformControls(); setNeedsDisplay()
+        } else {
+            if gesture.state == .cancelled || gesture.state == .failed { workspace.document = snapshot }
+            else if transformChanged { workspace.history.append(snapshot); if workspace.history.count > 60 { workspace.history.removeFirst() }; workspace.future = [] }
+            transformStart = nil; updateTransformControls(); workspace.notify()
+        }
+    }
+
     required init?(coder:NSCoder){fatalError()}
     var viewport: CGRect {bounds.insetBy(dx:12,dy:12)}
     var ratio: CGFloat {min(viewport.width/workspace.document.width,viewport.height/workspace.document.height)*cameraScale}
@@ -184,7 +272,7 @@ final class SceneCanvas: UIView {
             }
         }
     }
-    @objc func pinch(_ gesture:UIPinchGestureRecognizer){cameraScale=min(4,max(0.25,cameraScale*gesture.scale));gesture.scale=1;setNeedsDisplay()}
+    @objc func pinch(_ gesture:UIPinchGestureRecognizer){cameraScale=min(4,max(0.25,cameraScale*gesture.scale));gesture.scale=1;updateTransformControls();setNeedsDisplay()}
     @objc func pan(_ gesture:UIPanGestureRecognizer){
         let screen=gesture.location(in:self);let p=CGPoint(x:(screen.x-origin.x)/ratio,y:(screen.y-origin.y)/ratio)
         if gesture.state == .began {
@@ -196,10 +284,10 @@ final class SceneCanvas: UIView {
                 let id=workspace.frame.units[i].joints[j].id
                 try? FrameManipulation.move(&workspace.document.frames[workspace.index],unitIndex:i,jointID:id,x:p.x-captureOffset.x,y:p.y-captureOffset.y,stretch:stretch)
             } else {let d=gesture.translation(in:self);cameraOffset.x+=d.x;cameraOffset.y+=d.y;gesture.setTranslation(.zero,in:self)}
-            before=p;setNeedsDisplay()
+            before=p;updateTransformControls();setNeedsDisplay()
         } else {
             if gesture.state == .ended,let (unitIndex,_)=dragged,FrameManipulation.attachNearby(&workspace.document.frames[workspace.index],unitIndex:unitIndex,radius:25/ratio){workspace.selected=nil}
-            dragged=nil;workspace.notify()
+            dragged=nil;updateTransformControls();workspace.notify()
         }
     }
     func snapshot(size:CGSize)->UIImage {let format=UIGraphicsImageRendererFormat();format.scale=1;return UIGraphicsImageRenderer(size:size,format:format).image{context in

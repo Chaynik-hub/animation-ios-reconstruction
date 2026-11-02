@@ -2,6 +2,31 @@ import XCTest
 
 final class EditorUITests:XCTestCase {
     override func setUpWithError()throws {XCUIDevice.shared.orientation = .landscapeLeft}
+    func testBasePointTransformHandlesAndSingleGestureUndo() throws {
+        let app = XCUIApplication(); app.launchArguments = ["--reference-practice"]; app.launch()
+        XCTAssertTrue(app.buttons["ДОБАВИТЬ"].waitForExistence(timeout: 10))
+        app.buttons["ДОБАВИТЬ"].tap(); app.collectionViews.cells["catalog-pack-jungle"].tap()
+        app.collectionViews.cells["catalog-item-jungle:lion"].tap(); app.buttons["Закрыть каталог"].tap()
+        let canvas = app.otherElements["SceneCanvas"]
+        canvas.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        let scale = app.buttons["SpriteScale"], rotate = app.buttons["SpriteRotate"], move = app.buttons["SpriteMove"]
+        XCTAssertTrue(scale.waitForExistence(timeout: 5)); XCTAssertTrue(rotate.isHittable); XCTAssertTrue(move.isHittable)
+        let initialScale = scale.value as? String
+        let from = scale.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+        from.press(forDuration: 0.1, thenDragTo: from.withOffset(CGVector(dx: -55, dy: 45)))
+        XCTAssertNotEqual(scale.value as? String, initialScale)
+        app.buttons["ОТМЕНА"].tap(); canvas.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        XCTAssertEqual(scale.value as? String, initialScale, "One undo restores the whole scale gesture")
+        let angle = rotate.value as? String
+        let rotationStart = rotate.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+        rotationStart.press(forDuration: 0.1, thenDragTo: rotationStart.withOffset(CGVector(dx: 55, dy: 65)))
+        XCTAssertNotEqual(rotate.value as? String, angle)
+        let position = move.value as? String
+        let moveStart = move.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+        moveStart.press(forDuration: 0.1, thenDragTo: moveStart.withOffset(CGVector(dx: 35, dy: -30)))
+        XCTAssertNotEqual(move.value as? String, position)
+        let image = XCTAttachment(screenshot: XCUIScreen.main.screenshot()); image.name = "Original rotate scale move handles after gestures"; image.lifetime = .keepAlways; add(image)
+    }
     func testFramePanelClipboardAndUndo() throws {
         let app = XCUIApplication(); app.launchArguments = ["--reference-practice"]; app.launch()
         let navigator = app.otherElements["FrameNavigator"]
