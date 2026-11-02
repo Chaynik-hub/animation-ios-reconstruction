@@ -150,7 +150,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             addSubview(button); transformButtons.append(button)
         }
     }
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool { transformStart == nil }
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool { transformStart == nil }
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         var target = touch.view
         while let view = target { if view is UIControl { return false }; target = view.superview }
