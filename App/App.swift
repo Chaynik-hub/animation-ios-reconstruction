@@ -64,6 +64,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         shift.addAction(UIAction{[weak self] _ in self?.canvas.stretch=false;self?.shift.alpha=1},for:[.touchUpInside,.touchUpOutside,.touchCancel])
         view.addSubview(shift);NSLayoutConstraint.activate([shift.leadingAnchor.constraint(equalTo:sidebar.trailingAnchor),shift.topAnchor.constraint(equalTo:view.topAnchor),shift.widthAnchor.constraint(equalToConstant:48),shift.heightAnchor.constraint(equalToConstant:48)])
         workspace.onChange = {[weak self] in self?.update()};restoreAudio();update()
+        if ProcessInfo.processInfo.arguments.contains("--reference-practice"),let url=Bundle.main.resourceURL?.appendingPathComponent("Content/Reference/practice.ats") {perform{try workspace.load(url)}}
         if ProcessInfo.processInfo.arguments.contains("--ui-capture"),let first=workspace.catalog.first(where:{$0.name.contains("boy")}){workspace.add(first)}
     }
     func button(_ title:String,_ action:@escaping()->Void)->UIButton{let b=UIButton(type:.system);b.setTitle(title,for:.normal);b.tintColor = .white;b.addAction(UIAction{_ in action()},for:.touchUpInside);return b}

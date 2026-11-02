@@ -1,6 +1,14 @@
 import XCTest
 
 final class EditorUITests:XCTestCase {
+    func testOriginalATSWithEmbeddedArtwork()throws {
+        let app=XCUIApplication();app.launchArguments=["--reference-practice"];app.launch()
+        let navigator=app.otherElements["FrameNavigator"]
+        XCTAssertTrue(navigator.waitForExistence(timeout:10))
+        XCTAssertEqual(navigator.value as? String,"1 / 6")
+        XCTAssertFalse(app.alerts.firstMatch.exists,"Original ATS and its nested ATI must load without an import error")
+        let image=XCTAttachment(screenshot:app.screenshot());image.name="Original practice ATS with embedded ATI artwork";image.lifetime = .keepAlways;add(image)
+    }
     func testInsertCharacterCreateFrameAndPlayback() throws {
         let app=XCUIApplication()
         app.launch()

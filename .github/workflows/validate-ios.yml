@@ -20,6 +20,12 @@ jobs:
           xcrun simctl boot "$DEVICE"
           xcrun simctl bootstatus "$DEVICE" -b
           xcodebuild -project AnimationIOS.xcodeproj -scheme AnimationIOS -destination "platform=iOS Simulator,id=$DEVICE" -derivedDataPath build/validation -resultBundlePath validation/Editor.xcresult CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- test 2>&1 | tee validation/build.log
+      - name: Export captured UI screenshots
+        if: always()
+        run: |
+          if [ -d validation/Editor.xcresult ]; then
+            xcrun xcresulttool export attachments --path validation/Editor.xcresult --output-path validation/screenshots
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
