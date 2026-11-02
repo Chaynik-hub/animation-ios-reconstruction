@@ -65,6 +65,21 @@ for step in range(24):
                     adb('shell','uiautomator','dump','/sdcard/post-play.xml')
                     (root/'practice-post-play.xml').write_text(adb('shell','cat','/sdcard/post-play.xml'))
                     (root/'practice-post-play.png').write_bytes(adb('exec-out','screencap','-p',binary=True))
+                    # Now the lesson has restored normal tools. Capture each
+                    # existing toolbar panel, dismissing it before the next one.
+                    for resource,label in [('main_btn_insert','items'),('main_btn_props','unit'),('main_btn_frame','frame'),('main_btn_nav','drawer')]:
+                        adb('shell','uiautomator','dump','/sdcard/toolbar.xml')
+                        toolbar_xml=adb('shell','cat','/sdcard/toolbar.xml')
+                        target=next((n for n in ET.fromstring(toolbar_xml).iter('node') if n.get('resource-id','').endswith(':id/'+resource)),None)
+                        if target is None:continue
+                        xy=list(map(int,re.findall(r'\d+',target.get('bounds',''))))
+                        if len(xy)!=4:continue
+                        adb('shell','input','tap',str((xy[0]+xy[2])//2),str((xy[1]+xy[3])//2))
+                        time.sleep(3)
+                        adb('shell','uiautomator','dump','/sdcard/panel.xml')
+                        (root/f'panel-{label}.xml').write_text(adb('shell','cat','/sdcard/panel.xml'))
+                        (root/f'panel-{label}.png').write_bytes(adb('exec-out','screencap','-p',binary=True))
+                        adb('shell','input','keyevent','4');time.sleep(1)
                     break
             adb('shell','input','keyevent','4')
             time.sleep(3)
