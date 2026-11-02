@@ -79,6 +79,16 @@ for step in range(24):
                         adb('shell','uiautomator','dump','/sdcard/panel.xml')
                         (root/f'panel-{label}.xml').write_text(adb('shell','cat','/sdcard/panel.xml'))
                         (root/f'panel-{label}.png').write_bytes(adb('exec-out','screencap','-p',binary=True))
+                        if label == 'unit':
+                            panel_nodes = list(ET.fromstring(adb('shell','cat','/sdcard/panel.xml')).iter('node'))
+                            thumbnail = next((n for n in panel_nodes if n.get('resource-id','').endswith(':id/unit_arrange_elem_label')), None)
+                            if thumbnail is not None:
+                                bounds = list(map(int,re.findall(r'\d+',thumbnail.get('bounds',''))))
+                                adb('shell','input','tap',str((bounds[0]+bounds[2])//2),str((bounds[1]+bounds[3])//2))
+                                time.sleep(3)
+                                adb('shell','uiautomator','dump','/sdcard/unit-properties.xml')
+                                (root/'unit-properties.xml').write_text(adb('shell','cat','/sdcard/unit-properties.xml'))
+                                (root/'unit-properties.png').write_bytes(adb('exec-out','screencap','-p',binary=True))
                         adb('shell','input','keyevent','4');time.sleep(1)
                     break
             adb('shell','input','keyevent','4')
