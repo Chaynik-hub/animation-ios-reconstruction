@@ -100,6 +100,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         guard let button = sidebar.arrangedSubviews[2] as? UIButton else { return }
         var configuration = button.configuration
         configuration?.background.backgroundColor = active ? .original(0x72bd00) : .clear
+        configuration?.image = configuration?.image?.withRenderingMode(active ? .alwaysTemplate : .alwaysOriginal)
         configuration?.background.cornerRadius = 0
         configuration?.baseForegroundColor = active ? .white : .original(0x72bd00)
         button.configuration = configuration
@@ -118,6 +119,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func highlightFrameTools(_ active: Bool) {
         guard sidebar.arrangedSubviews.indices.contains(4), let button = sidebar.arrangedSubviews[4] as? UIButton else { return }
         var configuration = button.configuration
+        configuration?.image = configuration?.image?.withRenderingMode(active ? .alwaysTemplate : .alwaysOriginal)
         configuration?.background.cornerRadius = 0
         configuration?.background.backgroundColor = active ? .original(0x449ec9) : .clear
         configuration?.baseForegroundColor = active ? .white : .original(0x449ec9)
