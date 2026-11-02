@@ -6,12 +6,18 @@ struct ArtworkDefinition: Decodable {
     var points: [[String:String]]
     var parts: [[String:String]]
     var thumbnail: String?
+    var defaultScale: Double?
+    var titles: [String:String]?
+    var displayTitle:String {let language=Locale.preferredLanguages.first?.components(separatedBy:"-").first ?? "en";return titles?[language] ?? titles?["en"] ?? name}
     func unit(at location: CGPoint) -> SceneUnit {
+        let scale=defaultScale ?? 1
+        let base=points.first(where:{$0["base"]=="true"}) ?? [:]
+        let baseX=Double(base["x"] ?? "0") ?? 0,baseY=Double(base["y"] ?? "0") ?? 0
         let joints = points.compactMap { p -> Joint? in
             guard let id = Int(p["id"] ?? ""), let x = Double(p["x"] ?? ""), let y = Double(p["y"] ?? "") else { return nil }
-            return Joint(id: id,x: x+location.x,y: y+location.y,parent:p["par"].flatMap(Int.init),attributes:p)
+            return Joint(id: id,x: location.x+(x-baseX)*scale,y: location.y+(y-baseY)*scale,parent:p["par"].flatMap(Int.init),attributes:p)
         }
-        return SceneUnit(name:name,joints:joints,attributes:["scale":"1","alpha":"1","flipped":"false"])
+        return SceneUnit(name:name,joints:joints,attributes:["scale":String(scale),"alpha":"1","flipped":"false","state":"0"])
     }
 }
 
@@ -106,7 +112,14 @@ final class SceneCanvas: UIView {
             if let definition {
                 let scale=Double(unit.attributes["scale"] ?? "1") ?? 1
                 let flipped=unit.attributes["flipped"]=="true"
-                for part in definition.parts.sorted(by:{(Int($0["weight"] ?? "0") ?? 0)<(Int($1["weight"] ?? "0") ?? 0)}) {
+                let state=Int(unit.attributes["state"] ?? "0") ?? 0
+                let grouped=Dictionary(grouping:definition.parts,by:{($0["start"] ?? "")+":"+($0["end"] ?? "")})
+                let selectedParts=grouped.values.compactMap { candidates -> [String:String]? in
+                    let matching=candidates.filter{($0["flipped"]=="true")==flipped}
+                    let variants=matching.isEmpty ? candidates.filter{$0["flipped"] != "true"}:matching
+                    return variants.first{(Int($0["state"] ?? "0") ?? 0)==state} ?? variants.first{(Int($0["state"] ?? "0") ?? 0)==0}
+                }
+                for part in selectedParts.sorted(by:{(Int($0["weight"] ?? "0") ?? 0)<(Int($1["weight"] ?? "0") ?? 0)}) {
                     guard let start=Int(part["start"] ?? ""),let end=Int(part["end"] ?? ""),let a=joints[start],let b=joints[end],let imagePath=part["image"],let bitmap=image(imagePath) else{continue}
                     c.saveGState();c.setAlpha(Double(unit.attributes["alpha"] ?? "1") ?? 1);c.translateBy(x:a.x,y:a.y);c.rotate(by:atan2(b.y-a.y,b.x-a.x));c.scaleBy(x:scale,y:flipped && part["flipped"] != "true" ? -scale:scale)
                     bitmap.draw(in:CGRect(x:Double(part["x_offset"] ?? "0") ?? 0,y:Double(part["y_offset"] ?? "0") ?? 0,width:bitmap.size.width,height:bitmap.size.height));c.restoreGState()

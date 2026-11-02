@@ -18,7 +18,13 @@ for step in range(24):
     next_node=next((n for n in nodes if ':id/boarding' in n.get('resource-id','') and n.get('text','').upper() in ['NEXT','DONE','SKIP'] and n.get('clickable')=='true' and n.get('enabled')=='true'),None)
     if next_node is None:
         next_node=next((n for n in nodes if n.get('resource-id','').endswith(':id/boarding4_play') and n.get('enabled')=='true'),None)
-    if next_node is None:break
+    if next_node is None:
+        drag_hint=next((n for n in nodes if n.get('resource-id','').endswith(':id/boarding2_drag_hint') and n.get('text')=='Drag the sword'),None)
+        if drag_hint is not None:
+            # Gesture measured in onboarding-next/onboarding-06.png at the fixed reference viewport.
+            adb('shell','input','swipe','440','408','515','294','800')
+            continue
+        break
     bounds=list(map(int,re.findall(r'\d+',next_node.get('bounds',''))))
     if len(bounds)!=4:break
     adb('shell','input','tap',str((bounds[0]+bounds[2])//2),str((bounds[1]+bounds[3])//2))
