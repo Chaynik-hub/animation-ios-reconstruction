@@ -31,7 +31,7 @@ extension EditorController: UIColorPickerViewControllerDelegate {
         guard let image=UIImage(contentsOfFile:url.path) else{throw SceneReadError.invalidScene}
         let entry=try UserBackgroundLibrary.save(image,title:url.deletingPathExtension().lastPathComponent,directory:workspace.directory);selectUserBackground(entry)
     }
-    func selectUserBackground(_ entry:BackgroundDefinition){workspace.checkpoint();workspace.document.frames[workspace.index].attributes["nativeBackgroundID"]=entry.id;workspace.document.frames[workspace.index].attributes.removeValue(forKey:"nativeBackgroundColor");workspace.document.frames[workspace.index].attributes.removeValue(forKey:"nativeBackgroundImage");workspace.notify()}
+    func selectUserBackground(_ entry:BackgroundDefinition){workspace.backgroundLibraryCache=nil;workspace.checkpoint();workspace.document.frames[workspace.index].attributes["nativeBackgroundID"]=entry.id;workspace.document.frames[workspace.index].attributes.removeValue(forKey:"nativeBackgroundColor");workspace.document.frames[workspace.index].attributes.removeValue(forKey:"nativeBackgroundImage");workspace.notify()}
     func drawBackground(){let controller=BackgroundDrawingController(size:CGSize(width:workspace.document.width,height:workspace.document.height)){[weak self] image in self?.perform{guard let self else{return};let entry=try UserBackgroundLibrary.save(image,title:"Рисунок",directory:self.workspace.directory);self.selectUserBackground(entry)}};controller.modalPresentationStyle = .fullScreen;present(controller,animated:false)}
 }
 

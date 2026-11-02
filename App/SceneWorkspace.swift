@@ -29,6 +29,7 @@ final class Workspace {
     var index = 0
     var selected: Int?
     var latchedUnitName: String?
+    var backgroundLibraryCache: [BackgroundDefinition]?
     var history: [SceneDocument] = []
     var future: [SceneDocument] = []
     let bundledCatalog = (try? JSONDecoder().decode([ArtworkDefinition].self,from:Data(contentsOf:Bundle.main.resourceURL!.appendingPathComponent("Content/catalog.json")))) ?? []
@@ -187,6 +188,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         var distance = 22 / ratio
         var selected: Int?
     var latchedUnitName: String?
+    var backgroundLibraryCache: [BackgroundDefinition]?
         for i in UnitEditing.orderedIndices(in: workspace.frame).reversed() where workspace.canInteract(with:i) {
             guard let base = workspace.frame.units[i].joints.first(where: { $0.attributes["base"] == "true" }) else { continue }
             let value = hypot(base.x - point.x, base.y - point.y)

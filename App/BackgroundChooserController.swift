@@ -49,6 +49,11 @@ private enum BackgroundAssets {
         return (try? JSONDecoder().decode([BackgroundDefinition].self,from:data)) ?? []
     }()
     static let cache: NSCache<NSString,UIImage> = {let cache=NSCache<NSString,UIImage>();cache.countLimit=3;cache.totalCostLimit=64*1024*1024;return cache}()
+    static func custom(_ path:String,workspace:Workspace)->UIImage? {
+        if let image=cache.object(forKey:path as NSString){return image}
+        guard let url=workspace.artworkURL(path),let image=UIImage(contentsOfFile:url.path) else{return nil}
+        cache.setObject(image,forKey:path as NSString,cost:(image.cgImage?.bytesPerRow ?? 0)*(image.cgImage?.height ?? 0));return image
+    }
     static func image(_ definition: BackgroundDefinition) -> UIImage? {
         if let image=cache.object(forKey:definition.id as NSString){return image}
         guard let url=Bundle.main.resourceURL?.appendingPathComponent("Content/"+definition.image),let image=UIImage(contentsOfFile:url.path) else{return nil}
@@ -56,7 +61,10 @@ private enum BackgroundAssets {
         cache.setObject(image,forKey:definition.id as NSString,cost:cost);return image
     }
 }
-extension Workspace {var backgroundCatalog: [BackgroundDefinition] {BackgroundAssets.definitions+UserBackgroundLibrary.list(in:directory)}}
+extension Workspace {var backgroundCatalog:[BackgroundDefinition] {
+    if let cache=backgroundLibraryCache{return cache}
+    let values=BackgroundAssets.definitions+UserBackgroundLibrary.list(in:directory);backgroundLibraryCache=values;return values
+}}
 extension SceneCanvas {
     func paintBackground(_ frame: SceneFrame, in context: CGContext) {
         if let raw=frame.attributes["nativeBackgroundColor"] {
@@ -64,8 +72,8 @@ extension SceneCanvas {
             if values.count==4 {UIColor(red:values[0],green:values[1],blue:values[2],alpha:values[3]).setFill();context.fill(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))}
         }
         let selectedImage:UIImage?
-        if let custom=frame.attributes["nativeBackgroundImage"] {selectedImage=image(custom)}
-        else if let id=frame.attributes["nativeBackgroundID"],let definition=workspace.backgroundCatalog.first(where:{$0.id==id}) {selectedImage=definition.image.hasPrefix("@local/") ? image(definition.image):BackgroundAssets.image(definition)}
+        if let custom=frame.attributes["nativeBackgroundImage"] {selectedImage=BackgroundAssets.custom(custom,workspace:workspace)}
+        else if let id=frame.attributes["nativeBackgroundID"],let definition=workspace.backgroundCatalog.first(where:{$0.id==id}) {selectedImage=definition.image.hasPrefix("@local/") ? BackgroundAssets.custom(definition.image,workspace:workspace):BackgroundAssets.image(definition)}
         else {selectedImage=nil}
         guard let image=selectedImage else{return}
         let area = CGSize(width: workspace.document.width, height: workspace.document.height)
