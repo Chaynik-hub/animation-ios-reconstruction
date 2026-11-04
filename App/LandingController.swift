@@ -18,6 +18,7 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
     private lazy var items = artworkButton("Конструктор\nпредметов", "landing_hex_items", pressed: "landing_hex_items_pressed", color: .original(0x00b6ff), size: 12) { [weak self] in self?.soon() }
     private lazy var community = artworkButton("Дискорд", "landing_community", color: .original(0xf5c8ff), size: 12) { [weak self] in self?.soon() }
     private lazy var settings = artworkButton("", "cog", color: .white, size: 12) { [weak self] in self?.soon() }
+    private lazy var onlineButton = textButton("Онлайн", size: 14) { [weak self] in self?.showOnline() }
     private lazy var importButton = textButton("Открыть из файлов", size: 14) { [weak self] in self?.importProject() }
 
     override var prefersStatusBarHidden: Bool { true }
@@ -54,7 +55,7 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
         projectGrid.spacing = 1
         projects.addSubview(projectGrid)
         settings.accessibilityLabel = "Настройки"
-        [separator, cartoon, items, community, settings, version, projects, importButton, empty].forEach { panel.addSubview($0) }
+        [separator, cartoon, items, community, settings, version, projects, importButton, onlineButton, empty].forEach { panel.addSubview($0) }
         selectProjects(false, animated: false)
     }
 
@@ -77,6 +78,7 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
         items.frame = CGRect(x: split + 8, y: h * 0.09, width: min(118, w - split - 8), height: 132)
         community.frame = CGRect(x: max(split, w - 137), y: max(0, h - 132), width: 98, height: 116)
         importButton.frame = CGRect(x: 8, y: 8, width: 170, height: 42)
+        onlineButton.frame = CGRect(x: 186, y: 8, width: 115, height: 42)
         empty.frame = CGRect(x: 0, y: 60, width: w, height: 48)
         projects.frame = showingProjects ? CGRect(x: 8, y: 58, width: w - 16, height: h - 66) : CGRect(x: 0, y: 8, width: 79, height: h - 16)
         layoutProjects()
@@ -93,6 +95,7 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
         }
         for control in [separator, cartoon, items, community, settings, version] { control.isHidden = show }
         importButton.isHidden = !show
+        onlineButton.isHidden = !show
         reloadProjects()
         view.setNeedsLayout()
         if animated && !UIAccessibility.isReduceMotionEnabled {
@@ -175,6 +178,16 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
         editor.modalPresentationStyle = .fullScreen
         editor.modalTransitionStyle = .crossDissolve
         present(editor, animated: !UIAccessibility.isReduceMotionEnabled)
+    }
+
+    private func showOnline() {
+        let feed = CommunityController { [weak self] url in
+            defer { try? FileManager.default.removeItem(at: url) }
+            self?.openEditor(url)
+        }
+        let navigation = UINavigationController(rootViewController: feed)
+        navigation.modalPresentationStyle = .fullScreen
+        present(navigation, animated: true)
     }
 
     private func importProject() {

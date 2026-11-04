@@ -4,6 +4,7 @@ extension EditorController {
         stop(); dismissTools()
         let entries: [(String,String,()->Void)] = [
             ("Сохранить","side_save",{[weak self] in self?.save()}),
+            ("Опубликовать онлайн","side_export",{[weak self] in self?.publishOnline()}),
             ("Экспорт","side_export",{[weak self] in self?.exports()}),
             ("Параметры сцены","side_edit",{[weak self] in self?.properties()}),
             ("Звук","side_audio",{[weak self] in self?.audioPicker()}),
