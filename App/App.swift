@@ -15,7 +15,9 @@ final class SceneDelegate:UIResponder,UIWindowSceneDelegate {
     var window:UIWindow?
     func scene(_ scene:UIScene,willConnectTo session:UISceneSession,options:UIScene.ConnectionOptions) {
         guard let windowScene=scene as? UIWindowScene else{return}
-        let window=UIWindow(windowScene:windowScene);window.rootViewController=EditorController();self.window=window;window.makeKeyAndVisible()
+        let window=UIWindow(windowScene:windowScene);let arguments = ProcessInfo.processInfo.arguments
+        window.rootViewController = arguments.contains(where: { $0.hasPrefix("--reference-") || $0 == "--ui-capture" }) ? EditorController() : LandingController()
+        self.window=window;window.makeKeyAndVisible()
         if !windowScene.interfaceOrientation.isLandscape {windowScene.requestGeometryUpdate(.iOS(interfaceOrientations:.landscapeRight))}
     }
 }
@@ -195,7 +197,9 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         return workspace.applyAssetAnimations(to:(try? FrameInterpolation.between(frame,next,progress:t)) ?? frame,tick:Int(max(0,elapsed*60))+startFrame*perKey)
     }
     @objc func tick(_ link:CADisplayLink){canvas.displayed=frameAt(link.timestamp-playbackStart);canvas.setNeedsDisplay()}
-    func save(){let alert=UIAlertController(title:"Сохранить сцену",message:nil,preferredStyle:.alert);alert.addTextField{$0.text=self.titleOfScene};alert.addAction(UIAlertAction(title:"Сохранить",style:.default){[weak self] _ in guard let self else{return};self.titleOfScene=alert.textFields?.first?.text ?? "Animation";self.perform{_ = try self.workspace.save(name:self.titleOfScene)}});alert.addAction(UIAlertAction(title:"Отмена",style:.cancel));present(alert,animated:true)}
+    func save(){let alert=UIAlertController(title:"Сохранить сцену",message:nil,preferredStyle:.alert);alert.addTextField{$0.text=self.titleOfScene};alert.addAction(UIAlertAction(title:"Сохранить",style:.default){[weak self] _ in guard let self else{return};self.titleOfScene=alert.textFields?.first?.text ?? "Animation";self.perform{let url = try self.workspace.save(name:self.titleOfScene)
+            let thumbnail = self.canvas.snapshot(size: CGSize(width: 320, height: 128))
+            try? thumbnail.pngData()?.write(to: url.appendingPathExtension("png"), options: .atomic)}});alert.addAction(UIAlertAction(title:"Отмена",style:.cancel));present(alert,animated:true)}
     var importingBackgroundImage=false
     var importingUserATI=false
     func importUserATI(){importingUserATI=true;pickingAudio=false;let picker=UIDocumentPickerViewController(forOpeningContentTypes:[.data],asCopy:true);picker.delegate=self;present(picker,animated:true)}
