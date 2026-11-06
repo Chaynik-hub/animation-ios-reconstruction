@@ -58,6 +58,7 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
         projectGrid.spacing = 1
         projects.addSubview(projectGrid)
         settings.accessibilityLabel = "Настройки"
+        cartoon.accessibilityIdentifier = "LandingCreateProject"
         [separator, cartoon, items, community, settings, version, projects, importButton, onlineButton, empty].forEach { panel.addSubview($0) }
         selectProjects(false, animated: false)
     }

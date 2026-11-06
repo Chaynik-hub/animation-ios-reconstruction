@@ -10,6 +10,7 @@ final class EditorUITests:XCTestCase {
         app.buttons["‹ Настройки"].tap();app.buttons["LandingProjects"].tap();app.buttons["Онлайн"].tap()
         XCTAssertTrue(app.buttons["Мои проекты"].exists)
         XCTAssertTrue(app.buttons["LandingProjects"].exists)
+        XCTAssertTrue(app.staticTexts["Пока нет опубликованных мультфильмов"].waitForExistence(timeout:30),"Native Supabase authentication and feed request must complete")
         let online = XCTAttachment(screenshot:XCUIScreen.main.screenshot());online.name="Online embedded in Load pane";online.lifetime = .keepAlways;add(online)
     }
     func testSharedMySpritesFolderPinnedInEveryPack() throws {
@@ -134,6 +135,8 @@ final class EditorUITests:XCTestCase {
     func testInsertCharacterCreateFrameAndPlayback() throws {
         let app=XCUIApplication()
         app.launch()
+        let create=app.buttons["LandingCreateProject"]
+        XCTAssertTrue(create.waitForExistence(timeout:10));create.tap()
         let insert=app.buttons["ДОБАВИТЬ"]
         XCTAssertTrue(insert.waitForExistence(timeout:10))
         insert.tap()

@@ -33,7 +33,18 @@ final class SettingsController: OriginalListController, UIDocumentPickerDelegate
     override func viewDidLoad() { super.viewDidLoad(); render() }
     private func toggle(_ title: String, _ key: String, fallback: Bool = false) {
         let on = AnimationSettings.bool(key,fallback:fallback)
-        row((on ? "☑  " : "☐  ") + title) { [weak self] in AnimationSettings.set(!on,key); self?.render() }
+        let button = row(title) { [weak self] in AnimationSettings.set(!on,key); self?.render() }
+        let image = UIGraphicsImageRenderer(size:CGSize(width:22,height:22)).image { context in
+            let box=CGRect(x:2,y:2,width:18,height:18)
+            if on {UIColor.original(0x72bd00).setFill();context.fill(box)}
+            else {UIColor.lightGray.setStroke();context.cgContext.setLineWidth(2);context.cgContext.stroke(box)}
+            if on {
+                context.cgContext.setStrokeColor(UIColor.white.cgColor);context.cgContext.setLineWidth(2)
+                context.cgContext.move(to:CGPoint(x:5,y:11));context.cgContext.addLine(to:CGPoint(x:9,y:15));context.cgContext.addLine(to:CGPoint(x:17,y:7));context.cgContext.strokePath()
+            }
+        }
+        button.setImage(image.withRenderingMode(.alwaysOriginal),for:.normal)
+        button.titleEdgeInsets.left=10;button.accessibilityLabel=title;button.accessibilityValue=on ? "Включено" : "Выключено"
     }
     private func render() {
         clear(); row("‹ Настройки") { [weak self] in self?.close() }
