@@ -2,6 +2,20 @@ import XCTest
 
 final class EditorUITests:XCTestCase {
     override func setUpWithError()throws {XCUIDevice.shared.orientation = .landscapeLeft}
+    func testHoldingFrameArrowsSeeksToEndsWithoutAddingFrames() throws {
+        let app=XCUIApplication();app.launchArguments=["--reference-practice"];app.launch()
+        let previous=app.buttons["Предыдущий кадр"],next=app.buttons["Следующий кадр"]
+        XCTAssertTrue(next.waitForExistence(timeout:10))
+        let navigator=app.otherElements["FrameNavigator"]
+        next.press(forDuration:0.8)
+        XCTAssertEqual(navigator.value as? String,"2 / 2")
+        next.press(forDuration:0.8)
+        XCTAssertEqual(navigator.value as? String,"2 / 2","Holding at the end must not insert a frame on release")
+        previous.press(forDuration:0.8)
+        XCTAssertEqual(navigator.value as? String,"1 / 2")
+        next.tap();XCTAssertEqual(navigator.value as? String,"2 / 2")
+        next.tap();XCTAssertEqual(navigator.value as? String,"3 / 3","Short taps retain the existing add-frame action")
+    }
     func testFirstNicknameContinuesToPublicationPrompt() throws {
         let app=XCUIApplication();app.launchArguments=["-community.nickname", ""];app.launch()
         app.buttons["LandingCreateProject"].tap()

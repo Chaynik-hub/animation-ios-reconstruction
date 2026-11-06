@@ -65,6 +65,11 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
             }
             control.accessibilityLabel=label;control.heightAnchor.constraint(equalToConstant:60).isActive=true
             control.addAction(UIAction{[weak self] _ in self?.step(offset)},for:.touchUpInside)
+            control.tag=offset
+            let hold=UILongPressGestureRecognizer(target:self,action:#selector(holdFrameArrow(_:)))
+            hold.minimumPressDuration=0.5
+            hold.cancelsTouchesInView=true
+            control.addGestureRecognizer(hold)
         }
         navigation.addArrangedSubview(previous);navigation.addArrangedSubview(frameNavigator);navigation.addArrangedSubview(next)
         frameNavigator.seek = {[weak self] index in guard let self else{return};self.stop();self.workspace.index=index;self.workspace.notify()}
@@ -193,6 +198,13 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         })
     }
     func step(_ offset:Int){stop();if offset>0 && workspace.index==workspace.document.frames.count-1 {perform{try workspace.addFrame()}}else{workspace.index=min(max(0,workspace.index+offset),workspace.document.frames.count-1);workspace.notify()}}
+    @objc func holdFrameArrow(_ gesture:UILongPressGestureRecognizer) {
+        guard gesture.state == .began,let arrow=gesture.view else{return}
+        stop()
+        workspace.index=arrow.tag<0 ? 0 : workspace.document.frames.count-1
+        workspace.notify()
+        if AnimationSettings.bool("vibroPref",fallback:true) {UIImpactFeedbackGenerator(style:.light).impactOccurred()}
+    }
     func stop(){displayLink?.invalidate();displayLink=nil;canvas.displayed=nil;audio?.pause();update()}
     func togglePlayback(){stop();present(PreviewController(workspace:workspace,audio:audio),animated:false)}
     func frameAt(_ elapsed:Double)->SceneFrame {
