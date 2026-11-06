@@ -2,6 +2,16 @@ import XCTest
 
 final class EditorUITests:XCTestCase {
     override func setUpWithError()throws {XCUIDevice.shared.orientation = .landscapeLeft}
+    func testFirstNicknameContinuesToPublicationPrompt() throws {
+        let app=XCUIApplication();app.launchArguments=["-community.nickname", ""];app.launch()
+        app.buttons["LandingCreateProject"].tap()
+        app.buttons["ProjectMenu"].tap();app.buttons["Опубликовать онлайн"].tap()
+        XCTAssertTrue(app.alerts["Ваш ник"].waitForExistence(timeout:5))
+        app.alerts.textFields.firstMatch.tap();app.alerts.textFields.firstMatch.typeText("CloudTest")
+        app.alerts.buttons["Продолжить"].tap()
+        XCTAssertTrue(app.alerts["Опубликовать мультфильм"].waitForExistence(timeout:5))
+        app.alerts.buttons["Отмена"].tap()
+    }
     func testSettingsAndOnlineRemainInsideLanding() throws {
         let app = XCUIApplication(); app.launch()
         app.buttons["Настройки"].tap()

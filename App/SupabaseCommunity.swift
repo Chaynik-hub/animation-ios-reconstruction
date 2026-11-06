@@ -146,7 +146,9 @@ struct CommunityError: LocalizedError {
         alert.addAction(UIAlertAction(title: "Продолжить", style: .default) { [weak alert] _ in
             let name = String((alert?.textFields?.first?.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines).prefix(32))
             guard !name.isEmpty else { return }
-            UserDefaults.standard.set(name, forKey: "community.nickname"); action(name)
+            UserDefaults.standard.set(name, forKey: "community.nickname")
+            // Publication/comment prompts must wait until the nickname dialog closes.
+            alert?.dismiss(animated: true) { action(name) }
         })
         controller.present(alert, animated: true)
     }

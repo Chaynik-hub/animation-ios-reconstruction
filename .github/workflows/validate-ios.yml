@@ -1,6 +1,11 @@
 name: Validate native reconstruction without delivering IPA
 on:
   workflow_dispatch:
+    inputs:
+      focused:
+        description: Run render and community UI regressions only
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -13,13 +18,19 @@ jobs:
       - run: swift test
       - run: xcodegen generate
       - name: Validate editor and separate preview
+        env:
+          FOCUSED: ${{ inputs.focused }}
         run: |
           set -o pipefail
           mkdir -p validation
           DEVICE=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for g in d["devices"].values() for x in g if "iPhone" in x["name"]))')
           xcrun simctl boot "$DEVICE"
           xcrun simctl bootstatus "$DEVICE" -b
-          xcodebuild -project AnimationIOS.xcodeproj -scheme AnimationIOS -destination "platform=iOS Simulator,id=$DEVICE" -derivedDataPath build/validation -resultBundlePath validation/Editor.xcresult CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- test 2>&1 | tee validation/build.log
+          TEST_SELECTION=()
+          if [ "$FOCUSED" = "true" ]; then
+            TEST_SELECTION=(-only-testing:AnimationIOSRenderTests -only-testing:AnimationIOSUITests/EditorUITests/testSettingsAndOnlineRemainInsideLanding -only-testing:AnimationIOSUITests/EditorUITests/testFirstNicknameContinuesToPublicationPrompt -only-testing:AnimationIOSUITests/EditorUITests/testInsertCharacterCreateFrameAndPlayback)
+          fi
+          xcodebuild -project AnimationIOS.xcodeproj -scheme AnimationIOS -destination "platform=iOS Simulator,id=$DEVICE" -derivedDataPath build/validation -resultBundlePath validation/Editor.xcresult CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- "${TEST_SELECTION[@]}" test 2>&1 | tee validation/build.log
       - name: Export captured UI screenshots
         if: always()
         run: |
