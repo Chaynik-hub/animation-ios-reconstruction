@@ -2,8 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AnimationCommunityURL</key>
-	<string>$(ANIMATION_COMMUNITY_URL)</string>
+	<key>SupabaseURL</key>
+	<string>https://ycgaqonybpgevvvpifac.supabase.co</string>
+	<key>SupabasePublishableKey</key>
+	<string>sb_publishable_gINA_0OpozuQD1gB8qohvg_wwpEnSju</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

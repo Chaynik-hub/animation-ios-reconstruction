@@ -1,5 +1,6 @@
 import UIKit
 import UniformTypeIdentifiers
+import AVFoundation
 
 final class LandingController: UIViewController, UIDocumentPickerDelegate {
     private let panel = UIView()
@@ -11,17 +12,19 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
     private let empty = UILabel()
     private var tabs: [UIButton] = []
     private var showingProjects = false
+    private var online: CommunityController?
+    private var settingsPanel: SettingsController?
     private var toast: UILabel?
     private var projectFiles: [URL] = []
     private let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     private lazy var cartoon = artworkButton("Новый\nМультфильм", "landing_hex2", pressed: "landing_hex_pressed2", color: .original(0x6cae00), size: 16) { [weak self] in self?.openEditor() }
     private lazy var items = artworkButton("Конструктор\nпредметов", "landing_hex_items", pressed: "landing_hex_items_pressed", color: .original(0x00b6ff), size: 12) { [weak self] in self?.soon() }
     private lazy var community = artworkButton("Дискорд", "landing_community", color: .original(0xf5c8ff), size: 12) { [weak self] in self?.soon() }
-    private lazy var settings = artworkButton("", "cog", color: .white, size: 12) { [weak self] in self?.soon() }
+    private lazy var settings = artworkButton("", "cog", color: .white, size: 12) { [weak self] in self?.showSettings() }
     private lazy var onlineButton = textButton("Онлайн", size: 14) { [weak self] in self?.showOnline() }
     private lazy var importButton = textButton("Открыть из файлов", size: 14) { [weak self] in self?.importProject() }
 
-    override var prefersStatusBarHidden: Bool { true }
+    override var prefersStatusBarHidden: Bool { AnimationSettings.bool("fullScreen",fallback:true) }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .landscape }
 
     override func viewDidLoad() {
@@ -82,12 +85,15 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
         empty.frame = CGRect(x: 0, y: 60, width: w, height: 48)
         projects.frame = showingProjects ? CGRect(x: 8, y: 58, width: w - 16, height: h - 66) : CGRect(x: 0, y: 8, width: 79, height: h - 16)
         layoutProjects()
+        online?.view.frame = projects.frame
+        settingsPanel?.view.frame = panel.bounds
         toast?.center = CGPoint(x: safe.midX, y: safe.maxY - 32)
     }
 
     func showProjects() { selectProjects(true) }
 
     private func selectProjects(_ show: Bool, animated: Bool = true) {
+        removeEmbedded()
         showingProjects = show
         for (index, tab) in tabs.enumerated() {
             tab.backgroundColor = index == (show ? 1 : 0) ? .original(0x354669) : .clear
@@ -181,13 +187,37 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
     }
 
     private func showOnline() {
-        let feed = CommunityController { [weak self] url in
-            defer { try? FileManager.default.removeItem(at: url) }
-            self?.openEditor(url)
+        if online != nil {
+            removeEmbedded(); projects.isHidden = false; reloadProjects(); onlineButton.setTitle("Онлайн",for:.normal); return
         }
-        let navigation = UINavigationController(rootViewController: feed)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
+        let feed = CommunityController { [weak self] url, title, preview in
+            guard let self else { return }
+            do {
+                let workspace = Workspace(); workspace.autosaveEnabled = false
+                try workspace.load(url)
+                if preview {
+                    let audio = workspace.document.attributes["nativeAudio"].flatMap { try? AVAudioPlayer(contentsOf: workspace.directory.appendingPathComponent($0)) }
+                    self.present(PreviewController(workspace: workspace,audio: audio),animated:false)
+                } else {
+                    let uniqueTitle = title + " " + UUID().uuidString.prefix(6)
+                    let saved = try workspace.save(name: uniqueTitle)
+                    self.openEditor(saved)
+                }
+            } catch { feedError(self,error: error) }
+        }
+        addChild(feed); panel.addSubview(feed.view); feed.view.frame = projects.frame; feed.didMove(toParent:self)
+        online = feed; projects.isHidden = true; empty.isHidden = true
+        onlineButton.setTitle("Мои проекты",for:.normal)
+    }
+    private func removeEmbedded() {
+        for controller in [online as UIViewController?, settingsPanel as UIViewController?].compactMap({$0}) {
+            controller.willMove(toParent:nil); controller.view.removeFromSuperview(); controller.removeFromParent()
+        }
+        online = nil; settingsPanel = nil; projects.isHidden = false; onlineButton.setTitle("Онлайн",for:.normal)
+    }
+    private func showSettings() {
+        let controller = SettingsController { [weak self] in self?.selectProjects(false) }
+        addChild(controller); panel.addSubview(controller.view); controller.view.frame = panel.bounds; controller.didMove(toParent:self); settingsPanel = controller
     }
 
     private func importProject() {
@@ -277,4 +307,9 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
     private func font(_ size: CGFloat) -> UIFont {
         UIFont(name: "Roboto-Regular", size: size) ?? .systemFont(ofSize: size)
     }
+}
+
+private func feedError(_ controller: UIViewController, error: Error) {
+    let alert = UIAlertController(title:"Не удалось открыть проект",message:error.localizedDescription,preferredStyle:.alert)
+    alert.addAction(UIAlertAction(title:"OK",style:.default)); controller.present(alert,animated:true)
 }

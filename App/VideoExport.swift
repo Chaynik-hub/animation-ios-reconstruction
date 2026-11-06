@@ -4,13 +4,15 @@ import AVFoundation
 extension EditorController {
     func exportVideo() {
         stop()
-        let width = min(1920,Int(workspace.document.width)/2*2)
+        let width = min(AnimationSettings.bool("high_video_quality_2") ? 1920 : 1280,Int(workspace.document.width)/2*2)
         let height = max(2,Int(Double(width)*workspace.document.height/workspace.document.width)/2*2)
         guard width>=2,height<=4096 else {message("Ошибка экспорта","Недопустимый размер видео");return}
         let url=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString+".mp4")
         do {
             let writer=try AVAssetWriter(outputURL:url,fileType:.mp4)
-            let input=AVAssetWriterInput(mediaType:.video,outputSettings:[AVVideoCodecKey:AVVideoCodecType.h264,AVVideoWidthKey:width,AVVideoHeightKey:height])
+            var compression:[String:Any] = [AVVideoAverageBitRateKey: width*height*(AnimationSettings.bool("high_video_quality_2") ? 12 : 6)]
+            if AnimationSettings.bool("compatibility_mode") {compression[AVVideoProfileLevelKey]=AVVideoProfileLevelH264BaselineAutoLevel}
+            let input=AVAssetWriterInput(mediaType:.video,outputSettings:[AVVideoCodecKey:AVVideoCodecType.h264,AVVideoWidthKey:width,AVVideoHeightKey:height,AVVideoCompressionPropertiesKey:compression])
             let adaptor=AVAssetWriterInputPixelBufferAdaptor(assetWriterInput:input,sourcePixelBufferAttributes:[kCVPixelBufferPixelFormatTypeKey as String:kCVPixelFormatType_32ARGB,kCVPixelBufferWidthKey as String:width,kCVPixelBufferHeightKey as String:height,kCVPixelBufferCGImageCompatibilityKey as String:true,kCVPixelBufferCGBitmapContextCompatibilityKey as String:true])
             guard writer.canAdd(input) else {throw SceneReadError.invalidScene};writer.add(input)
             guard writer.startWriting() else {throw writer.error ?? SceneReadError.invalidScene}

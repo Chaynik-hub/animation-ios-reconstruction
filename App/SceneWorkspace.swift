@@ -35,6 +35,7 @@ final class Workspace {
     let bundledCatalog = (try? JSONDecoder().decode([ArtworkDefinition].self,from:Data(contentsOf:Bundle.main.resourceURL!.appendingPathComponent("Content/catalog.json")))) ?? []
     var catalog:[ArtworkDefinition]=[]
     var onChange: (() -> Void)?
+    var autosaveEnabled = true
     let directory = FileManager.default.urls(for:.documentDirectory,in:.userDomainMask)[0]
     init() {
         catalog=bundledCatalog+UserSpriteLibrary.definitions(in:directory)
@@ -54,7 +55,7 @@ final class Workspace {
     }
     var frame: SceneFrame { document.frames[index] }
     func checkpoint() { history.append(document); if history.count>60 { history.removeFirst() }; future=[] }
-    func notify() { index=min(max(0,index),document.frames.count-1);onChange?();if let data=try? JSONEncoder().encode(document){try? data.write(to:directory.appendingPathComponent("Autosave.animation.json"),options:.atomic)} }
+    func notify() { index=min(max(0,index),document.frames.count-1);onChange?();if autosaveEnabled,let data=try? JSONEncoder().encode(document){try? data.write(to:directory.appendingPathComponent("Autosave.animation.json"),options:.atomic)} }
     func undo() { guard let old=history.popLast() else{return};future.append(document);document=old;restoreArtwork();selected=nil;latchedUnitName=nil;notify() }
     func redo() { guard let next=future.popLast() else{return};history.append(document);document=next;restoreArtwork();selected=nil;latchedUnitName=nil;notify() }
     func add(_ asset:ArtworkDefinition) { checkpoint();var unit=asset.unit(at:CGPoint(x:document.width/2,y:document.height/2));unit.name = UnitIdentity.inserting(unit.name,in:frame);document.frames[index].units.append(unit);selected=frame.units.count-1;notify() }
@@ -105,7 +106,9 @@ final class Workspace {
     func load(_ url:URL) throws {
         let access=url.startAccessingSecurityScopedResource();defer{if access{url.stopAccessingSecurityScopedResource()}}
         var value:SceneDocument
-        if url.pathExtension.lowercased()=="ats" {
+        if url.pathExtension.lowercased()=="animationproject" {
+            value = try CloudProjectArchive.unpack(url, into: directory)
+        } else if url.pathExtension.lowercased()=="ats" {
             let archive=try Archive(url:url,accessMode:.read)
             guard let entry=archive["model.xml"],entry.uncompressedSize<=64*1024*1024 else{throw SceneReadError.invalidScene}
             var bytes=Data();_ = try archive.extract(entry){ bytes.append($0) }
@@ -145,6 +148,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
     private var transformChanged = false
     init(_ workspace: Workspace) {
         self.workspace = workspace; super.init(frame: .zero); isOpaque = true; accessibilityIdentifier = "SceneCanvas"
+        NotificationCenter.default.addObserver(self,selector:#selector(settingsChanged),name:.animationSettingsChanged,object:nil)
         let pan = UIPanGestureRecognizer(target: self, action: #selector(pan(_:))); pan.delegate = self; addGestureRecognizer(pan)
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinch(_:))); pinch.delegate = self; addGestureRecognizer(pinch)
         let tap = UITapGestureRecognizer(target: self, action: #selector(selectBase(_:))); tap.delegate = self; addGestureRecognizer(tap)
@@ -159,6 +163,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             addSubview(button); transformButtons.append(button)
         }
     }
+    @objc private func settingsChanged() {setNeedsDisplay()}
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool { transformStart == nil }
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         var target = touch.view
@@ -246,9 +251,25 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         guard let c=UIGraphicsGetCurrentContext() else{return};UIColor.original(0x3d3e4c).setFill();c.fill(bounds)
         c.saveGState();c.translateBy(x:origin.x,y:origin.y);c.scaleBy(x:ratio,y:ratio)
         backgroundColorValue.setFill();c.fill(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height));c.clip(to:CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))
-        paintBackground(displayed ?? workspace.frame,in:c)
-        if onion && displayed==nil && workspace.index>0 {c.saveGState();paint(workspace.document.frames[workspace.index-1],in:c,showHandles:false,opacity:0.18);c.restoreGState()}
-        paint(displayed ?? workspace.frame,in:c,showHandles:handles && displayed==nil);c.restoreGState()
+        let editing = handles && displayed == nil
+        if !editing || AnimationSettings.bool("showbgPref", fallback:true) { paintBackground(displayed ?? workspace.frame,in:c) }
+        if editing && AnimationSettings.bool("showGridPref") {
+            c.saveGState();c.setStrokeColor(UIColor.gray.withAlphaComponent(0.3).cgColor);c.setLineWidth(1/ratio)
+            for x in stride(from:0.0,through:workspace.document.width,by:50) {c.move(to:CGPoint(x:x,y:0));c.addLine(to:CGPoint(x:x,y:workspace.document.height))}
+            for y in stride(from:0.0,through:workspace.document.height,by:50) {c.move(to:CGPoint(x:0,y:y));c.addLine(to:CGPoint(x:workspace.document.width,y:y))}
+            c.strokePath();c.restoreGState()
+        }
+        if onion && editing && workspace.index>0 && AnimationSettings.onionMode != 0 {
+            for distance in (1...min(workspace.index,AnimationSettings.onionCount)).reversed() {
+                let previous = workspace.document.frames[workspace.index-distance]
+                if AnimationSettings.onionMode == 2 { c.saveGState();c.setAlpha(0.25/CGFloat(distance));paintSkeleton(previous,in:c,points:false);c.restoreGState() }
+                else {paint(previous,in:c,showHandles:false,opacity:0.18/CGFloat(distance))}
+            }
+        }
+        paint(displayed ?? workspace.frame,in:c,showHandles:false)
+        if editing {paintSkeleton(workspace.frame,in:c,points:true)}
+        if editing && AnimationSettings.bool("showCamera",fallback:true) {c.setStrokeColor(UIColor.darkGray.cgColor);c.setLineWidth(2/ratio);c.stroke(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))}
+        c.restoreGState()
     }
     func paint(_ frame:SceneFrame,in c:CGContext,showHandles:Bool,opacity:CGFloat=1) {
         for i in UnitEditing.orderedIndices(in:frame) {
@@ -279,18 +300,18 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
                     c.saveGState();c.translateBy(x:a.x,y:a.y);c.rotate(by:atan2(b.y-a.y,b.x-a.x));c.scaleBy(x:scale*longitudinal,y:flipped && part["flipped"] != "true" ? -scale:scale)
                     bitmap.draw(in:CGRect(x:Double(part["x_offset"] ?? "0") ?? 0,y:Double(part["y_offset"] ?? "0") ?? 0,width:bitmap.size.width,height:bitmap.size.height),blendMode:.normal,alpha:CGFloat(Double(unit.attributes["alpha"] ?? "1") ?? 1)*opacity);c.restoreGState()
                 }
-            } else {
-                // Unsupported artwork is visibly marked; never pretend it rendered correctly.
-                c.setStrokeColor(UIColor.systemRed.cgColor);c.setLineWidth(2)
-                for joint in unit.joints {if let p=joint.parent,let parent=joints[p]{c.move(to:CGPoint(x:parent.x,y:parent.y));c.addLine(to:CGPoint(x:joint.x,y:joint.y));c.strokePath()}}
             }
-            if showHandles && workspace.selected==i {
-                c.saveGState();c.setAlpha(1);c.setStrokeColor(UIColor.orange.cgColor);c.setLineWidth(1/ratio)
-                for joint in unit.joints {if let parentID=joint.parent,let parent=joints[parentID]{c.move(to:CGPoint(x:parent.x,y:parent.y));c.addLine(to:CGPoint(x:joint.x,y:joint.y))}}
-                c.strokePath()
-                for joint in unit.joints {let size=8/ratio;c.setFillColor(UIColor(red:1,green:0.5,blue:0,alpha:1).cgColor);c.fillEllipse(in:CGRect(x:joint.x-size/2,y:joint.y-size/2,width:size,height:size))}
-                c.restoreGState()
-            }
+        }
+        if showHandles {paintSkeleton(frame,in:c,points:true)}
+    }
+    private func paintSkeleton(_ frame:SceneFrame,in c:CGContext,points:Bool) {
+        c.saveGState();defer{c.restoreGState()}
+        c.setStrokeColor(AnimationSettings.skeletonColor.cgColor);c.setFillColor(AnimationSettings.skeletonColor.cgColor);c.setLineWidth(1.5/ratio)
+        for unit in frame.units {
+            let joints=Dictionary(unit.joints.map{($0.id,$0)},uniquingKeysWith:{$1})
+            for joint in unit.joints {if let parentID=joint.parent,let parent=joints[parentID]{c.move(to:CGPoint(x:parent.x,y:parent.y));c.addLine(to:CGPoint(x:joint.x,y:joint.y))}}
+            c.strokePath()
+            if points {for joint in unit.joints where joint.attributes["fixed"] != "true" || joint.attributes["base"] == "true" {let size=8/ratio;c.fillEllipse(in:CGRect(x:joint.x-size/2,y:joint.y-size/2,width:size,height:size))}}
         }
     }
     @objc func pinch(_ gesture:UIPinchGestureRecognizer){cameraScale=min(4,max(0.25,cameraScale*gesture.scale));gesture.scale=1;updateTransformControls();setNeedsDisplay()}

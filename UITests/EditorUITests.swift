@@ -2,6 +2,16 @@ import XCTest
 
 final class EditorUITests:XCTestCase {
     override func setUpWithError()throws {XCUIDevice.shared.orientation = .landscapeLeft}
+    func testSettingsAndOnlineRemainInsideLanding() throws {
+        let app = XCUIApplication(); app.launch()
+        app.buttons["Настройки"].tap()
+        XCTAssertTrue(app.buttons["Показывать сетку"].exists || app.buttons.matching(NSPredicate(format:"label CONTAINS %@","Показывать сетку")).firstMatch.exists)
+        let settings = XCTAttachment(screenshot:XCUIScreen.main.screenshot()); settings.name="Embedded original settings";settings.lifetime = .keepAlways;add(settings)
+        app.buttons["‹ Настройки"].tap();app.buttons["LandingProjects"].tap();app.buttons["Онлайн"].tap()
+        XCTAssertTrue(app.buttons["Мои проекты"].exists)
+        XCTAssertTrue(app.buttons["LandingProjects"].exists)
+        let online = XCTAttachment(screenshot:XCUIScreen.main.screenshot());online.name="Online embedded in Load pane";online.lifetime = .keepAlways;add(online)
+    }
     func testSharedMySpritesFolderPinnedInEveryPack() throws {
         let app=XCUIApplication();app.launchArguments=["--reference-practice"];app.launch()
         XCTAssertTrue(app.buttons["ДОБАВИТЬ"].waitForExistence(timeout:10));app.buttons["ДОБАВИТЬ"].tap()

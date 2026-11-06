@@ -28,6 +28,7 @@ final class SceneCanvasTests: XCTestCase {
         let unit = SceneUnit(name: "test:empty", joints: [Joint(id: 0, x: 20, y: 50, parent: nil, attributes: ["base":"true"]), Joint(id: 1, x: 80, y: 50, parent: 0, attributes: [:])], attributes: [:])
         workspace.catalog = [ArtworkDefinition(name: "test:empty", points: [], parts: [], thumbnail: nil)]
         workspace.document = SceneDocument(width: 100, height: 100, interframes: 4, frames: [SceneFrame(id: 0, units: [unit], attributes: [:])], attributes: [:]); workspace.selected = 0
+        workspace.selected = nil // Bones stay visible even after deselecting / attaching a sprite.
         let canvas = SceneCanvas(workspace); canvas.frame = CGRect(x: 0, y: 0, width: 124, height: 124)
         let image = UIGraphicsImageRenderer(size: canvas.bounds.size).image { _ in canvas.draw(canvas.bounds) }
         let selected = try rgba(image, x: 62, y: 62)

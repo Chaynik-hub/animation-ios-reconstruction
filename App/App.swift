@@ -31,7 +31,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     var playbackStart:CFTimeInterval=0
     var startFrame=0
     var titleOfScene="Animation"
-    override var prefersStatusBarHidden:Bool{true}
+    override var prefersStatusBarHidden:Bool{AnimationSettings.bool("fullScreen",fallback:true)}
     override var supportedInterfaceOrientations:UIInterfaceOrientationMask{.landscape}
     override func viewDidLoad(){
         super.viewDidLoad();view.backgroundColor=UIColor(red:36/255,green:37/255,blue:48/255,alpha:1)
@@ -193,7 +193,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func stop(){displayLink?.invalidate();displayLink=nil;canvas.displayed=nil;audio?.pause();update()}
     func togglePlayback(){stop();present(PreviewController(workspace:workspace,audio:audio),animated:false)}
     func frameAt(_ elapsed:Double)->SceneFrame {
-        let perKey=max(1,workspace.document.interframes+1);let position=elapsed*60/Double(perKey)+Double(startFrame);let count=workspace.document.frames.count;let index=Int(position)%count;let t=position-floor(position);let frame=workspace.document.frames[index],next=workspace.document.frames[(index+1)%count]
+        let perKey=max(1,workspace.document.interframes+1);let count=workspace.document.frames.count;let position=min(Double(count-1),max(0,elapsed*60/Double(perKey)+Double(startFrame)));let index=Int(position);let t=position-floor(position);let frame=workspace.document.frames[index],next=workspace.document.frames[min(index+1,count-1)]
         return workspace.applyAssetAnimations(to:(try? FrameInterpolation.between(frame,next,progress:t)) ?? frame,tick:Int(max(0,elapsed*60))+startFrame*perKey)
     }
     @objc func tick(_ link:CADisplayLink){canvas.displayed=frameAt(link.timestamp-playbackStart);canvas.setNeedsDisplay()}
