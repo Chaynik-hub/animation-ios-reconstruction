@@ -2,9 +2,12 @@ import UIKit
 import UniformTypeIdentifiers
 import ImageIO
 import AVFoundation
+import CoreText
 
 @main final class AppDelegate:UIResponder,UIApplicationDelegate {
     func application(_ application:UIApplication,didFinishLaunchingWithOptions options:[UIApplication.LaunchOptionsKey:Any]?)->Bool {
+        let fonts=FileManager.default.urls(for:.documentDirectory,in:.userDomainMask)[0].appendingPathComponent("Fonts")
+        for file in (try? FileManager.default.contentsOfDirectory(at:fonts,includingPropertiesForKeys:nil)) ?? [] where ["ttf","otf"].contains(file.pathExtension.lowercased()) {CTFontManagerRegisterFontsForURL(file as CFURL,.process,nil)}
         return true
     }
     func application(_ application:UIApplication,configurationForConnecting session:UISceneSession,options:UIScene.ConnectionOptions)->UISceneConfiguration {

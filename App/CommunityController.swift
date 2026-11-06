@@ -58,7 +58,14 @@ final class CommunityController: OriginalListController {
             for value in 1...5 {
                 let button = UIButton(type: .custom); button.setTitle("\(value) ★",for: .normal); button.setTitleColor(.original(0xff9000),for: .normal)
                 button.titleLabel?.font = UIFont(name: "Roboto-Regular",size: 16); button.heightAnchor.constraint(equalToConstant: 48).isActive = true
-                button.addAction(UIAction { [weak self] _ in self?.run { try await CommunityAPI.rate(item.id,stars:value); self?.message("Оценка сохранена"); self?.refreshDetail(item) } },for: .touchUpInside); stars.addArrangedSubview(button)
+                button.addAction(UIAction { [weak self] _ in self?.run {
+                    try await CommunityAPI.rate(item.id,stars:value)
+                    if let updated = try await CommunityAPI.project(item.id) {
+                        self?.selected = updated
+                        if let index = self?.projects.firstIndex(where:{$0.id == item.id}) {self?.projects[index] = updated}
+                    }
+                    self?.message("Оценка сохранена")
+                } },for: .touchUpInside); stars.addArrangedSubview(button)
             }
             stack.addArrangedSubview(stars)
             row("Написать комментарий") { [weak self] in self?.writeComment(item) }

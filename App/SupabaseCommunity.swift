@@ -104,6 +104,9 @@ struct CommunityError: LocalizedError {
     static func comments(_ id: String) async throws -> [CommunityComment] {
         try JSONDecoder().decode([CommunityComment].self, from: await request("rest/v1/community_comments?select=author,body&project_id=eq.\(id)&order=created_at.desc&limit=100"))
     }
+    static func project(_ id: String) async throws -> CommunityProject? {
+        try JSONDecoder().decode([CommunityProject].self, from: await request("rest/v1/community_feed?select=*&id=eq.\(id)&limit=1")).first
+    }
     static func rate(_ id: String, stars: Int) async throws {
         let user = try await authenticate()
         _ = try await request("rest/v1/community_ratings?on_conflict=project_id,user_id", method: "POST", values: ["project_id":id,"user_id":user.user.id,"stars":stars], prefer: "resolution=merge-duplicates")

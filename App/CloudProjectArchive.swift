@@ -60,7 +60,7 @@ enum CloudProjectArchive {
     static func unpack(_ url: URL, into directory: URL) throws -> SceneDocument {
         let archive = try Archive(url: url, accessMode: .read)
         let entries = Array(archive)
-        guard entries.count <= 4096, let manifest = archive["project.json"], manifest.uncompressedSize <= 16 * 1024 * 1024,
+        guard entries.count <= 4096, entries.allSatisfy({ $0.uncompressedSize <= 100 * 1024 * 1024 }), let manifest = archive["project.json"], manifest.uncompressedSize <= 16 * 1024 * 1024,
               entries.reduce(UInt64(0), { $0 + $1.uncompressedSize }) <= 100 * 1024 * 1024 else { throw SceneReadError.resourceLimit }
         var bytes = Data(); _ = try archive.extract(manifest) { bytes.append($0) }
         var created: [URL] = [], replacements: [String: String] = [:]
