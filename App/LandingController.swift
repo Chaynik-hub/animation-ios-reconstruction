@@ -165,6 +165,7 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
 
     private func openEditor(_ url: URL? = nil) {
         let editor = EditorController()
+        editor.openedFromLanding = true
         editor.loadViewIfNeeded()
         if let url {
             do {
@@ -179,6 +180,7 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
         } else {
             editor.newScene()
         }
+        editor.markProjectSaved()
         editor.workspace.history.removeAll()
         editor.workspace.future.removeAll()
         editor.restoreAudio()

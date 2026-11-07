@@ -9,6 +9,8 @@ extension EditorController {
             ("Параметры сцены","side_edit",{[weak self] in self?.properties()}),
             ("Звук","side_audio",{[weak self] in self?.audioPicker()}),
             ("Фон","side_bg",{[weak self] in self?.backgrounds()}),
+            ("Вид камеры","side_camera",{[weak self] in self?.showCameraControls()}),
+            ("Настройки приложения","side_tune",{[weak self] in self?.showEditorSettings()}),
             ("Проекты","side_save",{[weak self] in if let landing = self?.presentingViewController as? LandingController { self?.dismiss(animated: true) { landing.showProjects() }; return }; self?.choices("Проекты",[("Новая сцена",{[weak self] in self?.newScene()}),("Открыть",{[weak self] in self?.openFiles()}),("Мои сцены",{[weak self] in self?.savedScenes()})])}),
             ("Предыдущий кадр полупрозрачно","side_preview",{[weak self] in self?.canvas.onion.toggle();self?.update()}),
             ("Повторить действие","side_reset",{[weak self] in self?.workspace.redo()})

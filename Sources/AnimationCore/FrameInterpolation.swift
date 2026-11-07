@@ -21,6 +21,7 @@ public enum FrameInterpolation {
             }
         }
         var output=first;output.units=[]
+        SceneCamera(frame: first).interpolated(to: SceneCamera(frame: second), progress: t).write(to: &output)
         for unit in first.units where !excluded.contains(unit.name) {
             guard let end=b[unit.name] else{continue}
             var pose=try PoseInterpolation.between(unit,second.units[end],progress:t)

@@ -34,6 +34,8 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     var playbackStart:CFTimeInterval=0
     var startFrame=0
     var titleOfScene="Animation"
+    var openedFromLanding = false
+    private var lastSavedDocument: SceneDocument?
     override var prefersStatusBarHidden:Bool{AnimationSettings.bool("fullScreen",fallback:true)}
     override var supportedInterfaceOrientations:UIInterfaceOrientationMask{.landscape}
     override func viewDidLoad(){
@@ -84,6 +86,15 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         shift.addAction(UIAction{[weak self] _ in self?.canvas.stretch=true;self?.shift.alpha=0.6},for:.touchDown)
         shift.addAction(UIAction{[weak self] _ in self?.canvas.stretch=false;self?.shift.alpha=1},for:[.touchUpInside,.touchUpOutside,.touchCancel])
         view.addSubview(shift);NSLayoutConstraint.activate([shift.leadingAnchor.constraint(equalTo:sidebar.trailingAnchor),shift.topAnchor.constraint(equalTo:view.topAnchor),shift.widthAnchor.constraint(equalToConstant:48),shift.heightAnchor.constraint(equalToConstant:48)])
+        lastSavedDocument = workspace.document
+        if openedFromLanding {
+            let back = button("‹") { [weak self] in self?.leaveEditor() }
+            back.accessibilityLabel = "Назад"
+            back.accessibilityIdentifier = "EditorBack"
+            back.titleLabel?.font = .systemFont(ofSize: 32)
+            sidebar.insertArrangedSubview(back, at: 0)
+            back.heightAnchor.constraint(equalToConstant: 42).isActive = true
+        }
         workspace.onChange = {[weak self] in self?.update()};restoreAudio();update()
         if ProcessInfo.processInfo.arguments.contains("--reference-practice"),let url=Bundle.main.resourceURL?.appendingPathComponent("Content/Reference/practice.ats") {perform{try workspace.load(url)}}
         if ProcessInfo.processInfo.arguments.contains("--reference-attached") { workspace.installAttachedReference() }
@@ -110,6 +121,49 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         stack.distribution = .fillEqually;scroll.addSubview(stack);scroll.contentSize=stack.bounds.size;view.addSubview(cover);toolPanel=cover
     }
     func menu(){showProjectDrawer()}
+
+    func markProjectSaved() { lastSavedDocument = workspace.document }
+
+    func leaveEditor() {
+        stop()
+        dismissTools()
+        let leave: () -> Void = { [weak self] in self?.dismiss(animated: true) }
+        guard workspace.document != lastSavedDocument else { leave(); return }
+        let alert = UIAlertController(title: "Выйти из редактора?", message: "Сохранить изменения в проекте?", preferredStyle: .alert)
+        alert.addTextField { $0.text = self.titleOfScene }
+        alert.addAction(UIAlertAction(title: "Сохранить и выйти", style: .default) { [weak self, weak alert] _ in
+            guard let self else { return }
+            self.perform {
+                try self.saveProject(named: alert?.textFields?.first?.text ?? self.titleOfScene)
+                leave()
+            }
+        })
+        alert.addAction(UIAlertAction(title: "Выйти без сохранения", style: .destructive) { _ in leave() })
+        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
+        present(alert, animated: true)
+    }
+
+    func showCameraControls() {
+        let controller = CameraEditorController(workspace: workspace, audio: audio)
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: false)
+    }
+
+    func showEditorSettings() {
+        let settings = SettingsController { [weak self] in
+            self?.dismiss(animated: true) { self?.setNeedsStatusBarAppearanceUpdate() }
+        }
+        settings.modalPresentationStyle = .fullScreen
+        present(settings, animated: true)
+    }
+
+    private func saveProject(named name: String) throws {
+        let url = try workspace.save(name: name)
+        titleOfScene = name
+        lastSavedDocument = workspace.document
+        let thumbnail = canvas.snapshot(size: CGSize(width: 320, height: 128))
+        try? thumbnail.pngData()?.write(to: url.appendingPathExtension("png"), options: .atomic)
+    }
     func newScene(){workspace.checkpoint();workspace.document=SceneDocument(width:960,height:540,interframes:4,frames:[SceneFrame(id:0,units:[],attributes:[:])],attributes:[:]);workspace.restoreArtwork();workspace.index=0;workspace.selected=nil;workspace.latchedUnitName=nil;workspace.notify()}
     private var catalogController: CatalogController?
     func highlightCatalog(_ active: Bool) {
@@ -212,9 +266,16 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         return workspace.applyAssetAnimations(to:(try? FrameInterpolation.between(frame,next,progress:t)) ?? frame,tick:Int(max(0,elapsed*60))+startFrame*perKey)
     }
     @objc func tick(_ link:CADisplayLink){canvas.displayed=frameAt(link.timestamp-playbackStart);canvas.setNeedsDisplay()}
-    func save(){let alert=UIAlertController(title:"Сохранить сцену",message:nil,preferredStyle:.alert);alert.addTextField{$0.text=self.titleOfScene};alert.addAction(UIAlertAction(title:"Сохранить",style:.default){[weak self] _ in guard let self else{return};self.titleOfScene=alert.textFields?.first?.text ?? "Animation";self.perform{let url = try self.workspace.save(name:self.titleOfScene)
-            let thumbnail = self.canvas.snapshot(size: CGSize(width: 320, height: 128))
-            try? thumbnail.pngData()?.write(to: url.appendingPathExtension("png"), options: .atomic)}});alert.addAction(UIAlertAction(title:"Отмена",style:.cancel));present(alert,animated:true)}
+    func save() {
+        let alert = UIAlertController(title: "Сохранить сцену", message: nil, preferredStyle: .alert)
+        alert.addTextField { $0.text = self.titleOfScene }
+        alert.addAction(UIAlertAction(title: "Сохранить", style: .default) { [weak self, weak alert] _ in
+            guard let self else { return }
+            self.perform { try self.saveProject(named: alert?.textFields?.first?.text ?? self.titleOfScene) }
+        })
+        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
+        present(alert, animated: true)
+    }
     var importingBackgroundImage=false
     var importingUserATI=false
     func importUserATI(){importingUserATI=true;pickingAudio=false;let picker=UIDocumentPickerViewController(forOpeningContentTypes:[.data],asCopy:true);picker.delegate=self;present(picker,animated:true)}
@@ -231,7 +292,9 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func backgrounds() {
         stop();dismissTools()
         let chooser=BackgroundChooserController(values:workspace.backgroundCatalog,select:{[weak self] value in
-            guard let self else{return};self.workspace.checkpoint();self.workspace.document.frames[self.workspace.index].attributes["nativeBackgroundID"]=value?.id;self.workspace.document.frames[self.workspace.index].attributes.removeValue(forKey:"nativeBackgroundImage");self.workspace.document.frames[self.workspace.index].attributes.removeValue(forKey:"nativeBackgroundColor");self.workspace.notify()
+            self?.closeBackgroundChooser { [weak self] in
+                self?.chooseBackgroundScope(["nativeBackgroundID": value?.id].compactMapValues { $0 })
+            }
         },close:{[weak self] in self?.closeBackgroundChooser()},actions:[{[weak self] in self?.closeBackgroundChooser{[weak self] in self?.pickBackgroundColor()}},{[weak self] in self?.closeBackgroundChooser{[weak self] in self?.pickBackgroundImage()}},{[weak self] in self?.closeBackgroundChooser{[weak self] in self?.drawBackground()}}],resolve:workspace.artworkURL)
         chooser.modalPresentationStyle = .overFullScreen;backgroundController=chooser;present(chooser,animated:false)
     }

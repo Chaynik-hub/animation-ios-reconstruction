@@ -134,6 +134,9 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         get {switch workspace.document.attributes["nativeBackground"] {case "black":return .black;case "green":return .green;default:return .white}}
         set {workspace.document.attributes["nativeBackground"] = newValue == .black ? "black" : newValue == .green ? "green" : "white"}
     }
+    var cameraEditing = false {
+        didSet { if oldValue != cameraEditing { updateTransformControls(); setNeedsDisplay() } }
+    }
     var cameraScale: CGFloat = 1
     var cameraOffset = CGPoint.zero
     private var dragged: (Int,Int)?
@@ -166,13 +169,14 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
     @objc private func settingsChanged() {setNeedsDisplay()}
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool { transformStart == nil }
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if cameraEditing && gestureRecognizer is UITapGestureRecognizer { return false }
         var target = touch.view
         while let view = target { if view is UIControl { return false }; target = view.superview }
         return true
     }
     override func layoutSubviews() { super.layoutSubviews(); updateTransformControls() }
     func updateTransformControls() {
-        guard handles, displayed == nil, ratio > 0, let box = selectedArtworkBounds(), let selected = workspace.selected else {
+        guard handles, !cameraEditing, displayed == nil, ratio > 0, let box = selectedArtworkBounds(), let selected = workspace.selected else {
             transformButtons.forEach { $0.isHidden = true }; return
         }
         let centers = [CGPoint(x: box.minX * ratio + origin.x - 80 / 1.5, y: box.minY * ratio + origin.y - 80 / 1.5),
@@ -252,6 +256,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         c.saveGState();c.translateBy(x:origin.x,y:origin.y);c.scaleBy(x:ratio,y:ratio)
         backgroundColorValue.setFill();c.fill(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height));c.clip(to:CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))
         let editing = handles && displayed == nil
+        if !editing || cameraEditing { applySceneCamera(displayed ?? workspace.frame, in: c) }
         if !editing || AnimationSettings.bool("showbgPref", fallback:true) { paintBackground(displayed ?? workspace.frame,in:c) }
         if editing && AnimationSettings.bool("showGridPref") {
             c.saveGState();c.setStrokeColor(UIColor.gray.withAlphaComponent(0.3).cgColor);c.setLineWidth(1/ratio)
@@ -267,7 +272,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             }
         }
         paint(displayed ?? workspace.frame,in:c,showHandles:false)
-        if editing {paintSkeleton(workspace.frame,in:c,points:true)}
+        if editing && !cameraEditing {paintSkeleton(workspace.frame,in:c,points:true)}
         if editing && AnimationSettings.bool("showCamera",fallback:true) {c.setStrokeColor(UIColor.darkGray.cgColor);c.setLineWidth(2/ratio);c.stroke(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))}
         c.restoreGState()
     }
@@ -314,8 +319,50 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             if points {for joint in unit.joints where joint.attributes["fixed"] != "true" || joint.attributes["base"] == "true" {let size=8/ratio;c.fillEllipse(in:CGRect(x:joint.x-size/2,y:joint.y-size/2,width:size,height:size))}}
         }
     }
-    @objc func pinch(_ gesture:UIPinchGestureRecognizer){cameraScale=min(4,max(0.25,cameraScale*gesture.scale));gesture.scale=1;updateTransformControls();setNeedsDisplay()}
-    @objc func pan(_ gesture:UIPanGestureRecognizer){
+    private func applySceneCamera(_ frame: SceneFrame, in context: CGContext) {
+        let camera = SceneCamera(frame: frame)
+        let center = CGPoint(x: workspace.document.width / 2, y: workspace.document.height / 2)
+        context.translateBy(x: center.x, y: center.y)
+        context.scaleBy(x: camera.zoom, y: camera.zoom)
+        context.translateBy(x: -center.x - camera.x, y: -center.y - camera.y)
+    }
+
+    func resetSceneCamera() {
+        workspace.checkpoint()
+        SceneCamera().write(to: &workspace.document.frames[workspace.index])
+        workspace.notify()
+        setNeedsDisplay()
+    }
+
+    @objc func pinch(_ gesture: UIPinchGestureRecognizer) {
+        if cameraEditing {
+            if gesture.state == .began { workspace.checkpoint() }
+            guard gesture.state == .changed else { return }
+            var camera = SceneCamera(frame: workspace.frame)
+            camera.zoom = min(8, max(0.25, camera.zoom * gesture.scale))
+            camera.write(to: &workspace.document.frames[workspace.index])
+        } else {
+            cameraScale = min(4, max(0.25, cameraScale * gesture.scale))
+        }
+        gesture.scale = 1
+        updateTransformControls()
+        setNeedsDisplay()
+    }
+
+    @objc func pan(_ gesture: UIPanGestureRecognizer){
+        if cameraEditing {
+            if gesture.state == .began { workspace.checkpoint() }
+            if gesture.state == .changed {
+                var camera = SceneCamera(frame: workspace.frame)
+                let delta = gesture.translation(in: self)
+                camera.x -= delta.x / (ratio * camera.zoom)
+                camera.y -= delta.y / (ratio * camera.zoom)
+                camera.write(to: &workspace.document.frames[workspace.index])
+                gesture.setTranslation(.zero, in: self)
+                setNeedsDisplay()
+            }
+            return
+        }
         let screen=gesture.location(in:self);let p=CGPoint(x:(screen.x-origin.x)/ratio,y:(screen.y-origin.y)/ratio)
         if gesture.state == .began {
             var distance=30/ratio
@@ -333,6 +380,6 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         }
     }
     func snapshot(size:CGSize)->UIImage {let format=UIGraphicsImageRendererFormat();format.scale=1;return UIGraphicsImageRenderer(size:size,format:format).image{context in
-        context.cgContext.scaleBy(x:size.width/workspace.document.width,y:size.height/workspace.document.height);backgroundColorValue.setFill();context.fill(CGRect(origin:.zero,size:CGSize(width:workspace.document.width,height:workspace.document.height)));paintBackground(displayed ?? workspace.frame,in:context.cgContext);paint(displayed ?? workspace.frame,in:context.cgContext,showHandles:false)
+        context.cgContext.scaleBy(x:size.width/workspace.document.width,y:size.height/workspace.document.height);backgroundColorValue.setFill();context.fill(CGRect(origin:.zero,size:CGSize(width:workspace.document.width,height:workspace.document.height)));applySceneCamera(displayed ?? workspace.frame, in: context.cgContext);paintBackground(displayed ?? workspace.frame,in:context.cgContext);paint(displayed ?? workspace.frame,in:context.cgContext,showHandles:false)
     }}
 }

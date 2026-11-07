@@ -76,6 +76,7 @@ final class CatalogController: UIViewController, UICollectionViewDataSource, UIC
             entries = (path.isEmpty ? [.mySprites]:[]) + folders.map(Entry.folder) + items.map(Entry.item)
             caption.text = path.last ?? pack.displayTitle; back.isHidden = false
         } else { entries = packs.map(Entry.pack); caption.text = "Наборы"; back.isHidden = true }
+        collection.backgroundColor = pack == nil ? .original(0x212121) : .original(0x3d3e4c)
         collection.reloadData(); collection.setContentOffset(.zero, animated: false)
     }
     private func goBack() { if showingUserSprites {showingUserSprites=false} else if !path.isEmpty { path.removeLast() } else { pack = nil }; reload() }
@@ -105,7 +106,7 @@ final class CatalogController: UIViewController, UICollectionViewDataSource, UIC
             label.frame = CGRect(x: 55, y: 0, width: cell.bounds.width - 60, height: 50); label.text = value; label.textColor = .original(0xac812b)
             cell.accessibilityIdentifier = "catalog-folder-" + value
         case .item(let value):
-            cell.contentView.backgroundColor = .original(0x212121); image.frame = CGRect(x: 10, y: 5, width: 50, height: 50)
+            cell.contentView.backgroundColor = .original(0x3d3e4c); image.frame = CGRect(x: 10, y: 5, width: 50, height: 50)
             label.frame = CGRect(x: 65, y: 0, width: cell.bounds.width - 70, height: 60); label.text = value.displayTitle; label.textColor = .white; imagePath = value.thumbnail
             cell.accessibilityIdentifier = "catalog-item-" + value.name
         }

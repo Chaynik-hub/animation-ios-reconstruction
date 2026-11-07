@@ -3,7 +3,7 @@ import Foundation
 public enum PoseError: Error { case incompatibleTopology, cyclicSkeleton, invalidScale }
 
 /// Port of NlerpInterpolator.inbetweenStatesAt for unattached skeletal poses.
-/// Attachment reconciliation, easing and camera interpolation are separate pending subsystems.
+/// FrameInterpolation reconciles attachments and interpolates the camera.
 public enum PoseInterpolation {
     public static func between(_ first: SceneUnit, _ second: SceneUnit, progress: Double) throws -> SceneUnit {
         let t = min(1, max(0, progress))
