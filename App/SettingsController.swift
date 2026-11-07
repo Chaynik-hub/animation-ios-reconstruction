@@ -7,6 +7,11 @@ enum AnimationSettings {
     static func bool(_ key: String, fallback: Bool = false) -> Bool { UserDefaults.standard.object(forKey:key) == nil ? fallback : UserDefaults.standard.bool(forKey:key) }
     static var onionMode: Int { UserDefaults.standard.object(forKey:"onionMode") == nil ? 1 : UserDefaults.standard.integer(forKey:"onionMode") }
     static var onionCount: Int { max(1,min(5,UserDefaults.standard.object(forKey:"onionCount") == nil ? 1 : UserDefaults.standard.integer(forKey:"onionCount"))) }
+    static var onionColor: UIColor {
+        guard let rgba = UserDefaults.standard.array(forKey: "onionTint") as? [Double], rgba.count == 3
+        else { return UIColor(white: 0.67, alpha: 1) }
+        return UIColor(red: rgba[0], green: rgba[1], blue: rgba[2], alpha: 1)
+    }
     static var skeletonColor: UIColor {
         switch UserDefaults.standard.integer(forKey:"skeletonColor") {
         case 1: return .original(0x00b6ff)
@@ -25,7 +30,8 @@ enum AnimationSettings {
 }
 extension Notification.Name { static let animationSettingsChanged = Notification.Name("AnimationSettingsChanged") }
 
-final class SettingsController: OriginalListController, UIDocumentPickerDelegate {
+final class SettingsController: OriginalListController, UIDocumentPickerDelegate, UIColorPickerViewControllerDelegate {
+    override var horizontalContentGuide: UILayoutGuide? { view.safeAreaLayoutGuide }
     private let close: () -> Void
     private var pickingFont = false
     init(close: @escaping () -> Void) { self.close = close; super.init(nibName:nil,bundle:nil) }
@@ -51,6 +57,13 @@ final class SettingsController: OriginalListController, UIDocumentPickerDelegate
         label("Основные настройки")
         row("Режим onion: " + ["Без onion","Тень","Скелет","Серая тень"][min(3,max(0,AnimationSettings.onionMode))]) { [weak self] in
             self?.options("Режим onion", ["Без onion","Тень","Скелет","Серая тень"]) { AnimationSettings.set($0,"onionMode") }
+        }
+        row("Цвет тени Onion") { [weak self] in
+            let picker = UIColorPickerViewController()
+            picker.selectedColor = AnimationSettings.onionColor
+            picker.supportsAlpha = false
+            picker.delegate = self
+            self?.present(picker, animated: true)
         }
         row("Предыдущие кадры: \(AnimationSettings.onionCount)") { [weak self] in self?.options("Предыдущие кадры",(1...5).map(String.init)) { AnimationSettings.set($0+1,"onionCount") } }
         toggle("Показывать сетку","showGridPref")
@@ -79,13 +92,20 @@ final class SettingsController: OriginalListController, UIDocumentPickerDelegate
             CommunityAPI.enterNickname(on:self) { _ in }
         }
     }
+    func colorPickerViewController(_ viewController: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
+        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 1
+        if color.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
+            AnimationSettings.set([Double(red), Double(green), Double(blue)], "onionTint")
+        }
+    }
+
     private func options(_ title: String, _ values: [String], select: @escaping (Int) -> Void) {
         clear(); row("‹ Настройки") { [weak self] in self?.render() }; label(title)
         for (index,value) in values.enumerated() { row(value) { [weak self] in select(index); self?.render() } }
     }
     private func items() {
         clear(); row("‹ Настройки") { [weak self] in self?.render() }
-        row("Найти предметы (.ati)") { [weak self] in self?.pick(font:false) }
+        row("Найти предметы и паки (.ati, .atp)") { [weak self] in self?.pick(font:false) }
         row("Найти шрифты (.ttf, .otf)") { [weak self] in self?.pick(font:true) }
         row("Экспорт предметов") { [weak self] in self?.exportItems() }
     }
@@ -103,7 +123,7 @@ final class SettingsController: OriginalListController, UIDocumentPickerDelegate
                 let target = folder.appendingPathComponent(UUID().uuidString+"."+url.pathExtension)
                 try FileManager.default.copyItem(at:url,to:target)
                 guard CTFontManagerRegisterFontsForURL(target as CFURL,.process,nil) else { try? FileManager.default.removeItem(at:target); throw SceneReadError.invalidScene }
-            } else { _ = try UserSpriteLibrary.importATI(url,directory:directory) }
+            } else { try UserSpriteLibrary.importFile(url,directory:directory) }
             controller.dismiss(animated:true) { self.message("Добавлено") }
         } catch { controller.dismiss(animated:true) { self.message("Ошибка",error.localizedDescription) } }
     }

@@ -69,7 +69,7 @@ final class CatalogController: UIViewController, UICollectionViewDataSource, UIC
             guard let id = item.packID, id.hasPrefix("@pack:"), !known.contains(id),
                   !packs.contains(where: { $0.id == id }) else { continue }
             let title = id.split(separator: ":", maxSplits: 2).last.map(String.init) ?? id
-            packs.append(CatalogPack(id: id, title: title, titles: nil, thumbnail: item.thumbnail))
+            packs.append(CatalogPack(id: id, title: title, titles: nil, thumbnail: item.packCover ?? item.thumbnail))
         }
         let showImport = showingUserSprites || pack == nil
         importButton.isHidden = !showImport

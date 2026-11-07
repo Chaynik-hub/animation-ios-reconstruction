@@ -3,12 +3,13 @@ import UIKit
 /// Embedded in the existing landing pane; no navigation/modal shell of its own.
 class OriginalListController: UIViewController {
     let scroll = UIScrollView(), stack = UIStackView()
+    var horizontalContentGuide: UILayoutGuide? { nil }
     override func viewDidLoad() {
         super.viewDidLoad(); view.backgroundColor = .original(0x3d3e4c)
         scroll.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(scroll)
         stack.axis = .vertical; stack.spacing = 1; stack.translatesAutoresizingMaskIntoConstraints = false; scroll.addSubview(stack)
         NSLayoutConstraint.activate([
-            scroll.leadingAnchor.constraint(equalTo: view.leadingAnchor), scroll.trailingAnchor.constraint(equalTo: view.trailingAnchor), scroll.topAnchor.constraint(equalTo: view.topAnchor), scroll.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scroll.leadingAnchor.constraint(equalTo: horizontalContentGuide?.leadingAnchor ?? view.leadingAnchor), scroll.trailingAnchor.constraint(equalTo: horizontalContentGuide?.trailingAnchor ?? view.trailingAnchor), scroll.topAnchor.constraint(equalTo: view.topAnchor), scroll.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             stack.leadingAnchor.constraint(equalTo: scroll.contentLayoutGuide.leadingAnchor), stack.trailingAnchor.constraint(equalTo: scroll.contentLayoutGuide.trailingAnchor), stack.topAnchor.constraint(equalTo: scroll.contentLayoutGuide.topAnchor), stack.bottomAnchor.constraint(equalTo: scroll.contentLayoutGuide.bottomAnchor), stack.widthAnchor.constraint(equalTo: scroll.frameLayoutGuide.widthAnchor)])
     }
     func clear() { stack.arrangedSubviews.forEach { $0.removeFromSuperview() } }

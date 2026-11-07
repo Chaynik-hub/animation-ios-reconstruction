@@ -11,6 +11,7 @@ struct ArtworkDefinition: Codable {
     var packID: String?
     var folderPath: [String]?
     var catalogOrder: Int?
+    var packCover: String? = nil
     var displayTitle:String {let language=Locale.preferredLanguages.first?.components(separatedBy:"-").first ?? "en";return titles?[language] ?? titles?["en"] ?? name}
     func unit(at location: CGPoint) -> SceneUnit {
         let scale=defaultScale ?? 1
@@ -282,7 +283,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
                     for index in silhouette.units.indices { silhouette.units[index].attributes["alpha"] = "1" }
                     paint(silhouette, in: c, showHandles: false)
                     c.setBlendMode(.sourceIn)
-                    UIColor(white: max(0.35, 0.75 - CGFloat(distance) * 0.08), alpha: 1).setFill()
+                    AnimationSettings.onionColor.setFill()
                     c.fill(CGRect(x: 0, y: 0, width: workspace.document.width, height: workspace.document.height))
                     c.endTransparencyLayer()
                     c.restoreGState()

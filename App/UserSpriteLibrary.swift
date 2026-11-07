@@ -3,21 +3,32 @@ import UIKit
 import ZIPFoundation
 
 enum UserSpriteLibrary {
+    private static let indexLimit = 64 * 1024 * 1024
+    private enum ImportError: LocalizedError {
+        case missingEntry(String), noSupportedSprites
+        var errorDescription: String? {
+            switch self {
+            case .missingEntry(let path): return "В архиве нет файла «\(path)»."
+            case .noSupportedSprites: return "В паке нет спрайтов, которые iOS-редактор может отобразить."
+            }
+        }
+    }
     struct Record: Codable { var definition: ArtworkDefinition; var archive: String }
     static func records(in directory: URL) -> [Record] {
-        guard let data=try? Data(contentsOf:directory.appendingPathComponent("UserSprites/index.json")),data.count<=8*1024*1024 else{return []}
+        guard let data=try? Data(contentsOf:directory.appendingPathComponent("UserSprites/index.json")),data.count<=indexLimit else{return []}
         return (try? JSONDecoder().decode([Record].self,from:data)) ?? []
     }
     static func definitions(in directory: URL) -> [ArtworkDefinition] {records(in:directory).map(\.definition)}
-    static func importFile(_ source: URL, directory: URL) throws {
+    @discardableResult static func importFile(_ source: URL, directory: URL) throws -> Int {
         if source.pathExtension.lowercased() == "atp" {
-            try importPack(source, directory: directory)
+            return try importPack(source, directory: directory)
         } else {
             _ = try importATI(source, directory: directory)
+            return 0
         }
     }
 
-    private static func importPack(_ source: URL, directory: URL) throws {
+    private static func importPack(_ source: URL, directory: URL) throws -> Int {
         let scoped = source.startAccessingSecurityScopedResource()
         defer { if scoped { source.stopAccessingSecurityScopedResource() } }
         let files = FileManager.default
@@ -29,7 +40,7 @@ enum UserSpriteLibrary {
         let current = records(in: directory)
         guard !entries.isEmpty else { throw SceneReadError.invalidScene }
         guard current.count + entries.count <= 2000,
-              entries.reduce(Int64(0), { $0 + min(Int64($1.uncompressedSize), 256 * 1024 * 1024 + 1) }) <= 256 * 1024 * 1024
+              entries.reduce(Int64(0), { $0 + min(Int64($1.uncompressedSize), 1024 * 1024 * 1024 + 1) }) <= 1024 * 1024 * 1024
         else { throw SceneReadError.resourceLimit }
 
         let staging = files.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
@@ -43,7 +54,24 @@ enum UserSpriteLibrary {
             parser.delegate = metadata
             guard parser.parse() else { throw SceneReadError.malformedXML }
         }
-        let title = source.deletingPathExtension().lastPathComponent
+        func readMetadata(_ path: String, limit: Int) throws -> Data? {
+            guard let entry = archive[path], entry.type == .file, entry.uncompressedSize <= UInt64(limit) else { return nil }
+            var data = Data()
+            _ = try archive.extract(entry) { data.append($0) }
+            return data
+        }
+        let meta = try readMetadata("meta.txt", limit: 1024 * 1024)
+        let fields = meta.flatMap { (try? JSONSerialization.jsonObject(with: $0)) as? [String: Any] }
+        let embeddedTitle = (fields?["mHumanName"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let title = embeddedTitle.flatMap { $0.isEmpty ? nil : $0 } ?? source.deletingPathExtension().lastPathComponent
+        var cover: Data?
+        for path in ["logo.png", "thumb_hdpi.png", "thumb.png", "icon.png", "cover.png"] {
+            guard let bytes = try readMetadata(path, limit: 16 * 1024 * 1024),
+                  let image = UIImage(data: bytes), image.size.width * image.size.height <= 16_000_000 else { continue }
+            cover = bytes
+            break
+        }
+        var skipped = 0
         let pack = "@pack:\(UUID().uuidString):\(title)"
         for (order, entry) in entries.enumerated() {
             let components = entry.path.split(separator: "/").map(String.init)
@@ -52,12 +80,25 @@ enum UserSpriteLibrary {
             _ = try archive.extract(entry, to: item)
             defer { try? files.removeItem(at: item) }
             let shortName = (filename as NSString).deletingPathExtension
-            try importATI(item, directory: staging, packID: pack,
-                          folderPath: metadata.folders[shortName] ?? Array(components.dropLast()),
-                          order: order, defaultScale: metadata.scale, manifestFolders: metadata.folders)
+            do {
+                try importATI(item, directory: staging, packID: pack,
+                              folderPath: metadata.folders[shortName] ?? Array(components.dropLast().filter { $0 != "items" }),
+                              order: order, defaultScale: metadata.scale, manifestFolders: metadata.folders)
+            } catch is ImportError {
+                skipped += 1
+            } catch SceneReadError.unsupportedElement(_) {
+                skipped += 1
+            }
         }
-        let additions = records(in: staging)
-        guard additions.count == entries.count else { throw SceneReadError.invalidScene }
+        var additions = records(in: staging)
+        guard !additions.isEmpty else { throw ImportError.noSupportedSprites }
+        guard additions.count + skipped == entries.count else { throw SceneReadError.invalidScene }
+        if let cover, let first = additions.first {
+            let folder = (first.archive as NSString).deletingLastPathComponent
+            let path = folder + "/pack-cover.png"
+            try cover.write(to: staging.appendingPathComponent(path), options: .atomic)
+            for index in additions.indices { additions[index].definition.packCover = "@local/" + path }
+        }
         let root = directory.appendingPathComponent("UserSprites", isDirectory: true)
         try files.createDirectory(at: root, withIntermediateDirectories: true)
         var moved: [URL] = []
@@ -70,9 +111,10 @@ enum UserSpriteLibrary {
             moved.append(destination)
         }
         let index = try JSONEncoder().encode(current + additions)
-        guard index.count <= 8 * 1024 * 1024 else { throw SceneReadError.resourceLimit }
+        guard index.count <= indexLimit else { throw SceneReadError.resourceLimit }
         try index.write(to: root.appendingPathComponent("index.json"), options: .atomic)
         committed = true
+        return skipped
     }
 
     private final class PackManifest: NSObject, XMLParserDelegate {
@@ -97,7 +139,8 @@ enum UserSpriteLibrary {
         let archive=try Archive(url:source,accessMode:.read)
         var total=0
         func read(_ name:String,limit:Int=64*1024*1024)throws->Data {
-            guard let entry=archive[name],entry.type == .file,UInt64(entry.uncompressedSize)<=UInt64(limit),total+Int(entry.uncompressedSize)<=256*1024*1024 else{throw SceneReadError.resourceLimit}
+            guard let entry=archive[name],entry.type == .file else { throw ImportError.missingEntry(name) }
+            guard UInt64(entry.uncompressedSize)<=UInt64(limit),total+Int(entry.uncompressedSize)<=256*1024*1024 else{throw SceneReadError.resourceLimit}
             var data=Data();_ = try archive.extract(entry){data.append($0)};total+=data.count;return data
         }
         let modelData=try read("model.xml",limit:16*1024*1024),assetsData=try read("assets.xml",limit:16*1024*1024)
@@ -107,13 +150,17 @@ enum UserSpriteLibrary {
         var committed=false;defer{if !committed{try? FileManager.default.removeItem(at:folder)}}
         var parts:[[String:String]]=[]
         for (index,source) in model.parts.enumerated() {
-            guard let name=source["bm"] else{throw SceneReadError.unsupportedElement("ATI artwork without a bitmap")}
+            guard let name = source["bm"] else {
+                if packID.hasPrefix("@pack:") { continue }
+                throw SceneReadError.unsupportedElement("ATI artwork without a bitmap")
+            }
+            if packID.hasPrefix("@pack:"), archive[name] == nil { continue }
             let data=try read(name)
             guard let image=UIImage(data:data),image.size.width>0,image.size.height>0,image.size.width*image.size.height<=32_000_000 else{throw SceneReadError.invalidScene}
             let filename="part-\(index).png";try data.write(to:folder.appendingPathComponent(filename),options:.atomic)
             var part=source;part["image"]="@local/"+relative+"/"+filename;parts.append(part)
         }
-        guard !parts.isEmpty else{throw SceneReadError.invalidScene}
+        guard !parts.isEmpty else{throw SceneReadError.unsupportedElement("ATI without available bitmap artwork")}
         var thumbnail:String?
         if archive["thumb.png"] != nil {
             let data=try read("thumb.png");guard UIImage(data:data) != nil else{throw SceneReadError.invalidScene}
@@ -145,7 +192,7 @@ enum UserSpriteLibrary {
         try rewritten.addEntry(with:"native-item.json",type:.file,uncompressedSize:Int64(metadata.count),compressionMethod:.deflate,provider:{position,size in metadata.subdata(in:Int(position)..<Int(position)+size)})
         var index=records(in:directory);guard index.count<2000 else{throw SceneReadError.resourceLimit}
         index.append(Record(definition:definition,archive:relative+"/source.ati"))
-        let encoded=try JSONEncoder().encode(index);guard encoded.count<=8*1024*1024 else{throw SceneReadError.resourceLimit}
+        let encoded=try JSONEncoder().encode(index);guard encoded.count<=indexLimit else{throw SceneReadError.resourceLimit}
         try encoded.write(to:directory.appendingPathComponent("UserSprites/index.json"),options:.atomic)
         committed=true;return definition
     }
