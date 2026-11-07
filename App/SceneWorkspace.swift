@@ -308,7 +308,10 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             }
         }
         paint(displayed ?? workspace.frame,in:c,showHandles:false)
-        if editing && !cameraEditing {paintSkeleton(workspace.frame,in:c,points:true)}
+        if editing && !cameraEditing {
+            paintSkeleton(workspace.frame,in:c,points:true)
+            paintSelectedBone(in: c)
+        }
         if editing && !cameraEditing && AnimationSettings.bool("showCamera",fallback:true) {c.setStrokeColor(UIColor.darkGray.cgColor);c.setLineWidth(2/ratio);c.stroke(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))}
         c.restoreGState()
         if cameraEditing {
@@ -346,7 +349,16 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
                         let rest=hypot(bx-ax,by-ay)*scale
                         if rest>0 {longitudinal=hypot(b.x-a.x,b.y-a.y)/rest}
                     }
-                    c.saveGState();c.translateBy(x:a.x,y:a.y);c.rotate(by:atan2(b.y-a.y,b.x-a.x));c.scaleBy(x:scale*longitudinal,y:flipped && part["flipped"] != "true" ? -scale:scale)
+                    var anchorX = a.x, anchorY = a.y
+                    if b.parent == a.id {
+                        longitudinal *= FrameManipulation.boneLengthFactor(b)
+                    } else if a.parent == b.id {
+                        let factor = FrameManipulation.boneLengthFactor(a)
+                        longitudinal *= factor
+                        anchorX = b.x + (a.x - b.x) * factor
+                        anchorY = b.y + (a.y - b.y) * factor
+                    }
+                    c.saveGState();c.translateBy(x:anchorX,y:anchorY);c.rotate(by:atan2(b.y-a.y,b.x-a.x));c.scaleBy(x:scale*longitudinal,y:flipped && part["flipped"] != "true" ? -scale:scale)
                     bitmap.draw(in:CGRect(x:Double(part["x_offset"] ?? "0") ?? 0,y:Double(part["y_offset"] ?? "0") ?? 0,width:bitmap.size.width,height:bitmap.size.height),blendMode:.normal,alpha:CGFloat(Double(unit.attributes["alpha"] ?? "1") ?? 1)*opacity);c.restoreGState()
                 }
             }

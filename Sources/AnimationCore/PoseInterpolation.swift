@@ -23,6 +23,9 @@ public enum PoseInterpolation {
             guard visiting.insert(id).inserted else { throw PoseError.cyclicSkeleton }
             guard let x = a[id], let y = b[id] else { throw PoseError.incompatibleTopology }
             var value = x
+            let from = FrameManipulation.boneLengthFactor(x), to = FrameManipulation.boneLengthFactor(y)
+            let lengthFactor = from + (to - from) * t
+            value.attributes["nativeBoneLengthFactor"] = lengthFactor == 1 ? nil : String(lengthFactor)
             if y.attributes["nativeAxisStretch"] == "true" { value.attributes["nativeAxisStretch"] = "true" }
             if let parentID = x.parent {
                 guard let ap = a[parentID], let bp = b[parentID] else { throw PoseError.incompatibleTopology }

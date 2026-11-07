@@ -63,6 +63,11 @@ extension EditorController {
             self.canvas.boneMode.toggle()
             self.update()
         }
+        if canvas.boneMode {
+            add("prop_reset_bone", "Сброс", "side_reset", enabled: canvas.canResetBoneLength) { [weak self] in
+                self?.canvas.resetBoneLength()
+            }
+        }
         add("prop_lock",workspace.latchedUnitName == nil ? "Выделить":"Отпустить",workspace.latchedUnitName == nil ? "props_lock_others":"props_unlock_others",action:{[weak self] in
             guard let self,let selected=self.workspace.selected else{return}
             if self.workspace.latchedUnitName != nil {self.workspace.latchedUnitName=nil;self.workspace.selected=nil}

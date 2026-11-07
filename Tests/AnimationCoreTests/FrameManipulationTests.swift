@@ -1,6 +1,25 @@
 import XCTest
 @testable import AnimationCore
 final class FrameManipulationTests:XCTestCase {
+    func testLengthFactorLeavesNeighbouringJointsAndAttachmentsInPlace() {
+        let joints = [
+            Joint(id: 0, x: 0, y: 0, parent: nil, attributes: [:]),
+            Joint(id: 1, x: 10, y: 0, parent: 0, attributes: ["attachable": "master"]),
+            Joint(id: 2, x: 20, y: 0, parent: 1, attributes: [:])
+        ]
+        let arm = SceneUnit(name: "arm", joints: joints, attributes: [:])
+        let held = SceneUnit(name: "held", joints: [
+            Joint(id: 0, x: 10, y: 0, parent: nil, attributes: ["base": "true", "attachable": "slave", "attached": "arm&1"])
+        ], attributes: [:])
+        var frame = SceneFrame(id: 0, units: [arm, held], attributes: [:])
+        XCTAssertTrue(FrameManipulation.setBoneLengthFactor(1.5, in: &frame, unitIndex: 0, jointID: 1))
+        XCTAssertEqual(frame.units[0].joints.map(\.x), joints.map(\.x))
+        XCTAssertEqual(frame.units[1], held)
+        XCTAssertEqual(FrameManipulation.boneLengthFactor(frame.units[0].joints[1]), 1.5)
+        XCTAssertEqual(FrameManipulation.boneLengthFactor(frame.units[0].joints[2]), 1)
+        XCTAssertTrue(FrameManipulation.setBoneLengthFactor(1, in: &frame, unitIndex: 0, jointID: 1))
+        XCTAssertEqual(frame.units[0], arm)
+    }
     func testAxisResizeAndPosePasteWithoutMovingRoot() {
         let original = SceneUnit(name: "arm", joints: [
             Joint(id: 0, x: 0, y: 0, parent: nil, attributes: ["base": "true"]),

@@ -20,6 +20,7 @@ public enum FrameManipulation {
             target.joints[index].x = source.x + dx
             target.joints[index].y = source.y + dy
             target.joints[index].attributes["nativeAxisStretch"] = source.attributes["nativeAxisStretch"]
+            target.joints[index].attributes["nativeBoneLengthFactor"] = source.attributes["nativeBoneLengthFactor"]
         }
         for key in ["scale", "flipped"] { target.attributes[key] = pose.attributes[key] }
         func align(_ unit: inout SceneUnit, to anchor: Joint) {
@@ -47,6 +48,19 @@ public enum FrameManipulation {
                 pending.append(index)
             }
         }
+        return true
+    }
+
+    public static func boneLengthFactor(_ joint: Joint) -> Double {
+        guard let value = Double(joint.attributes["nativeBoneLengthFactor"] ?? ""), value.isFinite else { return 1 }
+        return min(8, max(0.1, value))
+    }
+
+    public static func setBoneLengthFactor(_ factor: Double, in frame: inout SceneFrame, unitIndex: Int, jointID: Int) -> Bool {
+        guard frame.units.indices.contains(unitIndex), factor.isFinite,
+              let index = frame.units[unitIndex].joints.firstIndex(where: { $0.id == jointID && $0.parent != nil }) else { return false }
+        let bounded = min(8, max(0.1, factor))
+        frame.units[unitIndex].joints[index].attributes["nativeBoneLengthFactor"] = bounded == 1 ? nil : String(bounded)
         return true
     }
 
