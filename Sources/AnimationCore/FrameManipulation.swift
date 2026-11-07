@@ -83,7 +83,10 @@ public enum FrameManipulation {
         for index in unit.joints.indices where affected.contains(unit.joints[index].id) {
             unit.joints[index].x += dx
             unit.joints[index].y += dy
-            if unit.joints[index].id == jointID { unit.joints[index].attributes["nativeAxisStretch"] = "true" }
+            if unit.joints[index].id == jointID {
+                unit.joints[index].attributes["nativeAxisStretch"] = "true"
+                unit.joints[index].attributes["nativeBoneLengthFactor"] = nil
+            }
         }
         return pastePose(unit, into: &frame, unitIndex: unitIndex)
     }

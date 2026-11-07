@@ -358,7 +358,24 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
                         anchorX = b.x + (a.x - b.x) * factor
                         anchorY = b.y + (a.y - b.y) * factor
                     }
-                    c.saveGState();c.translateBy(x:anchorX,y:anchorY);c.rotate(by:atan2(b.y-a.y,b.x-a.x));c.scaleBy(x:scale*longitudinal,y:flipped && part["flipped"] != "true" ? -scale:scale)
+                    c.saveGState()
+                    c.translateBy(x: anchorX, y: anchorY)
+                    c.rotate(by: atan2(b.y - a.y, b.x - a.x))
+                    let xOffset = Double(part["x_offset"] ?? "0") ?? 0
+                    let yOffset = Double(part["y_offset"] ?? "0") ?? 0
+                    let axialScale = scale * longitudinal
+                    if axialScale > 0 {
+                        let upper = (xOffset + Double(bitmap.size.width)) * axialScale
+                        let lower = xOffset * axialScale
+                        let halfHeight = (abs(yOffset) + Double(bitmap.size.height) + 1) * abs(scale)
+                        if b.parent == a.id && b.attributes["nativeAxisStretch"] == "true" {
+                            c.clip(to: CGRect(x: 0, y: -halfHeight, width: max(0, upper), height: 2 * halfHeight))
+                        } else if a.parent == b.id && a.attributes["nativeAxisStretch"] == "true" {
+                            let joint = hypot(b.x - a.x, b.y - a.y)
+                            c.clip(to: CGRect(x: lower, y: -halfHeight, width: max(0, joint - lower), height: 2 * halfHeight))
+                        }
+                    }
+                    c.scaleBy(x:scale*longitudinal,y:flipped && part["flipped"] != "true" ? -scale:scale)
                     bitmap.draw(in:CGRect(x:Double(part["x_offset"] ?? "0") ?? 0,y:Double(part["y_offset"] ?? "0") ?? 0,width:bitmap.size.width,height:bitmap.size.height),blendMode:.normal,alpha:CGFloat(Double(unit.attributes["alpha"] ?? "1") ?? 1)*opacity);c.restoreGState()
                 }
             }

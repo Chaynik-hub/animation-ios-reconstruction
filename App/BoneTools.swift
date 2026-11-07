@@ -159,9 +159,9 @@ extension SceneCanvas {
             guard let (_, start, end) = selectedBone, end.id == drag.joint else { return }
             let original = hypot(end.x - start.x, end.y - start.y)
             guard original > 0.001 else { return }
-            let factor = (drag.length + projection) / original
-            if FrameManipulation.setBoneLengthFactor(factor, in: &workspace.document.frames[drag.frame],
-                                                     unitIndex: drag.unit, jointID: drag.joint) {
+            let length = min(drag.length * 8, max(drag.length * 0.1, drag.length + projection))
+            if FrameManipulation.resizeBone(in: &workspace.document.frames[drag.frame],
+                                            unitIndex: drag.unit, jointID: drag.joint, length: length) {
                 updateBoneButtons()
                 setNeedsDisplay()
             }
