@@ -72,9 +72,12 @@ final class EditorUITests:XCTestCase {
         app.buttons["ProjectMenu"].tap();app.buttons["Фон"].tap()
         XCTAssertTrue(app.tables.cells["background-pack-common"].waitForExistence(timeout:5))
         app.tables.cells["background-pack-common"].tap()
-        let background=app.collectionViews.cells["background-common:bank"];XCTAssertTrue(background.waitForExistence(timeout:5));background.tap()
+        let background=app.collectionViews.cells["background-common:bank"];XCTAssertTrue(background.waitForExistence(timeout:5))
         let image=XCTAttachment(screenshot:XCUIScreen.main.screenshot());image.name="Original two-column background library";image.lifetime = .keepAlways;add(image)
-        app.buttons["Закрыть фоны"].tap();XCTAssertFalse(app.collectionViews.firstMatch.exists)
+        background.tap()
+        XCTAssertTrue(app.alerts.buttons["На текущий кадр"].waitForExistence(timeout: 5))
+        app.alerts.buttons["На все кадры"].tap()
+        XCTAssertFalse(app.collectionViews.firstMatch.exists)
     }
     func testBasePointTransformHandlesAndSingleGestureUndo() throws {
         let app = XCUIApplication(); app.launchArguments = ["--reference-practice"]; app.launch()
