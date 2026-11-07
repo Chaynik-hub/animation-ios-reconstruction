@@ -365,11 +365,18 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
     @objc private func rotateCamera(_ gesture: UIRotationGestureRecognizer) {
         guard cameraEditing else { return }
         trackCameraGesture(gesture)
-        guard gesture.state == .changed else { return }
         var camera = SceneCamera(frame: workspace.frame)
-        camera.rotation += gesture.rotation
+        switch gesture.state {
+        case .changed:
+            camera.rotation += gesture.rotation
+            gesture.rotation = 0
+        case .ended, .cancelled:
+            let step = Double.pi / 36
+            let snapped = (camera.rotation / step).rounded() * step
+            camera.rotation = atan2(sin(snapped), cos(snapped))
+        default: return
+        }
         camera.write(to: &workspace.document.frames[workspace.index])
-        gesture.rotation = 0
         setNeedsDisplay()
     }
 
