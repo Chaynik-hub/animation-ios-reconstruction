@@ -56,7 +56,7 @@ final class FrameToolsPanel: UIView {
                 return attributes
             }
             button.configuration = configuration
-            button.titleLabel?.numberOfLines = 2
+            button.titleLabel?.numberOfLines = command.id.hasSuffix("_pose") ? 4 : 2
             button.accessibilityIdentifier = command.id
             button.accessibilityLabel = command.title
             button.addAction(UIAction { _ in command.action() }, for: .touchUpInside)

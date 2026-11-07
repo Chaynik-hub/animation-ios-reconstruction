@@ -10,10 +10,10 @@ extension EditorController {
         if oldID==panel.accessibilityIdentifier,let offset,let scroll=panel.subviews.first(where:{$0 is UIScrollView}) as? UIScrollView {view.layoutIfNeeded();scroll.setContentOffset(CGPoint(x:0,y:min(offset.y,max(0,scroll.contentSize.height-scroll.bounds.height))),animated:false)}
     }
     func highlightUnitTools(_ active: Bool) {
-        guard let button=sidebar.arrangedSubviews[3] as? UIButton else{return};var config=button.configuration
+        guard let button=toolButtons["main_btn_props"] else{return};var config=button.configuration
         let image=config?.image?.withRenderingMode(active ? .alwaysTemplate : .alwaysOriginal);config?.image=image;config?.background.cornerRadius=0;config?.background.backgroundColor=active ? .original(0x00bd78):.clear;config?.baseForegroundColor=active ? .white:.original(0x00bd78);button.configuration=config
     }
-    func refreshUnitTools() { if unitToolsActive { showUnitTools() } }
+    func refreshUnitTools() { if unitToolsActive, ["UnitPropertiesPanel", "UnitListPanel"].contains(toolPanel?.accessibilityIdentifier ?? "") { showUnitTools() } }
     func showUnitTools() {
         guard let index = workspace.selected, workspace.frame.units.indices.contains(index) else { showUnitList(); return }
         let unit = workspace.frame.units[index]
@@ -22,7 +22,7 @@ extension EditorController {
         var commands: [FrameToolsPanel.Command] = []
         var icons: [String:String] = [:]
         func add(_ id: String, _ text: String, _ icon: String, enabled: Bool = true, action: @escaping () -> Void) {
-            icons[id] = icon; commands.append(.init(id: id, title: text, height: id == "prop_set_states" ? 84 : 70, enabled: enabled, action: action))
+            icons[id] = icon; commands.append(.init(id: id, title: text, height: id == "prop_set_states" || id.hasSuffix("_pose") ? 96 : 70, enabled: enabled, action: action))
         }
         if workspace.states(for: unit).count > 1 { add("prop_set_states", "Кадры\nпредмета", "props_state", action: { [weak self] in self?.showAssetStates() }) }
         add("prop_delete", "Удалить", "props_delete", action: { [weak self] in self?.workspace.removeObject() })
@@ -38,6 +38,18 @@ extension EditorController {
         add("prop_copy", "Копир.", "props_copy", action: { [weak self] in
             guard let self, let selected = self.workspace.selected else { return }; self.unitClipboard = UnitEditing.snapshot(in: self.workspace.frame, selected: selected); self.workspace.selected = nil; self.update()
         })
+        add("prop_copy_pose", "Скопировать положение предмета", "props_copy") { [weak self] in
+            self?.poseClipboard = unit
+            self?.update()
+        }
+        add("prop_paste_pose", "Вставить положение предмета", "props_copy", enabled: poseClipboard?.name == unit.name) { [weak self] in
+            guard let self, let pose = self.poseClipboard, self.workspace.selected == index else { return }
+            var frame = self.workspace.frame
+            guard FrameManipulation.pastePose(pose, into: &frame, unitIndex: index) else { return }
+            self.workspace.checkpoint()
+            self.workspace.document.frames[self.workspace.index] = frame
+            self.workspace.notify()
+        }
         add("prop_lock",workspace.latchedUnitName == nil ? "Выделить":"Отпустить",workspace.latchedUnitName == nil ? "props_lock_others":"props_unlock_others",action:{[weak self] in
             guard let self,let selected=self.workspace.selected else{return}
             if self.workspace.latchedUnitName != nil {self.workspace.latchedUnitName=nil;self.workspace.selected=nil}
@@ -69,7 +81,7 @@ extension EditorController {
         let panel = OpacityPanel(value: Float(workspace.frame.units[selected].attributes["alpha"] ?? "1") ?? 1, begin: { [weak self] in self?.workspace.checkpoint() }, change: { [weak self] value in
             guard let self, self.workspace.frame.units.indices.contains(selected) else { return }; self.workspace.document.frames[self.workspace.index].units[selected].attributes["alpha"] = String(value); self.canvas.setNeedsDisplay()
         }, end: { [weak self] in self?.workspace.notify() }, close: { [weak self] in self?.showUnitTools() })
-        mountContext(panel, width: 86); highlightUnitTools(true)
+        mountContext(panel, width: 86, unitMode: true)
     }
     func showAssetStates() {
         guard let selected = workspace.selected else { return }
@@ -81,7 +93,7 @@ extension EditorController {
         commands.insert(.init(id: "props_apply", title: "Готово", height: 60, enabled: true, action: { [weak self] in self?.showUnitTools() }), at: 0)
         let panel=FrameToolsPanel(commands:commands,accent:.original(0x00bd78),identifier:"UnitStatesPanel")
         panel.accessibilityValue=workspace.frame.units[selected].attributes["state"] ?? "0"
-        mountContext(panel,width:86);panel.selectCommand("asset-state-"+(workspace.frame.units[selected].attributes["state"] ?? "0"));highlightUnitTools(true)
+        mountContext(panel,width:86,unitMode:true);panel.selectCommand("asset-state-"+(workspace.frame.units[selected].attributes["state"] ?? "0"));highlightUnitTools(true)
     }
     func showAssetAnimation() {
         guard let index = workspace.selected else { return }

@@ -55,6 +55,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         for (row,entry) in entries.enumerated() {
             let (icon,title,color,action)=entry
             let button=UIButton(type:.custom);var config=UIButton.Configuration.plain();config.image=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/"+icon+".png").path)?.resizedIcon();config.title=title;config.imagePlacement = .top;config.imagePadding=0;config.contentInsets=NSDirectionalEdgeInsets(top:2,leading:2,bottom:2,trailing:2);config.baseForegroundColor=color;config.titleTextAttributesTransformer=UIConfigurationTextAttributesTransformer{v in var x=v;x.font=UIFont(name:"Roboto-Regular",size:12) ?? .systemFont(ofSize:12);return x};button.configuration=config;button.addAction(UIAction{_ in action()},for:.touchUpInside);sidebar.addArrangedSubview(button)
+            toolButtons[icon] = button
             if row == 0 {button.accessibilityIdentifier="ProjectMenu";button.accessibilityLabel="Меню проекта"}
             button.heightAnchor.constraint(equalToConstant:[47.0,68,61,62,60,61][row]).isActive=true
         }
@@ -75,8 +76,14 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         }
         navigation.addArrangedSubview(previous);navigation.addArrangedSubview(frameNavigator);navigation.addArrangedSubview(next)
         frameNavigator.seek = {[weak self] index in guard let self else{return};self.stop();self.workspace.index=index;self.workspace.notify()}
+        let sidebarLeading = sidebarScroll.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
+        if openedFromLanding {
+            sidebarLeading.priority = .defaultHigh
+            sidebarScroll.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 48).isActive = true
+            sidebarScroll.leadingAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        }
         NSLayoutConstraint.activate([
-            sidebarScroll.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor),sidebarScroll.topAnchor.constraint(equalTo:view.topAnchor),sidebarScroll.bottomAnchor.constraint(equalTo:view.bottomAnchor),sidebarScroll.widthAnchor.constraint(equalToConstant:80),
+            sidebarLeading,sidebarScroll.topAnchor.constraint(equalTo:view.topAnchor),sidebarScroll.bottomAnchor.constraint(equalTo:view.bottomAnchor),sidebarScroll.widthAnchor.constraint(equalToConstant:80),
             sidebar.leadingAnchor.constraint(equalTo:sidebarScroll.contentLayoutGuide.leadingAnchor),sidebar.trailingAnchor.constraint(equalTo:sidebarScroll.contentLayoutGuide.trailingAnchor),sidebar.topAnchor.constraint(equalTo:sidebarScroll.contentLayoutGuide.topAnchor),sidebar.bottomAnchor.constraint(equalTo:sidebarScroll.contentLayoutGuide.bottomAnchor),sidebar.widthAnchor.constraint(equalTo:sidebarScroll.frameLayoutGuide.widthAnchor),sidebar.heightAnchor.constraint(greaterThanOrEqualTo:sidebarScroll.frameLayoutGuide.heightAnchor),
             navigation.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor),navigation.topAnchor.constraint(equalTo:view.topAnchor),navigation.bottomAnchor.constraint(equalTo:view.bottomAnchor),navigation.widthAnchor.constraint(equalToConstant:60),
             canvas.leadingAnchor.constraint(equalTo:sidebar.trailingAnchor),canvas.trailingAnchor.constraint(equalTo:navigation.leadingAnchor),canvas.topAnchor.constraint(equalTo:view.topAnchor),canvas.bottomAnchor.constraint(equalTo:view.bottomAnchor)])
@@ -92,8 +99,14 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
             back.accessibilityLabel = "Назад"
             back.accessibilityIdentifier = "EditorBack"
             back.titleLabel?.font = .systemFont(ofSize: 32)
-            sidebar.insertArrangedSubview(back, at: 0)
-            back.heightAnchor.constraint(equalToConstant: 42).isActive = true
+            back.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(back)
+            NSLayoutConstraint.activate([
+                back.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                back.trailingAnchor.constraint(equalTo: sidebarScroll.leadingAnchor),
+                back.topAnchor.constraint(equalTo: view.topAnchor),
+                back.heightAnchor.constraint(equalToConstant: 54)
+            ])
         }
         workspace.onChange = {[weak self] in self?.update()};restoreAudio();update()
         if ProcessInfo.processInfo.arguments.contains("--reference-practice"),let url=Bundle.main.resourceURL?.appendingPathComponent("Content/Reference/practice.ats") {perform{try workspace.load(url)}}
@@ -107,6 +120,8 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func message(_ title:String,_ text:String){let alert=UIAlertController(title:title,message:text,preferredStyle:.alert);alert.addAction(UIAlertAction(title:"OK",style:.default));present(alert,animated:true)}
     var backgroundController: BackgroundChooserController?
     var unitToolsActive = false
+    var poseClipboard: SceneUnit?
+    var toolButtons: [String: UIButton] = [:]
     var unitClipboard: [SceneUnit] = []
     var toolPanel:UIView?
     func dismissTools(){if let controller=backgroundController {controller.dismiss(animated:false);backgroundController=nil};unitToolsActive=false;if let controller=catalogController {controller.willMove(toParent:nil);controller.view.removeFromSuperview();controller.removeFromParent();catalogController=nil};toolPanel?.removeFromSuperview();toolPanel=nil;shift.isHidden=false;highlightFrameTools(false);highlightCatalog(false);highlightUnitTools(false)}
@@ -167,7 +182,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func newScene(){workspace.checkpoint();workspace.document=SceneDocument(width:960,height:540,interframes:4,frames:[SceneFrame(id:0,units:[],attributes:[:])],attributes:[:]);workspace.restoreArtwork();workspace.index=0;workspace.selected=nil;workspace.latchedUnitName=nil;workspace.notify()}
     private var catalogController: CatalogController?
     func highlightCatalog(_ active: Bool) {
-        guard let button = sidebar.arrangedSubviews[2] as? UIButton else { return }
+        guard let button = toolButtons["main_btn_insert"] else { return }
         var configuration = button.configuration
         configuration?.background.backgroundColor = active ? .original(0x72bd00) : .clear
         let icon = configuration?.image?.withRenderingMode(active ? .alwaysTemplate : .alwaysOriginal)
@@ -188,7 +203,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func selectObject(){workspace.selected=nil;showUnitList()}
     var frameClipboard: [SceneFrame] = []
     func highlightFrameTools(_ active: Bool) {
-        guard sidebar.arrangedSubviews.indices.contains(4), let button = sidebar.arrangedSubviews[4] as? UIButton else { return }
+        guard let button = toolButtons["main_btn_frames"] else { return }
         var configuration = button.configuration
         let icon = configuration?.image?.withRenderingMode(active ? .alwaysTemplate : .alwaysOriginal)
         configuration?.image = icon
@@ -283,7 +298,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     var pickingAudio=false
     func openFiles(){pickingAudio=false;let picker=UIDocumentPickerViewController(forOpeningContentTypes:[.data],asCopy:true);picker.delegate=self;present(picker,animated:true)}
     func savedScenes(){let files=(try? FileManager.default.contentsOfDirectory(at:workspace.directory,includingPropertiesForKeys:nil)) ?? [];choices("Мои сцены",files.filter{$0.lastPathComponent.hasSuffix(".animation.json")}.map{url in (url.deletingPathExtension().lastPathComponent,{[weak self] in self?.perform{try self?.workspace.load(url);self?.restoreAudio()}})})}
-    func documentPicker(_ controller:UIDocumentPickerViewController,didPickDocumentsAt urls:[URL]){guard let url=urls.first else{return};perform{if importingBackgroundImage {importingBackgroundImage=false;try installBackgroundImage(url)}else if importingUserATI {importingUserATI=false;_ = try UserSpriteLibrary.importATI(url,directory:workspace.directory);workspace.restoreArtwork();catalogController?.updateAssets(workspace.catalog);workspace.notify()}else if pickingAudio {let scoped=url.startAccessingSecurityScopedResource();defer{if scoped{url.stopAccessingSecurityScopedResource()}};let target=workspace.directory.appendingPathComponent(UUID().uuidString+"."+url.pathExtension);try FileManager.default.copyItem(at:url,to:target);workspace.document.attributes["nativeAudio"]=target.lastPathComponent;audio=try AVAudioPlayer(contentsOf:target);audio?.prepareToPlay();workspace.notify()}else{try workspace.load(url);restoreAudio()}}}
+    func documentPicker(_ controller:UIDocumentPickerViewController,didPickDocumentsAt urls:[URL]){guard let url=urls.first else{return};perform{if importingBackgroundImage {importingBackgroundImage=false;try installBackgroundImage(url)}else if importingUserATI {importingUserATI=false;try UserSpriteLibrary.importFile(url,directory:workspace.directory);workspace.restoreArtwork();catalogController?.updateAssets(workspace.catalog);workspace.notify()}else if pickingAudio {let scoped=url.startAccessingSecurityScopedResource();defer{if scoped{url.stopAccessingSecurityScopedResource()}};let target=workspace.directory.appendingPathComponent(UUID().uuidString+"."+url.pathExtension);try FileManager.default.copyItem(at:url,to:target);workspace.document.attributes["nativeAudio"]=target.lastPathComponent;audio=try AVAudioPlayer(contentsOf:target);audio?.prepareToPlay();workspace.notify()}else{try workspace.load(url);restoreAudio()}}}
     var audio:AVAudioPlayer?
     func restoreAudio(){audio=nil;if let name=workspace.document.attributes["nativeAudio"],!name.contains("/"),let player=try? AVAudioPlayer(contentsOf:workspace.directory.appendingPathComponent(name)){audio=player;audio?.prepareToPlay()}}
 

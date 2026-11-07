@@ -2,6 +2,47 @@ import Foundation
 
 /// Slave references use SceneHelper.parsePointData's `unitName&pointID` encoding.
 public enum FrameManipulation {
+    public static func pastePose(_ pose: SceneUnit, into frame: inout SceneFrame, unitIndex: Int) -> Bool {
+        guard frame.units.indices.contains(unitIndex) else { return false }
+        var target = frame.units[unitIndex]
+        let points = Dictionary(pose.joints.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        guard target.name == pose.name, points.count == target.joints.count,
+              target.joints.allSatisfy({ points[$0.id]?.id == $0.id && points[$0.id]?.parent == $0.parent })
+        else { return false }
+        for index in target.joints.indices {
+            guard let source = points[target.joints[index].id] else { return false }
+            target.joints[index].x = source.x
+            target.joints[index].y = source.y
+        }
+        for key in ["scale", "flipped"] { target.attributes[key] = pose.attributes[key] }
+        func align(_ unit: inout SceneUnit, to anchor: Joint) {
+            guard let base = unit.joints.first(where: { $0.attributes["base"] == "true" }) else { return }
+            let dx = anchor.x - base.x, dy = anchor.y - base.y
+            for index in unit.joints.indices {
+                unit.joints[index].x += dx
+                unit.joints[index].y += dy
+            }
+        }
+        if let link = attachment(target),
+           let parent = frame.units.first(where: { $0.name == link.0 }),
+           let anchor = parent.joints.first(where: { $0.id == link.1 }) {
+            align(&target, to: anchor)
+        }
+        frame.units[unitIndex] = target
+        var pending = [unitIndex], visited = Set([unitIndex])
+        while let parent = pending.popLast() {
+            let master = frame.units[parent]
+            for index in frame.units.indices where !visited.contains(index) {
+                guard let link = attachment(frame.units[index]), link.0 == master.name,
+                      let anchor = master.joints.first(where: { $0.id == link.1 }) else { continue }
+                align(&frame.units[index], to: anchor)
+                visited.insert(index)
+                pending.append(index)
+            }
+        }
+        return true
+    }
+
     static func attachment(_ unit:SceneUnit)->(String,Int)? {
         guard let base=unit.joints.first(where:{$0.attributes["base"]=="true"}),base.attributes["attachable"]=="slave",let raw=base.attributes["attached"] else{return nil}
         let pieces=raw.components(separatedBy:"&")

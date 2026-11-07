@@ -35,7 +35,7 @@ final class CatalogController: UIViewController, UICollectionViewDataSource, UIC
             packs = (try? JSONDecoder().decode([CatalogPack].self, from: data)) ?? []
         }
         let known = Set(packs.map(\.id))
-        for id in Set(assets.map { $0.packID ?? String($0.name.split(separator: ":").first ?? "") }).sorted() where !known.contains(id) && id != "@user" {
+        for id in Set(assets.map { $0.packID ?? String($0.name.split(separator: ":").first ?? "") }).sorted() where !known.contains(id) && id != "@user" && !id.hasPrefix("@pack:") {
             packs.append(CatalogPack(id: id, title: id == "@" ? "Мои объекты" : id, titles: nil, thumbnail: nil))
         }
     }
@@ -64,7 +64,17 @@ final class CatalogController: UIViewController, UICollectionViewDataSource, UIC
     }
     func updateAssets(_ values:[ArtworkDefinition]) {assets=values;if isViewLoaded{reload()}}
     private func reload() {
-        importButton.isHidden = !showingUserSprites;importHeight.constant=showingUserSprites ? 50:0
+        let known = Set(packs.map(\.id))
+        for item in assets {
+            guard let id = item.packID, id.hasPrefix("@pack:"), !known.contains(id),
+                  !packs.contains(where: { $0.id == id }) else { continue }
+            let title = id.split(separator: ":", maxSplits: 2).last.map(String.init) ?? id
+            packs.append(CatalogPack(id: id, title: title, titles: nil, thumbnail: item.thumbnail))
+        }
+        let showImport = showingUserSprites || pack == nil
+        importButton.isHidden = !showImport
+        importHeight.constant = showImport ? 50 : 0
+        importButton.setTitle(showingUserSprites ? "Добавить .ati" : "Добавить .atp", for: .normal)
         if showingUserSprites {
             entries=assets.filter{$0.packID=="@user"}.sorted{$0.displayTitle.localizedStandardCompare($1.displayTitle) == .orderedAscending}.map(Entry.item)
             caption.text="Мои спрайты";back.isHidden=false

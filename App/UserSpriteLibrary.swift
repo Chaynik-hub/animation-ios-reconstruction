@@ -9,7 +9,88 @@ enum UserSpriteLibrary {
         return (try? JSONDecoder().decode([Record].self,from:data)) ?? []
     }
     static func definitions(in directory: URL) -> [ArtworkDefinition] {records(in:directory).map(\.definition)}
-    @discardableResult static func importATI(_ source: URL, directory: URL) throws -> ArtworkDefinition {
+    static func importFile(_ source: URL, directory: URL) throws {
+        if source.pathExtension.lowercased() == "atp" {
+            try importPack(source, directory: directory)
+        } else {
+            _ = try importATI(source, directory: directory)
+        }
+    }
+
+    private static func importPack(_ source: URL, directory: URL) throws {
+        let scoped = source.startAccessingSecurityScopedResource()
+        defer { if scoped { source.stopAccessingSecurityScopedResource() } }
+        let files = FileManager.default
+        let archive = try Archive(url: source, accessMode: .read)
+        let entries = archive.filter { entry in
+            entry.type == .file && entry.path.lowercased().hasSuffix(".ati") &&
+            !entry.path.hasPrefix("__MACOSX/") && !(entry.path as NSString).lastPathComponent.hasPrefix("._")
+        }
+        let current = records(in: directory)
+        guard !entries.isEmpty else { throw SceneReadError.invalidScene }
+        guard current.count + entries.count <= 2000,
+              entries.reduce(Int64(0), { $0 + min(Int64($1.uncompressedSize), 256 * 1024 * 1024 + 1) }) <= 256 * 1024 * 1024
+        else { throw SceneReadError.resourceLimit }
+
+        let staging = files.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try files.createDirectory(at: staging, withIntermediateDirectories: true)
+        defer { try? files.removeItem(at: staging) }
+        let metadata = PackManifest()
+        if let entry = archive["manifest.xml"], entry.uncompressedSize <= 2 * 1024 * 1024 {
+            var data = Data()
+            _ = try archive.extract(entry) { data.append($0) }
+            let parser = XMLParser(data: data)
+            parser.delegate = metadata
+            guard parser.parse() else { throw SceneReadError.malformedXML }
+        }
+        let title = source.deletingPathExtension().lastPathComponent
+        let pack = "@pack:\(UUID().uuidString):\(title)"
+        for (order, entry) in entries.enumerated() {
+            let components = entry.path.split(separator: "/").map(String.init)
+            guard let filename = components.last else { continue }
+            let item = staging.appendingPathComponent(filename)
+            _ = try archive.extract(entry, to: item)
+            defer { try? files.removeItem(at: item) }
+            let shortName = (filename as NSString).deletingPathExtension
+            try importATI(item, directory: staging, packID: pack,
+                          folderPath: metadata.folders[shortName] ?? Array(components.dropLast()),
+                          order: order, defaultScale: metadata.scale, manifestFolders: metadata.folders)
+        }
+        let additions = records(in: staging)
+        guard additions.count == entries.count else { throw SceneReadError.invalidScene }
+        let root = directory.appendingPathComponent("UserSprites", isDirectory: true)
+        try files.createDirectory(at: root, withIntermediateDirectories: true)
+        var moved: [URL] = []
+        var committed = false
+        defer { if !committed { for url in moved { try? files.removeItem(at: url) } } }
+        for record in additions {
+            let folder = (record.archive as NSString).deletingLastPathComponent
+            let destination = directory.appendingPathComponent(folder)
+            try files.moveItem(at: staging.appendingPathComponent(folder), to: destination)
+            moved.append(destination)
+        }
+        let index = try JSONEncoder().encode(current + additions)
+        guard index.count <= 8 * 1024 * 1024 else { throw SceneReadError.resourceLimit }
+        try index.write(to: root.appendingPathComponent("index.json"), options: .atomic)
+        committed = true
+    }
+
+    private final class PackManifest: NSObject, XMLParserDelegate {
+        var folders: [String: [String]] = [:]
+        var scale = 1.0
+        func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
+                    qualifiedName: String?, attributes: [String: String]) {
+            if let raw = attributes["def_scale"], let value = Double(raw), value.isFinite, value > 0 {
+                scale = value
+            }
+            if elementName == "item", let name = attributes["sname"] {
+                folders[name] = (attributes["set"] ?? "").replacingOccurrences(of: "\\", with: "/")
+                    .split(separator: "/").map(String.init)
+            }
+        }
+    }
+
+    @discardableResult static func importATI(_ source: URL, directory: URL, packID: String = "@user", folderPath: [String] = [], order: Int? = nil, defaultScale: Double = 1, manifestFolders: [String: [String]] = [:]) throws -> ArtworkDefinition {
         guard source.pathExtension.lowercased()=="ati" else{throw SceneReadError.invalidScene}
         let scoped=source.startAccessingSecurityScopedResource();defer{if scoped{source.stopAccessingSecurityScopedResource()}}
         guard (((try FileManager.default.attributesOfItem(atPath:source.path)[.size]) as? NSNumber)?.int64Value ?? Int64.max) <= 256*1024*1024 else{throw SceneReadError.resourceLimit}
@@ -40,7 +121,8 @@ enum UserSpriteLibrary {
         }
         let name="@:imported_"+id.replacingOccurrences(of:"-",with:"")
         let title=source.deletingPathExtension().lastPathComponent
-        let definition=ArtworkDefinition(name:name,points:model.points,parts:parts,thumbnail:thumbnail,defaultScale:1,titles:["ru":title,"en":title],packID:"@user",folderPath:[],catalogOrder:nil)
+        let shortName = model.name.split(separator: ":", maxSplits: 1).last.map(String.init) ?? model.name
+        let definition=ArtworkDefinition(name:name,points:model.points,parts:parts,thumbnail:thumbnail,defaultScale:defaultScale,titles:["ru":title,"en":title],packID:packID,folderPath:manifestFolders[shortName] ?? folderPath,catalogOrder:order)
         let copy=folder.appendingPathComponent("source.ati");try FileManager.default.copyItem(at:source,to:copy)
         let rewritten=try Archive(url:copy,accessMode:.update)
         func renameRoot(_ data:Data)throws->Data {
@@ -58,7 +140,7 @@ enum UserSpriteLibrary {
             if let existing=rewritten[path]{try rewritten.remove(existing)}
             try rewritten.addEntry(with:path,type:.file,uncompressedSize:Int64(data.count),compressionMethod:.deflate,provider:{position,size in data.subdata(in:Int(position)..<Int(position)+size)})
         }
-        let metadata=try JSONSerialization.data(withJSONObject:["title":title,"packID":"@user"])
+        let metadata=try JSONSerialization.data(withJSONObject:["title":title,"packID":packID])
         if let old=rewritten["native-item.json"]{try rewritten.remove(old)}
         try rewritten.addEntry(with:"native-item.json",type:.file,uncompressedSize:Int64(metadata.count),compressionMethod:.deflate,provider:{position,size in metadata.subdata(in:Int(position)..<Int(position)+size)})
         var index=records(in:directory);guard index.count<2000 else{throw SceneReadError.resourceLimit}

@@ -49,8 +49,8 @@ final class SettingsController: OriginalListController, UIDocumentPickerDelegate
     private func render() {
         clear(); row("‹ Настройки") { [weak self] in self?.close() }
         label("Основные настройки")
-        row("Режим onion: " + ["Без onion","Тень","Скелет"][min(2,max(0,AnimationSettings.onionMode))]) { [weak self] in
-            self?.options("Режим onion", ["Без onion","Тень","Скелет"]) { AnimationSettings.set($0,"onionMode") }
+        row("Режим onion: " + ["Без onion","Тень","Скелет","Серая тень"][min(3,max(0,AnimationSettings.onionMode))]) { [weak self] in
+            self?.options("Режим onion", ["Без onion","Тень","Скелет","Серая тень"]) { AnimationSettings.set($0,"onionMode") }
         }
         row("Предыдущие кадры: \(AnimationSettings.onionCount)") { [weak self] in self?.options("Предыдущие кадры",(1...5).map(String.init)) { AnimationSettings.set($0+1,"onionCount") } }
         toggle("Показывать сетку","showGridPref")

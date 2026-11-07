@@ -275,7 +275,18 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             for distance in (1...min(workspace.index,AnimationSettings.onionCount)).reversed() {
                 let previous = workspace.document.frames[workspace.index-distance]
                 if AnimationSettings.onionMode == 2 { c.saveGState();c.setAlpha(0.25/CGFloat(distance));paintSkeleton(previous,in:c,points:false);c.restoreGState() }
-                else {paint(previous,in:c,showHandles:false,opacity:0.18/CGFloat(distance))}
+                else if AnimationSettings.onionMode == 3 {
+                    c.saveGState()
+                    c.beginTransparencyLayer(auxiliaryInfo: nil)
+                    var silhouette = previous
+                    for index in silhouette.units.indices { silhouette.units[index].attributes["alpha"] = "1" }
+                    paint(silhouette, in: c, showHandles: false)
+                    c.setBlendMode(.sourceIn)
+                    UIColor(white: max(0.35, 0.75 - CGFloat(distance) * 0.08), alpha: 1).setFill()
+                    c.fill(CGRect(x: 0, y: 0, width: workspace.document.width, height: workspace.document.height))
+                    c.endTransparencyLayer()
+                    c.restoreGState()
+                } else {paint(previous,in:c,showHandles:false,opacity:0.18/CGFloat(distance))}
             }
         }
         paint(displayed ?? workspace.frame,in:c,showHandles:false)
