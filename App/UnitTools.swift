@@ -4,7 +4,7 @@ extension EditorController {
     func mountContext(_ panel: UIView, width: CGFloat, unitMode: Bool = false) {
         let oldID=toolPanel?.accessibilityIdentifier
         let offset=(toolPanel?.subviews.first(where:{$0 is UIScrollView}) as? UIScrollView)?.contentOffset
-        dismissTools(); panel.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(panel)
+        dismissTools(keepBoneTool: unitMode); panel.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(panel)
         NSLayoutConstraint.activate([panel.leadingAnchor.constraint(equalTo: sidebarScroll.trailingAnchor), panel.topAnchor.constraint(equalTo: view.topAnchor), panel.bottomAnchor.constraint(equalTo: view.bottomAnchor), panel.widthAnchor.constraint(equalToConstant: width)])
         toolPanel = panel; unitToolsActive = unitMode; shift.isHidden = true; if unitMode { highlightUnitTools(true) }
         if oldID==panel.accessibilityIdentifier,let offset,let scroll=panel.subviews.first(where:{$0 is UIScrollView}) as? UIScrollView {view.layoutIfNeeded();scroll.setContentOffset(CGPoint(x:0,y:min(offset.y,max(0,scroll.contentSize.height-scroll.bounds.height))),animated:false)}
@@ -22,7 +22,7 @@ extension EditorController {
         var commands: [FrameToolsPanel.Command] = []
         var icons: [String:String] = [:]
         func add(_ id: String, _ text: String, _ icon: String, enabled: Bool = true, action: @escaping () -> Void) {
-            icons[id] = icon; commands.append(.init(id: id, title: text, height: id == "prop_set_states" || id.hasSuffix("_pose") ? 96 : 70, enabled: enabled, action: action))
+            icons[id] = icon; commands.append(.init(id: id, title: text, height: id == "prop_set_states" ? 84 : 70, enabled: enabled, action: action))
         }
         if workspace.states(for: unit).count > 1 { add("prop_set_states", "Кадры\nпредмета", "props_state", action: { [weak self] in self?.showAssetStates() }) }
         add("prop_delete", "Удалить", "props_delete", action: { [weak self] in self?.workspace.removeObject() })
@@ -38,17 +38,30 @@ extension EditorController {
         add("prop_copy", "Копир.", "props_copy", action: { [weak self] in
             guard let self, let selected = self.workspace.selected else { return }; self.unitClipboard = UnitEditing.snapshot(in: self.workspace.frame, selected: selected); self.workspace.selected = nil; self.update()
         })
-        add("prop_copy_pose", "Скопировать положение предмета", "props_copy") { [weak self] in
+        add("prop_copy_pose", "Коп. позу", "pose_copy") { [weak self] in
             self?.poseClipboard = unit
             self?.update()
         }
-        add("prop_paste_pose", "Вставить положение предмета", "props_copy", enabled: poseClipboard?.name == unit.name) { [weak self] in
+        add("prop_paste_pose", "Вст. позу", "pose_paste", enabled: poseClipboard?.name == unit.name) { [weak self] in
             guard let self, let pose = self.poseClipboard, self.workspace.selected == index else { return }
-            var frame = self.workspace.frame
-            guard FrameManipulation.pastePose(pose, into: &frame, unitIndex: index) else { return }
-            self.workspace.checkpoint()
-            self.workspace.document.frames[self.workspace.index] = frame
-            self.workspace.notify()
+            let alert = UIAlertController(title: "Вставить позу", message: nil, preferredStyle: .alert)
+            for (title, includeRoot) in [("Только кости", false), ("Вся поза", true)] {
+                alert.addAction(UIAlertAction(title: title, style: .default) { [weak self] _ in
+                    guard let self, self.workspace.selected == index else { return }
+                    var frame = self.workspace.frame
+                    guard FrameManipulation.pastePose(pose, into: &frame, unitIndex: index, includeRoot: includeRoot) else { return }
+                    self.workspace.checkpoint()
+                    self.workspace.document.frames[self.workspace.index] = frame
+                    self.workspace.notify()
+                })
+            }
+            alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
+            self.present(alert, animated: true)
+        }
+        add("prop_stretch_bone", canvas.boneMode ? "Кость ✓" : "Длина", "bone_length") { [weak self] in
+            guard let self else { return }
+            self.canvas.boneMode.toggle()
+            self.update()
         }
         add("prop_lock",workspace.latchedUnitName == nil ? "Выделить":"Отпустить",workspace.latchedUnitName == nil ? "props_lock_others":"props_unlock_others",action:{[weak self] in
             guard let self,let selected=self.workspace.selected else{return}

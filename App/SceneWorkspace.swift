@@ -131,6 +131,17 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
     var handles = true
     var onion = true
     var stretch = false
+    var boneMode = false {
+        didSet {
+            if !boneMode { boneJoint = nil }
+            updateTransformControls()
+            setNeedsDisplay()
+        }
+    }
+    var boneJoint: Int?
+    var boneButtons: [UIButton] = []
+    var boneDrag: (frame: Int, unit: Int, joint: Int, length: Double, axis: CGPoint, ratio: CGFloat)?
+
     var backgroundColorValue:UIColor {
         get {switch workspace.document.attributes["nativeBackground"] {case "black":return .black;case "green":return .green;default:return .white}}
         set {workspace.document.attributes["nativeBackground"] = newValue == .black ? "black" : newValue == .green ? "green" : "white"}
@@ -184,6 +195,11 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
     }
     override func layoutSubviews() { super.layoutSubviews(); updateTransformControls() }
     func updateTransformControls() {
+        updateBoneButtons()
+        if boneMode {
+            transformButtons.forEach { $0.isHidden = true }
+            return
+        }
         guard handles, !cameraEditing, displayed == nil, ratio > 0, let box = selectedArtworkBounds(), let selected = workspace.selected else {
             transformButtons.forEach { $0.isHidden = true }; return
         }
@@ -201,6 +217,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         }
     }
     func selectBase(at screen: CGPoint) {
+        if boneMode { selectBone(at: screen); return }
         let point = CGPoint(x: (screen.x - origin.x) / ratio, y: (screen.y - origin.y) / ratio)
         var distance = 22 / ratio
         var selected: Int?
@@ -322,7 +339,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
                 for part in selectedParts.sorted(by:{(Int($0["weight"] ?? "0") ?? 0)<(Int($1["weight"] ?? "0") ?? 0)}) {
                     guard let start=Int(part["start"] ?? ""),let end=Int(part["end"] ?? ""),let a=joints[start],let b=joints[end],let imagePath=part["image"],let bitmap=image(imagePath) else{continue}
                     var longitudinal=1.0
-                    if b.attributes["stretchable"]=="true",scale>0,
+                    if (b.attributes["stretchable"] == "true" || (b.parent == a.id && b.attributes["nativeAxisStretch"] == "true") || (a.parent == b.id && a.attributes["nativeAxisStretch"] == "true")), scale > 0,
                        let restStart=definition.points.first(where:{$0["id"]==String(start)}),
                        let restEnd=definition.points.first(where:{$0["id"]==String(end)}),
                        let ax=Double(restStart["x"] ?? ""),let ay=Double(restStart["y"] ?? ""),let bx=Double(restEnd["x"] ?? ""),let by=Double(restEnd["y"] ?? "") {

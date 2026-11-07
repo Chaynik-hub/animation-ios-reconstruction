@@ -44,6 +44,7 @@ final class FrameToolsPanel: UIView {
                let image = UIImage(contentsOfFile: url.path) {
                 configuration.image = image.resizedIcon(density: 2)
             }
+            if let artwork = PoseToolIcon.image(for: command.id) { configuration.image = artwork }
             configuration.title = command.title.uppercased()
             configuration.imagePlacement = .top
             configuration.imagePadding = 0
@@ -56,7 +57,7 @@ final class FrameToolsPanel: UIView {
                 return attributes
             }
             button.configuration = configuration
-            button.titleLabel?.numberOfLines = command.id.hasSuffix("_pose") ? 4 : 2
+            button.titleLabel?.numberOfLines = 2
             button.accessibilityIdentifier = command.id
             button.accessibilityLabel = command.title
             button.addAction(UIAction { _ in command.action() }, for: .touchUpInside)

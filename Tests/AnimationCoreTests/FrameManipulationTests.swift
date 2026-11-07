@@ -1,6 +1,24 @@
 import XCTest
 @testable import AnimationCore
 final class FrameManipulationTests:XCTestCase {
+    func testAxisResizeAndPosePasteWithoutMovingRoot() {
+        let original = SceneUnit(name: "arm", joints: [
+            Joint(id: 0, x: 0, y: 0, parent: nil, attributes: ["base": "true"]),
+            Joint(id: 1, x: 3, y: 4, parent: 0, attributes: [:]),
+            Joint(id: 2, x: 3, y: 6, parent: 1, attributes: [:])
+        ], attributes: [:])
+        var frame = SceneFrame(id: 0, units: [original], attributes: [:])
+        XCTAssertTrue(FrameManipulation.resizeBone(in: &frame, unitIndex: 0, jointID: 1, length: 10))
+        let pose = frame.units[0]
+        XCTAssertEqual(pose.joints.map(\.x), [0, 6, 6])
+        XCTAssertEqual(pose.joints.map(\.y), [0, 8, 10])
+        frame.units[0] = original
+        for index in frame.units[0].joints.indices { frame.units[0].joints[index].x += 20 }
+        XCTAssertTrue(FrameManipulation.pastePose(pose, into: &frame, unitIndex: 0, includeRoot: false))
+        XCTAssertEqual(frame.units[0].joints.map(\.x), [20, 26, 26])
+        XCTAssertTrue(FrameManipulation.pastePose(pose, into: &frame, unitIndex: 0))
+        XCTAssertEqual(frame.units[0], pose)
+    }
     func testNearbySwordSnapsToVacantHand() {
         let arm=SceneUnit(name:"arm",joints:[Joint(id:7,x:100,y:100,parent:nil,attributes:["base":"true","attachable":"master"])],attributes:[:])
         let sword=SceneUnit(name:"sword",joints:[Joint(id:0,x:110,y:100,parent:nil,attributes:["base":"true","attachable":"slave"]),Joint(id:1,x:160,y:100,parent:0,attributes:[:])],attributes:[:])

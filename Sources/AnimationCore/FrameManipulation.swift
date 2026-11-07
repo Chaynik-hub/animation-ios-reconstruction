@@ -2,17 +2,24 @@ import Foundation
 
 /// Slave references use SceneHelper.parsePointData's `unitName&pointID` encoding.
 public enum FrameManipulation {
-    public static func pastePose(_ pose: SceneUnit, into frame: inout SceneFrame, unitIndex: Int) -> Bool {
+    public static func pastePose(_ pose: SceneUnit, into frame: inout SceneFrame, unitIndex: Int, includeRoot: Bool = true) -> Bool {
         guard frame.units.indices.contains(unitIndex) else { return false }
         var target = frame.units[unitIndex]
         let points = Dictionary(pose.joints.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         guard target.name == pose.name, points.count == target.joints.count,
               target.joints.allSatisfy({ points[$0.id]?.id == $0.id && points[$0.id]?.parent == $0.parent })
         else { return false }
+        var dx = 0.0, dy = 0.0
+        if !includeRoot, let root = target.joints.first(where: { $0.attributes["base"] == "true" || $0.parent == nil }),
+           let source = points[root.id] {
+            dx = root.x - source.x
+            dy = root.y - source.y
+        }
         for index in target.joints.indices {
             guard let source = points[target.joints[index].id] else { return false }
-            target.joints[index].x = source.x
-            target.joints[index].y = source.y
+            target.joints[index].x = source.x + dx
+            target.joints[index].y = source.y + dy
+            target.joints[index].attributes["nativeAxisStretch"] = source.attributes["nativeAxisStretch"]
         }
         for key in ["scale", "flipped"] { target.attributes[key] = pose.attributes[key] }
         func align(_ unit: inout SceneUnit, to anchor: Joint) {
@@ -41,6 +48,30 @@ public enum FrameManipulation {
             }
         }
         return true
+    }
+
+    public static func resizeBone(in frame: inout SceneFrame, unitIndex: Int, jointID: Int, length: Double) -> Bool {
+        guard frame.units.indices.contains(unitIndex), length.isFinite, length > 0 else { return false }
+        var unit = frame.units[unitIndex]
+        guard let end = unit.joints.first(where: { $0.id == jointID }),
+              let start = unit.joints.first(where: { $0.id == end.parent }) else { return false }
+        let current = hypot(end.x - start.x, end.y - start.y)
+        guard current > 0.0001 else { return false }
+        let factor = length / current - 1
+        let dx = (end.x - start.x) * factor, dy = (end.y - start.y) * factor
+        var affected = Set([jointID])
+        var queue = [jointID]
+        while let id = queue.popLast() {
+            for child in unit.joints where child.parent == id {
+                if affected.insert(child.id).inserted { queue.append(child.id) }
+            }
+        }
+        for index in unit.joints.indices where affected.contains(unit.joints[index].id) {
+            unit.joints[index].x += dx
+            unit.joints[index].y += dy
+            if unit.joints[index].id == jointID { unit.joints[index].attributes["nativeAxisStretch"] = "true" }
+        }
+        return pastePose(unit, into: &frame, unitIndex: unitIndex)
     }
 
     static func attachment(_ unit:SceneUnit)->(String,Int)? {
