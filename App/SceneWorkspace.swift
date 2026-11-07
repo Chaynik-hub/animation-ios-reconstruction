@@ -402,10 +402,12 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
                 var camera = SceneCamera(frame: workspace.frame)
                 let delta = gesture.translation(in: self)
                 let angle = -camera.rotation
-                let scale = ratio * camera.zoom
+                let scale = Double(ratio) * camera.zoom
                 guard scale > 0 else { return }
-                camera.x -= (delta.x * cos(angle) - delta.y * sin(angle)) / scale
-                camera.y -= (delta.x * sin(angle) + delta.y * cos(angle)) / scale
+                let dx = Double(delta.x), dy = Double(delta.y)
+                let cosine = cos(angle), sine = sin(angle)
+                camera.x -= (dx * cosine - dy * sine) / scale
+                camera.y -= (dx * sine + dy * cosine) / scale
                 camera.write(to: &workspace.document.frames[workspace.index])
                 gesture.setTranslation(.zero, in: self)
                 setNeedsDisplay()
