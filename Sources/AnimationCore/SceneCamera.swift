@@ -4,6 +4,7 @@ public struct SceneCamera: Equatable, Sendable {
     public var x: Double = 0
     public var y: Double = 0
     public var zoom: Double = 1
+    public var rotation: Double = 0
 
     public init() {}
 
@@ -14,12 +15,14 @@ public struct SceneCamera: Equatable, Sendable {
         }
         x = number("nativeCameraX", fallback: 0)
         y = number("nativeCameraY", fallback: 0)
+        rotation = number("nativeCameraRotation", fallback: 0)
         zoom = min(8, max(0.25, number("nativeCameraZoom", fallback: 1)))
     }
 
     public func write(to frame: inout SceneFrame) {
         frame.attributes["nativeCameraX"] = x == 0 ? nil : String(x)
         frame.attributes["nativeCameraY"] = y == 0 ? nil : String(y)
+        frame.attributes["nativeCameraRotation"] = rotation == 0 ? nil : String(rotation)
         frame.attributes["nativeCameraZoom"] = zoom == 1 ? nil : String(zoom)
     }
 
@@ -27,6 +30,8 @@ public struct SceneCamera: Equatable, Sendable {
         var camera = self
         camera.x += (end.x - x) * progress
         camera.y += (end.y - y) * progress
+        let angle = end.rotation - rotation
+        camera.rotation += atan2(sin(angle), cos(angle)) * progress
         camera.zoom += (end.zoom - zoom) * progress
         return camera
     }

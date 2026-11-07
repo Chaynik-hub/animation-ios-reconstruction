@@ -134,6 +134,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         get {switch workspace.document.attributes["nativeBackground"] {case "black":return .black;case "green":return .green;default:return .white}}
         set {workspace.document.attributes["nativeBackground"] = newValue == .black ? "black" : newValue == .green ? "green" : "white"}
     }
+    private var cameraGestures = Set<ObjectIdentifier>()
     var cameraEditing = false {
         didSet { if oldValue != cameraEditing { updateTransformControls(); setNeedsDisplay() } }
     }
@@ -154,6 +155,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         NotificationCenter.default.addObserver(self,selector:#selector(settingsChanged),name:.animationSettingsChanged,object:nil)
         let pan = UIPanGestureRecognizer(target: self, action: #selector(pan(_:))); pan.delegate = self; addGestureRecognizer(pan)
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinch(_:))); pinch.delegate = self; addGestureRecognizer(pinch)
+        let rotate = UIRotationGestureRecognizer(target: self, action: #selector(rotateCamera(_:))); rotate.delegate = self; addGestureRecognizer(rotate)
         let tap = UITapGestureRecognizer(target: self, action: #selector(selectBase(_:))); tap.delegate = self; addGestureRecognizer(tap)
         for (index, name) in ["rotator", "scaler", "mover"].enumerated() {
             let button = UIButton(type: .custom); button.tag = index; button.isHidden = true
@@ -167,7 +169,12 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         }
     }
     @objc private func settingsChanged() {setNeedsDisplay()}
-    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool { transformStart == nil }
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        transformStart == nil && (cameraEditing || !(gestureRecognizer is UIRotationGestureRecognizer))
+    }
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer) -> Bool {
+        cameraEditing && gestureRecognizer.view === self && other.view === self
+    }
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if cameraEditing && gestureRecognizer is UITapGestureRecognizer { return false }
         var target = touch.view
@@ -331,6 +338,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         let camera = SceneCamera(frame: frame)
         let center = CGPoint(x: workspace.document.width / 2, y: workspace.document.height / 2)
         context.translateBy(x: center.x, y: center.y)
+        context.rotate(by: camera.rotation)
         context.scaleBy(x: camera.zoom, y: camera.zoom)
         context.translateBy(x: -center.x - camera.x, y: -center.y - camera.y)
     }
@@ -342,9 +350,32 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         setNeedsDisplay()
     }
 
+    private func trackCameraGesture(_ gesture: UIGestureRecognizer) {
+        let id = ObjectIdentifier(gesture)
+        switch gesture.state {
+        case .began:
+            if cameraGestures.isEmpty { workspace.checkpoint() }
+            cameraGestures.insert(id)
+        case .ended, .cancelled, .failed:
+            cameraGestures.remove(id)
+        default: break
+        }
+    }
+
+    @objc private func rotateCamera(_ gesture: UIRotationGestureRecognizer) {
+        guard cameraEditing else { return }
+        trackCameraGesture(gesture)
+        guard gesture.state == .changed else { return }
+        var camera = SceneCamera(frame: workspace.frame)
+        camera.rotation += gesture.rotation
+        camera.write(to: &workspace.document.frames[workspace.index])
+        gesture.rotation = 0
+        setNeedsDisplay()
+    }
+
     @objc func pinch(_ gesture: UIPinchGestureRecognizer) {
         if cameraEditing {
-            if gesture.state == .began { workspace.checkpoint() }
+            trackCameraGesture(gesture)
             guard gesture.state == .changed else { return }
             var camera = SceneCamera(frame: workspace.frame)
             camera.zoom = min(8, max(0.25, camera.zoom * gesture.scale))
@@ -359,12 +390,15 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
 
     @objc func pan(_ gesture: UIPanGestureRecognizer){
         if cameraEditing {
-            if gesture.state == .began { workspace.checkpoint() }
+            trackCameraGesture(gesture)
             if gesture.state == .changed {
                 var camera = SceneCamera(frame: workspace.frame)
                 let delta = gesture.translation(in: self)
-                camera.x -= delta.x / (ratio * camera.zoom)
-                camera.y -= delta.y / (ratio * camera.zoom)
+                let angle = -camera.rotation
+                let scale = ratio * camera.zoom
+                guard scale > 0 else { return }
+                camera.x -= (delta.x * cos(angle) - delta.y * sin(angle)) / scale
+                camera.y -= (delta.x * sin(angle) + delta.y * cos(angle)) / scale
                 camera.write(to: &workspace.document.frames[workspace.index])
                 gesture.setTranslation(.zero, in: self)
                 setNeedsDisplay()
