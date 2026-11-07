@@ -26,16 +26,20 @@ final class CameraEditorController: UIViewController {
         canvas.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(canvas)
 
-        let toolbar = UIStackView(arrangedSubviews: [
-            control("Назад", icon: nil) { [weak self] in self?.dismiss(animated: false) },
-            control("Сброс", icon: "side_reset") { [weak self] in self?.canvas.resetSceneCamera() },
-            control("Отмена", icon: "main_btn_undo_normal") { [weak self] in self?.workspace.undo(); self?.refresh() },
-            control("Переход", icon: "side_varspeed") { [weak self] in self?.tween() },
-            control("Пуск", icon: "main_btn_play") { [weak self] in
-                guard let self else { return }
-                self.present(PreviewController(workspace: self.workspace, audio: self.audio), animated: false)
-            }
-        ])
+        let back = control("Назад", icon: nil) { [weak self] in self?.dismiss(animated: false) }
+        let play = control("Пуск", icon: "main_btn_play", tint: .original(0xff9000)) { [weak self] in
+            guard let self else { return }
+            self.present(PreviewController(workspace: self.workspace, audio: self.audio), animated: false)
+        }
+        let transition = control("Переход", icon: "btn_tween", tint: .original(0x00c0d8)) { [weak self] in self?.tween() }
+        let reset = control("Сброс", icon: "btn_reset", tint: .original(0xf35454)) { [weak self] in self?.canvas.resetSceneCamera() }
+        let undo = control("Отмена", icon: "main_btn_undo_normal", tint: .original(0x009ac4)) { [weak self] in
+            self?.workspace.undo()
+            self?.refresh()
+        }
+        let toolbar = UIStackView(arrangedSubviews: [back, play, transition, reset])
+        undo.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(undo)
         toolbar.axis = .vertical
         toolbar.distribution = .fillEqually
         toolbar.translatesAutoresizingMaskIntoConstraints = false
@@ -62,8 +66,11 @@ final class CameraEditorController: UIViewController {
             toolbar.leadingAnchor.constraint(equalTo: area.leadingAnchor),
             toolbar.topAnchor.constraint(equalTo: area.topAnchor),
             toolbar.widthAnchor.constraint(equalToConstant: 80),
-            toolbar.heightAnchor.constraint(lessThanOrEqualTo: area.heightAnchor),
-            toolbar.heightAnchor.constraint(equalTo: area.heightAnchor, multiplier: 0.8),
+            toolbar.heightAnchor.constraint(equalTo: area.heightAnchor, multiplier: 0.68),
+            undo.leadingAnchor.constraint(equalTo: toolbar.leadingAnchor),
+            undo.trailingAnchor.constraint(equalTo: toolbar.trailingAnchor),
+            undo.bottomAnchor.constraint(equalTo: area.bottomAnchor),
+            undo.heightAnchor.constraint(equalToConstant: 58),
             timeline.trailingAnchor.constraint(equalTo: area.trailingAnchor),
             timeline.topAnchor.constraint(equalTo: area.topAnchor),
             timeline.bottomAnchor.constraint(equalTo: area.bottomAnchor),
@@ -76,10 +83,10 @@ final class CameraEditorController: UIViewController {
         refresh()
     }
 
-    private func control(_ title: String, icon: String?, action: @escaping () -> Void) -> UIButton {
+    private func control(_ title: String, icon: String?, tint: UIColor = .white, action: @escaping () -> Void) -> UIButton {
         let button = UIButton(type: .system)
         var configuration = UIButton.Configuration.plain()
-        configuration.baseForegroundColor = .white
+        configuration.baseForegroundColor = tint
         if let icon {
             configuration.image = Bundle.main.resourceURL
                 .map { $0.appendingPathComponent("Content/Icons/\(icon).png").path }

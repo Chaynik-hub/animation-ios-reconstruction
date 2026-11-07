@@ -76,7 +76,7 @@ final class CatalogController: UIViewController, UICollectionViewDataSource, UIC
             entries = (path.isEmpty ? [.mySprites]:[]) + folders.map(Entry.folder) + items.map(Entry.item)
             caption.text = path.last ?? pack.displayTitle; back.isHidden = false
         } else { entries = packs.map(Entry.pack); caption.text = "Наборы"; back.isHidden = true }
-        collection.backgroundColor = pack == nil ? .original(0x212121) : .original(0x3d3e4c)
+        collection.backgroundColor = .original(0x202020)
         collection.reloadData(); collection.setContentOffset(.zero, animated: false)
     }
     private func goBack() { if showingUserSprites {showingUserSprites=false} else if !path.isEmpty { path.removeLast() } else { pack = nil }; reload() }
@@ -98,16 +98,21 @@ final class CatalogController: UIViewController, UICollectionViewDataSource, UIC
             label.frame = CGRect(x: 5, y: 157, width: cell.bounds.width - 10, height: 30); label.textAlignment = .center; label.textColor = .original(0x212121)
             label.text = value.displayTitle; imagePath = value.thumbnail; cell.accessibilityIdentifier = "catalog-pack-" + value.id
         case .mySprites:
-            cell.contentView.backgroundColor = .original(0x292929);image.frame=CGRect(x:10,y:5,width:40,height:40);image.image=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/dir2.png").path)
+            cell.contentView.backgroundColor = .original(0xfff7df);image.frame=CGRect(x:10,y:5,width:40,height:40);image.image=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/dir2.png").path)
             label.frame=CGRect(x:55,y:0,width:cell.bounds.width-60,height:50);label.text="Мои спрайты";label.textColor = .original(0xac812b);cell.accessibilityIdentifier="catalog-my-sprites"
         case .folder(let value):
-            cell.contentView.backgroundColor = .original(0x292929); image.frame = CGRect(x: 10, y: 5, width: 40, height: 40)
+            cell.contentView.backgroundColor = .original(0xfff7df); image.frame = CGRect(x: 10, y: 5, width: 40, height: 40)
             image.image = UIImage(contentsOfFile: Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/dir2.png").path)
             label.frame = CGRect(x: 55, y: 0, width: cell.bounds.width - 60, height: 50); label.text = value; label.textColor = .original(0xac812b)
             cell.accessibilityIdentifier = "catalog-folder-" + value
         case .item(let value):
-            cell.contentView.backgroundColor = .original(0x3d3e4c); image.frame = CGRect(x: 10, y: 5, width: 50, height: 50)
+            cell.contentView.backgroundColor = .clear; image.backgroundColor = .original(0xffcdcd); image.frame = CGRect(x: 10, y: 5, width: 50, height: 50)
             label.frame = CGRect(x: 65, y: 0, width: cell.bounds.width - 70, height: 60); label.text = value.displayTitle; label.textColor = .white; imagePath = value.thumbnail
+            let corner = UIImageView(frame: CGRect(x: cell.bounds.width - 12, y: 0, width: 12, height: 12))
+            corner.image = Bundle.main.resourceURL.flatMap {
+                UIImage(contentsOfFile: $0.appendingPathComponent("Content/Icons/catalog_long_press.png").path)
+            }
+            cell.contentView.addSubview(corner)
             cell.accessibilityIdentifier = "catalog-item-" + value.name
         }
         if let imagePath, let url = resolve(imagePath) { image.image = UIImage(contentsOfFile: url.path) }
