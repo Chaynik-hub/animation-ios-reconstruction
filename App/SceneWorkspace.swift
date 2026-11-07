@@ -258,13 +258,13 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         let editing = handles && displayed == nil
         if !editing || cameraEditing { applySceneCamera(displayed ?? workspace.frame, in: c) }
         if !editing || AnimationSettings.bool("showbgPref", fallback:true) { paintBackground(displayed ?? workspace.frame,in:c) }
-        if editing && AnimationSettings.bool("showGridPref") {
+        if editing && !cameraEditing && AnimationSettings.bool("showGridPref") {
             c.saveGState();c.setStrokeColor(UIColor.gray.withAlphaComponent(0.3).cgColor);c.setLineWidth(1/ratio)
             for x in stride(from:0.0,through:workspace.document.width,by:50) {c.move(to:CGPoint(x:x,y:0));c.addLine(to:CGPoint(x:x,y:workspace.document.height))}
             for y in stride(from:0.0,through:workspace.document.height,by:50) {c.move(to:CGPoint(x:0,y:y));c.addLine(to:CGPoint(x:workspace.document.width,y:y))}
             c.strokePath();c.restoreGState()
         }
-        if onion && editing && workspace.index>0 && AnimationSettings.onionMode != 0 {
+        if onion && editing && !cameraEditing && workspace.index>0 && AnimationSettings.onionMode != 0 {
             for distance in (1...min(workspace.index,AnimationSettings.onionCount)).reversed() {
                 let previous = workspace.document.frames[workspace.index-distance]
                 if AnimationSettings.onionMode == 2 { c.saveGState();c.setAlpha(0.25/CGFloat(distance));paintSkeleton(previous,in:c,points:false);c.restoreGState() }
@@ -273,8 +273,16 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         }
         paint(displayed ?? workspace.frame,in:c,showHandles:false)
         if editing && !cameraEditing {paintSkeleton(workspace.frame,in:c,points:true)}
-        if editing && AnimationSettings.bool("showCamera",fallback:true) {c.setStrokeColor(UIColor.darkGray.cgColor);c.setLineWidth(2/ratio);c.stroke(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))}
+        if editing && !cameraEditing && AnimationSettings.bool("showCamera",fallback:true) {c.setStrokeColor(UIColor.darkGray.cgColor);c.setLineWidth(2/ratio);c.stroke(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))}
         c.restoreGState()
+        if cameraEditing {
+            c.setStrokeColor(UIColor.original(0x00c0d8).cgColor)
+            c.setLineWidth(2)
+            c.stroke(CGRect(origin: origin, size: CGSize(
+                width: workspace.document.width * ratio,
+                height: workspace.document.height * ratio
+            )))
+        }
     }
     func paint(_ frame:SceneFrame,in c:CGContext,showHandles:Bool,opacity:CGFloat=1) {
         for i in UnitEditing.orderedIndices(in:frame) {
