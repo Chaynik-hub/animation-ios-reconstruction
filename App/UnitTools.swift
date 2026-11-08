@@ -4,7 +4,7 @@ extension EditorController {
     func mountContext(_ panel: UIView, width: CGFloat, unitMode: Bool = false) {
         let oldID=toolPanel?.accessibilityIdentifier
         let offset=(toolPanel?.subviews.first(where:{$0 is UIScrollView}) as? UIScrollView)?.contentOffset
-        dismissTools(keepBoneTool: unitMode); panel.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(panel)
+        dismissTools(); panel.translatesAutoresizingMaskIntoConstraints = false; view.addSubview(panel)
         NSLayoutConstraint.activate([panel.leadingAnchor.constraint(equalTo: sidebarScroll.trailingAnchor), panel.topAnchor.constraint(equalTo: view.topAnchor), panel.bottomAnchor.constraint(equalTo: view.bottomAnchor), panel.widthAnchor.constraint(equalToConstant: width)])
         toolPanel = panel; unitToolsActive = unitMode; shift.isHidden = true; if unitMode { highlightUnitTools(true) }
         if oldID==panel.accessibilityIdentifier,let offset,let scroll=panel.subviews.first(where:{$0 is UIScrollView}) as? UIScrollView {view.layoutIfNeeded();scroll.setContentOffset(CGPoint(x:0,y:min(offset.y,max(0,scroll.contentSize.height-scroll.bounds.height))),animated:false)}

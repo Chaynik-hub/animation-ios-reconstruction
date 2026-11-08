@@ -3,15 +3,15 @@ import UIKit
 /// SeekFramesBar's default bitmap navigation: 12pt spacing, 5pt fixed pad,
 /// windowed frame indices, and selection at the nearest marker within 10pt.
 final class FrameNavigator:UIView {
-    var count=1 {didSet{setNeedsDisplay();updateAccessibility()}}
-    var current=0 {didSet{setNeedsDisplay();updateAccessibility()}}
+    var count=1 {didSet{if oldValue != count {setNeedsDisplay();updateAccessibility()}}}
+    var current=0 {didSet{if oldValue != current {setNeedsDisplay();updateAccessibility()}}}
     var seek:((Int)->Void)?
     private let normal=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/frame_stick_notsel.png").path)
     private let active=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/frame_stick_sel.png").path)
     private var capacity:Int{max(1,Int((bounds.height-10)/12))}
     private var first:Int{current/capacity*capacity}
     private var end:Int{min(count,first+capacity)}
-    override init(frame:CGRect){super.init(frame:frame);isOpaque=false;isAccessibilityElement=true;accessibilityIdentifier="FrameNavigator";accessibilityLabel="Кадры";accessibilityTraits = .adjustable}
+    override init(frame:CGRect){super.init(frame:frame);isOpaque=false;isAccessibilityElement=true;accessibilityIdentifier="FrameNavigator";accessibilityLabel="Кадры";accessibilityTraits = .adjustable;updateAccessibility()}
     required init?(coder:NSCoder){fatalError()}
     private func updateAccessibility(){accessibilityValue="\(current+1) / \(count)"}
     private func y(_ index:Int)->CGFloat{5+CGFloat(index%capacity)*12+6.5}

@@ -27,10 +27,18 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
     override var prefersStatusBarHidden: Bool { AnimationSettings.bool("fullScreen",fallback:true) }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .landscape }
 
+    private let landingBackdrop = UIImageView()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.accessibilityIdentifier = "LandingScreen"
         view.backgroundColor = .original(0x3d3e4c)
+        if let url = Bundle.main.resourceURL?.appendingPathComponent("Content/Icons/landing_background.png") {
+            landingBackdrop.image = UIImage(contentsOfFile: url.path)
+        }
+        landingBackdrop.alpha = 0.3
+        landingBackdrop.contentMode = .scaleAspectFit
+        view.addSubview(landingBackdrop)
         view.addSubview(panel)
         view.addSubview(rail)
         rail.axis = .vertical
@@ -71,6 +79,8 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         let safe = view.bounds.inset(by: view.safeAreaInsets)
+        let artHeight = safe.height / 1.5
+        landingBackdrop.frame = CGRect(x: safe.minX, y: safe.midY - artHeight / 2, width: safe.width, height: artHeight)
         rail.frame = CGRect(x: safe.maxX - 100, y: safe.minY, width: 100, height: safe.height)
         panel.frame = CGRect(x: safe.minX, y: safe.minY, width: max(0, safe.width - 100), height: safe.height)
         let w = panel.bounds.width, h = panel.bounds.height

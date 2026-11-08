@@ -52,10 +52,11 @@ final class PreviewController: UIViewController, UIGestureRecognizerDelegate {
     override func viewWillDisappear(_ animated: Bool) { super.viewWillDisappear(animated); link?.invalidate(); link = nil; audio?.pause() }
     override func accessibilityPerformEscape() -> Bool { dismiss(animated: false); return true }
     @objc private func back(_ gesture: UIScreenEdgePanGestureRecognizer) { if gesture.state == .ended && gesture.translation(in: view).x > 40 { dismiss(animated: false) } }
-    private func restart() { accumulated = 0; start = CACurrentMediaTime(); finished = false; playing = true; replay.isHidden = true; audio?.currentTime = 0; audio?.play() }
+    private func restart() { link?.isPaused = false; accumulated = 0; start = CACurrentMediaTime(); finished = false; playing = true; replay.isHidden = true; audio?.currentTime = 0; audio?.play() }
     @objc private func toggle() {
         if finished { restart(); return }
         playing.toggle()
+        link?.isPaused = !playing
         if playing { start = CACurrentMediaTime(); audio?.play() } else { accumulated += CACurrentMediaTime() - start; audio?.pause() }
     }
     @objc private func tick(_ sender: CADisplayLink) {
@@ -67,7 +68,7 @@ final class PreviewController: UIViewController, UIGestureRecognizerDelegate {
         let last = Double(max(0, count - 1))
         if position >= last {
             canvas.displayed = workspace.document.frames[count - 1]
-            if !finished { accumulated = last * duration; playing = false; finished = true; audio?.pause(); replay.isHidden = false }
+            if !finished { accumulated = last * duration; playing = false; finished = true; link?.isPaused = true; audio?.pause(); replay.isHidden = false }
             counter.text = String(count)
         } else {
             let index = Int(position), current = workspace.document.frames[index], next = workspace.document.frames[index + 1]

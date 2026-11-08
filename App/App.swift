@@ -75,7 +75,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
             control.addGestureRecognizer(hold)
         }
         navigation.addArrangedSubview(previous);navigation.addArrangedSubview(frameNavigator);navigation.addArrangedSubview(next)
-        frameNavigator.seek = {[weak self] index in guard let self else{return};self.stop();self.workspace.index=index;self.workspace.notify()}
+        frameNavigator.seek = {[weak self] index in guard let self else{return};self.stop();self.workspace.index=index;self.workspace.notify(save: false)}
         let sidebarLeading = sidebarScroll.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
         if openedFromLanding {
             sidebarLeading.priority = .defaultHigh
@@ -124,7 +124,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     var toolButtons: [String: UIButton] = [:]
     var unitClipboard: [SceneUnit] = []
     var toolPanel:UIView?
-    func dismissTools(keepBoneTool: Bool = false){if !keepBoneTool {canvas.boneMode = false};if let controller=backgroundController {controller.dismiss(animated:false);backgroundController=nil};unitToolsActive=false;if let controller=catalogController {controller.willMove(toParent:nil);controller.view.removeFromSuperview();controller.removeFromParent();catalogController=nil};toolPanel?.removeFromSuperview();toolPanel=nil;shift.isHidden=false;highlightFrameTools(false);highlightCatalog(false);highlightUnitTools(false)}
+    func dismissTools(){if let controller=backgroundController {controller.dismiss(animated:false);backgroundController=nil};unitToolsActive=false;if let controller=catalogController {controller.willMove(toParent:nil);controller.view.removeFromSuperview();controller.removeFromParent();catalogController=nil};toolPanel?.removeFromSuperview();toolPanel=nil;shift.isHidden=false;highlightFrameTools(false);highlightCatalog(false);highlightUnitTools(false)}
     func choices(_ title:String,_ actions:[(String,()->Void)]){
         stop();dismissTools()
         let cover=UIView(frame:view.bounds);cover.autoresizingMask=[.flexibleWidth,.flexibleHeight]
@@ -179,7 +179,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         let thumbnail = canvas.snapshot(size: CGSize(width: 320, height: 128))
         try? thumbnail.pngData()?.write(to: url.appendingPathExtension("png"), options: .atomic)
     }
-    func newScene(){workspace.checkpoint();workspace.document=SceneDocument(width:960,height:540,interframes:4,frames:[SceneFrame(id:0,units:[],attributes:[:])],attributes:[:]);workspace.restoreArtwork();workspace.index=0;workspace.selected=nil;workspace.latchedUnitName=nil;workspace.notify()}
+    func newScene(){canvas.boneMode=false;workspace.checkpoint();workspace.document=SceneDocument(width:960,height:540,interframes:4,frames:[SceneFrame(id:0,units:[],attributes:[:])],attributes:[:]);workspace.restoreArtwork();workspace.index=0;workspace.selected=nil;workspace.latchedUnitName=nil;workspace.notify()}
     private var catalogController: CatalogController?
     func highlightCatalog(_ active: Bool) {
         guard let button = toolButtons["main_btn_insert"] else { return }
@@ -266,12 +266,22 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
             })
         })
     }
-    func step(_ offset:Int){stop();if offset>0 && workspace.index==workspace.document.frames.count-1 {perform{try workspace.addFrame()}}else{workspace.index=min(max(0,workspace.index+offset),workspace.document.frames.count-1);workspace.notify()}}
+    func step(_ offset: Int) {
+        stop()
+        let previous = workspace.index
+        if offset > 0 && previous == workspace.document.frames.count - 1 {
+            perform { try workspace.addFrame() }
+        } else {
+            workspace.index = min(max(0, previous + offset), workspace.document.frames.count - 1)
+        }
+        if workspace.index != previous { canvas.continueBoneDrag(from: previous) }
+        workspace.notify(save: false)
+    }
     @objc func holdFrameArrow(_ gesture:UILongPressGestureRecognizer) {
         guard gesture.state == .began,let arrow=gesture.view else{return}
         stop()
         workspace.index=arrow.tag<0 ? 0 : workspace.document.frames.count-1
-        workspace.notify()
+        workspace.notify(save: false)
         if AnimationSettings.bool("vibroPref",fallback:true) {UIImpactFeedbackGenerator(style:.light).impactOccurred()}
     }
     func stop(){displayLink?.invalidate();displayLink=nil;canvas.displayed=nil;audio?.pause();update()}

@@ -34,7 +34,10 @@ final class Workspace {
     var history: [SceneDocument] = []
     var future: [SceneDocument] = []
     let bundledCatalog = (try? JSONDecoder().decode([ArtworkDefinition].self,from:Data(contentsOf:Bundle.main.resourceURL!.appendingPathComponent("Content/catalog.json")))) ?? []
-    var catalog:[ArtworkDefinition]=[]
+    var catalog:[ArtworkDefinition]=[] {
+        didSet { artworkByName = Dictionary(catalog.map { ($0.name, $0) }, uniquingKeysWith: { first, _ in first }) }
+    }
+    private(set) var artworkByName: [String: ArtworkDefinition] = [:]
     var onChange: (() -> Void)?
     var autosaveEnabled = true
     let directory = FileManager.default.urls(for:.documentDirectory,in:.userDomainMask)[0]
@@ -56,7 +59,7 @@ final class Workspace {
     }
     var frame: SceneFrame { document.frames[index] }
     func checkpoint() { history.append(document); if history.count>60 { history.removeFirst() }; future=[] }
-    func notify() { index=min(max(0,index),document.frames.count-1);onChange?();if autosaveEnabled,let data=try? JSONEncoder().encode(document){try? data.write(to:directory.appendingPathComponent("Autosave.animation.json"),options:.atomic)} }
+    func notify(save: Bool = true) { index=min(max(0,index),document.frames.count-1);onChange?();if save,autosaveEnabled,let data=try? JSONEncoder().encode(document){try? data.write(to:directory.appendingPathComponent("Autosave.animation.json"),options:.atomic)} }
     func undo() { guard let old=history.popLast() else{return};future.append(document);document=old;restoreArtwork();selected=nil;latchedUnitName=nil;notify() }
     func redo() { guard let next=future.popLast() else{return};history.append(document);document=next;restoreArtwork();selected=nil;latchedUnitName=nil;notify() }
     func add(_ asset:ArtworkDefinition) { checkpoint();var unit=asset.unit(at:CGPoint(x:document.width/2,y:document.height/2));unit.name = UnitIdentity.inserting(unit.name,in:frame);document.frames[index].units.append(unit);selected=frame.units.count-1;notify() }
@@ -131,6 +134,39 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
     var handles = true
     var onion = true
     var stretch = false
+    private var attachmentDragUnit: Int?
+    private let snapFeedback = UIImpactFeedbackGenerator(style: .light)
+
+    private func snapAttachment(_ unit: Int) -> Bool {
+        guard FrameManipulation.attachNearby(&workspace.document.frames[workspace.index], unitIndex: unit, radius: 25 / ratio)
+        else { return false }
+        if AnimationSettings.bool("vibroPref", fallback: true) { snapFeedback.impactOccurred() }
+        return true
+    }
+
+    private func paintAttachmentHint(in context: CGContext) {
+        guard ratio > 0, let unit = attachmentDragUnit,
+              let base = FrameManipulation.attachmentBase(in: workspace.frame, unitIndex: unit) else { return }
+        context.saveGState()
+        defer { context.restoreGState() }
+        let radius = 25 / ratio
+        context.setLineWidth(2 / ratio)
+        context.setStrokeColor(UIColor.original(0xff4141).cgColor)
+        context.strokeEllipse(in: CGRect(x: base.x - radius, y: base.y - radius, width: radius * 2, height: radius * 2))
+        guard let hint = FrameManipulation.attachmentHint(in: workspace.frame, unitIndex: unit, radius: radius) else { return }
+        let green = UIColor.original(0x72bd00).cgColor
+        context.setStrokeColor(green)
+        context.setFillColor(green)
+        context.setLineWidth(3 / ratio)
+        if let parent = hint.parent {
+            context.move(to: CGPoint(x: parent.x, y: parent.y))
+            context.addLine(to: CGPoint(x: hint.point.x, y: hint.point.y))
+            context.strokePath()
+        }
+        let dot = 5 / ratio
+        context.fillEllipse(in: CGRect(x: hint.point.x - dot, y: hint.point.y - dot, width: 2 * dot, height: 2 * dot))
+    }
+
     var boneMode = false {
         didSet {
             if !boneMode { boneJoint = nil }
@@ -140,6 +176,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
     }
     var boneJoint: Int?
     var boneButtons: [UIButton] = []
+    weak var boneGesture: UIPanGestureRecognizer?
     var boneDrag: (frame: Int, unit: Int, joint: Int, length: Double, axis: CGPoint, ratio: CGFloat)?
 
     var backgroundColorValue:UIColor {
@@ -235,6 +272,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         guard let button = gesture.view as? UIButton else { return }
         if gesture.state == .began {
             guard let selected = workspace.selected, workspace.frame.units.indices.contains(selected) else { return }
+            attachmentDragUnit = button.tag == 2 ? selected : nil
             transformStart = workspace.document; transformFrameIndex = workspace.index; transformUnit = selected; transformCenter = button.center; transformChanged = false
             let down = gesture.location(in: self), translation = gesture.translation(in: self)
             transformTouchOffset = CGPoint(x: down.x - translation.x - button.center.x, y: down.y - translation.y - button.center.y)
@@ -244,6 +282,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             if workspace.document.frames.indices.contains(transformFrameIndex), workspace.document.frames[transformFrameIndex].id == snapshot.frames[transformFrameIndex].id {
                 workspace.document.frames[transformFrameIndex] = snapshot.frames[transformFrameIndex]
             }
+            attachmentDragUnit = nil
             transformStart = nil; updateTransformControls(); workspace.notify(); return
         }
         if gesture.state == .began || gesture.state == .changed || gesture.state == .ended {
@@ -264,8 +303,11 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             updateTransformControls(); setNeedsDisplay()
         }
         if gesture.state == .ended || gesture.state == .cancelled || gesture.state == .failed {
+            attachmentDragUnit = nil
             if gesture.state == .cancelled || gesture.state == .failed { workspace.document = snapshot }
-            else if transformChanged { workspace.history.append(snapshot); if workspace.history.count > 60 { workspace.history.removeFirst() }; workspace.future = [] }
+            else if transformChanged {
+                if button.tag == 2 { _ = snapAttachment(transformUnit) }
+                workspace.history.append(snapshot); if workspace.history.count > 60 { workspace.history.removeFirst() }; workspace.future = [] }
             transformStart = nil; updateTransformControls(); workspace.notify()
         }
     }
@@ -311,6 +353,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         if editing && !cameraEditing {
             paintSkeleton(workspace.frame,in:c,points:true)
             paintSelectedBone(in: c)
+            paintAttachmentHint(in: c)
         }
         if editing && !cameraEditing && AnimationSettings.bool("showCamera",fallback:true) {c.setStrokeColor(UIColor.darkGray.cgColor);c.setLineWidth(2/ratio);c.stroke(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))}
         c.restoreGState()
@@ -328,7 +371,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             let unit=frame.units[i]
             let baseName=unit.name.components(separatedBy:"#")[0]
             let joints=Dictionary(unit.joints.map{($0.id,$0)},uniquingKeysWith:{$1})
-            let definition=workspace.catalog.first(where:{$0.name==baseName})
+            let definition=workspace.artworkByName[baseName]
             if let definition {
                 let scale=Double(unit.attributes["scale"] ?? "1") ?? 1
                 let flipped=unit.attributes["flipped"]=="true"
@@ -476,7 +519,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         if gesture.state == .began {
             var distance=30/ratio
             for (i,unit) in workspace.frame.units.enumerated() where workspace.canInteract(with:i) {for (j,joint) in unit.joints.enumerated(){let d=hypot(joint.x-p.x,joint.y-p.y);if d<distance && (joint.attributes["fixed"] != "true" || joint.attributes["base"]=="true"){distance=d;dragged=(i,j)}}}
-            before=p;if let target=dragged{let captured=workspace.frame.units[target.0].joints[target.1];captureOffset=CGPoint(x:p.x-captured.x,y:p.y-captured.y);workspace.checkpoint();workspace.selected=target.0}
+            before=p;if let target=dragged{let captured=workspace.frame.units[target.0].joints[target.1];captureOffset=CGPoint(x:p.x-captured.x,y:p.y-captured.y);attachmentDragUnit = captured.attributes["base"] == "true" ? target.0 : nil;workspace.checkpoint();workspace.selected=target.0}
         } else if gesture.state == .changed {
             if let (i,j)=dragged {
                 let id=workspace.frame.units[i].joints[j].id
@@ -484,7 +527,8 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             } else {let d=gesture.translation(in:self);cameraOffset.x+=d.x;cameraOffset.y+=d.y;gesture.setTranslation(.zero,in:self)}
             before=p;updateTransformControls();setNeedsDisplay()
         } else {
-            if gesture.state == .ended,let (unitIndex,_)=dragged,FrameManipulation.attachNearby(&workspace.document.frames[workspace.index],unitIndex:unitIndex,radius:25/ratio){workspace.selected=nil}
+            if gesture.state == .ended, let unitIndex = attachmentDragUnit, snapAttachment(unitIndex) { workspace.selected = nil }
+            attachmentDragUnit = nil
             dragged=nil;updateTransformControls();workspace.notify()
         }
     }

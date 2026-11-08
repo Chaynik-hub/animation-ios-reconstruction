@@ -143,12 +143,29 @@ extension SceneCanvas {
         workspace.notify()
     }
 
+    func continueBoneDrag(from previous: Int) {
+        guard let drag = boneDrag, drag.frame == previous,
+              workspace.document.frames.indices.contains(previous),
+              workspace.document.frames[previous].units.indices.contains(drag.unit) else { return }
+        let name = workspace.document.frames[previous].units[drag.unit].name
+        guard let index = workspace.frame.units.firstIndex(where: { $0.name == name }) else { boneDrag = nil; return }
+        workspace.selected = index
+        guard let (_, start, end) = selectedBone else { boneDrag = nil; return }
+        let length = hypot(end.x - start.x, end.y - start.y)
+        guard length > 0.001 else { boneDrag = nil; return }
+        workspace.checkpoint()
+        boneGesture?.setTranslation(.zero, in: self)
+        let axis = CGPoint(x: (end.x - start.x) / length, y: (end.y - start.y) / length)
+        boneDrag = (workspace.index, index, end.id, length, axis, ratio)
+    }
+
     @objc private func dragBone(_ gesture: UIPanGestureRecognizer) {
         switch gesture.state {
         case .began:
             guard let (unit, start, end) = selectedBone else { return }
             let length = hypot(end.x - start.x, end.y - start.y)
             guard length > 0.001 else { return }
+            boneGesture = gesture
             boneDrag = (workspace.index, unit, end.id, length * FrameManipulation.boneLengthFactor(end),
                         CGPoint(x: (end.x - start.x) / length, y: (end.y - start.y) / length), ratio)
             workspace.checkpoint()
@@ -166,6 +183,7 @@ extension SceneCanvas {
                 setNeedsDisplay()
             }
         case .ended, .cancelled, .failed:
+            boneGesture = nil
             if boneDrag != nil { boneDrag = nil; workspace.notify() }
         default: break
         }

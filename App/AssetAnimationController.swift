@@ -18,8 +18,15 @@ final class AssetAnimationController: UIViewController {
             let row = UIStackView(arrangedSubviews: [caption, control]); row.spacing = 10; stack.addArrangedSubview(row)
         }
         label.textColor = .white; stack.addArrangedSubview(label); stack.addArrangedSubview(speed)
+        let keyboardBar = UIToolbar()
+        keyboardBar.items = [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(title: "Готово", style: .done, target: self, action: #selector(closeKeyboard))
+        ]
+        keyboardBar.sizeToFit()
+        scroll.keyboardDismissMode = .onDrag
         for (field, caption, value) in [(start, "Первый кадр сцены", (initial?.startID.flatMap { frameIDs.firstIndex(of: $0) } ?? 0) + 1), (end, "Последний кадр сцены", (initial?.endID.flatMap { frameIDs.firstIndex(of: $0) } ?? max(0, frameIDs.count - 1)) + 1)] {
-            field.text = String(value); field.placeholder = caption; field.accessibilityLabel = caption; field.borderStyle = .roundedRect; field.keyboardType = .numberPad
+            field.text = String(value); field.placeholder = caption; field.accessibilityLabel = caption; field.borderStyle = .roundedRect; field.keyboardType = .numberPad; field.inputAccessoryView = keyboardBar
             let text = UILabel(); text.text = caption; text.textColor = .white; let row = UIStackView(arrangedSubviews: [text, field]); row.spacing = 10; field.widthAnchor.constraint(equalToConstant: 65).isActive = true; stack.addArrangedSubview(row)
         }
         let done = UIButton(type: .system); done.setTitle("OK", for: .normal); done.accessibilityIdentifier = "AssetAnimationApply"
@@ -28,6 +35,7 @@ final class AssetAnimationController: UIViewController {
         NSLayoutConstraint.activate([scroll.centerXAnchor.constraint(equalTo:view.centerXAnchor),scroll.centerYAnchor.constraint(equalTo:view.centerYAnchor),scroll.widthAnchor.constraint(equalToConstant:340),scroll.heightAnchor.constraint(equalTo:view.safeAreaLayoutGuide.heightAnchor,constant:-20),stack.leadingAnchor.constraint(equalTo:scroll.contentLayoutGuide.leadingAnchor),stack.trailingAnchor.constraint(equalTo:scroll.contentLayoutGuide.trailingAnchor),stack.topAnchor.constraint(equalTo:scroll.contentLayoutGuide.topAnchor),stack.bottomAnchor.constraint(equalTo:scroll.contentLayoutGuide.bottomAnchor),stack.widthAnchor.constraint(equalTo:scroll.frameLayoutGuide.widthAnchor)])
         stack.setCustomSpacing(6, after: label); updateLabel()
     }
+    @objc private func closeKeyboard() { view.endEditing(true) }
     private func updateLabel() { speed.value = speed.value.rounded(); label.text = "Скорость анимации \(Int(speed.value))" }
     private func save() {
         guard let a = Int(start.text ?? ""), let b = Int(end.text ?? ""), a > 0, b >= a, b <= frameIDs.count else { return }

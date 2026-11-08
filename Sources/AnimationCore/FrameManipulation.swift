@@ -97,10 +97,14 @@ public enum FrameManipulation {
         guard pieces.count==2,pieces[0] != "null",let id=Int(pieces[1]),id>=0 else{return nil}
         return (pieces[0],id)
     }
-    @discardableResult public static func attachNearby(_ frame:inout SceneFrame,unitIndex:Int,radius:Double)->Bool {
-        guard frame.units.indices.contains(unitIndex),attachment(frame.units[unitIndex])==nil,
-              let baseIndex=frame.units[unitIndex].joints.firstIndex(where:{$0.attributes["base"]=="true" && $0.attributes["attachable"]=="slave"}) else{return false}
-        let base=frame.units[unitIndex].joints[baseIndex]
+    public static func attachmentBase(in frame: SceneFrame, unitIndex: Int) -> Joint? {
+        guard frame.units.indices.contains(unitIndex), attachment(frame.units[unitIndex]) == nil else { return nil }
+        return frame.units[unitIndex].joints.first { $0.attributes["base"] == "true" && $0.attributes["attachable"] == "slave" }
+    }
+
+    private static func attachmentCandidate(in frame: SceneFrame, unitIndex: Int, radius: Double)
+        -> (base: Joint, connected: Set<Int>, master: Int, point: Joint)? {
+        guard let base = attachmentBase(in: frame, unitIndex: unitIndex) else { return nil }
         var connected=Set([unitIndex]),changed=true
         while changed {
             changed=false
@@ -118,7 +122,18 @@ public enum FrameManipulation {
                 if !occupied && d<=distance {distance=d;candidate=(i,point)}
             }
         }
-        guard let (masterIndex,point)=candidate else{return false}
+        guard let (masterIndex, point) = candidate else { return nil }
+        return (base, connected, masterIndex, point)
+    }
+
+    public static func attachmentHint(in frame: SceneFrame, unitIndex: Int, radius: Double) -> (point: Joint, parent: Joint?)? {
+        guard let match = attachmentCandidate(in: frame, unitIndex: unitIndex, radius: radius) else { return nil }
+        return (match.point, frame.units[match.master].joints.first { $0.id == match.point.parent })
+    }
+
+    @discardableResult public static func attachNearby(_ frame: inout SceneFrame, unitIndex: Int, radius: Double) -> Bool {
+        guard let (base, connected, masterIndex, point) = attachmentCandidate(in: frame, unitIndex: unitIndex, radius: radius),
+              let baseIndex = frame.units[unitIndex].joints.firstIndex(where: { $0.id == base.id }) else { return false }
         let dx=point.x-base.x,dy=point.y-base.y
         for i in connected {for j in frame.units[i].joints.indices {frame.units[i].joints[j].x+=dx;frame.units[i].joints[j].y+=dy}}
         frame.units[unitIndex].joints[baseIndex].attributes["attached"]=frame.units[masterIndex].name+"&"+String(point.id)
