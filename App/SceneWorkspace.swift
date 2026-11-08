@@ -155,15 +155,8 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         context.fillEllipse(in: CGRect(x: base.x - radius, y: base.y - radius, width: radius * 2, height: radius * 2))
         guard let hint = FrameManipulation.attachmentHint(in: workspace.frame, unitIndex: unit, radius: radius) else { return }
         let green = UIColor.original(0x72bd00).withAlphaComponent(0.55).cgColor
-        context.setStrokeColor(green)
         context.setFillColor(green)
-        context.setLineWidth(3 / ratio)
-        if let parent = hint.parent {
-            context.move(to: CGPoint(x: parent.x, y: parent.y))
-            context.addLine(to: CGPoint(x: hint.point.x, y: hint.point.y))
-            context.strokePath()
-        }
-        let dot = 5 / ratio
+        let dot = 12 / ratio
         context.fillEllipse(in: CGRect(x: hint.point.x - dot, y: hint.point.y - dot, width: 2 * dot, height: 2 * dot))
     }
 
@@ -518,7 +511,20 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         let screen=gesture.location(in:self);let p=CGPoint(x:(screen.x-origin.x)/ratio,y:(screen.y-origin.y)/ratio)
         if gesture.state == .began {
             var distance=30/ratio
-            for (i,unit) in workspace.frame.units.enumerated() where workspace.canInteract(with:i) {for (j,joint) in unit.joints.enumerated(){let d=hypot(joint.x-p.x,joint.y-p.y);if d<distance && (joint.attributes["fixed"] != "true" || joint.attributes["base"]=="true"){distance=d;dragged=(i,j)}}}
+            for (i, unit) in workspace.frame.units.enumerated() where workspace.canInteract(with: i) {
+                let attachment = FrameManipulation.attachment(unit)
+                let attached = attachment.map { link in
+                    workspace.frame.units.contains { master in
+                        master.name == link.0 && master.joints.contains { $0.id == link.1 }
+                    }
+                } ?? false
+                for (j, joint) in unit.joints.enumerated() {
+                    let base = joint.attributes["base"] == "true"
+                    guard !(base && attached), joint.attributes["fixed"] != "true" || base else { continue }
+                    let d = hypot(joint.x - p.x, joint.y - p.y)
+                    if d < distance { distance = d; dragged = (i, j) }
+                }
+            }
             before=p;if let target=dragged{let captured=workspace.frame.units[target.0].joints[target.1];captureOffset=CGPoint(x:p.x-captured.x,y:p.y-captured.y);attachmentDragUnit = captured.attributes["base"] == "true" ? target.0 : nil;workspace.checkpoint();workspace.selected=target.0}
         } else if gesture.state == .changed {
             if let (i,j)=dragged {
