@@ -33,35 +33,24 @@ extension EditorController {
 #if canImport(FoundationModels)
 @available(iOS 26.0, *)
 @Generable
-private struct MotionPlan {
-    var poses: [MotionBeat]
+private struct MotionResponse {
+    @Guide(description: "Motion rows, one per subject per pose, using the numeric syntax from the instructions")
+    var rows: [String]
 }
 
-@available(iOS 26.0, *)
-@Generable
-private struct MotionBeat {
-    @Guide(description: "Absolute time in seconds since the initial pose, between 0.15 and 4")
-    var seconds: Double
-    var subjects: [MotionSubject]
-}
+private struct MotionPlan { var poses: [MotionBeat] }
+private struct MotionBeat { var seconds: Double; var subjects: [MotionSubject] }
+private struct MotionSubject { var index: Int; var dx: Double; var dy: Double; var bends: [MotionBend] }
+private struct MotionBend { var joint: Int; var degrees: Double }
 
-@available(iOS 26.0, *)
-@Generable
-private struct MotionSubject {
-    var index: Int
-    @Guide(description: "Horizontal offset as a fraction of scene width from the initial position")
-    var dx: Double
-    @Guide(description: "Vertical offset as a fraction of scene height, positive is down")
-    var dy: Double
-    var bends: [MotionBend]
-}
-
-@available(iOS 26.0, *)
-@Generable
-private struct MotionBend {
-    var joint: Int
-    @Guide(description: "Relative clockwise rotation of the bone ending at this joint, in degrees")
-    var degrees: Double
+private enum MotionGenerationError: LocalizedError {
+    case modelUnavailable, noUsablePoses
+    var errorDescription: String? {
+        switch self {
+        case .modelUnavailable: return "Системная модель Apple Intelligence недоступна."
+        case .noUsablePoses: return "Модель не вернула пригодные позы для этого скелета."
+        }
+    }
 }
 
 @available(iOS 26.0, *)
@@ -73,34 +62,12 @@ private extension EditorController {
             guard let self else { return }
             do {
                 let frames: [SceneFrame]
-                var usedFallback = false
+                var fallbackReason: String?
                 do {
-                    guard SystemLanguageModel.default.isAvailable else { throw SceneReadError.invalidScene }
-                    let rigs = targets.enumerated().map { number, unit in
-                        let bones = unit.joints.map { joint in
-                            "\(joint.id):p\(joint.parent ?? -1)@\(joint.x.rounded()),\(joint.y.rounded())"
-                        }.joined(separator: " ")
-                        let name = UnitIdentity.baseName(unit.name)
-                        let title = self.workspace.artworkByName[name]?.displayTitle ?? name
-                        return "\(number) \(title): \(bones)"
-                    }.joined(separator: "\n")
-                    let session = LanguageModelSession(instructions: """
-                        You direct 2D skeletal animation. Return 4 to 6 chronological poses within 4 seconds.
-                        Use only the listed subjects and bone IDs, never rotate a root joint.
-                        Offsets and angles are absolute relative to the starting rig, not accumulated.
-                        Specify each moving subject at each beat with only its 1 to 3 most relevant bends.
-                        Use anticipation, weight transfer,
-                        asymmetric timing, follow-through and a settled ending. Use small joint angles for
-                        balance and larger ones only where needed. Match the requested action and rig.
-                        Coordinates grow down and right. Leave unrelated subjects unchanged.
-                        """)
-                    let result = try await session.respond(to: "Action: \(prompt)\nScene: \(original.width)×\(original.height)\nRigs: \(rigs)",
-                                                           generating: MotionPlan.self)
-                    try Task.checkCancellation()
-                    frames = try self.motionFrames(result.content, frame: frame, targets: targets, document: original)
+                    frames = try await self.generateModelFrames(prompt: prompt, targets: targets, frame: frame, document: original)
                 } catch {
                     try Task.checkCancellation()
-                    usedFallback = true
+                    fallbackReason = error.localizedDescription
                     let plan = self.fallbackMotion(prompt, targets: targets)
                     frames = try self.motionFrames(plan, frame: frame, targets: targets, document: original)
                 }
@@ -111,8 +78,8 @@ private extension EditorController {
                 self.workspace.document.frames.insert(contentsOf: frames, at: index + 1)
                 self.workspace.notify()
                 progress?.dismiss(animated: true) { [weak self] in
-                    if usedFallback {
-                        self?.message("Кадры созданы", "Системная модель не смогла построить движение. Применён резервный вариант, который можно отредактировать.")
+                    if let fallbackReason {
+                        self?.message("Созданы резервные кадры", fallbackReason)
                     }
                 }
             } catch is CancellationError {
@@ -125,6 +92,66 @@ private extension EditorController {
         }
         progress.addAction(UIAlertAction(title: "Отмена", style: .cancel) { _ in task.cancel() })
         present(progress, animated: true)
+    }
+
+    func generateModelFrames(prompt: String, targets: [SceneUnit], frame: SceneFrame, document: SceneDocument) async throws -> [SceneFrame] {
+        guard SystemLanguageModel.default.isAvailable else { throw MotionGenerationError.modelUnavailable }
+        let rigs = targets.enumerated().map { index, unit in
+            let title = workspace.artworkByName[UnitIdentity.baseName(unit.name)]?.displayTitle ?? unit.name
+            let bones = unit.joints.map { joint in
+                let label = joint.attributes["name"] ?? ""
+                let x = (joint.x / document.width * 100).rounded()
+                let y = (joint.y / document.height * 100).rounded()
+                return "\(joint.id)/\(joint.parent ?? -1)/\(x)/\(y)/\(label)"
+            }.joined(separator: " ")
+            return "\(index) \(title): \(bones)"
+        }.joined(separator: "\n")
+        let instructions = """
+            You animate editable 2D skeletons. Understand the action in any language and output numbers only.
+            Each row is: seconds subject xPercent yPercent joint angleDegrees joint angleDegrees
+            Example: 0.4 0 2 -5 7 28 9 -16
+            The first four numbers are required. Include up to three joint-angle pairs per subject.
+            A rig entry is joint/parent/x/y/label; parent -1 marks a root. Never bend roots.
+            Offsets and bends are relative to the initial pose, not cumulative. Positive Y is down.
+            Generate 4 to 6 poses from 0.15 to 4 seconds, using the given subject and joint IDs.
+            Use anticipation, weight transfer, unequal timing and follow-through. Leave unrelated subjects still.
+            """
+        let request = "Action: \(prompt)\nRigs:\n\(rigs)"
+        do {
+            let session = LanguageModelSession(instructions: instructions)
+            let response = try await session.respond(to: request, generating: MotionResponse.self)
+            let plan = parseMotionRows(response.content.rows, targets: targets)
+            return try motionFrames(plan, frame: frame, targets: targets, document: document)
+        } catch {
+            try Task.checkCancellation()
+            // Retry with a fresh session. Plain numeric output also works when
+            // constrained decoding cannot complete the structured response.
+            let retry = LanguageModelSession(instructions: instructions + "\nReturn one numeric row per line.")
+            let response = try await retry.respond(to: request)
+            let plan = parseMotionRows(response.content.components(separatedBy: .newlines), targets: targets)
+            return try motionFrames(plan, frame: frame, targets: targets, document: document)
+        }
+    }
+
+    func parseMotionRows(_ rows: [String], targets: [SceneUnit]) -> MotionPlan {
+        var beats: [Double: [Int: MotionSubject]] = [:]
+        for row in rows.prefix(64) {
+            let values = row.split { $0.isWhitespace || $0 == "," || $0 == ";" }.map { Double($0) }
+            guard values.count >= 4, let seconds = values[0], seconds.isFinite, seconds > 0, seconds <= 4,
+                  let subject = values[1].flatMap(Int.init(exactly:)), targets.indices.contains(subject),
+                  let x = values[2], x.isFinite, let y = values[3], y.isFinite else { continue }
+            var bends: [MotionBend] = []
+            for offset in stride(from: 4, to: min(values.count - 1, 10), by: 2) {
+                guard let id = values[offset].flatMap(Int.init(exactly:)),
+                      targets[subject].joints.contains(where: { $0.id == id && $0.parent != nil }),
+                      let angle = values[offset + 1], angle.isFinite else { continue }
+                bends.append(MotionBend(joint: id, degrees: angle))
+            }
+            beats[seconds, default: [:]][subject] = MotionSubject(index: subject, dx: x / 100, dy: y / 100, bends: bends)
+        }
+        return MotionPlan(poses: beats.keys.sorted().map { seconds in
+            MotionBeat(seconds: seconds, subjects: beats[seconds, default: [:]].values.sorted { $0.index < $1.index })
+        })
     }
 
     func fallbackMotion(_ prompt: String, targets: [SceneUnit]) -> MotionPlan {
@@ -189,7 +216,7 @@ private extension EditorController {
             anchors.append((tick, pose))
         }
         guard anchors.count >= 2, anchors.dropFirst().contains(where: { $0.frame != frame }) else {
-            throw SceneReadError.invalidScene
+            throw MotionGenerationError.noUsablePoses
         }
         let highestID = document.frames.map(\.id).max() ?? 0
         guard highestID < Int.max - 241 else { throw SceneReadError.resourceLimit }
