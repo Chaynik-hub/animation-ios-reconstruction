@@ -72,6 +72,9 @@ private extension EditorController {
         let task = Task { @MainActor [weak self, weak progress] in
             guard let self else { return }
             do {
+                let frames: [SceneFrame]
+                var usedFallback = false
+                do {
                 let rigs = targets.enumerated().map { number, unit in
                     let bones = unit.joints.map { joint in
                         "\(joint.id):p\(joint.parent ?? -1)@\(joint.x.rounded()),\(joint.y.rounded())"
@@ -81,10 +84,10 @@ private extension EditorController {
                     return "\(number) \(title): \(bones)"
                 }.joined(separator: "\n")
                 let session = LanguageModelSession(instructions: """
-                    You direct 2D skeletal animation. Return 4 to 9 chronological poses within 4 seconds.
+                    You direct 2D skeletal animation. Return 4 to 6 chronological poses within 4 seconds.
                     Use only the listed subjects and bone IDs, never rotate a root joint.
                     Offsets and angles are absolute relative to the starting rig, not accumulated.
-                    Specify each moving subject at each beat with only its 2 to 6 most relevant bends.
+                    Specify each moving subject at each beat with only its 1 to 3 most relevant bends.
                     Use anticipation, weight transfer,
                     asymmetric timing, follow-through and a settled ending. Use small joint angles for
                     balance and larger ones only where needed. Match the requested action and rig.
@@ -92,20 +95,30 @@ private extension EditorController {
                     """)
                 let result = try await session.respond(to: "Action: \(prompt)\nScene: \(original.width)×\(original.height)\nRigs: \(rigs)",
                                                        generating: MotionPlan.self)
-                try Task.checkCancellation()
+                    try Task.checkCancellation()
+                    frames = try self.motionFrames(result.content, frame: frame, targets: targets, document: original)
+                } catch {
+                    try Task.checkCancellation()
+                    usedFallback = true
+                    let plan = self.fallbackMotion(prompt, targets: targets)
+                    frames = try self.motionFrames(plan, frame: frame, targets: targets, document: original)
+                }
                 guard self.workspace.document == original, self.workspace.index == index else {
                     throw SceneReadError.invalidScene
                 }
-                let frames = try self.motionFrames(result.content, frame: frame, targets: targets, document: original)
                 self.workspace.checkpoint()
                 self.workspace.document.frames.insert(contentsOf: frames, at: index + 1)
                 self.workspace.notify()
-                progress?.dismiss(animated: true)
+                progress?.dismiss(animated: true) { [weak self] in
+                    if usedFallback {
+                        self?.message("Кадры созданы", "Системная модель не смогла построить движение. Применён резервный вариант, который можно отредактировать.")
+                    }
+                }
             } catch is CancellationError {
                 return
             } catch {
                 progress?.dismiss(animated: true) { [weak self] in
-                    self?.message("Не удалось создать движение", "Попробуйте короче описать действие для выбранного скелета.")
+                    self?.message("Не удалось создать движение", "Проверьте, что выбранный предмет может двигаться и сцена не изменилась во время генерации.")
                 }
             }
         }
@@ -113,11 +126,54 @@ private extension EditorController {
         present(progress, animated: true)
     }
 
+    func fallbackMotion(_ prompt: String, targets: [SceneUnit]) -> MotionPlan {
+        let text = prompt.lowercased()
+        func matches(_ words: [String]) -> Bool { words.contains { text.contains($0) } }
+        let direction = matches(["влев", "налев", "left"]) ? -1.0 : 1.0
+        let jump = matches(["прыг", "прыж", "jump", "hop"])
+        let walk = matches(["идти", "идёт", "иди", "шаг", "бег", "беж", "walk", "run"])
+        let wave = matches(["маш", "мах", "привет", "wave"])
+        let crouch = matches(["прися", "пригн", "присед", "crouch", "squat"])
+        let offsets: [(Double, Double, Double, Double)]
+        if jump {
+            offsets = [(0.22, 0, 0.04, -22), (0.42, 0.02, -0.08, 12), (0.65, 0.04, -0.19, 25),
+                       (0.88, 0.06, -0.08, 12), (1.04, 0.07, 0.03, -22), (1.28, 0.07, 0, 0)]
+        } else if walk {
+            offsets = [(0.20, 0.02, -0.012, 21), (0.42, 0.05, 0.008, -23), (0.64, 0.08, -0.012, 23),
+                       (0.86, 0.11, 0.008, -19), (1.10, 0.14, 0, 0)]
+        } else if wave {
+            offsets = [(0.20, 0, 0, 34), (0.37, 0, 0, 69), (0.55, 0, 0, 44),
+                       (0.73, 0, 0, 66), (1.08, 0, 0, 0)]
+        } else if crouch {
+            offsets = [(0.20, 0, 0.025, -12), (0.48, 0, 0.10, -33),
+                       (0.70, 0, 0.10, -33), (1.12, 0, 0, 0)]
+        } else {
+            offsets = [(0.19, -0.012, 0.015, -12), (0.42, 0.025, -0.02, 22),
+                       (0.67, 0.04, 0.006, -7), (1.02, 0.04, 0, 0)]
+        }
+        return MotionPlan(poses: offsets.map { time, x, y, angle in
+            MotionBeat(seconds: time, subjects: targets.enumerated().map { index, unit in
+                let root = unit.joints.first(where: { $0.parent == nil })
+                let movable = unit.joints.filter { $0.parent != nil && $0.attributes["fixed"] != "true" }
+                let candidates = movable.sorted {
+                    if wave { return abs($0.x - (root?.x ?? 0)) > abs($1.x - (root?.x ?? 0)) }
+                    return $0.y > $1.y
+                }
+                let bends = candidates.prefix(wave ? 1 : 4).enumerated().map { offset, joint in
+                    let side = joint.x < (root?.x ?? 0) ? -1.0 : 1.0
+                    return MotionBend(joint: joint.id, degrees: angle * side * (offset < 2 ? 1 : 0.45) * direction)
+                }
+                let moveX = movable.isEmpty && wave ? 0.025 * sin(time * 9) : x
+                return MotionSubject(index: index, dx: moveX * direction, dy: y, bends: bends)
+            })
+        })
+    }
+
     func motionFrames(_ plan: MotionPlan, frame: SceneFrame, targets: [SceneUnit], document: SceneDocument) throws -> [SceneFrame] {
         let rate = 60.0 / Double(max(1, document.interframes + 1))
         var anchors: [(tick: Int, frame: SceneFrame)] = [(0, frame)]
         var previousTime = 0.0
-        for beat in plan.poses.prefix(9) {
+        for beat in plan.poses.filter({ $0.seconds.isFinite }).sorted(by: { $0.seconds < $1.seconds }).prefix(9) {
             guard beat.seconds.isFinite, beat.seconds > previousTime, beat.seconds <= 4 else { continue }
             previousTime = beat.seconds
             let tick = max(1, Int((beat.seconds * rate).rounded()))
@@ -142,7 +198,15 @@ private extension EditorController {
                 let fraction = Double(tick - left.tick) / Double(right.tick - left.tick)
                 // Preserve more velocity through moving poses while easing into each beat.
                 let t = 0.55 * fraction + 0.45 * fraction * fraction * (3 - 2 * fraction)
-                var sample = try FrameInterpolation.between(left.frame, right.frame, progress: t)
+                var sample = left.frame
+                for index in sample.units.indices {
+                    let before = left.frame.units[index]
+                    let after = right.frame.units[index]
+                    if before != after,
+                       let pose = try? PoseInterpolation.between(before, after, progress: t) {
+                        _ = FrameManipulation.pastePose(pose, into: &sample, unitIndex: index)
+                    }
+                }
                 sample.id = highestID + tick
                 frames.append(sample)
             }
