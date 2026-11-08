@@ -41,7 +41,6 @@ public struct MotionRetarget {
     }
 
     public func pose(_ sample: SceneUnit) throws -> SceneUnit {
-        let original = Dictionary(source.joints.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         let moved = Dictionary(sample.joints.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         let targetPoints = Dictionary(target.joints.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         guard let root = moved[sourceRoot.id] else { throw PoseError.incompatibleTopology }
@@ -53,19 +52,20 @@ public struct MotionRetarget {
             var point = joint
             if let parent = joint.parent.flatMap({ targetPoints[$0] }) {
                 let anchor = try resolve(parent)
-                var delta = 0.0
-                if let id = mapping[joint.id], let before = original[id], let after = moved[id],
-                   let beforeParent = before.parent.flatMap({ original[$0] }),
+                let x = joint.x - parent.x, y = joint.y - parent.y
+                let length = hypot(x, y)
+                var angle = atan2(y, x)
+                if let id = mapping[joint.id], let after = moved[id],
                    let afterParent = after.parent.flatMap({ moved[$0] }) {
-                    delta = atan2(after.y - afterParent.y, after.x - afterParent.x)
-                        - atan2(before.y - beforeParent.y, before.x - beforeParent.x)
+                    angle = atan2(after.y - afterParent.y, after.x - afterParent.x)
+                    point.attributes["nativeAxisStretch"] = nil
+                    point.attributes["nativeBoneLengthFactor"] = nil
                     if let factor = after.attributes["nativeBoneLengthFactor"] {
                         point.attributes["nativeBoneLengthFactor"] = factor
                     }
                 }
-                let x = joint.x - parent.x, y = joint.y - parent.y
-                point.x = anchor.x + x * cos(delta) - y * sin(delta)
-                point.y = anchor.y + x * sin(delta) + y * cos(delta)
+                point.x = anchor.x + length * cos(angle)
+                point.y = anchor.y + length * sin(angle)
             } else {
                 point.x += dx; point.y += dy
             }

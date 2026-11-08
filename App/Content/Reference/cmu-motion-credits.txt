@@ -1,0 +1,2 @@
+Motion data from Carnegie Mellon University Graphics Lab, https://mocap.cs.cmu.edu/
+[(('Walk', '104', '02'), ('Walk', 4, 27, 24)), (('Run', '02', '03'), ('Run', 34, 48, 15)), (('Jump', '02', '04'), ('Jump', 55, 71, 17)), (('Punch', '02', '05'), ('Punch', 78, 89, 12)), (('Kick', '113', '13'), ('Kick', 96, 110, 15)), (('Forward fall', '90', '16'), ('Forward fall', 117, 132, 16)), (('Slip and fall', '90', '18'), ('Slip and fall', 139, 154, 16))]

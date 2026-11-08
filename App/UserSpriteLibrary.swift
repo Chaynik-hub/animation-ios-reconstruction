@@ -3,7 +3,6 @@ import UIKit
 import ZIPFoundation
 
 enum UserSpriteLibrary {
-    private static let indexLimit = 64 * 1024 * 1024
     private enum ImportError: LocalizedError {
         case missingEntry(String), noSupportedSprites
         var errorDescription: String? {
@@ -15,7 +14,7 @@ enum UserSpriteLibrary {
     }
     struct Record: Codable { var definition: ArtworkDefinition; var archive: String }
     static func records(in directory: URL) -> [Record] {
-        guard let data=try? Data(contentsOf:directory.appendingPathComponent("UserSprites/index.json")),data.count<=indexLimit else{return []}
+        guard let data=try? Data(contentsOf:directory.appendingPathComponent("UserSprites/index.json")) else{return []}
         return (try? JSONDecoder().decode([Record].self,from:data)) ?? []
     }
     static func definitions(in directory: URL) -> [ArtworkDefinition] {records(in:directory).map(\.definition)}
@@ -39,9 +38,6 @@ enum UserSpriteLibrary {
         }
         let current = records(in: directory)
         guard !entries.isEmpty else { throw SceneReadError.invalidScene }
-        guard current.count + entries.count <= 2000,
-              entries.reduce(Int64(0), { $0 + min(Int64($1.uncompressedSize), 1024 * 1024 * 1024 + 1) }) <= 1024 * 1024 * 1024
-        else { throw SceneReadError.resourceLimit }
 
         let staging = files.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
         try files.createDirectory(at: staging, withIntermediateDirectories: true)
@@ -72,6 +68,7 @@ enum UserSpriteLibrary {
             break
         }
         var skipped = 0
+        var additions: [Record] = []
         let pack = "@pack:\(UUID().uuidString):\(title)"
         for (order, entry) in entries.enumerated() {
             let components = entry.path.split(separator: "/").map(String.init)
@@ -83,14 +80,16 @@ enum UserSpriteLibrary {
             do {
                 try importATI(item, directory: staging, packID: pack,
                               folderPath: metadata.folders[shortName] ?? Array(components.dropLast().filter { $0 != "items" }),
-                              order: order, defaultScale: metadata.scale, manifestFolders: metadata.folders)
+                              order: order, defaultScale: metadata.scale, manifestFolders: metadata.folders,
+                              collect: { additions.append($0) })
             } catch is ImportError {
                 skipped += 1
             } catch SceneReadError.unsupportedElement(_) {
                 skipped += 1
+            } catch SceneReadError.resourceLimit {
+                skipped += 1
             }
         }
-        var additions = records(in: staging)
         guard !additions.isEmpty else { throw ImportError.noSupportedSprites }
         guard additions.count + skipped == entries.count else { throw SceneReadError.invalidScene }
         if let cover, let first = additions.first {
@@ -111,7 +110,6 @@ enum UserSpriteLibrary {
             moved.append(destination)
         }
         let index = try JSONEncoder().encode(current + additions)
-        guard index.count <= indexLimit else { throw SceneReadError.resourceLimit }
         try index.write(to: root.appendingPathComponent("index.json"), options: .atomic)
         committed = true
         return skipped
@@ -132,16 +130,15 @@ enum UserSpriteLibrary {
         }
     }
 
-    @discardableResult static func importATI(_ source: URL, directory: URL, packID: String = "@user", folderPath: [String] = [], order: Int? = nil, defaultScale: Double = 1, manifestFolders: [String: [String]] = [:]) throws -> ArtworkDefinition {
+    @discardableResult static func importATI(_ source: URL, directory: URL, packID: String = "@user", folderPath: [String] = [], order: Int? = nil, defaultScale: Double = 1, manifestFolders: [String: [String]] = [:], collect: ((Record) -> Void)? = nil) throws -> ArtworkDefinition {
         guard source.pathExtension.lowercased()=="ati" else{throw SceneReadError.invalidScene}
         let scoped=source.startAccessingSecurityScopedResource();defer{if scoped{source.stopAccessingSecurityScopedResource()}}
-        guard (((try FileManager.default.attributesOfItem(atPath:source.path)[.size]) as? NSNumber)?.int64Value ?? Int64.max) <= 256*1024*1024 else{throw SceneReadError.resourceLimit}
+        guard collect != nil || (((try FileManager.default.attributesOfItem(atPath:source.path)[.size]) as? NSNumber)?.int64Value ?? Int64.max) <= 256*1024*1024 else{throw SceneReadError.resourceLimit}
         let archive=try Archive(url:source,accessMode:.read)
-        var total=0
         func read(_ name:String,limit:Int=64*1024*1024)throws->Data {
             guard let entry=archive[name],entry.type == .file else { throw ImportError.missingEntry(name) }
-            guard UInt64(entry.uncompressedSize)<=UInt64(limit),total+Int(entry.uncompressedSize)<=256*1024*1024 else{throw SceneReadError.resourceLimit}
-            var data=Data();_ = try archive.extract(entry){data.append($0)};total+=data.count;return data
+            guard UInt64(entry.uncompressedSize)<=UInt64(limit) else{throw SceneReadError.resourceLimit}
+            var data=Data();_ = try archive.extract(entry){data.append($0)};return data
         }
         let modelData=try read("model.xml",limit:16*1024*1024),assetsData=try read("assets.xml",limit:16*1024*1024)
         let model=try ArtworkXMLReader.read(model:modelData,assets:assetsData)
@@ -190,10 +187,13 @@ enum UserSpriteLibrary {
         let metadata=try JSONSerialization.data(withJSONObject:["title":title,"packID":packID])
         if let old=rewritten["native-item.json"]{try rewritten.remove(old)}
         try rewritten.addEntry(with:"native-item.json",type:.file,uncompressedSize:Int64(metadata.count),compressionMethod:.deflate,provider:{position,size in metadata.subdata(in:Int(position)..<Int(position)+size)})
-        var index=records(in:directory);guard index.count<2000 else{throw SceneReadError.resourceLimit}
-        index.append(Record(definition:definition,archive:relative+"/source.ati"))
-        let encoded=try JSONEncoder().encode(index);guard encoded.count<=indexLimit else{throw SceneReadError.resourceLimit}
-        try encoded.write(to:directory.appendingPathComponent("UserSprites/index.json"),options:.atomic)
+        let record = Record(definition: definition, archive: relative + "/source.ati")
+        if let collect {
+            collect(record)
+        } else {
+            let encoded = try JSONEncoder().encode(records(in: directory) + [record])
+            try encoded.write(to: directory.appendingPathComponent("UserSprites/index.json"), options: .atomic)
+        }
         committed=true;return definition
     }
 }

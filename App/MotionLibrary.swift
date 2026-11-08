@@ -79,6 +79,42 @@ private final class MotionLibraryController: OriginalListController {
         }
     }
 
+    private static let recordedFrames: [SceneFrame] = {
+        guard let url = Bundle.main.resourceURL?.appendingPathComponent("Content/Reference/cmu-motions.xml"),
+              let bytes = try? Data(contentsOf: url),
+              let scene = try? SceneXMLReader.read(bytes) else { return [] }
+        return scene.frames
+    }()
+
+    private func recordedTemplate(_ action: GroundedMotion.Action, direction: Double) -> MotionTemplate? {
+        let range: ClosedRange<Int>
+        switch action {
+        case .walk: range = 4...27
+        case .run: range = 34...48
+        case .jump: range = 55...71
+        case .punch: range = 78...89
+        case .kick: range = 96...110
+        case .fall: range = 117...132
+        case .ragdoll: range = 139...154
+        case .crouch: return nil
+        }
+        let frames = Self.recordedFrames
+        guard range.upperBound <= frames.count else { return nil }
+        var poses = frames[(range.lowerBound - 1)..<range.upperBound].compactMap { $0.units.first }
+        guard poses.count == range.count,
+              let first = poses.first?.joints.first(where: { $0.parent == nil }),
+              let last = poses.last?.joints.first(where: { $0.parent == nil }) else { return nil }
+        let forward = (action == .walk || action == .run) && last.x < first.x ? -1.0 : 1.0
+        if direction != forward {
+            for index in poses.indices {
+                for joint in poses[index].joints.indices {
+                    poses[index].joints[joint].x = 2 * first.x - poses[index].joints[joint].x
+                }
+            }
+        }
+        return MotionTemplate(name: "", poses: poses, ticksPerFrame: 5)
+    }
+
     private func chooseDirection(title: String, name: String, action: GroundedMotion.Action, duration: Double) {
         guard let unit = workspace.frame.units.first(where: { $0.name == name }) else { return }
         let nativeRig = GroundedMotion(unit: unit)
@@ -92,6 +128,10 @@ private final class MotionLibraryController: OriginalListController {
         for (label, direction) in [("Вправо", 1.0), ("Влево", -1.0)] {
             alert.addAction(UIAlertAction(title: label, style: .default) { [weak self] _ in
                 guard let self else { return }
+                if let recorded = self.recordedTemplate(action, direction: direction) {
+                    self.insertTemplate(recorded, into: name)
+                    return
+                }
                 let steps = max(1, Int((duration * 60 / Double(max(1, self.workspace.document.interframes + 1))).rounded()))
                 do {
                     let poses = try (1...steps).map { tick in
@@ -155,11 +195,11 @@ private final class MotionLibraryController: OriginalListController {
                                                         progress: position - Double(lower))
                 return try retarget.pose(pose)
             }
-            insert(poses, into: name)
+            insert(poses, into: name, replaceCurrent: true)
         } catch { message("Несовместимый предмет", "Структура скелета менялась внутри шаблона.") }
     }
 
-    private func insert(_ poses: [SceneUnit], into name: String) {
+    private func insert(_ poses: [SceneUnit], into name: String, replaceCurrent: Bool = false) {
         let frame = workspace.frame
         guard let index = frame.units.firstIndex(where: { $0.name == name }), !poses.isEmpty else { return }
         let highest = workspace.document.frames.map(\.id).max() ?? 0
@@ -167,7 +207,7 @@ private final class MotionLibraryController: OriginalListController {
         var frames: [SceneFrame] = []
         for (offset, pose) in poses.enumerated() {
             var output = frame
-            output.id = highest + offset + 1
+            output.id = replaceCurrent && offset == 0 ? frame.id : highest + offset + 1
             guard FrameManipulation.pastePose(pose, into: &output, unitIndex: index) else {
                 message("Несовместимый предмет", "У шаблона и предмета разные скелеты.")
                 return
@@ -175,7 +215,12 @@ private final class MotionLibraryController: OriginalListController {
             frames.append(output)
         }
         workspace.checkpoint()
-        workspace.document.frames.insert(contentsOf: frames, at: workspace.index + 1)
+        if replaceCurrent {
+            workspace.document.frames[workspace.index] = frames[0]
+            workspace.document.frames.insert(contentsOf: frames.dropFirst(), at: workspace.index + 1)
+        } else {
+            workspace.document.frames.insert(contentsOf: frames, at: workspace.index + 1)
+        }
         workspace.notify()
         dismiss(animated: true)
     }
