@@ -26,14 +26,14 @@ final class CameraEditorController: UIViewController {
         canvas.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(canvas)
 
-        let back = control("Назад", icon: nil) { [weak self] in self?.dismiss(animated: false) }
-        let play = control("Пуск", icon: "main_btn_play", tint: .original(0xff9000)) { [weak self] in
+        let back = control("‹", icon: nil) { [weak self] in self?.dismiss(animated: false) }
+        let play = control("ПУСК", icon: "main_btn_play", tint: .original(0xff9000)) { [weak self] in
             guard let self else { return }
             self.present(PreviewController(workspace: self.workspace, audio: self.audio), animated: false)
         }
-        let transition = control("Переход", icon: "btn_tween", tint: .original(0x00c0d8)) { [weak self] in self?.tween() }
-        let reset = control("Сброс", icon: "btn_reset", tint: .original(0xf35454)) { [weak self] in self?.canvas.resetSceneCamera() }
-        let undo = control("Отмена", icon: "main_btn_undo_normal", tint: .original(0x009ac4)) { [weak self] in
+        let transition = control("TWEEN", icon: "btn_tween", tint: .original(0x00c0d8)) { [weak self] in self?.tween() }
+        let reset = control("СБРОС", icon: "btn_reset", tint: .original(0xf35454)) { [weak self] in self?.canvas.resetSceneCamera() }
+        let undo = control("ОТМЕНА", icon: "main_btn_undo_normal", tint: .original(0x009ac4)) { [weak self] in
             self?.workspace.undo()
             self?.refresh()
         }
@@ -41,6 +41,8 @@ final class CameraEditorController: UIViewController {
         undo.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(undo)
         toolbar.axis = .vertical
+        toolbar.backgroundColor = .original(0x212121)
+        undo.backgroundColor = .original(0x212121)
         toolbar.distribution = .fillEqually
         toolbar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(toolbar)
@@ -57,6 +59,7 @@ final class CameraEditorController: UIViewController {
         next.heightAnchor.constraint(equalToConstant: 60).isActive = true
         let timeline = UIStackView(arrangedSubviews: [previous, navigator, next])
         timeline.axis = .vertical
+        timeline.backgroundColor = .original(0x242530)
         timeline.translatesAutoresizingMaskIntoConstraints = false
         navigator.seek = { [weak self] in self?.seek($0) }
         view.addSubview(timeline)
@@ -75,11 +78,12 @@ final class CameraEditorController: UIViewController {
             timeline.topAnchor.constraint(equalTo: area.topAnchor),
             timeline.bottomAnchor.constraint(equalTo: area.bottomAnchor),
             timeline.widthAnchor.constraint(equalToConstant: 60),
-            canvas.leadingAnchor.constraint(equalTo: toolbar.trailingAnchor),
-            canvas.trailingAnchor.constraint(equalTo: timeline.leadingAnchor),
+            canvas.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            canvas.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             canvas.topAnchor.constraint(equalTo: area.topAnchor),
             canvas.bottomAnchor.constraint(equalTo: area.bottomAnchor)
         ])
+        view.sendSubviewToBack(canvas)
         refresh()
     }
 

@@ -12,13 +12,14 @@ struct CatalogPack: Decodable {
 }
 
 final class CatalogController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    enum Entry { case pack(CatalogPack), folder(String), item(ArtworkDefinition), mySprites }
+    enum Entry { case pack(CatalogPack), folder(String), item(ArtworkDefinition), mySprites, commonSprites }
     var assets: [ArtworkDefinition]
     let pick: (ArtworkDefinition) -> Void
     let resolve: (String) -> URL?
     let close: () -> Void
     let importATI: () -> Void
     private var showingUserSprites=false
+    private var showingCommonSprites = false
     private let importButton=UIButton(type:.system)
     private var importHeight:NSLayoutConstraint!
     private var packs: [CatalogPack] = []
@@ -78,23 +79,27 @@ final class CatalogController: UIViewController, UICollectionViewDataSource, UIC
         if showingUserSprites {
             entries=assets.filter{$0.packID=="@user"}.sorted{$0.displayTitle.localizedStandardCompare($1.displayTitle) == .orderedAscending}.map(Entry.item)
             caption.text="Мои спрайты";back.isHidden=false
+        } else if showingCommonSprites {
+            entries = assets.filter { $0.packID == "common" || $0.packID == "common.items" }
+                .sorted { $0.displayTitle.localizedStandardCompare($1.displayTitle) == .orderedAscending }.map(Entry.item)
+            caption.text = "Другое"; back.isHidden = false
         } else if let pack {
             let matching = assets.filter { ($0.packID ?? String($0.name.split(separator: ":").first ?? "")) == pack.id }
             let descendants = matching.filter { Array(($0.folderPath ?? []).prefix(path.count)) == path }
             let folders = Set(descendants.compactMap { item -> String? in let folders = item.folderPath ?? []; return folders.count > path.count ? folders[path.count] : nil }).sorted()
             let items = descendants.filter { ($0.folderPath ?? []) == path }.sorted { ($0.catalogOrder ?? Int.max, $0.name) < ($1.catalogOrder ?? Int.max, $1.name) }
-            entries = (path.isEmpty ? [.mySprites]:[]) + folders.map(Entry.folder) + items.map(Entry.item)
+            entries = (path.isEmpty ? [.mySprites, .commonSprites]:[]) + folders.map(Entry.folder) + items.map(Entry.item)
             caption.text = path.last ?? pack.displayTitle; back.isHidden = false
         } else { entries = packs.map(Entry.pack); caption.text = "Наборы"; back.isHidden = true }
         collection.backgroundColor = .original(0x202020)
         collection.reloadData(); collection.setContentOffset(.zero, animated: false)
     }
-    private func goBack() { if showingUserSprites {showingUserSprites=false} else if !path.isEmpty { path.removeLast() } else { pack = nil }; reload() }
+    private func goBack() { if showingUserSprites {showingUserSprites=false} else if showingCommonSprites { showingCommonSprites = false } else if !path.isEmpty { path.removeLast() } else { pack = nil }; reload() }
     override func accessibilityPerformEscape() -> Bool { if pack != nil { goBack() } else { close() }; return true }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { entries.count }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height: CGFloat
-        switch entries[indexPath.item] { case .pack: height = 191; case .folder, .mySprites: height = 50; case .item: height = 60 }
+        switch entries[indexPath.item] { case .pack: height = 191; case .folder, .mySprites, .commonSprites: height = 50; case .item: height = 60 }
         return CGSize(width: collectionView.bounds.width, height: height)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -107,9 +112,11 @@ final class CatalogController: UIViewController, UICollectionViewDataSource, UIC
             cell.contentView.backgroundColor = .white; image.frame = CGRect(x: 6, y: 6, width: cell.bounds.width - 12, height: 150)
             label.frame = CGRect(x: 5, y: 157, width: cell.bounds.width - 10, height: 30); label.textAlignment = .center; label.textColor = .original(0x212121)
             label.text = value.displayTitle; imagePath = value.thumbnail; cell.accessibilityIdentifier = "catalog-pack-" + value.id
-        case .mySprites:
+        case .mySprites, .commonSprites:
+            let isCommon: Bool
+            if case .commonSprites = entries[indexPath.item] { isCommon = true } else { isCommon = false }
             cell.contentView.backgroundColor = .original(0xfff7df);image.frame=CGRect(x:10,y:5,width:40,height:40);image.image=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/dir2.png").path)
-            label.frame=CGRect(x:55,y:0,width:cell.bounds.width-60,height:50);label.text="Мои спрайты";label.textColor = .original(0xac812b);cell.accessibilityIdentifier="catalog-my-sprites"
+            label.frame=CGRect(x:55,y:0,width:cell.bounds.width-60,height:50);label.text = isCommon ? "Другое" : "Мои спрайты";label.textColor = .original(0xac812b);cell.accessibilityIdentifier = isCommon ? "catalog-common-sprites" : "catalog-my-sprites"
         case .folder(let value):
             cell.contentView.backgroundColor = .original(0xfff7df); image.frame = CGRect(x: 10, y: 5, width: 40, height: 40)
             image.image = UIImage(contentsOfFile: Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/dir2.png").path)
@@ -130,6 +137,6 @@ final class CatalogController: UIViewController, UICollectionViewDataSource, UIC
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch entries[indexPath.item] { case .mySprites: showingUserSprites=true;reload(); case .pack(let value): pack = value; path = []; showingUserSprites=false;reload(); case .folder(let value): path.append(value); reload(); case .item(let value): pick(value) }
+        switch entries[indexPath.item] { case .commonSprites: showingCommonSprites = true; reload(); case .mySprites: showingUserSprites=true;reload(); case .pack(let value): pack = value; path = []; showingUserSprites=false;reload(); case .folder(let value): path.append(value); reload(); case .item(let value): pick(value) }
     }
 }

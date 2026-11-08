@@ -9,7 +9,7 @@ final class UnitListPanel: UIView {
         let label = UILabel(); label.text = caption; label.textColor = .white; label.backgroundColor = .original(0x00bd78); label.textAlignment = .center; label.font = UIFont(name: "Roboto-Regular", size: 12); stack.addArrangedSubview(label); label.heightAnchor.constraint(equalToConstant: 27).isActive = true
         let button = UIButton(type: .system); button.setTitle("ВСТАВИТЬ", for: .normal); button.tintColor = .white; button.isEnabled = canPaste; button.alpha = canPaste ? 1 : 0.2; button.accessibilityIdentifier = "unit_paste"; button.addAction(UIAction { _ in paste() }, for: .touchUpInside); stack.addArrangedSubview(button); button.heightAnchor.constraint(equalToConstant: 62).isActive = true
         for (index, entry) in items.enumerated() {
-            let row = UIButton(type: .custom); row.setImage(entry.1, for: .normal); row.imageView?.contentMode = .scaleAspectFit
+            let row = UIButton(type: .custom); row.setImage(entry.1, for: .normal); row.imageView?.contentMode = .scaleAspectFit; row.imageView?.backgroundColor = .white
             row.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 56); row.accessibilityLabel = entry.0; row.accessibilityIdentifier = "unit-list-\(index)"; row.addAction(UIAction { _ in entry.2() }, for: .touchUpInside)
             stack.addArrangedSubview(row); row.heightAnchor.constraint(equalToConstant: 80).isActive = true
         }

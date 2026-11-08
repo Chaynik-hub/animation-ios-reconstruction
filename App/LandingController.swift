@@ -19,7 +19,9 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
     private let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     private lazy var cartoon = artworkButton("Новый\nМультфильм", "landing_hex2", pressed: "landing_hex_pressed2", color: .original(0x6cae00), size: 16) { [weak self] in self?.openEditor() }
     private lazy var items = artworkButton("Конструктор\nпредметов", "landing_hex_items", pressed: "landing_hex_items_pressed", color: .original(0x00b6ff), size: 12) { [weak self] in self?.soon() }
-    private lazy var community = artworkButton("Дискорд", "landing_community", color: .original(0xf5c8ff), size: 12) { [weak self] in self?.soon() }
+    private lazy var community = artworkButton("Связь с\nразработчиком", "telegram", color: .original(0x62caff), size: 12) {
+        if let url = URL(string: "https://t.me/cheg_b") { UIApplication.shared.open(url) }
+    }
     private lazy var settings = artworkButton("", "cog", color: .white, size: 12) { [weak self] in self?.showSettings() }
     private lazy var onlineButton = textButton("Онлайн", size: 14) { [weak self] in self?.showOnline() }
     private lazy var importButton = textButton("Открыть из файлов", size: 14) { [weak self] in self?.importProject() }
@@ -249,7 +251,7 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
     private func soon() {
         toast?.removeFromSuperview()
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 154, height: 40))
-        label.text = "Скоро будет"
+        label.text = "В разработке"
         label.textAlignment = .center
         label.font = font(14)
         label.textColor = .white
@@ -289,6 +291,10 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
             return updated
         }
         func icon(_ name: String) -> UIImage? {
+            if name == "telegram" {
+                return UIImage(systemName: "paperplane.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 34))?
+                    .withTintColor(.original(0x29a9eb), renderingMode: .alwaysOriginal)
+            }
             guard let url = Bundle.main.resourceURL?.appendingPathComponent("Content/Landing/\(name).png"),
                   let image = UIImage(contentsOfFile: url.path), let bitmap = image.cgImage else { return nil }
             return UIImage(cgImage: bitmap, scale: name == "cog" ? 3 : 4, orientation: .up).withRenderingMode(.alwaysOriginal)
@@ -302,16 +308,7 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
             config?.image = button.isHighlighted ? pressedImage ?? normalImage : normalImage
             button.configuration = config
         }
-        button.addAction(UIAction { [weak button] _ in
-            if let button, !UIAccessibility.isReduceMotionEnabled {
-                let shake = CAKeyframeAnimation(keyPath: "transform.rotation.z")
-                shake.values = [0, -Double.pi / 18, Double.pi / 18, 0]
-                shake.keyTimes = [0, 0.2, 0.6, 1]
-                shake.duration = 0.5
-                button.layer.add(shake, forKey: "landingPress")
-            }
-            action()
-        }, for: .touchUpInside)
+        button.addAction(UIAction { _ in action() }, for: .touchUpInside)
         return button
     }
 
