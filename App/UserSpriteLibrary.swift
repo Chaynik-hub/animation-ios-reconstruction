@@ -133,7 +133,7 @@ enum UserSpriteLibrary {
     @discardableResult static func importATI(_ source: URL, directory: URL, packID: String = "@user", folderPath: [String] = [], order: Int? = nil, defaultScale: Double = 1, manifestFolders: [String: [String]] = [:], collect: ((Record) -> Void)? = nil) throws -> ArtworkDefinition {
         guard source.pathExtension.lowercased()=="ati" else{throw SceneReadError.invalidScene}
         let scoped=source.startAccessingSecurityScopedResource();defer{if scoped{source.stopAccessingSecurityScopedResource()}}
-        guard collect != nil || (((try FileManager.default.attributesOfItem(atPath:source.path)[.size]) as? NSNumber)?.int64Value ?? Int64.max) <= 256*1024*1024 else{throw SceneReadError.resourceLimit}
+        guard try collect != nil || (((FileManager.default.attributesOfItem(atPath:source.path)[.size]) as? NSNumber)?.int64Value ?? Int64.max) <= 256*1024*1024 else{throw SceneReadError.resourceLimit}
         let archive=try Archive(url:source,accessMode:.read)
         func read(_ name:String,limit:Int=64*1024*1024)throws->Data {
             guard let entry=archive[name],entry.type == .file else { throw ImportError.missingEntry(name) }
