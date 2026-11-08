@@ -23,7 +23,7 @@ final class BackgroundChooserController: UIViewController, UITableViewDataSource
     }
     func tableView(_ tableView:UITableView,numberOfRowsInSection section:Int)->Int{groups.count+3}
     func tableView(_ tableView:UITableView,cellForRowAt indexPath:IndexPath)->UITableViewCell {
-        let cell=UITableViewCell(style:.default,reuseIdentifier:nil);cell.textLabel?.font=UIFont(name:"Roboto-Regular",size:14)
+        let cell=UITableViewCell(style:.default,reuseIdentifier:nil);cell.textLabel?.font=UIFont(name:"Roboto-Regular",size:16)
         if indexPath.row<3 {
             cell.textLabel?.text=["Выбрать цвет","Выбрать изображение","Рисовать"][indexPath.row];cell.backgroundColor=UIColor.original([0x8ac926,0x38bdf8,0xf59e0b][indexPath.row]);cell.textLabel?.textColor=UIColor.original([0x17230c,0x07233a,0x382100][indexPath.row]);cell.accessibilityIdentifier=["background-color","background-image","background-draw"][indexPath.row]
         } else {
@@ -35,10 +35,10 @@ final class BackgroundChooserController: UIViewController, UITableViewDataSource
     }
     func tableView(_ tableView:UITableView,didSelectRowAt indexPath:IndexPath){if indexPath.row<3 {actions[indexPath.row]();return};group=groups[indexPath.row-3];table.reloadData();collection.reloadData();collection.setContentOffset(.zero,animated:false)}
     func collectionView(_ collectionView:UICollectionView,numberOfItemsInSection section:Int)->Int{visible.count}
-    func collectionView(_ collectionView:UICollectionView,layout collectionViewLayout:UICollectionViewLayout,sizeForItemAt indexPath:IndexPath)->CGSize{CGSize(width:90,height:90)}
+    func collectionView(_ collectionView:UICollectionView,layout collectionViewLayout:UICollectionViewLayout,sizeForItemAt indexPath:IndexPath)->CGSize{CGSize(width:collectionView.bounds.width,height:90)}
     func collectionView(_ collectionView:UICollectionView,cellForItemAt indexPath:IndexPath)->UICollectionViewCell{
         let cell=collectionView.dequeueReusableCell(withReuseIdentifier:"bg",for:indexPath);cell.contentView.subviews.forEach{$0.removeFromSuperview()};let value=visible[indexPath.item]
-        let image=UIImageView(frame:CGRect(x:0,y:0,width:90,height:90));image.contentMode = .scaleAspectFit;image.image=resolve(value.thumbnail).flatMap{UIImage(contentsOfFile:$0.path)};cell.contentView.addSubview(image);cell.isAccessibilityElement=true;cell.accessibilityLabel=value.title;cell.accessibilityIdentifier="background-"+value.id;return cell
+        let image=UIImageView(frame:CGRect(x:(cell.contentView.bounds.width - 90) / 2,y:0,width:90,height:90));image.contentMode = .scaleAspectFit;image.image=resolve(value.thumbnail).flatMap{UIImage(contentsOfFile:$0.path)};cell.contentView.addSubview(image);cell.isAccessibilityElement=true;cell.accessibilityLabel=value.title;cell.accessibilityIdentifier="background-"+value.id;return cell
     }
     func collectionView(_ collectionView:UICollectionView,didSelectItemAt indexPath:IndexPath){select(visible[indexPath.item])}
 }

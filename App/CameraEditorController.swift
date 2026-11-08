@@ -7,6 +7,8 @@ final class CameraEditorController: UIViewController {
     private let canvas: SceneCanvas
     private let navigator = FrameNavigator()
     private var tweenStart: Int?
+    private let spanLabel = UILabel()
+    private let span = UIStackView()
 
     init(workspace: Workspace, audio: AVAudioPlayer?) {
         self.workspace = workspace
@@ -21,7 +23,7 @@ final class CameraEditorController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .original(0x242530)
+        view.backgroundColor = .original(0x3d3e4c)
         canvas.cameraEditing = true
         canvas.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(canvas)
@@ -37,12 +39,14 @@ final class CameraEditorController: UIViewController {
             self?.workspace.undo()
             self?.refresh()
         }
-        let toolbar = UIStackView(arrangedSubviews: [back, play, transition, reset])
+        let toolbar = UIStackView(arrangedSubviews: [play, transition, reset])
+        back.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(back)
         undo.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(undo)
         toolbar.axis = .vertical
-        toolbar.backgroundColor = .original(0x212121)
-        undo.backgroundColor = .original(0x212121)
+        toolbar.backgroundColor = .original(0x242530)
+        undo.backgroundColor = .original(0x242530)
         toolbar.distribution = .fillEqually
         toolbar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(toolbar)
@@ -64,10 +68,37 @@ final class CameraEditorController: UIViewController {
         navigator.seek = { [weak self] in self?.seek($0) }
         view.addSubview(timeline)
 
+        spanLabel.font = UIFont(name: "Roboto-Bold", size: 11) ?? .boldSystemFont(ofSize: 11)
+        spanLabel.textColor = .white
+        spanLabel.textAlignment = .center
+        let cancelSpan = UIButton(type: .system)
+        cancelSpan.setTitle("×", for: .normal)
+        cancelSpan.tintColor = .white
+        cancelSpan.backgroundColor = .original(0x943939)
+        cancelSpan.accessibilityLabel = "Отменить диапазон Tween"
+        cancelSpan.addAction(UIAction { [weak self] _ in
+            self?.tweenStart = nil
+            self?.refresh()
+        }, for: .touchUpInside)
+        span.addArrangedSubview(spanLabel)
+        span.addArrangedSubview(cancelSpan)
+        span.backgroundColor = .original(0x242530)
+        span.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(span)
+
         let area = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             toolbar.leadingAnchor.constraint(equalTo: area.leadingAnchor),
-            toolbar.topAnchor.constraint(equalTo: area.topAnchor),
+            back.leadingAnchor.constraint(equalTo: area.leadingAnchor),
+            back.topAnchor.constraint(equalTo: area.topAnchor),
+            back.widthAnchor.constraint(equalToConstant: 80),
+            back.heightAnchor.constraint(equalToConstant: 28),
+            toolbar.topAnchor.constraint(equalTo: back.bottomAnchor),
+            span.centerXAnchor.constraint(equalTo: area.centerXAnchor),
+            span.topAnchor.constraint(equalTo: area.topAnchor, constant: 8),
+            span.heightAnchor.constraint(equalToConstant: 32),
+            spanLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 86),
+            cancelSpan.widthAnchor.constraint(equalToConstant: 32),
             toolbar.widthAnchor.constraint(equalToConstant: 80),
             toolbar.heightAnchor.constraint(equalTo: area.heightAnchor, multiplier: 0.68),
             undo.leadingAnchor.constraint(equalTo: toolbar.leadingAnchor),
@@ -117,6 +148,8 @@ final class CameraEditorController: UIViewController {
     }
 
     private func refresh() {
+        span.isHidden = tweenStart == nil
+        if let start = tweenStart { spanLabel.text = "Tween  \(start + 1)–\(workspace.index + 1)" }
         navigator.count = workspace.document.frames.count
         navigator.current = workspace.index
         canvas.setNeedsDisplay()
@@ -125,13 +158,11 @@ final class CameraEditorController: UIViewController {
     private func tween() {
         guard let start = tweenStart else {
             tweenStart = workspace.index
-            let alert = UIAlertController(title: "Переход камеры", message: "Выберите конечный кадр, настройте камеру и снова нажмите «Переход».", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            alert.addAction(UIAlertAction(title: "Отмена", style: .cancel) { [weak self] _ in self?.tweenStart = nil })
-            present(alert, animated: true)
+            refresh()
             return
         }
         tweenStart = nil
+        refresh()
         let first = min(start, workspace.index), last = max(start, workspace.index)
         guard last > first + 1, workspace.document.frames.indices.contains(last) else { return }
         let from = SceneCamera(frame: workspace.document.frames[first])
