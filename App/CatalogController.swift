@@ -116,7 +116,7 @@ final class CatalogController: UIViewController, UICollectionViewDataSource, UIC
             label.frame = CGRect(x: 55, y: 0, width: cell.bounds.width - 60, height: 50); label.text = value; label.textColor = .original(0xac812b)
             cell.accessibilityIdentifier = "catalog-folder-" + value
         case .item(let value):
-            cell.contentView.backgroundColor = .clear; image.backgroundColor = .original(0xffcdcd); image.frame = CGRect(x: 10, y: 5, width: 50, height: 50)
+            cell.contentView.backgroundColor = .clear; image.backgroundColor = .white; image.frame = CGRect(x: 10, y: 5, width: 50, height: 50)
             label.frame = CGRect(x: 65, y: 0, width: cell.bounds.width - 70, height: 60); label.text = value.displayTitle; label.textColor = .white; imagePath = value.thumbnail
             let corner = UIImageView(frame: CGRect(x: cell.bounds.width - 12, y: 0, width: 12, height: 12))
             corner.image = Bundle.main.resourceURL.flatMap {

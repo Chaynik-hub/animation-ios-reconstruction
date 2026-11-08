@@ -145,7 +145,7 @@ public enum FrameManipulation {
         let base=oldPoint.attributes["base"]=="true"
         if base,let link=attachment(before),frame.units.contains(where:{$0.name==link.0 && $0.joints.contains(where:{$0.id==link.1})}){return}
         try JointManipulation.move(&frame.units[unitIndex],jointID:jointID,x:x,y:y,stretch:stretch)
-        if !base,oldPoint.attributes["kinstart"]=="true" {
+        if JointManipulation.usesKinematics(oldPoint, in: before) {
             // PointManipulator.kinematicMove calls moveToMaster for every slave:
             // unlike a rigid branch rotation, this translates each attachment to
             // its own newly solved anchor without rotating the held object.

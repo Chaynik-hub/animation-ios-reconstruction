@@ -151,10 +151,10 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         defer { context.restoreGState() }
         let radius = 25 / ratio
         context.setLineWidth(2 / ratio)
-        context.setStrokeColor(UIColor.original(0xff4141).cgColor)
-        context.strokeEllipse(in: CGRect(x: base.x - radius, y: base.y - radius, width: radius * 2, height: radius * 2))
+        context.setFillColor(UIColor.original(0xff4141).withAlphaComponent(0.35).cgColor)
+        context.fillEllipse(in: CGRect(x: base.x - radius, y: base.y - radius, width: radius * 2, height: radius * 2))
         guard let hint = FrameManipulation.attachmentHint(in: workspace.frame, unitIndex: unit, radius: radius) else { return }
-        let green = UIColor.original(0x72bd00).cgColor
+        let green = UIColor.original(0x72bd00).withAlphaComponent(0.55).cgColor
         context.setStrokeColor(green)
         context.setFillColor(green)
         context.setLineWidth(3 / ratio)

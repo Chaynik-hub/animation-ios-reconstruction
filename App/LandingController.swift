@@ -79,8 +79,7 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         let safe = view.bounds.inset(by: view.safeAreaInsets)
-        let artHeight = safe.height / 1.5
-        landingBackdrop.frame = CGRect(x: safe.minX, y: safe.midY - artHeight / 2, width: safe.width, height: artHeight)
+        landingBackdrop.frame = view.bounds
         rail.frame = CGRect(x: safe.maxX - 100, y: safe.minY, width: 100, height: safe.height)
         panel.frame = CGRect(x: safe.minX, y: safe.minY, width: max(0, safe.width - 100), height: safe.height)
         let w = panel.bounds.width, h = panel.bounds.height

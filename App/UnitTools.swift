@@ -74,6 +74,12 @@ extension EditorController {
             else {var root=selected;var visited=Set<Int>();while visited.insert(root).inserted,let parent=FrameManipulation.attachment(self.workspace.frame.units[root])?.0,let index=self.workspace.frame.units.firstIndex(where:{$0.name==parent}) {root=index};self.workspace.latchedUnitName=self.workspace.frame.units[root].name;self.workspace.selected=root}
             self.update()
         })
+        add("prop_tween", "Tween", "props_tween", enabled: workspace.document.frames.count >= 3) { [weak self] in
+            self?.showUnitTween()
+        }
+        add("prop_advanced", "Ещё", "props_numbers") { [weak self] in
+            self?.showUnitKinematics()
+        }
         add("unit_select_list", "Объекты", "props_close", action: { [weak self] in self?.workspace.selected = nil; self?.update() })
         let panel = FrameToolsPanel(commands: commands, accent: .original(0x00bd78), caption: title, identifier: "UnitPropertiesPanel", icons: icons)
         mountContext(panel, width: 86, unitMode: true)

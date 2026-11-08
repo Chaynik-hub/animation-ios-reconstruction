@@ -3,6 +3,11 @@ import Foundation
 /// PointManipulator.simpleMove/moveUnit, from retained APK evidence.
 /// Kinematic effectors use the original FABRIK route; stretch mode remains separate.
 public enum JointManipulation {
+    static func usesKinematics(_ point: Joint, in unit: SceneUnit) -> Bool {
+        point.attributes["base"] != "true" && point.attributes["fixed"] != "true" && point.parent != nil &&
+        (point.attributes["kinstart"] == "true" || unit.attributes["nativeKinematicsAllBones"] == "true")
+    }
+
     public static func move(_ unit: inout SceneUnit, jointID: Int, x: Double, y: Double, stretch:Bool=false) throws {
         guard let index=unit.joints.firstIndex(where:{$0.id==jointID}) else {throw PoseError.incompatibleTopology}
         let point=unit.joints[index]
@@ -13,7 +18,7 @@ public enum JointManipulation {
         }
         guard point.attributes["fixed"] != "true", let parentID=point.parent,
               let parent=unit.joints.first(where:{$0.id==parentID}) else{return}
-        if point.attributes["kinstart"]=="true" {
+        if usesKinematics(point, in: unit) {
             try InverseKinematics.solve(&unit,jointID:jointID,x:x,y:y)
             return
         }
