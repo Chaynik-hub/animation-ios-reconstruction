@@ -17,17 +17,6 @@ jobs:
       - name: Enforce complete original parity before final IPA packaging
         if: ${{ !inputs.preview }}
         run: python3 scripts/check-parity.py
-      - name: Select Xcode with the iOS 26 SDK
-        run: |
-          python3 - <<'PYTHON'
-          import glob, os, re
-          paths = glob.glob("/Applications/Xcode_26*.app")
-          if not paths:
-              raise SystemExit("Xcode 26 is required for Foundation Models")
-          path = max(paths, key=lambda item: tuple(map(int, re.findall(r"\d+", item))))
-          with open(os.environ["GITHUB_ENV"], "a") as env:
-              print(f"DEVELOPER_DIR={path}/Contents/Developer", file=env)
-          PYTHON
       - run: brew install xcodegen
       - run: swift test
       - run: xcodegen generate

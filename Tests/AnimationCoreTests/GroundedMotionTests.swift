@@ -24,5 +24,11 @@ final class GroundedMotionTests: XCTestCase {
         }
         XCTAssertLessThan(rig.pose(.jump, progress: 0.5, direction: 1).joints[0].y, 0)
         XCTAssertEqual(rig.pose(.jump, progress: 1, direction: 1).joints[5].y, 90, accuracy: 0.001)
+        for action in [GroundedMotion.Action.run, .punch, .kick, .fall, .ragdoll] {
+            let sample = rig.pose(action, progress: 0.52, direction: -1)
+            XCTAssertTrue(sample.joints.allSatisfy { $0.x.isFinite && $0.y.isFinite })
+            XCTAssertNotEqual(sample, unit)
+        }
+        XCTAssertLessThanOrEqual(rig.pose(.ragdoll, progress: 1, direction: 1).joints.map(\.y).max() ?? 0, 90.001)
     }
 }
