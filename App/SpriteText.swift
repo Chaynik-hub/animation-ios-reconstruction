@@ -17,10 +17,28 @@ enum SpriteText {
         isBubble(unit) || unit.attributes["type"] == "text" || UnitIdentity.baseName(unit.name) == plainName
     }
 
-    static func value(_ unit: SceneUnit) -> String { unit.attributes["nativeText"] ?? unit.attributes["text"] ?? "" }
+    static func metadata(_ unit: SceneUnit) -> [String: Any] {
+        guard let value = unit.attributes["meta"], let data = value.data(using: .utf8),
+              let fields = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any] else { return [:] }
+        return fields
+    }
+
+    static func value(_ unit: SceneUnit) -> String {
+        if let text = unit.attributes["nativeText"] ?? unit.attributes["text"] ?? metadata(unit)["text"] as? String {
+            return text
+        }
+        let meta = unit.attributes["meta"] ?? ""
+        guard !meta.hasPrefix("{"), let delimiter = meta.firstIndex(of: ":") else { return "" }
+        return String(meta[meta.index(after: delimiter)...])
+    }
+
+    static func fontName(_ unit: SceneUnit) -> String {
+        unit.attributes["nativeTextFont"] ?? metadata(unit)["font"] as? String ?? "Roboto-Regular"
+    }
 
     static func color(_ unit: SceneUnit) -> UIColor {
-        let rgb = UInt32(unit.attributes["nativeTextColor"] ?? "", radix: 16) ?? 0x111111
+        let value = unit.attributes["nativeTextColor"] ?? metadata(unit)["color"] as? String ?? ""
+        let rgb = UInt32(value.trimmingCharacters(in: CharacterSet(charactersIn: "#")), radix: 16) ?? 0x111111
         return .original(rgb)
     }
 
@@ -32,7 +50,7 @@ enum SpriteText {
         paragraph.lineBreakMode = .byCharWrapping
         var attributes: [NSAttributedString.Key: Any] = [.paragraphStyle: paragraph, .foregroundColor: color(unit)]
         let text = value as NSString
-        let fontName = unit.attributes["nativeTextFont"] ?? "Roboto-Regular"
+        let fontName = fontName(unit)
         var height: CGFloat = 0
         for size in stride(from: Int(min(32, rect.height)), through: 5, by: -1) {
             attributes[.font] = UIFont(name: fontName, size: CGFloat(size)) ?? UIFont.systemFont(ofSize: CGFloat(size))
@@ -76,6 +94,16 @@ extension EditorController {
             self.workspace.document.frames[self.workspace.index].units[index].attributes["nativeText"] = text
             self.workspace.document.frames[self.workspace.index].units[index].attributes["nativeTextColor"] = color
             self.workspace.document.frames[self.workspace.index].units[index].attributes["nativeTextFont"] = font
+            if SpriteText.isBubble(unit) {
+                var fields = SpriteText.metadata(unit)
+                fields["text"] = text
+                fields["color"] = "#" + color
+                fields["font"] = font
+                if let bytes = try? JSONSerialization.data(withJSONObject: fields),
+                   let encoded = String(data: bytes, encoding: .utf8) {
+                    self.workspace.document.frames[self.workspace.index].units[index].attributes["meta"] = encoded
+                }
+            }
             self.workspace.notify()
         }
         editor.modalPresentationStyle = .overFullScreen
@@ -94,7 +122,7 @@ private final class SpriteTextEditor: UIViewController, UIColorPickerViewControl
         self.unit = unit
         self.apply = apply
         color = SpriteText.color(unit)
-        font = unit.attributes["nativeTextFont"] ?? "Roboto-Regular"
+        font = SpriteText.fontName(unit)
         super.init(nibName: nil, bundle: nil)
     }
     required init?(coder: NSCoder) { nil }
