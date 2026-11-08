@@ -14,7 +14,7 @@ extension Workspace {
         let period = max(1, document.interframes + 1)
         for (name, config) in assetAnimations {
             let start = config.startID.flatMap { id in document.frames.firstIndex(where: { $0.id == id }) } ?? 0
-            let end = config.endID.flatMap { id in document.frames.firstIndex(where: { $0.id == id }) } ?? (document.frames.count - 1)
+            let end = document.frames.count - 1
             guard tick >= start * period, tick <= end * period + period - 1, let index = output.units.firstIndex(where: { $0.name == name }),
                   let state = AssetAnimation.state(in: states(for: output.units[index]), tick: tick - start * period, configuration: config) else { continue }
             output.units[index].attributes["state"] = String(state)

@@ -8,6 +8,7 @@ extension EditorController {
             ("Экспорт","side_export",{[weak self] in self?.exports()}),
             ("Параметры сцены","side_edit",{[weak self] in self?.properties()}),
             ("Звук","side_audio",{[weak self] in self?.audioPicker()}),
+            ("ИИ-аниматор · эксперимент","side_varspeed",{[weak self] in self?.showAIAnimator(unitName: nil)}),
             ("Фон","side_bg",{[weak self] in self?.backgrounds()}),
             ("Вид камеры","side_camera",{[weak self] in self?.showCameraControls()}),
             ("Настройки приложения","side_tune",{[weak self] in self?.showEditorSettings()}),

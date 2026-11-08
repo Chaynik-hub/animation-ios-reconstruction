@@ -74,6 +74,9 @@ extension EditorController {
             else {var root=selected;var visited=Set<Int>();while visited.insert(root).inserted,let parent=FrameManipulation.attachment(self.workspace.frame.units[root])?.0,let index=self.workspace.frame.units.firstIndex(where:{$0.name==parent}) {root=index};self.workspace.latchedUnitName=self.workspace.frame.units[root].name;self.workspace.selected=root}
             self.update()
         })
+        add("prop_ai_animator", "ИИ-аним.", "side_varspeed") { [weak self] in
+            self?.showAIAnimator(unitName: unit.name)
+        }
         add("prop_tween", "Tween", "props_tween", enabled: workspace.document.frames.count >= 3) { [weak self] in
             self?.showUnitTween()
         }
