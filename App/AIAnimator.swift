@@ -6,7 +6,7 @@ import FoundationModels
 extension EditorController {
     func showAIAnimator(unitName: String?) {
         #if canImport(FoundationModels)
-        if #available(iOS 26.0, *), SystemLanguageModel.default.isAvailable {
+        if #available(iOS 26.0, *) {
             let targets = workspace.frame.units.filter { unitName == nil || $0.name == unitName }
             guard !targets.isEmpty else { message("ИИ-аниматор", "Сначала добавьте предмет."); return }
             guard targets.count <= 8, targets.reduce(0, { $0 + $1.joints.count }) <= 100 else {
@@ -26,7 +26,7 @@ extension EditorController {
             return
         }
         #endif
-        message("ИИ-аниматор недоступен", "Нужен iPhone с поддержкой Apple Intelligence, iOS 26 или новее и загруженной системной моделью.")
+        message("ИИ-аниматор недоступен", "Для этого режима нужна iOS 26 или новее.")
     }
 }
 
@@ -75,26 +75,27 @@ private extension EditorController {
                 let frames: [SceneFrame]
                 var usedFallback = false
                 do {
-                let rigs = targets.enumerated().map { number, unit in
-                    let bones = unit.joints.map { joint in
-                        "\(joint.id):p\(joint.parent ?? -1)@\(joint.x.rounded()),\(joint.y.rounded())"
-                    }.joined(separator: " ")
-                    let name = UnitIdentity.baseName(unit.name)
-                    let title = self.workspace.artworkByName[name]?.displayTitle ?? name
-                    return "\(number) \(title): \(bones)"
-                }.joined(separator: "\n")
-                let session = LanguageModelSession(instructions: """
-                    You direct 2D skeletal animation. Return 4 to 6 chronological poses within 4 seconds.
-                    Use only the listed subjects and bone IDs, never rotate a root joint.
-                    Offsets and angles are absolute relative to the starting rig, not accumulated.
-                    Specify each moving subject at each beat with only its 1 to 3 most relevant bends.
-                    Use anticipation, weight transfer,
-                    asymmetric timing, follow-through and a settled ending. Use small joint angles for
-                    balance and larger ones only where needed. Match the requested action and rig.
-                    Coordinates grow down and right. Leave unrelated subjects unchanged.
-                    """)
-                let result = try await session.respond(to: "Action: \(prompt)\nScene: \(original.width)×\(original.height)\nRigs: \(rigs)",
-                                                       generating: MotionPlan.self)
+                    guard SystemLanguageModel.default.isAvailable else { throw SceneReadError.invalidScene }
+                    let rigs = targets.enumerated().map { number, unit in
+                        let bones = unit.joints.map { joint in
+                            "\(joint.id):p\(joint.parent ?? -1)@\(joint.x.rounded()),\(joint.y.rounded())"
+                        }.joined(separator: " ")
+                        let name = UnitIdentity.baseName(unit.name)
+                        let title = self.workspace.artworkByName[name]?.displayTitle ?? name
+                        return "\(number) \(title): \(bones)"
+                    }.joined(separator: "\n")
+                    let session = LanguageModelSession(instructions: """
+                        You direct 2D skeletal animation. Return 4 to 6 chronological poses within 4 seconds.
+                        Use only the listed subjects and bone IDs, never rotate a root joint.
+                        Offsets and angles are absolute relative to the starting rig, not accumulated.
+                        Specify each moving subject at each beat with only its 1 to 3 most relevant bends.
+                        Use anticipation, weight transfer,
+                        asymmetric timing, follow-through and a settled ending. Use small joint angles for
+                        balance and larger ones only where needed. Match the requested action and rig.
+                        Coordinates grow down and right. Leave unrelated subjects unchanged.
+                        """)
+                    let result = try await session.respond(to: "Action: \(prompt)\nScene: \(original.width)×\(original.height)\nRigs: \(rigs)",
+                                                           generating: MotionPlan.self)
                     try Task.checkCancellation()
                     frames = try self.motionFrames(result.content, frame: frame, targets: targets, document: original)
                 } catch {

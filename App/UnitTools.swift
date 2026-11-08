@@ -25,6 +25,9 @@ extension EditorController {
             icons[id] = icon; commands.append(.init(id: id, title: text, height: id == "prop_set_states" ? 84 : 70, enabled: enabled, action: action))
         }
         if workspace.states(for: unit).count > 1 { add("prop_set_states", "Кадры\nпредмета", "props_state", action: { [weak self] in self?.showAssetStates() }) }
+        if SpriteText.isEditable(unit) {
+            add("prop_set_text", "Текст", "props_text") { [weak self] in self?.editSpriteText() }
+        }
         add("prop_delete", "Удалить", "props_delete", action: { [weak self] in self?.workspace.removeObject() })
         add("prop_set_opacity", "Прозр.", "props_opacity", action: { [weak self] in self?.showOpacity() })
         add("prop_flip", "Отразить", "props_flip", action: { [weak self] in self?.workspace.flip() })

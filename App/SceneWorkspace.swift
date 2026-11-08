@@ -21,7 +21,10 @@ struct ArtworkDefinition: Codable {
             guard let id = Int(p["id"] ?? ""), let x = Double(p["x"] ?? ""), let y = Double(p["y"] ?? "") else { return nil }
             return Joint(id: id,x: location.x+(x-baseX)*scale,y: location.y+(y-baseY)*scale,parent:p["par"].flatMap(Int.init),attributes:p)
         }
-        return SceneUnit(name:name,joints:joints,attributes:["scale":String(scale),"alpha":"1","flipped":"false","state":"0"])
+        var attributes = ["scale": String(scale), "alpha": "1", "flipped": "false", "state": "0"]
+        if name == SpriteText.plainName { attributes["type"] = "text"; attributes["nativeText"] = "Текст" }
+        if name == "common:bubble" { attributes["type"] = "bubble" }
+        return SceneUnit(name: name, joints: joints, attributes: attributes)
     }
 }
 
@@ -33,7 +36,7 @@ final class Workspace {
     var backgroundLibraryCache: [BackgroundDefinition]?
     var history: [SceneDocument] = []
     var future: [SceneDocument] = []
-    let bundledCatalog = (try? JSONDecoder().decode([ArtworkDefinition].self,from:Data(contentsOf:Bundle.main.resourceURL!.appendingPathComponent("Content/catalog.json")))) ?? []
+    let bundledCatalog = ((try? JSONDecoder().decode([ArtworkDefinition].self,from:Data(contentsOf:Bundle.main.resourceURL!.appendingPathComponent("Content/catalog.json")))) ?? []) + [SpriteText.definition]
     var catalog:[ArtworkDefinition]=[] {
         didSet { artworkByName = Dictionary(catalog.map { ($0.name, $0) }, uniquingKeysWith: { first, _ in first }) }
     }
@@ -364,6 +367,10 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             let unit=frame.units[i]
             let baseName=unit.name.components(separatedBy:"#")[0]
             let joints=Dictionary(unit.joints.map{($0.id,$0)},uniquingKeysWith:{$1})
+            if SpriteText.isEditable(unit), !SpriteText.isBubble(unit) {
+                SpriteText.drawPlain(unit, in: c, opacity: opacity)
+                continue
+            }
             let definition=workspace.artworkByName[baseName]
             if let definition {
                 let scale=Double(unit.attributes["scale"] ?? "1") ?? 1
@@ -412,7 +419,21 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
                         }
                     }
                     c.scaleBy(x:scale*longitudinal,y:flipped && part["flipped"] != "true" ? -scale:scale)
-                    bitmap.draw(in:CGRect(x:Double(part["x_offset"] ?? "0") ?? 0,y:Double(part["y_offset"] ?? "0") ?? 0,width:bitmap.size.width,height:bitmap.size.height),blendMode:.normal,alpha:CGFloat(Double(unit.attributes["alpha"] ?? "1") ?? 1)*opacity);c.restoreGState()
+                    let rect = CGRect(x: xOffset, y: yOffset, width: bitmap.size.width, height: bitmap.size.height)
+                    let alpha = CGFloat(Double(unit.attributes["alpha"] ?? "1") ?? 1) * opacity
+                    bitmap.draw(in: rect, blendMode: .normal, alpha: alpha)
+                    if SpriteText.isBubble(unit) {
+                        c.saveGState()
+                        if flipped && part["flipped"] != "true" {
+                            c.translateBy(x: 0, y: rect.midY * 2)
+                            c.scaleBy(x: 1, y: -1)
+                        }
+                        SpriteText.draw(unit, in: rect.insetBy(dx: rect.width * 0.12, dy: 0)
+                            .divided(atDistance: rect.height * 0.72, from: .minYEdge).slice.insetBy(dx: 0, dy: 6),
+                                        context: c, alpha: alpha)
+                        c.restoreGState()
+                    }
+                    c.restoreGState()
                 }
             }
         }
