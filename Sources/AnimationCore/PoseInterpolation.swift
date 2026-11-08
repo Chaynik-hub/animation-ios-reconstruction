@@ -5,8 +5,9 @@ public enum PoseError: Error { case incompatibleTopology, cyclicSkeleton, invali
 /// Port of NlerpInterpolator.inbetweenStatesAt for unattached skeletal poses.
 /// FrameInterpolation reconciles attachments and interpolates the camera.
 public enum PoseInterpolation {
-    public static func between(_ first: SceneUnit, _ second: SceneUnit, progress: Double) throws -> SceneUnit {
-        let t = min(1, max(0, progress))
+    public static func between(_ first: SceneUnit, _ second: SceneUnit, progress: Double, extrapolate: Bool = false) throws -> SceneUnit {
+        let t = extrapolate ? progress : min(1, max(0, progress))
+        let shape = min(1, max(0, t))
         guard first.joints.count == second.joints.count, Set(first.joints.map(\.id)).count == first.joints.count,
               Set(second.joints.map(\.id)).count == second.joints.count else { throw PoseError.incompatibleTopology }
         let a = Dictionary(uniqueKeysWithValues: first.joints.map { ($0.id, $0) })
@@ -15,7 +16,7 @@ public enum PoseInterpolation {
         let sa = Double(first.attributes["scale"] ?? "1") ?? 1
         let sb = Double(second.attributes["scale"] ?? "1") ?? 1
         guard sa.isFinite, sb.isFinite, sa > 0.0001, sb > 0.0001 else { throw PoseError.invalidScale }
-        let scale = sa + (sb - sa) * t
+        let scale = sa + (sb - sa) * shape
         var computed: [Int:Joint] = [:]
         var visiting = Set<Int>()
         func joint(_ id: Int) throws -> Joint {
@@ -24,7 +25,7 @@ public enum PoseInterpolation {
             guard let x = a[id], let y = b[id] else { throw PoseError.incompatibleTopology }
             var value = x
             let from = FrameManipulation.boneLengthFactor(x), to = FrameManipulation.boneLengthFactor(y)
-            let lengthFactor = from + (to - from) * t
+            let lengthFactor = from + (to - from) * shape
             value.attributes["nativeBoneLengthFactor"] = lengthFactor == 1 ? nil : String(lengthFactor)
             if y.attributes["nativeAxisStretch"] == "true" { value.attributes["nativeAxisStretch"] = "true" }
             if let parentID = x.parent {
@@ -32,7 +33,7 @@ public enum PoseInterpolation {
                 let parent = try joint(parentID)
                 let ax = x.x-ap.x, ay = x.y-ap.y, bx = y.x-bp.x, by = y.y-bp.y
                 let la = hypot(ax, ay), lb = hypot(bx, by)
-                let length = (la/sa + (lb/sb-la/sa)*t)*scale
+                let length = (la/sa + (lb/sb-la/sa)*shape)*scale
                 let angle: Double
                 if la <= 0.0001 { angle = atan2(by,bx) }
                 else if lb <= 0.0001 { angle = atan2(ay,ax) }

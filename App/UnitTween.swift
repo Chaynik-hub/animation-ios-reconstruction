@@ -45,7 +45,6 @@ final class UnitTweenController: UIViewController {
     private let first = UISlider(), last = UISlider()
     private let firstLabel = UILabel(), lastLabel = UILabel()
     private let apply = UIButton(type: .system)
-    private let easing = UISegmentedControl(items: ["Равномерно", "Разгон", "Замедление", "Плавно"])
 
     init(workspace: Workspace, unitName: String) {
         self.workspace = workspace
@@ -69,18 +68,17 @@ final class UnitTweenController: UIViewController {
         close.setTitle("Назад", for: .normal)
         close.addAction(UIAction { [weak self] _ in self?.dismiss(animated: true) }, for: .touchUpInside)
         apply.setTitle("Применить", for: .normal)
-        apply.addAction(UIAction { [weak self] _ in self?.applyTween() }, for: .touchUpInside)
+        apply.addAction(UIAction { [weak self] _ in self?.chooseEasing() }, for: .touchUpInside)
         let title = UILabel()
         title.text = "Tween"
         title.textColor = .white
         firstLabel.textColor = .white
         lastLabel.textColor = .white
-        let controls = UIStackView(arrangedSubviews: [title, firstLabel, first, lastLabel, last, easing, apply, close])
+        let controls = UIStackView(arrangedSubviews: [title, firstLabel, first, lastLabel, last, apply, close])
         controls.axis = .vertical
         controls.distribution = .fillEqually
         controls.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(controls)
-        easing.selectedSegmentIndex = 0
         for slider in [first, last] {
             slider.minimumValue = 0
             slider.maximumValue = Float(workspace.document.frames.count - 1)
@@ -122,21 +120,22 @@ final class UnitTweenController: UIViewController {
         preview.setNeedsDisplay()
     }
 
-    private func applyTween() {
+    private func chooseEasing() {
+        let picker = TweenCurvePicker { [weak self] curve, strength, frequency in
+            self?.applyTween(curve: curve, strength: strength, frequency: frequency)
+        }
+        picker.modalPresentationStyle = .overFullScreen
+        present(picker, animated: false)
+    }
+
+    private func applyTween(curve: TweenCurve, strength: Double, frequency: Double) {
         let a = min(Int(first.value), Int(last.value)), b = max(Int(first.value), Int(last.value))
         guard b - a >= 2, let start = unit(in: a), let end = unit(in: b) else { return }
         var document = workspace.document
         do {
             for index in (a + 1)..<b {
                 let fraction = Double(index - a) / Double(b - a)
-                let t: Double
-                switch easing.selectedSegmentIndex {
-                case 1: t = fraction * fraction
-                case 2: t = 1 - (1 - fraction) * (1 - fraction)
-                case 3: t = fraction * fraction * (3 - 2 * fraction)
-                default: t = fraction
-                }
-                let pose = try PoseInterpolation.between(start, end, progress: t)
+                let pose = try curve.pose(from: start, to: end, at: fraction, strength: strength, frequency: frequency)
                 if let target = document.frames[index].units.firstIndex(where: { $0.name == unitName }) {
                     guard FrameManipulation.pastePose(pose, into: &document.frames[index], unitIndex: target)
                     else { throw PoseError.incompatibleTopology }

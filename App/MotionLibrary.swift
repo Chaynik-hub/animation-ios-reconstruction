@@ -179,7 +179,9 @@ private final class MotionLibraryController: OriginalListController {
     private func insertTemplate(_ template: MotionTemplate, into name: String) {
         guard let initial = template.poses.first, template.poses.count > 1,
               let target = workspace.frame.units.first(where: { $0.name == name }),
-              let retarget = MotionRetarget(source: initial, target: target) else {
+              let retarget = MotionRetarget(source: initial, target: target,
+                  sourceReference: workspace.artworkByName[UnitIdentity.baseName(initial.name)]?.unit(at: .zero),
+                  targetReference: workspace.artworkByName[UnitIdentity.baseName(target.name)]?.unit(at: .zero)) else {
             message("Не удалось перенести движение", "У предмета должна быть основная точка.")
             return
         }
