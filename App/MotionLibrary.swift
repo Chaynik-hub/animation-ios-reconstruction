@@ -80,17 +80,26 @@ private final class MotionLibraryController: OriginalListController {
     }
 
     private func chooseDirection(title: String, name: String, action: GroundedMotion.Action, duration: Double) {
-        guard let unit = workspace.frame.units.first(where: { $0.name == name }),
-              FrameManipulation.attachment(unit) == nil, let rig = GroundedMotion(unit: unit) else {
-            message("Движение недоступно", "Выберите персонажа с двумя ногами, который не прикреплён к другому предмету.")
+        guard let unit = workspace.frame.units.first(where: { $0.name == name }) else { return }
+        let nativeRig = GroundedMotion(unit: unit)
+        let reference = workspace.artworkByName["stickman:stickman"]?.unit(at: .zero)
+        guard let rig = nativeRig ?? reference.flatMap({ GroundedMotion(unit: $0) }) else {
+            message("Движение недоступно", "В каталоге отсутствует базовый скелет.")
             return
         }
+        let retarget = nativeRig == nil ? reference.flatMap { MotionRetarget(source: $0, target: unit) } : nil
         let alert = UIAlertController(title: title, message: "Кадры будут вставлены после текущего.", preferredStyle: .alert)
         for (label, direction) in [("Вправо", 1.0), ("Влево", -1.0)] {
             alert.addAction(UIAlertAction(title: label, style: .default) { [weak self] _ in
                 guard let self else { return }
                 let steps = max(1, Int((duration * 60 / Double(max(1, self.workspace.document.interframes + 1))).rounded()))
-                self.insert((1...steps).map { rig.pose(action, progress: Double($0) / Double(steps), direction: direction) }, into: name)
+                do {
+                    let poses = try (1...steps).map { tick in
+                        let pose = rig.pose(action, progress: Double(tick) / Double(steps), direction: direction)
+                        return try retarget?.pose(pose) ?? pose
+                    }
+                    self.insert(poses, into: name)
+                } catch { self.message("Не удалось перенести движение", "Проверьте структуру скелета предмета.") }
             })
         }
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
@@ -130,15 +139,10 @@ private final class MotionLibraryController: OriginalListController {
     private func insertTemplate(_ template: MotionTemplate, into name: String) {
         guard let initial = template.poses.first, template.poses.count > 1,
               let target = workspace.frame.units.first(where: { $0.name == name }),
-              UnitIdentity.baseName(initial.name) == UnitIdentity.baseName(target.name),
-              let sourceRoot = initial.joints.first(where: { $0.parent == nil }),
-              let targetRoot = target.joints.first(where: { $0.id == sourceRoot.id }) else {
-            message("Несовместимый предмет", "Выберите такой же спрайт, с которого было сохранено движение.")
+              let retarget = MotionRetarget(source: initial, target: target) else {
+            message("Не удалось перенести движение", "У предмета должна быть основная точка.")
             return
         }
-        let sourceScale = Double(initial.attributes["scale"] ?? "1") ?? 1
-        let targetScale = Double(target.attributes["scale"] ?? "1") ?? 1
-        let scale = sourceScale > 0 ? targetScale / sourceScale : 1
         let step = Double(max(1, workspace.document.interframes + 1)) / Double(max(1, template.ticksPerFrame))
         let last = template.poses.count - 1
         let count = max(1, Int(ceil(Double(last) / step)))
@@ -147,15 +151,9 @@ private final class MotionLibraryController: OriginalListController {
             let poses = try (0...count).map { index -> SceneUnit in
                 let position = min(Double(last), Double(index) * step)
                 let lower = Int(position)
-                var pose = try PoseInterpolation.between(template.poses[lower], template.poses[min(last, lower + 1)],
+                let pose = try PoseInterpolation.between(template.poses[lower], template.poses[min(last, lower + 1)],
                                                         progress: position - Double(lower))
-                pose.name = name
-                for joint in pose.joints.indices {
-                    pose.joints[joint].x = targetRoot.x + (pose.joints[joint].x - sourceRoot.x) * scale
-                    pose.joints[joint].y = targetRoot.y + (pose.joints[joint].y - sourceRoot.y) * scale
-                }
-                pose.attributes["scale"] = String((Double(pose.attributes["scale"] ?? "1") ?? 1) * scale)
-                return pose
+                return try retarget.pose(pose)
             }
             insert(poses, into: name)
         } catch { message("Несовместимый предмет", "Структура скелета менялась внутри шаблона.") }

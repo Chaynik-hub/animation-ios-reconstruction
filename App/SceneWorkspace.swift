@@ -91,6 +91,26 @@ final class Workspace {
         let url=directory.appendingPathComponent(safe.isEmpty ? "Scene.animation.json":safe+".animation.json")
         try JSONEncoder().encode(document).write(to:url,options:.atomic);return url
     }
+    func openEditorProject(_ url: URL) throws -> String {
+        try load(url)
+        if url.pathExtension.lowercased() != "ats" {
+            let suffix = ".animation.json"
+            let filename = url.lastPathComponent
+            return filename.hasSuffix(suffix) ? String(filename.dropLast(suffix.count)) : url.deletingPathExtension().lastPathComponent
+        }
+        let base = url.deletingPathExtension().lastPathComponent
+            .replacingOccurrences(of: ":", with: "_").trimmingCharacters(in: .whitespacesAndNewlines)
+        let title = base.isEmpty ? "Импортированный проект" : base
+        var name = title
+        var version = 2
+        while FileManager.default.fileExists(atPath: directory.appendingPathComponent(name + ".animation.json").path) {
+            name = "\(title) (\(version))"
+            version += 1
+        }
+        _ = try save(name: name)
+        return name
+    }
+
     func saveATS()throws->URL {
         let output=directory.appendingPathComponent(UUID().uuidString+".ats")
         let archive:Archive

@@ -178,8 +178,7 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
         editor.loadViewIfNeeded()
         if let url {
             do {
-                try editor.workspace.load(url)
-                editor.titleOfScene = url.deletingPathExtension().deletingPathExtension().lastPathComponent
+                editor.titleOfScene = try editor.workspace.openEditorProject(url)
             } catch {
                 let alert = UIAlertController(title: "Не удалось открыть проект", message: error.localizedDescription, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default))
