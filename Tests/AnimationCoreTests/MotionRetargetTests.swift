@@ -27,4 +27,21 @@ final class MotionRetargetTests: XCTestCase {
         XCTAssertEqual(output.joints[1].y, 80, accuracy: 0.001)
         XCTAssertEqual(output.attributes, target.attributes)
     }
+    func testUnmatchedBranchKeepsItsShapeWhenParentMoves() throws {
+        let source = SceneUnit(name: "source", joints: [
+            Joint(id: 1, x: 0, y: 0, parent: nil, attributes: [:]),
+            Joint(id: 2, x: 10, y: 0, parent: 1, attributes: ["name": "arm"])
+        ], attributes: [:])
+        let target = SceneUnit(name: "target", joints: [
+            Joint(id: 8, x: 50, y: 50, parent: nil, attributes: [:]),
+            Joint(id: 9, x: 70, y: 50, parent: 8, attributes: ["name": "arm"]),
+            Joint(id: 10, x: 80, y: 50, parent: 9, attributes: ["name": "hand"])
+        ], attributes: [:])
+        var sample = source
+        sample.joints[1].x = 0
+        sample.joints[1].y = 10
+        let output = try XCTUnwrap(MotionRetarget(source: source, target: target)).pose(sample)
+        XCTAssertEqual(output.joints[2].x, 50, accuracy: 0.001)
+        XCTAssertEqual(output.joints[2].y, 80, accuracy: 0.001)
+    }
 }

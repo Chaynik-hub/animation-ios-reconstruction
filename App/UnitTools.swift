@@ -86,6 +86,9 @@ extension EditorController {
         add("prop_advanced", "Ещё", "props_numbers") { [weak self] in
             self?.showUnitKinematics()
         }
+        add("prop_pin_point", "Фикс. точки", "props_lock_others", enabled: unit.joints.contains { $0.parent != nil }) { [weak self] in
+            self?.selectPointToPin(unitName: unit.name)
+        }
         add("unit_select_list", "Объекты", "props_close", action: { [weak self] in self?.workspace.selected = nil; self?.update() })
         let panel = FrameToolsPanel(commands: commands, accent: .original(0x00bd78), caption: title, identifier: "UnitPropertiesPanel", icons: icons)
         mountContext(panel, width: 86, unitMode: true)

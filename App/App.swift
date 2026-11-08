@@ -124,7 +124,7 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     var toolButtons: [String: UIButton] = [:]
     var unitClipboard: [SceneUnit] = []
     var toolPanel:UIView?
-    func dismissTools(){if let controller=backgroundController {controller.dismiss(animated:false);backgroundController=nil};unitToolsActive=false;if let controller=catalogController {controller.willMove(toParent:nil);controller.view.removeFromSuperview();controller.removeFromParent();catalogController=nil};toolPanel?.removeFromSuperview();toolPanel=nil;shift.isHidden=false;highlightFrameTools(false);highlightCatalog(false);highlightUnitTools(false)}
+    func dismissTools(){canvas.pinPointSelection = nil;if let controller=backgroundController {controller.dismiss(animated:false);backgroundController=nil};unitToolsActive=false;if let controller=catalogController {controller.willMove(toParent:nil);controller.view.removeFromSuperview();controller.removeFromParent();catalogController=nil};toolPanel?.removeFromSuperview();toolPanel=nil;shift.isHidden=false;highlightFrameTools(false);highlightCatalog(false);highlightUnitTools(false)}
     func choices(_ title:String,_ actions:[(String,()->Void)]){
         stop();dismissTools()
         let cover=UIView(frame:view.bounds);cover.autoresizingMask=[.flexibleWidth,.flexibleHeight]

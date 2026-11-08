@@ -269,7 +269,21 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             if button.tag == 2, let base = unit.joints.first(where: { $0.attributes["base"] == "true" }) { button.accessibilityValue = "\(base.x), \(base.y)" }
         }
     }
+    var pinPointSelection: ((Int) -> Void)?
+
     func selectBase(at screen: CGPoint) {
+        if let select = pinPointSelection, ratio > 0,
+           let index = workspace.selected, workspace.frame.units.indices.contains(index) {
+            let p = CGPoint(x: (screen.x - origin.x) / ratio, y: (screen.y - origin.y) / ratio)
+            let unit = workspace.frame.units[index]
+            let nearest = unit.joints.filter { $0.parent != nil && $0.attributes["base"] != "true" && $0.attributes["fixed"] != "true" }
+                .min { hypot($0.x - p.x, $0.y - p.y) < hypot($1.x - p.x, $1.y - p.y) }
+            if let nearest, hypot(nearest.x - p.x, nearest.y - p.y) <= 28 / ratio {
+                pinPointSelection = nil
+                select(nearest.id)
+            }
+            return
+        }
         if boneMode { selectBone(at: screen); return }
         let point = CGPoint(x: (screen.x - origin.x) / ratio, y: (screen.y - origin.y) / ratio)
         var distance = 22 / ratio
@@ -337,10 +351,20 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
     override func draw(_ rect:CGRect) {
         guard let c=UIGraphicsGetCurrentContext() else{return};UIColor.original(0x3d3e4c).setFill();c.fill(bounds)
         c.saveGState();c.translateBy(x:origin.x,y:origin.y);c.scaleBy(x:ratio,y:ratio)
-        backgroundColorValue.setFill();c.fill(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height));c.clip(to:CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))
+        let scene = CGRect(x: 0, y: 0, width: workspace.document.width, height: workspace.document.height)
         let editing = handles && displayed == nil
-        if !editing || cameraEditing { applySceneCamera(displayed ?? workspace.frame, in: c) }
-        if !editing || AnimationSettings.bool("showbgPref", fallback:true) { paintBackground(displayed ?? workspace.frame,in:c) }
+        backgroundColorValue.setFill()
+        c.fill(scene)
+        if !editing || cameraEditing {
+            c.clip(to: scene)
+            applySceneCamera(displayed ?? workspace.frame, in: c)
+        }
+        if !editing || AnimationSettings.bool("showbgPref", fallback: true) {
+            c.saveGState()
+            if editing && !cameraEditing { c.clip(to: scene) }
+            paintBackground(displayed ?? workspace.frame, in: c)
+            c.restoreGState()
+        }
         if editing && !cameraEditing && AnimationSettings.bool("showGridPref") {
             c.saveGState();c.setStrokeColor(UIColor.gray.withAlphaComponent(0.3).cgColor);c.setLineWidth(1/ratio)
             for x in stride(from:0.0,through:workspace.document.width,by:50) {c.move(to:CGPoint(x:x,y:0));c.addLine(to:CGPoint(x:x,y:workspace.document.height))}
@@ -359,7 +383,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
                     paint(silhouette, in: c, showHandles: false)
                     c.setBlendMode(.sourceIn)
                     AnimationSettings.onionColor.setFill()
-                    c.fill(CGRect(x: 0, y: 0, width: workspace.document.width, height: workspace.document.height))
+                    c.fill(CGRect(x: -origin.x / ratio, y: -origin.y / ratio, width: bounds.width / ratio, height: bounds.height / ratio))
                     c.endTransparencyLayer()
                     c.restoreGState()
                 } else {paint(previous,in:c,showHandles:false,opacity:0.18/CGFloat(distance))}

@@ -8,6 +8,7 @@ public struct MotionRetarget {
     private let targetRoot: Joint
     private let mapping: [Int: Int]
     private let scale: Double
+    private let compatible: Bool
 
     public init?(source: SceneUnit, target: SceneUnit) {
         guard let a = source.joints.first(where: { $0.parent == nil }),
@@ -20,32 +21,49 @@ public struct MotionRetarget {
         let targetHeight = Self.extent(target, root: b)
         scale = targetHeight / sourceHeight
         let same = UnitIdentity.baseName(source.name) == UnitIdentity.baseName(target.name)
-        var result: [Int: Int] = [:]
-        for joint in target.joints where joint.parent != nil {
-            let candidates = source.joints.filter { $0.parent != nil }
-            if same, candidates.contains(where: { $0.id == joint.id }) {
-                result[joint.id] = joint.id
-            } else if let name = joint.attributes["name"], !name.isEmpty,
-                      let match = candidates.first(where: { $0.attributes["name"] == name }) {
-                result[joint.id] = match.id
-            } else {
-                let x = (joint.x - b.x) / targetHeight, y = (joint.y - b.y) / targetHeight
-                let match = candidates.min {
-                    hypot(($0.x - a.x) / sourceHeight - x, ($0.y - a.y) / sourceHeight - y) <
-                    hypot(($1.x - a.x) / sourceHeight - x, ($1.y - a.y) / sourceHeight - y)
+        var result: [Int: Int] = [b.id: a.id]
+        let sourcePoints = Dictionary(source.joints.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        let targetPoints = Dictionary(target.joints.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        var pending = target.joints.filter { $0.parent != nil }
+        var visited = Set([b.id])
+        while !pending.isEmpty {
+            let ready = pending.filter { $0.parent.map(visited.contains) == true }
+            if ready.isEmpty { break }
+            for joint in ready {
+                visited.insert(joint.id)
+                guard let parent = joint.parent, let sourceParent = result[parent] else { continue }
+                let used = Set(result.values)
+                let candidates = source.joints.filter { $0.parent == sourceParent && !used.contains($0.id) }
+                if same, candidates.contains(where: { $0.id == joint.id }) {
+                    result[joint.id] = joint.id
+                } else if let name = joint.attributes["name"], !name.isEmpty,
+                          let match = candidates.first(where: { $0.attributes["name"] == name }) {
+                    result[joint.id] = match.id
+                } else if candidates.count == 1,
+                          target.joints.filter({ $0.parent == parent }).count == 1,
+                          let match = candidates.first,
+                          let from = sourcePoints[sourceParent], let to = targetPoints[parent] {
+                    // For unnamed links, reject opposite branches instead of
+                    // pulling a limb across the body to fit the source rig.
+                    let sx = match.x - from.x, sy = match.y - from.y
+                    let tx = joint.x - to.x, ty = joint.y - to.y
+                    if sx * tx + sy * ty > 0 { result[joint.id] = match.id }
                 }
-                if let match { result[joint.id] = match.id }
             }
+            pending.removeAll { visited.contains($0.id) }
         }
+        compatible = result.count == target.joints.count && result.count == source.joints.count
         mapping = result
     }
 
     public func pose(_ sample: SceneUnit) throws -> SceneUnit {
+        let original = Dictionary(source.joints.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         let moved = Dictionary(sample.joints.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         let targetPoints = Dictionary(target.joints.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         guard let root = moved[sourceRoot.id] else { throw PoseError.incompatibleTopology }
         let dx = (root.x - sourceRoot.x) * scale, dy = (root.y - sourceRoot.y) * scale
         var cache: [Int: Joint] = [:], visiting = Set<Int>()
+        var rotations: [Int: Double] = [:]
         func resolve(_ joint: Joint) throws -> Joint {
             if let point = cache[joint.id] { return point }
             guard visiting.insert(joint.id).inserted else { throw PoseError.cyclicSkeleton }
@@ -54,16 +72,20 @@ public struct MotionRetarget {
                 let anchor = try resolve(parent)
                 let x = joint.x - parent.x, y = joint.y - parent.y
                 let length = hypot(x, y)
-                var angle = atan2(y, x)
+                let restAngle = atan2(y, x)
+                var angle = restAngle + (rotations[parent.id] ?? 0)
                 if let id = mapping[joint.id], let after = moved[id],
                    let afterParent = after.parent.flatMap({ moved[$0] }) {
-                    angle = atan2(after.y - afterParent.y, after.x - afterParent.x)
-                    point.attributes["nativeAxisStretch"] = nil
-                    point.attributes["nativeBoneLengthFactor"] = nil
-                    if let factor = after.attributes["nativeBoneLengthFactor"] {
-                        point.attributes["nativeBoneLengthFactor"] = factor
+                    let recorded = atan2(after.y - afterParent.y, after.x - afterParent.x)
+                    if compatible {
+                        angle = recorded
+                        point.attributes["nativeAxisStretch"] = nil
+                        point.attributes["nativeBoneLengthFactor"] = after.attributes["nativeBoneLengthFactor"]
+                    } else if let before = original[id], let prior = before.parent.flatMap({ original[$0] }) {
+                        angle = restAngle + recorded - atan2(before.y - prior.y, before.x - prior.x)
                     }
                 }
+                rotations[joint.id] = angle - restAngle
                 point.x = anchor.x + length * cos(angle)
                 point.y = anchor.y + length * sin(angle)
             } else {
