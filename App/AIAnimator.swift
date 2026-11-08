@@ -64,7 +64,11 @@ private extension EditorController {
                 let frames: [SceneFrame]
                 var fallbackReason: String?
                 do {
-                    frames = try await self.generateModelFrames(prompt: prompt, targets: targets, frame: frame, document: original)
+                    if let grounded = self.groundedFrames(prompt: prompt, targets: targets, frame: frame, document: original) {
+                        frames = grounded
+                    } else {
+                        frames = try await self.generateModelFrames(prompt: prompt, targets: targets, frame: frame, document: original)
+                    }
                 } catch {
                     try Task.checkCancellation()
                     fallbackReason = error.localizedDescription
@@ -92,6 +96,36 @@ private extension EditorController {
         }
         progress.addAction(UIAlertAction(title: "Отмена", style: .cancel) { _ in task.cancel() })
         present(progress, animated: true)
+    }
+
+    func groundedFrames(prompt: String, targets: [SceneUnit], frame: SceneFrame, document: SceneDocument) -> [SceneFrame]? {
+        let text = prompt.lowercased()
+        func contains(_ words: [String]) -> Bool { words.contains { text.contains($0) } }
+        let action: GroundedMotion.Action
+        let duration: Double
+        if contains(["прыг", "прыж", "jump", "hop"]) { action = .jump; duration = 1.45 }
+        else if contains(["бег", "беж", "беги", "run", "sprint"]) { action = .run; duration = 1.35 }
+        else if contains(["идти", "идёт", "иди", "шаг", "ходьб", "walk", "step"]) { action = .walk; duration = 2.1 }
+        else if contains(["прися", "пригн", "присед", "crouch", "squat"]) { action = .crouch; duration = 1.25 }
+        else { return nil }
+        let rigs = targets.compactMap { unit -> (String, GroundedMotion)? in
+            guard FrameManipulation.attachment(unit) == nil, let rig = GroundedMotion(unit: unit) else { return nil }
+            return (unit.name, rig)
+        }
+        let highest = document.frames.map(\.id).max() ?? 0
+        let count = max(1, Int((duration * 60 / Double(max(1, document.interframes + 1))).rounded()))
+        guard !rigs.isEmpty, highest <= Int.max - count else { return nil }
+        let direction = contains(["влев", "налев", "left"]) ? -1.0 : 1.0
+        return (1...count).map { tick in
+            var output = frame
+            output.id = highest + tick
+            for (name, rig) in rigs {
+                guard let index = output.units.firstIndex(where: { $0.name == name }) else { continue }
+                _ = FrameManipulation.pastePose(rig.pose(action, progress: Double(tick) / Double(count), direction: direction),
+                                                into: &output, unitIndex: index)
+            }
+            return output
+        }
     }
 
     func generateModelFrames(prompt: String, targets: [SceneUnit], frame: SceneFrame, document: SceneDocument) async throws -> [SceneFrame] {
