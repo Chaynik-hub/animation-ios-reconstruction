@@ -130,18 +130,51 @@ final class UnitTweenController: UIViewController {
 
     private func applyTween(curve: TweenCurve, strength: Double, frequency: Double) {
         let a = min(Int(first.value), Int(last.value)), b = max(Int(first.value), Int(last.value))
-        guard b - a >= 2, let start = unit(in: a), let end = unit(in: b) else { return }
+        guard b - a >= 2, unit(in: a) != nil, unit(in: b) != nil else { return }
         var document = workspace.document
+        let firstFrame = document.frames[a], lastFrame = document.frames[b]
+        func assembly(_ frame: SceneFrame) -> [SceneUnit] {
+            guard let root = frame.units.first(where: { $0.name == unitName }) else { return [] }
+            var result = [root], visited = Set([root.name]), cursor = 0
+            while cursor < result.count {
+                let parent = result[cursor].name
+                cursor += 1
+                for unit in frame.units where FrameManipulation.attachment(unit)?.0 == parent {
+                    if visited.insert(unit.name).inserted { result.append(unit) }
+                }
+            }
+            return result
+        }
         do {
+            let startUnits = assembly(firstFrame), endUnits = assembly(lastFrame)
+            guard Set(startUnits.map(\.name)) == Set(endUnits.map(\.name)) else { throw PoseError.incompatibleTopology }
+            for item in startUnits {
+                let firstLink = FrameManipulation.attachment(item)
+                let lastLink = endUnits.first(where: { $0.name == item.name }).flatMap(FrameManipulation.attachment)
+                guard firstLink?.0 == lastLink?.0, firstLink?.1 == lastLink?.1 else { throw PoseError.incompatibleTopology }
+            }
             for index in (a + 1)..<b {
                 let fraction = Double(index - a) / Double(b - a)
-                let pose = try curve.pose(from: start, to: end, at: fraction, strength: strength, frequency: frequency)
-                if let target = document.frames[index].units.firstIndex(where: { $0.name == unitName }) {
-                    guard FrameManipulation.pastePose(pose, into: &document.frames[index], unitIndex: target)
-                    else { throw PoseError.incompatibleTopology }
-                    document.frames[index].units[target].attributes["alpha"] = pose.attributes["alpha"]
-                } else {
-                    document.frames[index].units.append(pose)
+                let existing = assembly(document.frames[index])
+                guard Set(existing.map(\.name)).isSubset(of: Set(startUnits.map(\.name))) else {
+                    throw PoseError.incompatibleTopology
+                }
+                for first in startUnits {
+                    guard let last = endUnits.first(where: { $0.name == first.name }) else { throw PoseError.incompatibleTopology }
+                    let pose = try curve.pose(from: first, to: last, at: fraction, strength: strength, frequency: frequency)
+                    if let target = document.frames[index].units.firstIndex(where: { $0.name == first.name }) {
+                        let expected = FrameManipulation.attachment(first)
+                        let actual = FrameManipulation.attachment(document.frames[index].units[target])
+                        guard expected?.0 == actual?.0, expected?.1 == actual?.1,
+                              FrameManipulation.pastePose(pose, into: &document.frames[index], unitIndex: target)
+                        else { throw PoseError.incompatibleTopology }
+                        document.frames[index].units[target].attributes["alpha"] = pose.attributes["alpha"]
+                    } else {
+                        document.frames[index].units.append(pose)
+                        let target = document.frames[index].units.count - 1
+                        guard FrameManipulation.pastePose(pose, into: &document.frames[index], unitIndex: target)
+                        else { throw PoseError.incompatibleTopology }
+                    }
                 }
             }
         } catch {
