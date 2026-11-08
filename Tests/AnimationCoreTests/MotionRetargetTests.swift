@@ -44,4 +44,21 @@ final class MotionRetargetTests: XCTestCase {
         XCTAssertEqual(output.joints[2].x, 50, accuracy: 0.001)
         XCTAssertEqual(output.joints[2].y, 80, accuracy: 0.001)
     }
+    func testUnnamedBranchesStillAnimateOnADifferentRig() throws {
+        let source = SceneUnit(name: "first", joints: [
+            Joint(id: 0, x: 0, y: 0, parent: nil, attributes: [:]),
+            Joint(id: 1, x: -10, y: 5, parent: 0, attributes: [:]),
+            Joint(id: 2, x: 10, y: 5, parent: 0, attributes: [:])
+        ], attributes: [:])
+        var target = source
+        target.name = "other"
+        target.joints[1].x = -20
+        target.joints[2].x = 20
+        var sample = source
+        sample.joints[2].y = -5
+        let output = try XCTUnwrap(MotionRetarget(source: source, target: target, sourceReference: source, targetReference: target)).pose(sample)
+        XCTAssertLessThan(output.joints[2].y, 0)
+        XCTAssertEqual(output.joints[0], target.joints[0])
+        XCTAssertEqual(hypot(output.joints[2].x, output.joints[2].y), hypot(20, 5), accuracy: 0.001)
+    }
 }

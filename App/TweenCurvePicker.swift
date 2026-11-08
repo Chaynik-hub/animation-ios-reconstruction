@@ -37,8 +37,10 @@ final class TweenCurvePicker: UIViewController {
                 let curve = all[index]
                 let cell = UIButton(type: .system)
                 cell.addAction(UIAction { [weak self] _ in
-                    self?.selected = curve
-                    self?.refresh()
+                    guard let self else { return }
+                    if curve.isCartwheel != self.selected.isCartwheel { self.frequency.value = curve.isCartwheel ? 1 : 6 }
+                    self.selected = curve
+                    self.refresh()
                 }, for: .touchUpInside)
                 cells.append((curve, cell))
                 row.addArrangedSubview(cell)
@@ -115,7 +117,9 @@ final class TweenCurvePicker: UIViewController {
     }
 
     private func refresh() {
-        frequencyTrack.alpha = selected.isShake ? 1 : 0
+        frequencyTrack.alpha = selected.isShake || selected.isCartwheel ? 1 : 0
+        frequency.maximumValue = selected.isCartwheel ? 12 : 11
+        frequency.accessibilityLabel = selected.isCartwheel ? "Количество оборотов" : "Частота"
         strength.isEnabled = selected != .linear
         for (curve, cell) in cells {
             var config = UIButton.Configuration.plain()
@@ -148,9 +152,9 @@ final class TweenCurvePicker: UIViewController {
                 let t = Double(index) / 64
                 let power = Double(strength.value) / 11
                 var y = curve.progress(t, strength: power)
-                if curve.isShake { y = 0.5 + sin(t * Double(frequency.value) * 2 * .pi) * sin(.pi * t) * power * 0.35 }
+                if curve.isShake { y = 0.5 + sin(t * Double(frequency.value) * 2 * .pi) * power * 0.35 }
                 if curve == .cartwheelCW || curve == .cartwheelCCW {
-                    y = 0.5 + sin(t * 2 * .pi) * (curve == .cartwheelCW ? -0.35 : 0.35)
+                    y = 0.5 + sin((t + (t*t*(3-2*t)-t)*power) * Double(frequency.value) * 2 * .pi) * (curve == .cartwheelCW ? -0.35 : 0.35)
                 }
                 let point = CGPoint(x: 6 + 68 * t, y: 72 - 64 * y)
                 if index == 0 { ctx.move(to: point) } else { ctx.addLine(to: point) }

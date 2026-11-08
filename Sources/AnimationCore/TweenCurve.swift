@@ -5,6 +5,7 @@ public enum TweenCurve: String, CaseIterable {
     case back = "In-Out Back", inQuint = "In Quint", outQuint = "Out Quint"
     case shakeX = "Shake X", shakeY = "Shake Y", cartwheelCW = "Вращение вправо", cartwheelCCW = "Вращение влево"
 
+    public var isCartwheel: Bool { self == .cartwheelCW || self == .cartwheelCCW }
     public var isShake: Bool { self == .shakeX || self == .shakeY }
 
     public func progress(_ t: Double, strength: Double) -> Double {
@@ -37,19 +38,23 @@ public enum TweenCurve: String, CaseIterable {
 
     public func pose(from first: SceneUnit, to last: SceneUnit, at t: Double,
                      strength: Double, frequency: Double) throws -> SceneUnit {
+        if t <= 0 { return first }; if t >= 1 { return last }
         let eased = progress(t, strength: strength)
         var unit = try PoseInterpolation.between(first, last, progress: eased, extrapolate: true)
         if isShake {
-            let root = unit.joints.first { $0.parent == nil }
-            let size = unit.joints.map { hypot($0.x - (root?.x ?? 0), $0.y - (root?.y ?? 0)) }.max() ?? 0
-            let offset = sin(t * frequency * 2 * .pi) * sin(.pi * t) * size * strength * 0.22
+            let start = first.joints.first { $0.parent == nil }
+            let end = last.joints.first { $0.parent == nil }
+            let travel = self == .shakeX ? abs((end?.x ?? 0) - (start?.x ?? 0)) : abs((end?.y ?? 0) - (start?.y ?? 0))
+            let offset = sin(t * frequency * 2 * .pi) * max(12, travel * 0.15) * min(1, max(0, strength)) * 1.5
             for index in unit.joints.indices {
                 if self == .shakeX { unit.joints[index].x += offset }
                 else { unit.joints[index].y += offset }
             }
-        } else if self == .cartwheelCW || self == .cartwheelCCW,
+        } else if isCartwheel,
                   let root = unit.joints.first(where: { $0.parent == nil }) {
-            let angle = t * 2 * .pi * (self == .cartwheelCW ? 1 : -1)
+            let spin = t + (t * t * (3 - 2 * t) - t) * min(1, max(0, strength))
+            let turns = min(12, max(1, frequency))
+            let angle = spin * turns * 2 * .pi * (self == .cartwheelCW ? 1 : -1)
             let c = cos(angle), s = sin(angle)
             for index in unit.joints.indices {
                 let x = unit.joints[index].x - root.x, y = unit.joints[index].y - root.y
