@@ -7,8 +7,12 @@ final class TweenCurvePicker: UIViewController {
     private let strength = UISlider(), frequency = UISlider()
     private let frequencyTrack = UIView()
 
-    init(commit: @escaping (TweenCurve, Double, Double) -> Void) {
+    private let initial: (TweenCurve, Double, Double)?
+
+    init(initial: (TweenCurve, Double, Double)? = nil, commit: @escaping (TweenCurve, Double, Double) -> Void) {
         self.commit = commit
+        self.initial = initial
+        selected = initial?.0 ?? .linear
         super.init(nibName: nil, bundle: nil)
     }
     required init?(coder: NSCoder) { nil }
@@ -69,8 +73,8 @@ final class TweenCurvePicker: UIViewController {
         let sliders = UIStackView(arrangedSubviews: [UIView(), frequencyTrack])
         sliders.distribution = .fillEqually
         sliders.spacing = 4
-        setup(strength, in: sliders.arrangedSubviews[0], value: 5.5, label: "Интенсивность")
-        setup(frequency, in: frequencyTrack, value: 6, label: "Частота")
+        setup(strength, in: sliders.arrangedSubviews[0], value: Float((initial?.1 ?? 0.5) * 11), label: "Интенсивность")
+        setup(frequency, in: frequencyTrack, value: Float(initial?.2 ?? 6), label: "Частота")
         frequency.minimumValue = 1
         let sidebar = UIStackView(arrangedSubviews: [apply, sliders])
         sidebar.axis = .vertical

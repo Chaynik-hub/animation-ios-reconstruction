@@ -8,22 +8,24 @@ public struct SceneCamera: Equatable, Sendable {
 
     public init() {}
 
-    public init(frame: SceneFrame) {
+    public init(frame: SceneFrame, background: Bool = false) {
+        let prefix = background ? "nativeBackgroundMove" : "nativeCamera"
         func number(_ key: String, fallback: Double) -> Double {
             guard let value = Double(frame.attributes[key] ?? ""), value.isFinite else { return fallback }
             return value
         }
-        x = number("nativeCameraX", fallback: 0)
-        y = number("nativeCameraY", fallback: 0)
-        rotation = number("nativeCameraRotation", fallback: 0)
-        zoom = min(8, max(0.25, number("nativeCameraZoom", fallback: 1)))
+        x = number(prefix + "X", fallback: 0)
+        y = number(prefix + "Y", fallback: 0)
+        rotation = number(prefix + "Rotation", fallback: 0)
+        zoom = min(8, max(0.2, number(prefix + "Zoom", fallback: 1)))
     }
 
-    public func write(to frame: inout SceneFrame) {
-        frame.attributes["nativeCameraX"] = x == 0 ? nil : String(x)
-        frame.attributes["nativeCameraY"] = y == 0 ? nil : String(y)
-        frame.attributes["nativeCameraRotation"] = rotation == 0 ? nil : String(rotation)
-        frame.attributes["nativeCameraZoom"] = zoom == 1 ? nil : String(zoom)
+    public func write(to frame: inout SceneFrame, background: Bool = false) {
+        let prefix = background ? "nativeBackgroundMove" : "nativeCamera"
+        frame.attributes[prefix + "X"] = x == 0 ? nil : String(x)
+        frame.attributes[prefix + "Y"] = y == 0 ? nil : String(y)
+        frame.attributes[prefix + "Rotation"] = rotation == 0 ? nil : String(rotation)
+        frame.attributes[prefix + "Zoom"] = zoom == 1 ? nil : String(zoom)
     }
 
     public func interpolated(to end: SceneCamera, progress: Double) -> SceneCamera {

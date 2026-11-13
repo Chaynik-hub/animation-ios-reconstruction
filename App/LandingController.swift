@@ -292,8 +292,33 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
         }
         func icon(_ name: String) -> UIImage? {
             if name == "telegram" {
-                return UIImage(systemName: "paperplane.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 34))?
-                    .withTintColor(.original(0x29a9eb), renderingMode: .alwaysOriginal)
+                let size = CGSize(width: 56, height: 56)
+                return UIGraphicsImageRenderer(size: size).image { renderer in
+                    let context = renderer.cgContext
+                    let bounds = CGRect(origin: .zero, size: size)
+                    context.addEllipse(in: bounds)
+                    context.clip()
+                    let colors = [UIColor.original(0x37bbf4).cgColor, UIColor.original(0x168acd).cgColor]
+                    if let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors as CFArray, locations: nil) {
+                        context.drawLinearGradient(gradient, start: .zero, end: CGPoint(x: 0, y: size.height), options: [])
+                    }
+                    let plane = UIBezierPath()
+                    plane.move(to: CGPoint(x: 11, y: 27))
+                    plane.addLine(to: CGPoint(x: 43, y: 15))
+                    plane.addQuadCurve(to: CGPoint(x: 45, y: 17), controlPoint: CGPoint(x: 46, y: 14))
+                    plane.addLine(to: CGPoint(x: 39, y: 42))
+                    plane.addQuadCurve(to: CGPoint(x: 36, y: 43), controlPoint: CGPoint(x: 38, y: 45))
+                    plane.addLine(to: CGPoint(x: 26, y: 36))
+                    plane.addLine(to: CGPoint(x: 21, y: 41))
+                    plane.addLine(to: CGPoint(x: 21, y: 32))
+                    plane.addLine(to: CGPoint(x: 37, y: 22))
+                    plane.addLine(to: CGPoint(x: 18, y: 31))
+                    plane.addLine(to: CGPoint(x: 11, y: 29))
+                    plane.addQuadCurve(to: CGPoint(x: 11, y: 27), controlPoint: CGPoint(x: 9, y: 28))
+                    plane.close()
+                    UIColor.white.setFill()
+                    plane.fill()
+                }.withRenderingMode(.alwaysOriginal)
             }
             guard let url = Bundle.main.resourceURL?.appendingPathComponent("Content/Landing/\(name).png"),
                   let image = UIImage(contentsOfFile: url.path), let bitmap = image.cgImage else { return nil }

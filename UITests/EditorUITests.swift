@@ -70,14 +70,17 @@ final class EditorUITests:XCTestCase {
         XCTAssertTrue(app.buttons["ДОБАВИТЬ"].waitForExistence(timeout:10))
         // The unlabelled first toolbar button opens the project drawer.
         app.buttons["ProjectMenu"].tap();app.buttons["Фон"].tap()
+        let add = app.buttons["BackgroundAdd"]
+        XCTAssertTrue(add.waitForExistence(timeout: 5))
+        add.tap()
         XCTAssertTrue(app.tables.cells["background-pack-common"].waitForExistence(timeout:5))
         app.tables.cells["background-pack-common"].tap()
         let background=app.collectionViews.cells["background-common:bank"];XCTAssertTrue(background.waitForExistence(timeout:5))
         let image=XCTAttachment(screenshot:XCUIScreen.main.screenshot());image.name="Original two-column background library";image.lifetime = .keepAlways;add(image)
         background.tap()
-        XCTAssertTrue(app.alerts.buttons["На текущий кадр"].waitForExistence(timeout: 5))
-        app.alerts.buttons["На все кадры"].tap()
+        XCTAssertTrue(add.waitForExistence(timeout: 5))
         XCTAssertFalse(app.collectionViews.firstMatch.exists)
+        XCTAssertTrue(app.buttons["ОТМЕНА"].isEnabled)
     }
     func testBasePointTransformHandlesAndSingleGestureUndo() throws {
         let app = XCUIApplication(); app.launchArguments = ["--reference-practice"]; app.launch()

@@ -3,12 +3,20 @@ final class AssetAnimationController: UIViewController {
     let frameIDs: [Int], commit: (AssetAnimation.Configuration?) -> Void
     let enabled = UISwitch(), reverse = UISwitch(), speed = UISlider(), label = UILabel(), start = UITextField()
     let initial: AssetAnimation.Configuration?
-    init(configuration: AssetAnimation.Configuration?, frameIDs: [Int], commit: @escaping (AssetAnimation.Configuration?) -> Void) { self.initial = configuration; self.frameIDs = frameIDs; self.commit = commit; super.init(nibName: nil, bundle: nil) }
+    private let thumbnail: UIImage?
+    init(configuration: AssetAnimation.Configuration?, thumbnail: UIImage?, frameIDs: [Int], commit: @escaping (AssetAnimation.Configuration?) -> Void) { self.initial = configuration; self.thumbnail = thumbnail; self.frameIDs = frameIDs; self.commit = commit; super.init(nibName: nil, bundle: nil) }
     required init?(coder: NSCoder) { fatalError() }
     override func viewDidLoad() {
         super.viewDidLoad(); view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         let scroll=UIScrollView();scroll.backgroundColor = .original(0x303030);scroll.translatesAutoresizingMaskIntoConstraints=false;view.addSubview(scroll)
         let stack = UIStackView(); stack.axis = .vertical; stack.spacing = 15; stack.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16); stack.isLayoutMarginsRelativeArrangement = true; stack.backgroundColor = .original(0x303030); stack.translatesAutoresizingMaskIntoConstraints = false; scroll.addSubview(stack)
+        if let thumbnail {
+            let image = UIImageView(image: thumbnail)
+            image.backgroundColor = .white
+            image.contentMode = .scaleAspectFit
+            image.heightAnchor.constraint(equalToConstant: 84).isActive = true
+            stack.addArrangedSubview(image)
+        }
         enabled.isOn = initial != nil; enabled.accessibilityIdentifier = "AssetAnimationEnabled"
         reverse.isOn = initial?.pingPong ?? false; reverse.accessibilityIdentifier = "AssetAnimationReverse"
         speed.minimumValue = 0; speed.maximumValue = 11; speed.value = initial?.period == 1 ? 11 : Float(10 - ((initial?.period ?? 28) - 3) / 5); speed.accessibilityLabel = "Скорость анимации"

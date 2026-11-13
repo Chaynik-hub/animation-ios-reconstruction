@@ -19,46 +19,6 @@ struct UserBackgroundLibrary {
         var values=list(in:directory);values.append(value);try JSONEncoder().encode(values).write(to:folder.appendingPathComponent("index.json"),options:.atomic);return value
     }
 }
-extension EditorController: UIColorPickerViewControllerDelegate {
-    func pickBackgroundColor(){let picker=UIColorPickerViewController();picker.delegate=self;picker.supportsAlpha=true;present(picker,animated:false)}
-    func colorPickerViewControllerDidFinish(_ viewController:UIColorPickerViewController){
-        var r:CGFloat=0,g:CGFloat=0,b:CGFloat=0,a:CGFloat=1;guard viewController.selectedColor.getRed(&r,green:&g,blue:&b,alpha:&a) else{return}
-        viewController.dismiss(animated: false) { [weak self] in
-            self?.chooseBackgroundScope(["nativeBackgroundColor": "\(r),\(g),\(b),\(a)"])
-        }
-    }
-    func pickBackgroundImage(){importingBackgroundImage=true;importingUserATI=false;pickingAudio=false;let picker=UIDocumentPickerViewController(forOpeningContentTypes:[.image],asCopy:true);picker.delegate=self;present(picker,animated:false)}
-    func installBackgroundImage(_ url:URL)throws {
-        let scope=url.startAccessingSecurityScopedResource();defer{if scope{url.stopAccessingSecurityScopedResource()}}
-        guard let image=UIImage(contentsOfFile:url.path) else{throw SceneReadError.invalidScene}
-        let entry=try UserBackgroundLibrary.save(image,title:url.deletingPathExtension().lastPathComponent,directory:workspace.directory);selectUserBackground(entry)
-    }
-    func selectUserBackground(_ entry: BackgroundDefinition) {
-        workspace.backgroundLibraryCache = nil
-        chooseBackgroundScope(["nativeBackgroundID": entry.id])
-    }
-
-    func chooseBackgroundScope(_ attributes: [String: String]) {
-        let alert = UIAlertController(title: "Применить фон", message: nil, preferredStyle: .alert)
-        for (label, all) in [("На текущий кадр", false), ("На все кадры", true)] {
-            alert.addAction(UIAlertAction(title: label, style: .default) { [weak self] _ in
-                guard let self else { return }
-                self.workspace.checkpoint()
-                let indices = all ? self.workspace.document.frames.indices : self.workspace.index..<(self.workspace.index + 1)
-                for index in indices {
-                    for key in ["nativeBackgroundID", "nativeBackgroundColor", "nativeBackgroundImage"] {
-                        self.workspace.document.frames[index].attributes[key] = attributes[key]
-                    }
-                }
-                self.workspace.notify()
-            })
-        }
-        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
-        present(alert, animated: true)
-    }
-    func drawBackground(){let controller=BackgroundDrawingController(size:CGSize(width:workspace.document.width,height:workspace.document.height)){[weak self] image in self?.perform{guard let self else{return};let entry=try UserBackgroundLibrary.save(image,title:"Рисунок",directory:self.workspace.directory);self.selectUserBackground(entry)}};controller.modalPresentationStyle = .fullScreen;present(controller,animated:false)}
-}
-
 private final class BackgroundPaper:UIView {
     var strokes:[(UIBezierPath,UIColor,CGFloat)]=[],color=UIColor.black,width:CGFloat=4
     override init(frame:CGRect){super.init(frame:frame);backgroundColor = .white;isMultipleTouchEnabled=false}

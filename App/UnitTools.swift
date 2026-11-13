@@ -131,7 +131,10 @@ extension EditorController {
     func showAssetAnimation() {
         guard let index = workspace.selected else { return }
         let name = workspace.frame.units[index].name
-        let dialog = AssetAnimationController(configuration: workspace.assetAnimations[name], frameIDs: workspace.document.frames.map(\.id)) { [weak self] config in
+        let thumbnail = workspace.catalog.first { $0.name == UnitIdentity.baseName(name) }?.thumbnail
+            .flatMap(workspace.artworkURL)
+            .flatMap { UIImage(contentsOfFile: $0.path) }
+        let dialog = AssetAnimationController(configuration: workspace.assetAnimations[name], thumbnail: thumbnail, frameIDs: workspace.document.frames.map(\.id)) { [weak self] config in
             guard let self else { return }; self.workspace.checkpoint(); var values = self.workspace.assetAnimations; values[name] = config; self.workspace.assetAnimations = values; self.workspace.notify()
         }
         dialog.modalPresentationStyle = .overFullScreen; present(dialog, animated: false)

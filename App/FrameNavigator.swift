@@ -6,6 +6,11 @@ final class FrameNavigator:UIView {
     var count=1 {didSet{if oldValue != count {setNeedsDisplay();updateAccessibility()}}}
     var current=0 {didSet{if oldValue != current {setNeedsDisplay();updateAccessibility()}}}
     var seek:((Int)->Void)?
+    var selectRange: (() -> Void)?
+    var selectedRange: ClosedRange<Int>? { didSet { if oldValue != selectedRange { setNeedsDisplay() } } }
+    func pageTarget(_ direction: Int) -> Int {
+        min(max(0, count - 1), max(0, first + direction * capacity))
+    }
     private let normal=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/frame_stick_notsel.png").path)
     private let active=UIImage(contentsOfFile:Bundle.main.resourceURL!.appendingPathComponent("Content/Icons/frame_stick_sel.png").path)
     private var capacity:Int{max(1,Int((bounds.height-10)/12))}
@@ -18,7 +23,8 @@ final class FrameNavigator:UIView {
     override func draw(_ rect:CGRect) {
         guard count>0 else{return}
         for index in first..<end {
-            let bitmap=index==current ? active:normal
+            let selected = index == current || selectedRange?.contains(index) == true
+            let bitmap = selected ? active : normal
             bitmap?.draw(in:CGRect(x:(bounds.width-13)/2,y:y(index),width:13,height:13))
         }
         let font=UIFont(name:"Roboto-Bold",size:14) ?? .boldSystemFont(ofSize:14)
@@ -30,7 +36,12 @@ final class FrameNavigator:UIView {
     }
     override func layoutSubviews(){super.layoutSubviews();setNeedsDisplay()}
     override func touchesBegan(_ touches:Set<UITouch>,with event:UIEvent?) {
-        guard let touch=touches.first,count>0,let nearest=(first..<end).min(by:{abs(y($0)-touch.location(in:self).y)<abs(y($1)-touch.location(in:self).y)}),abs(y(nearest)-touch.location(in:self).y)<=10 else{return}
+        guard let touch = touches.first else { return }
+        if touch.tapCount == 2, let selectRange {
+            selectRange()
+            return
+        }
+        guard count>0,let nearest=(first..<end).min(by:{abs(y($0)-touch.location(in:self).y)<abs(y($1)-touch.location(in:self).y)}),abs(y(nearest)-touch.location(in:self).y)<=10 else{return}
         seek?(nearest)
     }
     override func accessibilityIncrement(){seek?(min(count-1,current+1))}

@@ -1,6 +1,6 @@
 import Foundation
 
-public enum TweenCurve: String, CaseIterable {
+public enum TweenCurve: String, CaseIterable, Codable {
     case linear = "Linear", expo = "In-Out Expo", bounceIn = "In Bounce", bounce = "Bounce"
     case back = "In-Out Back", inQuint = "In Quint", outQuint = "Out Quint"
     case shakeX = "Shake X", shakeY = "Shake Y", cartwheelCW = "Вращение вправо", cartwheelCCW = "Вращение влево"
@@ -45,16 +45,14 @@ public enum TweenCurve: String, CaseIterable {
             let start = first.joints.first { $0.parent == nil }
             let end = last.joints.first { $0.parent == nil }
             let travel = self == .shakeX ? abs((end?.x ?? 0) - (start?.x ?? 0)) : abs((end?.y ?? 0) - (start?.y ?? 0))
-            let offset = sin(t * frequency * 2 * .pi) * max(12, travel * 0.15) * min(1, max(0, strength)) * 1.5
+            let offset = shakeOffset(at: t, travel: travel, strength: strength, frequency: frequency)
             for index in unit.joints.indices {
                 if self == .shakeX { unit.joints[index].x += offset }
                 else { unit.joints[index].y += offset }
             }
         } else if isCartwheel,
                   let root = unit.joints.first(where: { $0.parent == nil }) {
-            let spin = t + (t * t * (3 - 2 * t) - t) * min(1, max(0, strength))
-            let turns = min(12, max(1, frequency))
-            let angle = spin * turns * 2 * .pi * (self == .cartwheelCW ? 1 : -1)
+            let angle = cartwheelAngle(at: t, strength: strength, turns: frequency)
             let c = cos(angle), s = sin(angle)
             for index in unit.joints.indices {
                 let x = unit.joints[index].x - root.x, y = unit.joints[index].y - root.y
@@ -64,4 +62,13 @@ public enum TweenCurve: String, CaseIterable {
         }
         return unit
     }
+    public func shakeOffset(at t: Double, travel: Double, strength: Double, frequency: Double) -> Double {
+        sin(t * frequency * 2 * .pi) * max(12, travel * 0.15) * min(1, max(0, strength)) * 1.5
+    }
+
+    public func cartwheelAngle(at t: Double, strength: Double, turns: Double) -> Double {
+        let spin = t + (t * t * (3 - 2 * t) - t) * min(1, max(0, strength))
+        return spin * min(12, max(1, turns)) * 2 * .pi * (self == .cartwheelCW ? 1 : -1)
+    }
+
 }

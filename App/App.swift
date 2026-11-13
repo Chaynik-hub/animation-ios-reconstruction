@@ -118,13 +118,12 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
     func update(){refreshFrameTools();refreshUnitTools();frameLabel.text="\(workspace.index+1) /\n\(workspace.document.frames.count)";frameNavigator.count=workspace.document.frames.count;frameNavigator.current=workspace.index;canvas.updateTransformControls();canvas.setNeedsDisplay()}
     func perform(_ work:()throws->Void){do{try work()}catch{message("Не удалось выполнить",String(describing:error))}}
     func message(_ title:String,_ text:String){let alert=UIAlertController(title:title,message:text,preferredStyle:.alert);alert.addAction(UIAlertAction(title:"OK",style:.default));present(alert,animated:true)}
-    var backgroundController: BackgroundChooserController?
     var unitToolsActive = false
     var poseClipboard: SceneUnit?
     var toolButtons: [String: UIButton] = [:]
     var unitClipboard: [SceneUnit] = []
     var toolPanel:UIView?
-    func dismissTools(){canvas.pinPointSelection = nil;if let controller=backgroundController {controller.dismiss(animated:false);backgroundController=nil};unitToolsActive=false;if let controller=catalogController {controller.willMove(toParent:nil);controller.view.removeFromSuperview();controller.removeFromParent();catalogController=nil};toolPanel?.removeFromSuperview();toolPanel=nil;shift.isHidden=false;highlightFrameTools(false);highlightCatalog(false);highlightUnitTools(false)}
+    func dismissTools(){canvas.pinPointSelection = nil;unitToolsActive=false;if let controller=catalogController {controller.willMove(toParent:nil);controller.view.removeFromSuperview();controller.removeFromParent();catalogController=nil};toolPanel?.removeFromSuperview();toolPanel=nil;shift.isHidden=false;highlightFrameTools(false);highlightCatalog(false);highlightUnitTools(false)}
     func choices(_ title:String,_ actions:[(String,()->Void)]){
         stop();dismissTools()
         let cover=UIView(frame:view.bounds);cover.autoresizingMask=[.flexibleWidth,.flexibleHeight]
@@ -301,27 +300,23 @@ final class EditorController:UIViewController,UIDocumentPickerDelegate {
         alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
         present(alert, animated: true)
     }
-    var importingBackgroundImage=false
     var importingUserATI=false
     func importUserATI(){importingUserATI=true;pickingAudio=false;let picker=UIDocumentPickerViewController(forOpeningContentTypes:[.data],asCopy:true);picker.delegate=self;present(picker,animated:true)}
-    func documentPickerWasCancelled(_ controller:UIDocumentPickerViewController){importingUserATI=false;importingBackgroundImage=false}
+    func documentPickerWasCancelled(_ controller:UIDocumentPickerViewController){importingUserATI=false}
     var pickingAudio=false
     func openFiles(){pickingAudio=false;let picker=UIDocumentPickerViewController(forOpeningContentTypes:[.data],asCopy:true);picker.delegate=self;present(picker,animated:true)}
     func savedScenes(){let files=(try? FileManager.default.contentsOfDirectory(at:workspace.directory,includingPropertiesForKeys:nil)) ?? [];choices("Мои сцены",files.filter{$0.lastPathComponent.hasSuffix(".animation.json")}.map{url in (url.deletingPathExtension().lastPathComponent,{[weak self] in self?.perform{try self?.workspace.load(url);self?.restoreAudio()}})})}
-    func documentPicker(_ controller:UIDocumentPickerViewController,didPickDocumentsAt urls:[URL]){guard let url=urls.first else{return};perform{if importingBackgroundImage {importingBackgroundImage=false;try installBackgroundImage(url)}else if importingUserATI {importingUserATI=false;let skipped = try UserSpriteLibrary.importFile(url,directory:workspace.directory);workspace.restoreArtwork();catalogController?.updateAssets(workspace.catalog);workspace.notify();if skipped > 0 { message("Пак добавлен","Не удалось прочитать графику у \(skipped) предметов. Остальные добавлены.") }}else if pickingAudio {let scoped=url.startAccessingSecurityScopedResource();defer{if scoped{url.stopAccessingSecurityScopedResource()}};let target=workspace.directory.appendingPathComponent(UUID().uuidString+"."+url.pathExtension);try FileManager.default.copyItem(at:url,to:target);workspace.document.attributes["nativeAudio"]=target.lastPathComponent;audio=try AVAudioPlayer(contentsOf:target);audio?.prepareToPlay();workspace.notify()}else{titleOfScene = try workspace.openEditorProject(url);markProjectSaved();restoreAudio()}}}
+    func documentPicker(_ controller:UIDocumentPickerViewController,didPickDocumentsAt urls:[URL]){guard let url=urls.first else{return};perform{if importingUserATI {importingUserATI=false;let skipped = try UserSpriteLibrary.importFile(url,directory:workspace.directory);workspace.restoreArtwork();catalogController?.updateAssets(workspace.catalog);workspace.notify();if skipped > 0 { message("Пак добавлен","Не удалось прочитать графику у \(skipped) предметов. Остальные добавлены.") }}else if pickingAudio {let scoped=url.startAccessingSecurityScopedResource();defer{if scoped{url.stopAccessingSecurityScopedResource()}};let target=workspace.directory.appendingPathComponent(UUID().uuidString+"."+url.pathExtension);try FileManager.default.copyItem(at:url,to:target);workspace.document.attributes["nativeAudio"]=target.lastPathComponent;audio=try AVAudioPlayer(contentsOf:target);audio?.prepareToPlay();workspace.notify()}else{titleOfScene = try workspace.openEditorProject(url);markProjectSaved();restoreAudio()}}}
     var audio:AVAudioPlayer?
     func restoreAudio(){audio=nil;if let name=workspace.document.attributes["nativeAudio"],!name.contains("/"),let player=try? AVAudioPlayer(contentsOf:workspace.directory.appendingPathComponent(name)){audio=player;audio?.prepareToPlay()}}
 
     func audioPicker(){pickingAudio=true;let picker=UIDocumentPickerViewController(forOpeningContentTypes:[.audio],asCopy:true);picker.delegate=self;present(picker,animated:true)}
-    func closeBackgroundChooser(_ completion:@escaping()->Void = {}) {let chooser=backgroundController;backgroundController=nil;chooser?.dismiss(animated:false,completion:completion)}
     func backgrounds() {
-        stop();dismissTools()
-        let chooser=BackgroundChooserController(values:workspace.backgroundCatalog,select:{[weak self] value in
-            self?.closeBackgroundChooser { [weak self] in
-                self?.chooseBackgroundScope(["nativeBackgroundID": value?.id].compactMapValues { $0 })
-            }
-        },close:{[weak self] in self?.closeBackgroundChooser()},actions:[{[weak self] in self?.closeBackgroundChooser{[weak self] in self?.pickBackgroundColor()}},{[weak self] in self?.closeBackgroundChooser{[weak self] in self?.pickBackgroundImage()}},{[weak self] in self?.closeBackgroundChooser{[weak self] in self?.drawBackground()}}],resolve:workspace.artworkURL)
-        chooser.modalPresentationStyle = .overFullScreen;backgroundController=chooser;present(chooser,animated:false)
+        stop()
+        dismissTools()
+        let controller = CameraEditorController(workspace: workspace, audio: audio, editsBackground: true)
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: false)
     }
     func properties(){let a=UIAlertController(title:"Сцена",message:"Ширина, высота и промежуточные кадры",preferredStyle:.alert);for value in [Int(workspace.document.width),Int(workspace.document.height),workspace.document.interframes]{a.addTextField{$0.text=String(value);$0.keyboardType = .numberPad}};a.addAction(UIAlertAction(title:"OK",style:.default){[weak self] _ in guard let self,let f=a.textFields,let w=Double(f[0].text ?? ""),let h=Double(f[1].text ?? ""),let n=Int(f[2].text ?? ""),w>0,h>0,w<=4096,h<=4096,n>=0,n<120 else{return};self.workspace.checkpoint();self.workspace.document.width=w;self.workspace.document.height=h;self.workspace.document.interframes=n;self.update()});a.addAction(UIAlertAction(title:"Отмена",style:.cancel));present(a,animated:true)}
     func exports(){choices("Экспорт",[("ATS-проект",{[weak self] in self?.perform{guard let self else{return};self.share(try self.workspace.saveATS())}}),("MP4 со звуком",{[weak self] in self?.exportVideo()}),("PNG текущего кадра",{[weak self] in self?.exportPNG()}),("GIF анимация",{[weak self] in self?.exportGIF()}),("Файл проекта JSON",{[weak self] in self?.perform{guard let self else{return};self.share(try self.workspace.save(name:self.titleOfScene))}})])}

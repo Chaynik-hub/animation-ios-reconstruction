@@ -22,6 +22,11 @@ public enum FrameInterpolation {
         }
         var output=first;output.units=[]
         SceneCamera(frame: first).interpolated(to: SceneCamera(frame: second), progress: t).write(to: &output)
+        if ["nativeBackgroundID", "nativeBackgroundImage", "nativeBackgroundColor"].allSatisfy({ first.attributes[$0] == second.attributes[$0] }) {
+            let background = SceneCamera(frame: first, background: true)
+            let nextBackground = SceneCamera(frame: second, background: true)
+            background.interpolated(to: nextBackground, progress: t).write(to: &output, background: true)
+        }
         for unit in first.units where !excluded.contains(unit.name) {
             guard let end=b[unit.name] else{continue}
             var pose=try PoseInterpolation.between(unit,second.units[end],progress:t)

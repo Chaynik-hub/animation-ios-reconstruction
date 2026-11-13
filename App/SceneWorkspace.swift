@@ -203,6 +203,13 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
     var cameraEditing = false {
         didSet { if oldValue != cameraEditing { updateTransformControls(); setNeedsDisplay() } }
     }
+    var backgroundEditing = false
+    var cameraFrameLocked = false
+    var transformAllowed: (() -> Bool)?
+    var transformFinished: (() -> Void)?
+    private var editingStage: Bool { cameraEditing || backgroundEditing }
+    private var unsnappedRotation = 0.0
+    private var stageGestureChanged = false
     var cameraScale: CGFloat = 1
     var cameraOffset = CGPoint.zero
     private var dragged: (Int,Int)?
@@ -235,13 +242,16 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
     }
     @objc private func settingsChanged() {setNeedsDisplay()}
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        transformStart == nil && (cameraEditing || !(gestureRecognizer is UIRotationGestureRecognizer))
+        guard transformStart == nil else { return false }
+        guard editingStage else { return !(gestureRecognizer is UIRotationGestureRecognizer) }
+        if gestureRecognizer is UIPanGestureRecognizer && gestureRecognizer.numberOfTouches > 1 { return false }
+        return !cameraGestures.isEmpty || (transformAllowed?() ?? true)
     }
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer) -> Bool {
-        cameraEditing && gestureRecognizer.view === self && other.view === self
+        editingStage && !(gestureRecognizer is UIPanGestureRecognizer) && !(other is UIPanGestureRecognizer) && gestureRecognizer.view === self && other.view === self
     }
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if cameraEditing && gestureRecognizer is UITapGestureRecognizer { return false }
+        if editingStage && gestureRecognizer is UITapGestureRecognizer { return false }
         var target = touch.view
         while let view = target { if view is UIControl { return false }; target = view.superview }
         return true
@@ -253,7 +263,7 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             transformButtons.forEach { $0.isHidden = true }
             return
         }
-        guard handles, !cameraEditing, displayed == nil, ratio > 0, let box = selectedArtworkBounds(), let selected = workspace.selected else {
+        guard handles, !editingStage, displayed == nil, ratio > 0, let box = selectedArtworkBounds(), let selected = workspace.selected else {
             transformButtons.forEach { $0.isHidden = true }; return
         }
         let centers = [CGPoint(x: box.minX * ratio + origin.x - 80 / 1.5, y: box.minY * ratio + origin.y - 80 / 1.5),
@@ -343,7 +353,11 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
     }
 
     required init?(coder:NSCoder){fatalError()}
-    var viewport: CGRect {bounds.insetBy(dx:12,dy:12)}
+    var viewport: CGRect {
+        if backgroundEditing { return bounds.insetBy(dx: bounds.width / 6, dy: bounds.height / 6) }
+        if cameraEditing { return bounds.insetBy(dx: bounds.width / 4, dy: bounds.height / 4) }
+        return bounds.insetBy(dx: 12, dy: 12)
+    }
     var ratio: CGFloat {min(viewport.width/workspace.document.width,viewport.height/workspace.document.height)*cameraScale}
     var origin: CGPoint {CGPoint(x:bounds.midX-workspace.document.width*ratio/2+cameraOffset.x,y:bounds.midY-workspace.document.height*ratio/2+cameraOffset.y)}
     var images:[String:UIImage]=[:]
@@ -352,20 +366,22 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         guard let c=UIGraphicsGetCurrentContext() else{return};UIColor.original(0x3d3e4c).setFill();c.fill(bounds)
         c.saveGState();c.translateBy(x:origin.x,y:origin.y);c.scaleBy(x:ratio,y:ratio)
         let scene = CGRect(x: 0, y: 0, width: workspace.document.width, height: workspace.document.height)
-        let editing = handles && displayed == nil
-        backgroundColorValue.setFill()
+        let editing = handles && displayed == nil && !editingStage
+        let paper = backgroundEditing && frameBackgroundColor(workspace.frame) == nil
+            ? UIColor.original(0xd9d9d9) : backgroundColorValue
+        paper.setFill()
         c.fill(scene)
-        if !editing || cameraEditing {
-            c.clip(to: scene)
-            applySceneCamera(displayed ?? workspace.frame, in: c)
+        if !editing {
+            if !editingStage { c.clip(to: scene) }
+            if !backgroundEditing { applySceneCamera(displayed ?? workspace.frame, in: c) }
         }
         if !editing || AnimationSettings.bool("showbgPref", fallback: true) {
             c.saveGState()
-            if editing && !cameraEditing { c.clip(to: scene) }
+            if editing { c.clip(to: scene) }
             paintBackground(displayed ?? workspace.frame, in: c)
             c.restoreGState()
         }
-        if editing && !cameraEditing && AnimationSettings.bool("showGridPref") {
+        if editing && AnimationSettings.bool("showGridPref") {
             c.saveGState();c.setStrokeColor(UIColor.gray.withAlphaComponent(0.3).cgColor);c.setLineWidth(1/ratio)
             for x in stride(from:0.0,through:workspace.document.width,by:50) {c.move(to:CGPoint(x:x,y:0));c.addLine(to:CGPoint(x:x,y:workspace.document.height))}
             for y in stride(from:0.0,through:workspace.document.height,by:50) {c.move(to:CGPoint(x:0,y:y));c.addLine(to:CGPoint(x:workspace.document.width,y:y))}
@@ -390,16 +406,16 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
             }
         }
         paint(displayed ?? workspace.frame,in:c,showHandles:false)
-        if editing && !cameraEditing {
+        if editing {
             paintSkeleton(workspace.frame,in:c,points:true)
             paintSelectedBone(in: c)
             paintAttachmentHint(in: c)
         }
-        if editing && !cameraEditing && AnimationSettings.bool("showCamera",fallback:true) {c.setStrokeColor(UIColor.darkGray.cgColor);c.setLineWidth(2/ratio);c.stroke(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))}
+        if editing && AnimationSettings.bool("showCamera",fallback:true) {c.setStrokeColor(UIColor.darkGray.cgColor);c.setLineWidth(2/ratio);c.stroke(CGRect(x:0,y:0,width:workspace.document.width,height:workspace.document.height))}
         c.restoreGState()
-        if cameraEditing {
-            c.setStrokeColor(UIColor.original(0x00c0d8).cgColor)
-            c.setLineWidth(2)
+        if editingStage {
+            c.setStrokeColor(UIColor.original(cameraFrameLocked ? 0xff1200 : (backgroundEditing ? 0x2460a4 : 0x00c5ff)).cgColor)
+            c.setLineWidth(4)
             c.stroke(CGRect(origin: origin, size: CGSize(
                 width: workspace.document.width * ratio,
                 height: workspace.document.height * ratio
@@ -502,50 +518,49 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         context.translateBy(x: -center.x - camera.x, y: -center.y - camera.y)
     }
 
-    func resetSceneCamera() {
-        workspace.checkpoint()
-        SceneCamera().write(to: &workspace.document.frames[workspace.index])
-        workspace.notify()
-        setNeedsDisplay()
-    }
-
-    private func trackCameraGesture(_ gesture: UIGestureRecognizer) {
+    private func trackStageGesture(_ gesture: UIGestureRecognizer) {
         let id = ObjectIdentifier(gesture)
         switch gesture.state {
         case .began:
-            if cameraGestures.isEmpty { workspace.checkpoint() }
+            if cameraGestures.isEmpty { stageGestureChanged = false }
             cameraGestures.insert(id)
         case .ended, .cancelled, .failed:
-            cameraGestures.remove(id)
+            if cameraGestures.remove(id) != nil && cameraGestures.isEmpty && stageGestureChanged { transformFinished?() }
         default: break
         }
     }
 
-    @objc private func rotateCamera(_ gesture: UIRotationGestureRecognizer) {
-        guard cameraEditing else { return }
-        trackCameraGesture(gesture)
-        var camera = SceneCamera(frame: workspace.frame)
-        switch gesture.state {
-        case .changed:
-            camera.rotation += gesture.rotation
-            gesture.rotation = 0
-        case .ended, .cancelled:
-            let step = Double.pi / 36
-            let snapped = (camera.rotation / step).rounded() * step
-            camera.rotation = atan2(sin(snapped), cos(snapped))
-        default: return
+    private func applyStageMove(_ move: SceneCamera) {
+        guard move != SceneCamera(frame: workspace.frame, background: backgroundEditing) else { return }
+        if !stageGestureChanged {
+            workspace.checkpoint()
+            stageGestureChanged = true
         }
-        camera.write(to: &workspace.document.frames[workspace.index])
+        move.write(to: &workspace.document.frames[workspace.index], background: backgroundEditing)
         setNeedsDisplay()
     }
 
+    @objc private func rotateCamera(_ gesture: UIRotationGestureRecognizer) {
+        guard editingStage else { return }
+        trackStageGesture(gesture)
+        var move = SceneCamera(frame: workspace.frame, background: backgroundEditing)
+        if gesture.state == .began { unsnappedRotation = move.rotation }
+        guard gesture.state == .changed else { return }
+        unsnappedRotation += gesture.rotation
+        gesture.rotation = 0
+        let step = Double.pi / 36
+        let angle = backgroundEditing ? unsnappedRotation : floor(unsnappedRotation / step + 0.5) * step
+        move.rotation = atan2(sin(angle), cos(angle))
+        applyStageMove(move)
+    }
+
     @objc func pinch(_ gesture: UIPinchGestureRecognizer) {
-        if cameraEditing {
-            trackCameraGesture(gesture)
+        if editingStage {
+            trackStageGesture(gesture)
             guard gesture.state == .changed else { return }
-            var camera = SceneCamera(frame: workspace.frame)
-            camera.zoom = min(8, max(0.25, camera.zoom * gesture.scale))
-            camera.write(to: &workspace.document.frames[workspace.index])
+            var move = SceneCamera(frame: workspace.frame, background: backgroundEditing)
+            move.zoom = min(backgroundEditing ? 6.6 : 2.2, max(0.2, move.zoom * sqrt(gesture.scale)))
+            applyStageMove(move)
         } else {
             cameraScale = min(4, max(0.25, cameraScale * gesture.scale))
         }
@@ -554,23 +569,23 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         setNeedsDisplay()
     }
 
-    @objc func pan(_ gesture: UIPanGestureRecognizer){
-        if cameraEditing {
-            trackCameraGesture(gesture)
-            if gesture.state == .changed {
-                var camera = SceneCamera(frame: workspace.frame)
-                let delta = gesture.translation(in: self)
-                let angle = -camera.rotation
-                let scale = Double(ratio) * camera.zoom
-                guard scale > 0 else { return }
-                let dx = Double(delta.x), dy = Double(delta.y)
-                let cosine = cos(angle), sine = sin(angle)
-                camera.x -= (dx * cosine - dy * sine) / scale
-                camera.y -= (dx * sine + dy * cosine) / scale
-                camera.write(to: &workspace.document.frames[workspace.index])
-                gesture.setTranslation(.zero, in: self)
-                setNeedsDisplay()
+    @objc func pan(_ gesture: UIPanGestureRecognizer) {
+        if editingStage {
+            trackStageGesture(gesture)
+            guard gesture.state == .changed, ratio > 0 else { return }
+            var move = SceneCamera(frame: workspace.frame, background: backgroundEditing)
+            let delta = gesture.translation(in: self)
+            if backgroundEditing {
+                move.x += delta.x / ratio
+                move.y += delta.y / ratio
+            } else {
+                let cosine = cos(move.rotation), sine = sin(move.rotation)
+                let scale = Double(ratio) * move.zoom
+                move.x -= (delta.x * cosine + delta.y * sine) / scale
+                move.y -= (-delta.x * sine + delta.y * cosine) / scale
             }
+            applyStageMove(move)
+            gesture.setTranslation(.zero, in: self)
             return
         }
         let screen=gesture.location(in:self);let p=CGPoint(x:(screen.x-origin.x)/ratio,y:(screen.y-origin.y)/ratio)
