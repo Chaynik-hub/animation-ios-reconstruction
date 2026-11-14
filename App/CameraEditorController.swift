@@ -149,6 +149,14 @@ final class CameraEditorController: UIViewController, UIColorPickerViewControlle
         scroll.showsVerticalScrollIndicator = false
         scroll.translatesAutoresizingMaskIntoConstraints = false
         rail.addSubview(scroll)
+        let back = UIButton(type: .system)
+        back.setImage(UIImage(systemName: "chevron.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 19, weight: .semibold)), for: .normal)
+        back.tintColor = .white
+        back.accessibilityLabel = "Назад"
+        back.accessibilityIdentifier = "StageEditorBack"
+        back.translatesAutoresizingMaskIntoConstraints = false
+        back.addAction(UIAction { [weak self] _ in self?.dismiss(animated: false) }, for: .touchUpInside)
+        rail.addSubview(back)
         toolbar.translatesAutoresizingMaskIntoConstraints = false
         scroll.addSubview(toolbar)
         undo.translatesAutoresizingMaskIntoConstraints = false
@@ -194,7 +202,11 @@ final class CameraEditorController: UIViewController, UIColorPickerViewControlle
             rail.widthAnchor.constraint(equalToConstant: 80),
             scroll.leadingAnchor.constraint(equalTo: rail.leadingAnchor),
             scroll.trailingAnchor.constraint(equalTo: rail.trailingAnchor),
-            scroll.topAnchor.constraint(equalTo: rail.topAnchor),
+            back.leadingAnchor.constraint(equalTo: rail.leadingAnchor),
+            back.topAnchor.constraint(equalTo: rail.topAnchor),
+            back.widthAnchor.constraint(equalToConstant: 44),
+            back.heightAnchor.constraint(equalToConstant: 44),
+            scroll.topAnchor.constraint(equalTo: back.bottomAnchor),
             scroll.bottomAnchor.constraint(equalTo: undo.topAnchor),
             toolbar.leadingAnchor.constraint(equalTo: scroll.contentLayoutGuide.leadingAnchor),
             toolbar.trailingAnchor.constraint(equalTo: scroll.contentLayoutGuide.trailingAnchor),

@@ -19,7 +19,7 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
     private let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     private lazy var cartoon = artworkButton("Новый\nМультфильм", "landing_hex2", pressed: "landing_hex_pressed2", color: .original(0x6cae00), size: 16) { [weak self] in self?.openEditor() }
     private lazy var items = artworkButton("Конструктор\nпредметов", "landing_hex_items", pressed: "landing_hex_items_pressed", color: .original(0x00b6ff), size: 12) { [weak self] in self?.soon() }
-    private lazy var community = artworkButton("Связь с\nразработчиком", "telegram", color: .original(0x62caff), size: 12) {
+    private lazy var community = artworkButton("Связь с\nразработчиком", "telegram", pressed: "telegram_pressed", color: .original(0x62caff), size: 12) {
         if let url = URL(string: "https://t.me/cheg_b") { UIApplication.shared.open(url) }
     }
     private lazy var settings = artworkButton("", "cog", color: .white, size: 12) { [weak self] in self?.showSettings() }
@@ -91,7 +91,7 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
         separator.frame = CGRect(x: split, y: h / 2 - 80, width: 1, height: 160)
         cartoon.frame = CGRect(x: max(80, split - 179), y: h / 2 - 94, width: min(170, max(0, split - 82)), height: 188)
         items.frame = CGRect(x: split + 8, y: h * 0.09, width: min(118, w - split - 8), height: 132)
-        community.frame = CGRect(x: max(split, w - 137), y: max(0, h - 132), width: 98, height: 116)
+        community.frame = CGRect(x: split + 8, y: max(0, h - 147), width: min(118, w - split - 8), height: 132)
         importButton.frame = CGRect(x: 8, y: 8, width: 170, height: 42)
         onlineButton.frame = CGRect(x: 186, y: 8, width: 115, height: 42)
         empty.frame = CGRect(x: 0, y: 60, width: w, height: 48)
@@ -291,31 +291,36 @@ final class LandingController: UIViewController, UIDocumentPickerDelegate {
             return updated
         }
         func icon(_ name: String) -> UIImage? {
-            if name == "telegram" {
-                let size = CGSize(width: 56, height: 56)
-                return UIGraphicsImageRenderer(size: size).image { renderer in
-                    let context = renderer.cgContext
-                    let bounds = CGRect(origin: .zero, size: size)
-                    context.addEllipse(in: bounds)
-                    context.clip()
-                    let colors = [UIColor.original(0x37bbf4).cgColor, UIColor.original(0x168acd).cgColor]
-                    if let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors as CFArray, locations: nil) {
-                        context.drawLinearGradient(gradient, start: .zero, end: CGPoint(x: 0, y: size.height), options: [])
-                    }
+            if name == "telegram" || name == "telegram_pressed" {
+                let pressed = name == "telegram_pressed"
+                return UIGraphicsImageRenderer(size: CGSize(width: 98, height: 97)).image { _ in
+                    let hex = UIBezierPath()
+                    hex.move(to: CGPoint(x: 49, y: pressed ? 6 : 2))
+                    hex.addLine(to: CGPoint(x: 89, y: 25))
+                    hex.addLine(to: CGPoint(x: 89, y: 69))
+                    hex.addLine(to: CGPoint(x: 49, y: 93))
+                    hex.addLine(to: CGPoint(x: 9, y: 69))
+                    hex.addLine(to: CGPoint(x: 9, y: 25))
+                    hex.close()
+                    UIColor.original(pressed ? 0x078bbd : 0x00b6f2).setFill()
+                    hex.fill()
+                    hex.addClip()
+                    let shadow = UIBezierPath()
+                    shadow.move(to: CGPoint(x: 68, y: 28))
+                    shadow.addLine(to: CGPoint(x: 98, y: 58))
+                    shadow.addLine(to: CGPoint(x: 76, y: 95))
+                    shadow.addLine(to: CGPoint(x: 41, y: 60))
+                    shadow.close()
+                    UIColor.black.withAlphaComponent(0.10).setFill()
+                    shadow.fill()
                     let plane = UIBezierPath()
-                    plane.move(to: CGPoint(x: 11, y: 27))
-                    plane.addLine(to: CGPoint(x: 43, y: 15))
-                    plane.addQuadCurve(to: CGPoint(x: 45, y: 17), controlPoint: CGPoint(x: 46, y: 14))
-                    plane.addLine(to: CGPoint(x: 39, y: 42))
-                    plane.addQuadCurve(to: CGPoint(x: 36, y: 43), controlPoint: CGPoint(x: 38, y: 45))
-                    plane.addLine(to: CGPoint(x: 26, y: 36))
-                    plane.addLine(to: CGPoint(x: 21, y: 41))
-                    plane.addLine(to: CGPoint(x: 21, y: 32))
-                    plane.addLine(to: CGPoint(x: 37, y: 22))
-                    plane.addLine(to: CGPoint(x: 18, y: 31))
-                    plane.addLine(to: CGPoint(x: 11, y: 29))
-                    plane.addQuadCurve(to: CGPoint(x: 11, y: 27), controlPoint: CGPoint(x: 9, y: 28))
+                    let points = [CGPoint(x: 25, y: 47), CGPoint(x: 69, y: 28), CGPoint(x: 61, y: 68),
+                                  CGPoint(x: 48, y: 58), CGPoint(x: 41, y: 65), CGPoint(x: 41, y: 53),
+                                  CGPoint(x: 59, y: 37), CGPoint(x: 36, y: 51)]
+                    plane.move(to: points[0])
+                    for point in points.dropFirst() { plane.addLine(to: point) }
                     plane.close()
+                    if pressed { plane.apply(CGAffineTransform(translationX: 0, y: 2)) }
                     UIColor.white.setFill()
                     plane.fill()
                 }.withRenderingMode(.alwaysOriginal)

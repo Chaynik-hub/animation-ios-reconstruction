@@ -67,6 +67,40 @@ final class SceneCanvasTests: XCTestCase {
         XCTAssertEqual(workspace.applyAssetAnimations(to:workspace.frame,tick:2).units[0].attributes["state"],"1")
         XCTAssertEqual(workspace.applyAssetAnimations(to:workspace.frame,tick:11).units[0].attributes["state"],"2")
     }
+    func testSquareMaskCutsOnlySpritesBelowIt() throws {
+        let workspace = Workspace()
+        let filename = "mask-test-" + UUID().uuidString + ".png"
+        let url = workspace.directory.appendingPathComponent(filename)
+        defer { try? FileManager.default.removeItem(at: url) }
+        let tile = UIGraphicsImageRenderer(size: CGSize(width: 20, height: 20)).image { renderer in
+            renderer.cgContext.setFillColor(UIColor.black.cgColor)
+            renderer.cgContext.fill(CGRect(x: 0, y: 0, width: 20, height: 20))
+        }
+        try XCTUnwrap(tile.pngData()).write(to: url)
+        let parts = [["start": "0", "end": "1", "image": "@local/" + filename]]
+        workspace.catalog = ["test:sprite", "common:square"].map {
+            ArtworkDefinition(name: $0, points: [], parts: parts, thumbnail: nil)
+        }
+        func unit(_ name: String, x: Double, y: Double) -> SceneUnit {
+            SceneUnit(name: name, joints: [
+                Joint(id: 0, x: x, y: y, parent: nil, attributes: [:]),
+                Joint(id: 1, x: x + 10, y: y, parent: 0, attributes: [:])
+            ], attributes: [:])
+        }
+        let frame = SceneFrame(id: 0, units: [
+            unit("test:sprite", x: 10, y: 10), unit("common:square", x: 20, y: 10),
+            unit("test:sprite#1", x: 25, y: 20)
+        ], attributes: [:])
+        workspace.document = SceneDocument(width: 100, height: 100, interframes: 4, frames: [frame], attributes: [:])
+        workspace.index = 0
+        workspace.document.squareMaskNames = ["common:square"]
+        let image = SceneCanvas(workspace).snapshot(size: CGSize(width: 100, height: 100))
+        XCTAssertLessThan(try rgba(image, x: 15, y: 15)[0], 10)
+        XCTAssertGreaterThan(try rgba(image, x: 23, y: 15)[0], 245)
+        XCTAssertLessThan(try rgba(image, x: 28, y: 24)[0], 10)
+        XCTAssertGreaterThan(try rgba(image, x: 35, y: 15)[0], 245)
+    }
+
     private func rgba(_ image: UIImage, x: Int, y: Int) throws -> [Int] {
         let cg = try XCTUnwrap(image.cgImage)
         let px = Int(CGFloat(x) * image.scale), py = Int(CGFloat(y) * image.scale)

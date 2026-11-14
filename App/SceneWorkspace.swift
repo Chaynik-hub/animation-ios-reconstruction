@@ -423,81 +423,95 @@ final class SceneCanvas: UIView, UIGestureRecognizerDelegate {
         }
     }
     func paint(_ frame:SceneFrame,in c:CGContext,showHandles:Bool,opacity:CGFloat=1) {
-        for i in UnitEditing.orderedIndices(in:frame) {
-            let unit=frame.units[i]
-            let baseName=unit.name.components(separatedBy:"#")[0]
-            let joints=Dictionary(unit.joints.map{($0.id,$0)},uniquingKeysWith:{$1})
-            if SpriteText.isEditable(unit), !SpriteText.isBubble(unit) {
-                SpriteText.drawPlain(unit, in: c, opacity: opacity)
-                continue
+        let order = UnitEditing.orderedIndices(in: frame)
+        let masks = workspace.document.squareMaskNames
+        if let position = order.firstIndex(where: { masks.contains(frame.units[$0].name) }) {
+            let mask = frame.units[order[position]]
+            c.saveGState()
+            c.beginTransparencyLayer(auxiliaryInfo: nil)
+            for index in order.prefix(position) { paintUnit(frame.units[index], in: c, opacity: opacity) }
+            paintUnit(mask, in: c, opacity: 1, blendMode: .destinationOut)
+            c.endTransparencyLayer()
+            c.restoreGState()
+            for index in order.dropFirst(position + 1) { paintUnit(frame.units[index], in: c, opacity: opacity) }
+        } else {
+            for index in order { paintUnit(frame.units[index], in: c, opacity: opacity) }
+        }
+        if showHandles { paintSkeleton(frame, in: c, points: true) }
+    }
+
+    private func paintUnit(_ unit: SceneUnit, in c: CGContext, opacity: CGFloat, blendMode: CGBlendMode = .normal) {
+        let baseName=unit.name.components(separatedBy:"#")[0]
+        let joints=Dictionary(unit.joints.map{($0.id,$0)},uniquingKeysWith:{$1})
+        if SpriteText.isEditable(unit), !SpriteText.isBubble(unit) {
+            SpriteText.drawPlain(unit, in: c, opacity: opacity)
+            return
+        }
+        let definition=workspace.artworkByName[baseName]
+        if let definition {
+            let scale=Double(unit.attributes["scale"] ?? "1") ?? 1
+            let flipped=unit.attributes["flipped"]=="true"
+            let state=Int(unit.attributes["state"] ?? "0") ?? 0
+            let grouped=Dictionary(grouping:definition.parts,by:{($0["start"] ?? "")+":"+($0["end"] ?? "")})
+            let selectedParts=grouped.values.compactMap { candidates -> [String:String]? in
+                let matching=candidates.filter{($0["flipped"]=="true")==flipped}
+                let variants=matching.isEmpty ? candidates.filter{$0["flipped"] != "true"}:matching
+                return variants.first{(Int($0["state"] ?? "0") ?? 0)==state} ?? variants.first{(Int($0["state"] ?? "0") ?? 0)==0}
             }
-            let definition=workspace.artworkByName[baseName]
-            if let definition {
-                let scale=Double(unit.attributes["scale"] ?? "1") ?? 1
-                let flipped=unit.attributes["flipped"]=="true"
-                let state=Int(unit.attributes["state"] ?? "0") ?? 0
-                let grouped=Dictionary(grouping:definition.parts,by:{($0["start"] ?? "")+":"+($0["end"] ?? "")})
-                let selectedParts=grouped.values.compactMap { candidates -> [String:String]? in
-                    let matching=candidates.filter{($0["flipped"]=="true")==flipped}
-                    let variants=matching.isEmpty ? candidates.filter{$0["flipped"] != "true"}:matching
-                    return variants.first{(Int($0["state"] ?? "0") ?? 0)==state} ?? variants.first{(Int($0["state"] ?? "0") ?? 0)==0}
+            for part in selectedParts.sorted(by:{(Int($0["weight"] ?? "0") ?? 0)<(Int($1["weight"] ?? "0") ?? 0)}) {
+                guard let start=Int(part["start"] ?? ""),let end=Int(part["end"] ?? ""),let a=joints[start],let b=joints[end],let imagePath=part["image"],let bitmap=image(imagePath) else{continue}
+                var longitudinal=1.0
+                if (b.attributes["stretchable"] == "true" || (b.parent == a.id && b.attributes["nativeAxisStretch"] == "true") || (a.parent == b.id && a.attributes["nativeAxisStretch"] == "true")), scale > 0,
+                   let restStart=definition.points.first(where:{$0["id"]==String(start)}),
+                   let restEnd=definition.points.first(where:{$0["id"]==String(end)}),
+                   let ax=Double(restStart["x"] ?? ""),let ay=Double(restStart["y"] ?? ""),let bx=Double(restEnd["x"] ?? ""),let by=Double(restEnd["y"] ?? "") {
+                    let rest=hypot(bx-ax,by-ay)*scale
+                    if rest>0 {longitudinal=hypot(b.x-a.x,b.y-a.y)/rest}
                 }
-                for part in selectedParts.sorted(by:{(Int($0["weight"] ?? "0") ?? 0)<(Int($1["weight"] ?? "0") ?? 0)}) {
-                    guard let start=Int(part["start"] ?? ""),let end=Int(part["end"] ?? ""),let a=joints[start],let b=joints[end],let imagePath=part["image"],let bitmap=image(imagePath) else{continue}
-                    var longitudinal=1.0
-                    if (b.attributes["stretchable"] == "true" || (b.parent == a.id && b.attributes["nativeAxisStretch"] == "true") || (a.parent == b.id && a.attributes["nativeAxisStretch"] == "true")), scale > 0,
-                       let restStart=definition.points.first(where:{$0["id"]==String(start)}),
-                       let restEnd=definition.points.first(where:{$0["id"]==String(end)}),
-                       let ax=Double(restStart["x"] ?? ""),let ay=Double(restStart["y"] ?? ""),let bx=Double(restEnd["x"] ?? ""),let by=Double(restEnd["y"] ?? "") {
-                        let rest=hypot(bx-ax,by-ay)*scale
-                        if rest>0 {longitudinal=hypot(b.x-a.x,b.y-a.y)/rest}
+                var anchorX = a.x, anchorY = a.y
+                if b.parent == a.id {
+                    longitudinal *= FrameManipulation.boneLengthFactor(b)
+                } else if a.parent == b.id {
+                    let factor = FrameManipulation.boneLengthFactor(a)
+                    longitudinal *= factor
+                    anchorX = b.x + (a.x - b.x) * factor
+                    anchorY = b.y + (a.y - b.y) * factor
+                }
+                c.saveGState()
+                c.translateBy(x: anchorX, y: anchorY)
+                c.rotate(by: atan2(b.y - a.y, b.x - a.x))
+                let xOffset = Double(part["x_offset"] ?? "0") ?? 0
+                let yOffset = Double(part["y_offset"] ?? "0") ?? 0
+                let axialScale = scale * longitudinal
+                if axialScale > 0 {
+                    let upper = (xOffset + Double(bitmap.size.width)) * axialScale
+                    let lower = xOffset * axialScale
+                    let halfHeight = (abs(yOffset) + Double(bitmap.size.height) + 1) * abs(scale)
+                    if b.parent == a.id && b.attributes["nativeAxisStretch"] == "true" {
+                        c.clip(to: CGRect(x: 0, y: -halfHeight, width: max(0, upper), height: 2 * halfHeight))
+                    } else if a.parent == b.id && a.attributes["nativeAxisStretch"] == "true" {
+                        let joint = hypot(b.x - a.x, b.y - a.y)
+                        c.clip(to: CGRect(x: lower, y: -halfHeight, width: max(0, joint - lower), height: 2 * halfHeight))
                     }
-                    var anchorX = a.x, anchorY = a.y
-                    if b.parent == a.id {
-                        longitudinal *= FrameManipulation.boneLengthFactor(b)
-                    } else if a.parent == b.id {
-                        let factor = FrameManipulation.boneLengthFactor(a)
-                        longitudinal *= factor
-                        anchorX = b.x + (a.x - b.x) * factor
-                        anchorY = b.y + (a.y - b.y) * factor
-                    }
+                }
+                c.scaleBy(x:scale*longitudinal,y:flipped && part["flipped"] != "true" ? -scale:scale)
+                let rect = CGRect(x: xOffset, y: yOffset, width: bitmap.size.width, height: bitmap.size.height)
+                let alpha = CGFloat(Double(unit.attributes["alpha"] ?? "1") ?? 1) * opacity
+                bitmap.draw(in: rect, blendMode: blendMode, alpha: blendMode == .destinationOut ? 1 : alpha)
+                if SpriteText.isBubble(unit) {
                     c.saveGState()
-                    c.translateBy(x: anchorX, y: anchorY)
-                    c.rotate(by: atan2(b.y - a.y, b.x - a.x))
-                    let xOffset = Double(part["x_offset"] ?? "0") ?? 0
-                    let yOffset = Double(part["y_offset"] ?? "0") ?? 0
-                    let axialScale = scale * longitudinal
-                    if axialScale > 0 {
-                        let upper = (xOffset + Double(bitmap.size.width)) * axialScale
-                        let lower = xOffset * axialScale
-                        let halfHeight = (abs(yOffset) + Double(bitmap.size.height) + 1) * abs(scale)
-                        if b.parent == a.id && b.attributes["nativeAxisStretch"] == "true" {
-                            c.clip(to: CGRect(x: 0, y: -halfHeight, width: max(0, upper), height: 2 * halfHeight))
-                        } else if a.parent == b.id && a.attributes["nativeAxisStretch"] == "true" {
-                            let joint = hypot(b.x - a.x, b.y - a.y)
-                            c.clip(to: CGRect(x: lower, y: -halfHeight, width: max(0, joint - lower), height: 2 * halfHeight))
-                        }
+                    if flipped && part["flipped"] != "true" {
+                        c.translateBy(x: 0, y: rect.midY * 2)
+                        c.scaleBy(x: 1, y: -1)
                     }
-                    c.scaleBy(x:scale*longitudinal,y:flipped && part["flipped"] != "true" ? -scale:scale)
-                    let rect = CGRect(x: xOffset, y: yOffset, width: bitmap.size.width, height: bitmap.size.height)
-                    let alpha = CGFloat(Double(unit.attributes["alpha"] ?? "1") ?? 1) * opacity
-                    bitmap.draw(in: rect, blendMode: .normal, alpha: alpha)
-                    if SpriteText.isBubble(unit) {
-                        c.saveGState()
-                        if flipped && part["flipped"] != "true" {
-                            c.translateBy(x: 0, y: rect.midY * 2)
-                            c.scaleBy(x: 1, y: -1)
-                        }
-                        SpriteText.draw(unit, in: rect.insetBy(dx: rect.width * 0.12, dy: 0)
-                            .divided(atDistance: rect.height * 0.72, from: .minYEdge).slice.insetBy(dx: 0, dy: 6),
-                                        context: c, alpha: alpha)
-                        c.restoreGState()
-                    }
+                    SpriteText.draw(unit, in: rect.insetBy(dx: rect.width * 0.12, dy: 0)
+                        .divided(atDistance: rect.height * 0.72, from: .minYEdge).slice.insetBy(dx: 0, dy: 6),
+                                    context: c, alpha: alpha)
                     c.restoreGState()
                 }
+                c.restoreGState()
             }
         }
-        if showHandles {paintSkeleton(frame,in:c,points:true)}
     }
     private func paintSkeleton(_ frame:SceneFrame,in c:CGContext,points:Bool) {
         c.saveGState();defer{c.restoreGState()}

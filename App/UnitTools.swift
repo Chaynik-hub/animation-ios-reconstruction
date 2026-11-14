@@ -28,8 +28,29 @@ extension EditorController {
         if SpriteText.isEditable(unit) {
             add("prop_set_text", "Текст", "props_text") { [weak self] in self?.editSpriteText() }
         }
+        let isMask = workspace.document.squareMaskNames.contains(unit.name)
+        if UnitIdentity.baseName(unit.name) == "common:square" {
+            add("prop_set_mask", "Маска", isMask ? "props_mask_sel" : "props_mask_unselected") { [weak self] in
+                guard let self else { return }
+                var masks = self.workspace.document.squareMaskNames
+                if masks.remove(unit.name) == nil {
+                    let conflicting = self.workspace.document.frames.contains { frame in
+                        frame.units.contains { $0.name == unit.name } &&
+                        frame.units.contains { masks.contains($0.name) }
+                    }
+                    guard !conflicting else {
+                        self.message("Маска", "На кадре может быть только одна маска")
+                        return
+                    }
+                    masks.insert(unit.name)
+                }
+                self.workspace.checkpoint()
+                self.workspace.document.squareMaskNames = masks
+                self.workspace.notify()
+            }
+        }
         add("prop_delete", "Удалить", "props_delete", action: { [weak self] in self?.workspace.removeObject() })
-        add("prop_set_opacity", "Прозр.", "props_opacity", action: { [weak self] in self?.showOpacity() })
+        add("prop_set_opacity", "Прозр.", "props_opacity", enabled: !isMask, action: { [weak self] in self?.showOpacity() })
         add("prop_flip", "Отразить", "props_flip", action: { [weak self] in self?.workspace.flip() })
         if FrameManipulation.attachment(unit) != nil { add("prop_detach", "Отсоед.", "props_detach", action: { [weak self] in
             guard let self, let selected = self.workspace.selected else { return }; var frame = self.workspace.frame
@@ -38,7 +59,7 @@ extension EditorController {
         let order = UnitEditing.orderedIndices(in: workspace.frame), rank = order.firstIndex(of: index) ?? 0
         add("prop_rearrange_up", "Выше", "props_down", enabled: rank < order.count - 1, action: { [weak self] in self?.rearrangeUnit(forward: true) })
         add("prop_rearrange_down", "Ниже", "props_up", enabled: rank > 0, action: { [weak self] in self?.rearrangeUnit(forward: false) })
-        add("prop_copy", "Копир.", "props_copy", action: { [weak self] in
+        add("prop_copy", "Копир.", "props_copy", enabled: !isMask, action: { [weak self] in
             guard let self, let selected = self.workspace.selected else { return }; self.unitClipboard = UnitEditing.snapshot(in: self.workspace.frame, selected: selected); self.workspace.selected = nil; self.update()
         })
         add("prop_copy_pose", "Коп. позу", "pose_copy") { [weak self] in

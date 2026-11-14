@@ -14,7 +14,7 @@ final class PreviewController: UIViewController, UIGestureRecognizerDelegate {
     private let counter = UILabel()
     private let replay = UIButton(type: .system)
     private let timeline = UISlider()
-    private var ticksPerFrame: Int { max(1, workspace.document.interframes + 1) }
+    private var ticksPerFrame: Int { workspace.document.ticksPerKeyframe }
     private var lastTick: Int { max(0, workspace.document.frames.count - 1) * ticksPerFrame }
     init(workspace: Workspace, audio: AVAudioPlayer?) {
         self.workspace = workspace; self.audio = audio
@@ -114,7 +114,7 @@ final class PreviewController: UIViewController, UIGestureRecognizerDelegate {
         let current = workspace.document.frames[index]
         let following = workspace.document.frames[min(index + 1, workspace.document.frames.count - 1)]
         let progress = Double(tick % ticksPerFrame) / Double(ticksPerFrame)
-        let frame = (try? FrameInterpolation.between(current, following, progress: progress)) ?? current
+        let frame = workspace.document.interpolatesPlayback ? (try? FrameInterpolation.between(current, following, progress: progress)) ?? current : current
         canvas.displayed = workspace.applyAssetAnimations(to: frame, tick: tick)
         counter.text = String(tick + 1)
         timeline.accessibilityValue = "\(tick + 1) / \(lastTick + 1)"

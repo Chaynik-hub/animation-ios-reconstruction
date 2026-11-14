@@ -26,6 +26,31 @@ public struct SceneDocument: Codable, Equatable, Sendable {
     public var width: Double
     public var height: Double
     public var interframes: Int
+    private struct MaskEntry: Codable {
+        let name: String
+        let mode: Int
+    }
+
+    public var squareMaskNames: Set<String> {
+        get {
+            guard let data = attributes["masks"]?.data(using: .utf8),
+                  let entries = try? JSONDecoder().decode([MaskEntry].self, from: data) else { return [] }
+            return Set(entries.filter { $0.mode == 1 }.map(\.name))
+        }
+        set {
+            let entries = newValue.sorted().map { MaskEntry(name: $0, mode: 1) }
+            attributes["masks"] = entries.isEmpty ? nil :
+                (try? JSONEncoder().encode(entries)).map { String(decoding: $0, as: UTF8.self) }
+        }
+    }
+
+    public var interpolatesPlayback: Bool { attributes["no_interpolation"] != "true" }
+    public var ticksPerKeyframe: Int {
+        if !interpolatesPlayback {
+            return 1 + min(9, max(0, attributes["no_interpolation_frames"].flatMap(Int.init) ?? 0))
+        }
+        return max(0, min(119, interframes)) + 1
+    }
     public var frames: [SceneFrame]
     public var attributes: [String: String]
 }

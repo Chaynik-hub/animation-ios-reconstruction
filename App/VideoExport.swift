@@ -17,7 +17,7 @@ extension EditorController {
             guard writer.canAdd(input) else {throw SceneReadError.invalidScene};writer.add(input)
             guard writer.startWriting() else {throw writer.error ?? SceneReadError.invalidScene}
             writer.startSession(atSourceTime:.zero)
-            let count=workspace.document.frames.count*max(1,workspace.document.interframes+1)
+            let count=workspace.document.frames.count*workspace.document.ticksPerKeyframe
             let originalStart=startFrame;startFrame=0
             var frameIndex=0
             view.isUserInteractionEnabled=false
